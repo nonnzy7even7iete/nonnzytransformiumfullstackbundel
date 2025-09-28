@@ -1,7 +1,8 @@
+// src/lib/auth.ts
+import { NextAuthOptions } from "next-auth";
+import GoogleProvider from "next-auth/providers/google";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { PrismaClient } from "@prisma/client";
-import GoogleProvider from "next-auth/providers/google";
-import { NextAuthOptions } from "next-auth";
 
 const prisma = new PrismaClient();
 
@@ -14,10 +15,7 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
   secret: process.env.NEXTAUTH_SECRET,
-  session: {
-    strategy: "database",
-    maxAge: 60 * 60 * 24 * 30,
-  },
+  session: { strategy: "database", maxAge: 60 * 60 * 24 * 30 },
   callbacks: {
     async session({ session, user }) {
       if (session.user) session.user.id = user.id;
@@ -27,8 +25,6 @@ export const authOptions: NextAuthOptions = {
       return `${baseUrl}/dashboard`;
     },
   },
-  pages: {
-    signIn: "/",
-  },
+  pages: { signIn: "/" },
   debug: process.env.NODE_ENV === "development",
 };
