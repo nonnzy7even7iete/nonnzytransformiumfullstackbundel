@@ -1,0 +1,49 @@
+{
+  // Cache & dossiers lourds cachés pour éviter les lags
+  "files.exclude": {
+    "**/.git": true,
+    "**/.DS_Store": true,
+    "**/node_modules": true,
+    "**/.next": true,
+    "**/out": true,
+    "**/.turbo": true,
+    "**/.vercel": true,
+    "**/coverage": true
+  },
+
+  // Masquer les fichiers inutiles dans la recherche
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/.next": true,
+    "**/out": true,
+    "**/.turbo": true,
+    "**/.vercel": true,
+    "**/coverage": true
+  },
+
+  // Désactiver l'indexation lourde de TypeScript dans node_modules
+  "typescript.tsserver.exclude": [
+    "**/node_modules",
+    "**/.next",
+    "**/out"
+  ],
+
+  // Linting plus rapide
+  "eslint.workingDirectories": ["./src"],
+
+  // Préférence d'éditeur : focus sur le code
+  "editor.minimap.enabled": false,
+  "editor.codeLens": false,
+  "editor.smoothScrolling": true,
+  "editor.formatOnSave": true,
+
+  // UI clean
+  "explorer.compactFolders": false,
+  "explorer.fileNesting.enabled": true,
+  "explorer.fileNesting.patterns": {
+    "package.json": "package-lock.json, yarn.lock, pnpm-lock.yaml",
+    "tsconfig.json": "tsconfig.*.json",
+    "next.config.js": "next.config.*.js",
+    ".env": ".env.*, .env.local, .env.development, .env.production"
+  }
+}

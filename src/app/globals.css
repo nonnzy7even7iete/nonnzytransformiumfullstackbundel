@@ -1,5 +1,26 @@
 @import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
+/* 🔹 RESET GLOBAL — supprime toutes marges/paddings par défaut */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* 🔹 Garantir que html/body prennent tout l’écran */
+html, body {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+/* 🔹 Variables de thème */
 :root {
   --background: #ffffff;
   --foreground: #171717;
@@ -19,6 +40,7 @@
   }
 }
 
+/* 🔹 Styles body */
 body {
   background: var(--background);
   color: var(--foreground);

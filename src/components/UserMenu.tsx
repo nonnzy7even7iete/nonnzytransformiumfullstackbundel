@@ -1,0 +1,72 @@
+"use client";
+
+import { useState } from "react";
+import { useSession, signOut } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import { User, Settings, LogOut } from "lucide-react";
+
+export default function UserMenu() {
+  const { data: session } = useSession();
+  const [open, setOpen] = useState(false);
+  const router = useRouter();
+
+  if (!session) return null;
+
+  return (
+    <div className="relative">
+      {/* Avatar cliquable */}
+      <button
+        onClick={() => setOpen(!open)}
+        className="w-10 h-10 rounded-full overflow-hidden border border-white/10 hover:border-green-400/40 transition-colors"
+      >
+        {session.user?.image ? (
+          <img
+            src={session.user.image}
+            alt={session.user.name ?? "User"}
+            className="w-full h-full object-cover"
+          />
+        ) : (
+          <div className="w-full h-full flex items-center justify-center bg-green-500/20 text-green-300 font-semibold">
+            {session.user?.name?.[0] ?? "U"}
+          </div>
+        )}
+      </button>
+
+      {/* Dropdown menu */}
+      {open && (
+        <div
+          className="absolute right-0 mt-2 w-48 rounded-xl border border-white/10
+                     bg-black/80 backdrop-blur-md shadow-lg overflow-hidden animate-in fade-in slide-in-from-top-2"
+        >
+          <div className="px-4 py-4 border-b border-white/10">
+            <p className="text-sm font-medium text-white">{session.user?.name}</p>
+            <p className="text-xs text-gray-400 truncate">{session.user?.email}</p>
+          </div>
+
+          {/* Boutons avec icônes */}
+          <button
+            onClick={() => router.push("/dashboard/profile")}
+            className="w-full text-left px-4 py-3 text-sm text-gray-300 hover:bg-white/5 flex items-center gap-3 transition-colors"
+          >
+            <User size={16} /> Mon profil
+          </button>
+          <button
+            onClick={() => router.push("/dashboard/settings")}
+            className="w-full text-left px-4 py-3 text-sm text-gray-300 hover:bg-white/5 flex items-center gap-3 transition-colors"
+          >
+            <Settings size={16} /> Paramètres
+          </button>
+
+          <div className="border-t border-white/10">
+            <button
+              onClick={() => signOut({ callbackUrl: "/" })}
+              className="w-full text-left px-4 py-3 text-sm text-red-400 hover:bg-red-500/10 flex items-center gap-3 transition-colors"
+            >
+              <LogOut size={16} /> Se déconnecter
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
