@@ -1,6 +1,6 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
-
-# dependencies
+# =====================
+# Node / dependencies
+# =====================
 /node_modules
 /.pnp
 .pnp.*
@@ -10,34 +10,55 @@
 !.yarn/releases
 !.yarn/versions
 
-# testing
+# =====================
+# Testing / coverage
+# =====================
 /coverage
 
-# next.js
+# =====================
+# Next.js build
+# =====================
 /.next/
 /out/
-
-# production
 /build
 
-# misc
+# =====================
+# Misc / OS
+# =====================
 .DS_Store
 *.pem
+*.log
 
-# debug
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-.pnpm-debug.log*
+# =====================
+# Environment variables
+# =====================
+# On garde les fichiers d'environnement locaux et prod privés
+.env
+.env.local
+.env.production
+.env.test
+.env.*.local
 
-# env files (can opt-in for committing if needed)
-.env*
-
-# vercel
+# =====================
+# Vercel
+# =====================
 .vercel
 
-# typescript
+# =====================
+# TypeScript
+# =====================
 *.tsbuildinfo
 next-env.d.ts
 
-/src/generated/prisma
+# =====================
+# Prisma
+# =====================
+# On ignore le client généré mais on garde les migrations
+/prisma/generated
+/prisma/migrations/*.tmp
+
+# =====================
+# Optional: Editor settings
+# =====================
+.vscode/
+.idea/
