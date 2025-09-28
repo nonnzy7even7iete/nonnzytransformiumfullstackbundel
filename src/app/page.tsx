@@ -19,9 +19,9 @@ export default function HomePage() {
   return (
     <main className="flex items-center justify-center min-h-screen bg-gradient-to-br from-zinc-900 via-black to-zinc-900 relative overflow-hidden">
       {/* Glassmorphic card */}
-      <div className="w-[277px] h-[277px] p-[7px] bg-white/10 backdrop-blur-xl border border-white/20 rounded-[17%] flex flex-col items-center justify-center shadow-lg">
+      <div className="w-[277px] h-[277px] p-[7px] bg-white/10 backdrop-blur-xl border border-white/20 rounded-[17px] flex flex-col items-center justify-center shadow-lg">
         {/* Titre */}
-        <h1 className="text-xl text-white mb-4 text-center font-semibold drop-shadow-lg">
+        <h1 className="text-xl text-white mb-17 text-center font-semibold drop-shadow-lg">
           Bienvenue
         </h1>
 
