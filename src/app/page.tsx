@@ -3,7 +3,6 @@
 import { signIn, useSession } from "next-auth/react";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { FcGoogle } from "react-icons/fc";
 import Loader from "@/components/Loader";
 
 export default function HomePage() {
@@ -18,26 +17,32 @@ export default function HomePage() {
 
   return (
     <main className="flex items-center justify-center min-h-screen bg-gradient-to-br from-zinc-900 via-black to-zinc-900 relative overflow-hidden">
-      {/* Glassmorphic card */}
-      <div className="w-[277px] h-[277px] p-[7px] bg-white/10 backdrop-blur-xl border border-white/20 rounded-[17px] flex flex-col items-center justify-center shadow-lg">
-        {/* Titre */}
-        <h1 className="text-xl text-white mb-17 text-center font-semibold drop-shadow-lg">
-          Bienvenue
+      {/* Glassmorphic card dark */}
+      <div className="w-[277px] h-[277px] p-[7px] bg-black/40 backdrop-blur-xl border border-white/10 rounded-[17%] flex flex-col items-center justify-between shadow-lg">
+        {/* H1 titre */}
+        <h1 className="text-xl text-white font-bold text-center drop-shadow-lg mt-2">
+          Nonnzytrasformium
         </h1>
 
-        {/* Bouton Google */}
+        {/* Bouton avec message */}
         <button
           onClick={() => signIn("google", { callbackUrl: "/dashboard" })}
-          className="w-[90%] py-2 flex items-center justify-center gap-2 bg-gradient-to-r from-purple-600 via-pink-500 to-cyan-500 text-white font-semibold rounded-lg shadow-lg hover:scale-105 hover:shadow-cyan-500/50 transition-transform duration-300 ease-out"
+          className="w-[90%] py-2 flex items-center justify-center text-center text-white font-semibold rounded-lg bg-gradient-to-r from-black to-green-500 shadow-md hover:scale-105 transition-transform duration-300 ease-out"
         >
-          <FcGoogle className="text-2xl" /> Continuer avec Google
+          Le seul moyen de continuer l'aventure avec nous est avec un compte
+          Google / Continuer avec votre compte Google
         </button>
+
+        {/* Texte philosophique en bas */}
+        <p className="text-white/60 text-xs text-center mb-2 font-thin">
+          La vie avance, qui recule ?
+        </p>
       </div>
 
       {/* Effets lumineux de fond */}
       <div className="absolute inset-0 -z-10">
-        <div className="absolute w-[500px] h-[500px] bg-purple-500/30 rounded-full blur-3xl top-[-10%] left-[-10%]" />
-        <div className="absolute w-[400px] h-[400px] bg-cyan-500/30 rounded-full blur-3xl bottom-[-10%] right-[-10%]" />
+        <div className="absolute w-[500px] h-[500px] bg-purple-500/20 rounded-full blur-3xl top-[-10%] left-[-10%]" />
+        <div className="absolute w-[400px] h-[400px] bg-green-500/20 rounded-full blur-3xl bottom-[-10%] right-[-10%]" />
       </div>
     </main>
   );
