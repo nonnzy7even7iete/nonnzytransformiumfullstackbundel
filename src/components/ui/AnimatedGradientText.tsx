@@ -25,9 +25,9 @@ export const AnimatedGradientText = ({
   }, [words.length, interval]);
 
   return (
-    <>
+    <div className="w-full flex justify-center items-center" style={{ zIndex }}>
       <h1
-        className={`relative z-[${zIndex}] text-1xl font-bold uppercase bg-gradient-to-r from-green-700 via-blue-400 to-green-700 bg-clip-text text-center flex justify-center items-center ${className}`}
+        className={`text-1xl font-bold uppercase bg-gradient-to-r from-green-700 via-blue-400 to-green-700 bg-clip-text text-transparent ${className}`}
       >
         {words[currentIndex].split("").map((letter, i) => (
           <span
@@ -80,6 +80,6 @@ export const AnimatedGradientText = ({
           color: transparent;
         }
       `}</style>
-    </>
+    </div>
   );
 };
