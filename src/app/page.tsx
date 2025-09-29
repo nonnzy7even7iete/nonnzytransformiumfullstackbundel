@@ -57,7 +57,7 @@ export default function HomePage() {
 
         {/* Texte secondaire */}
         <p className="text-white/50 text-xs mt-6 italic">
-          Connexion sécurisée via Google requise pour accéder à l’application.
+          Connexion sécurisée via Google requise pour accéder au Workflow.
         </p>
       </div>
     </main>
