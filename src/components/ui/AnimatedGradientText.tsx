@@ -27,7 +27,7 @@ export const AnimatedGradientText = ({
   return (
     <>
       <h1
-        className={`relative z-[${zIndex}] text-1xl font-bold uppercase bg-gradient-to-r from-green-700 via-blue-400 to-green-700 bg-clip-text text-transparent flex justify-center items-center ${className}`}
+        className={`relative z-[${zIndex}] text-1xl font-bold uppercase bg-gradient-to-r from-green-700 via-blue-400 to-green-700 bg-clip-text text-center flex justify-center items-center ${className}`}
       >
         {words[currentIndex].split("").map((letter, i) => (
           <span
