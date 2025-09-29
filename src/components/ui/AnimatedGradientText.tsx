@@ -27,7 +27,7 @@ export const AnimatedGradientText = ({
   return (
     <>
       <h1
-        className={`relative z-[${zIndex}] text-4xl md:text-5xl font-bold uppercase bg-gradient-to-r from-green-700 via-orange-400 to-green-700 bg-clip-text text-transparent wind-gradient ${className}`}
+        className={`relative z-[${zIndex}] text-center text-4xl md:text-5xl font-bold uppercase bg-gradient-to-r from-green-700 via-orange-400 to-green-700 bg-clip-text text-transparent wind-gradient ${className}`}
       >
         {words[currentIndex]}
       </h1>
