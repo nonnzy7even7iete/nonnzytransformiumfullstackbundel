@@ -27,9 +27,17 @@ export const AnimatedGradientText = ({
   return (
     <>
       <h1
-        className={`relative z-[${zIndex}] text-4xl md:text-5xl font-bold uppercase bg-gradient-to-r from-green-700 via-orange-400 to-green-700 bg-clip-text text-transparent wind-gradient ${className}`}
+        className={`relative z-[${zIndex}] text-4xl md:text-5xl font-bold uppercase bg-gradient-to-r from-green-700 via-orange-400 to-green-700 bg-clip-text text-transparent ${className}`}
       >
-        {words[currentIndex]}
+        {words[currentIndex].split("").map((letter, i) => (
+          <span
+            key={i}
+            className="inline-block animate-wind-letter"
+            style={{ animationDelay: `${i * 0.08}s` }}
+          >
+            {letter}
+          </span>
+        ))}
       </h1>
 
       <style jsx>{`
@@ -45,28 +53,31 @@ export const AnimatedGradientText = ({
           }
         }
 
-        @keyframes wind-move {
+        @keyframes wind-move-letter {
           0% {
-            transform: translateX(0) translateY(0);
+            transform: translateX(0) translateY(0) rotate(0deg);
           }
           25% {
-            transform: translateX(-2px) translateY(1px);
+            transform: translateX(-2px) translateY(1px) rotate(-1deg);
           }
           50% {
-            transform: translateX(2px) translateY(-1px);
+            transform: translateX(2px) translateY(-1px) rotate(1deg);
           }
           75% {
-            transform: translateX(-1px) translateY(1px);
+            transform: translateX(-1px) translateY(1px) rotate(-0.5deg);
           }
           100% {
-            transform: translateX(0) translateY(0);
+            transform: translateX(0) translateY(0) rotate(0deg);
           }
         }
 
-        .wind-gradient {
-          background-size: 200% 200%;
-          animation: gradient-x 3s linear infinite,
-            wind-move 2s ease-in-out infinite;
+        .animate-wind-letter {
+          display: inline-block;
+          animation: wind-move-letter 1.5s ease-in-out infinite,
+            gradient-x 3s linear infinite;
+          background-clip: text;
+          -webkit-background-clip: text;
+          color: transparent;
         }
       `}</style>
     </>
