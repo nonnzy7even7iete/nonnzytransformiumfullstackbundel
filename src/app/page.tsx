@@ -17,31 +17,36 @@ export default function HomePage() {
   if (status === "loading" || status === "authenticated") return <Loader />;
 
   return (
-    <main className="flex items-center justify-center min-h-screen bg-zinc-900">
-      {/* Card principale */}
-      <div className="w-[277px] h-[277px] p-[7px] bg-black/50 backdrop-blur-md border border-white/20 rounded-[7px] relative flex flex-col justify-center items-center shadow-lg">
-        {/* Titre dans sa mini-card glassmorphique */}
-        <div className="absolute -top-6 bg-black/70 backdrop-blur-md border border-white/20 rounded-[7px] px-[14px] py-[7px]">
-          <h1 className="text-transparent font-bold text-xl bg-clip-text bg-gradient-to-r from-gray-100 to-gray-700 drop-shadow-sm text-center">
-            Nonnzytrasformium
-          </h1>
-        </div>
+    <main className="flex items-center justify-center min-h-screen bg-gradient-to-br from-zinc-900 via-black to-zinc-900 relative overflow-hidden">
+      {/* Halo lumineux animé */}
+      <div className="absolute -top-40 -left-40 w-[500px] h-[500px] bg-purple-500/30 rounded-full blur-3xl animate-pulse"></div>
+      <div className="absolute -bottom-40 -right-40 w-[500px] h-[500px] bg-blue-500/30 rounded-full blur-3xl animate-pulse"></div>
 
-        {/* Bouton Google centré verticalement */}
-        <div className="flex-1 flex items-center justify-center w-full">
-          <button
-            onClick={() => signIn("google", { callbackUrl: "/dashboard" })}
-            className="w-[90%] py-2 flex items-center justify-center gap-2 bg-white text-black font-medium rounded-[7px] shadow-md hover:scale-105 transition-all duration-300"
-          >
-            <FcGoogle className="text-2xl" />
-            Continuer avec Google
-          </button>
-        </div>
+      {/* Card centrale */}
+      <div className="relative w-[340px] p-8 bg-black/40 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl text-center">
+        {/* Logo / titre */}
+        <h1 className="text-3xl font-extrabold bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent mb-3 drop-shadow-lg">
+          Nonnzytrasformium
+        </h1>
+        <p className="text-white/70 text-sm mb-8">
+          Votre aventure commence ici ✨
+        </p>
 
-        {/* Texte explicatif collé en bas */}
-        <p className="text-white/60 text-xs text-center font-thin absolute bottom-[2px] px-2 w-full">
-          Le seul moyen de continuer l'aventure avec nous est avec un compte
-          Google / Continuer avec votre compte Google
+        {/* Bouton Google */}
+        <button
+          onClick={() => signIn("google", { callbackUrl: "/dashboard" })}
+          className="w-full py-3 flex items-center justify-center gap-2 
+          bg-white text-black font-semibold rounded-xl shadow-md
+          hover:shadow-xl hover:scale-105 active:scale-95 
+          transition-all duration-300"
+        >
+          <FcGoogle className="text-2xl" />
+          Continuer avec Google
+        </button>
+
+        {/* Texte secondaire */}
+        <p className="text-white/50 text-xs mt-6 italic">
+          Connexion sécurisée via Google requise pour accéder à l’application.
         </p>
       </div>
     </main>
