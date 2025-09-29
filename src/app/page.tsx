@@ -35,7 +35,7 @@ export default function HomePage() {
         {/* Bouton Google */}
         <button
           onClick={() => signIn("google", { callbackUrl: "/dashboard" })}
-          className="w-90 py-3 flex items-center justify-center gap-2 
+          className="w-full py-3 flex items-center justify-center gap-2 
           bg-white text-black font-semibold rounded-xl shadow-md
           hover:shadow-xl hover:scale-105 active:scale-95 
           transition-all duration-300"
