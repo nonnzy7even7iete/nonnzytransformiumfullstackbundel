@@ -18,14 +18,14 @@ export default function HomePage() {
   if (status === "loading" || status === "authenticated") return <Loader />;
 
   return (
-    <main className="relative flex items-center justify-center min-h-screen bg-gradient-to-br from-zinc-900 via-black to-zinc-900 overflow-hidden">
+    <main className="relative flex items-center justify-center min-h-screen bg-gradient-to-br from-zinc-700 via-black to-zinc-900 overflow-hidden">
       {/* Fond interactif */}
       <BackgroundRippleEffect rows={8} cols={20} cellSize={50} />
 
       {/* Card centrale */}
       <div className="relative z-10 w-[340px] p-14 bg-black/40 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl text-center">
         {/* Logo / titre */}
-        <h1 className="text-3xl font-extrabold bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent mb-3 drop-shadow-lg">
+        <h1 className="text-3xl font-extrabold bg-gradient-to-r from-green-700 to-blue-400 bg-clip-text text-transparent mb-3 drop-shadow-lg">
           Nonnzytrasformium
         </h1>
         <p className="text-white/70 text-sm mb-8">
