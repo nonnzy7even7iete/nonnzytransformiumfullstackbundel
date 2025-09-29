@@ -19,22 +19,22 @@ export default function HomePage() {
   if (status === "loading" || status === "authenticated") return <Loader />;
 
   return (
-    <main className="relative flex items-center justify-center min-h-screen bg-gradient-to-br from-zinc-700 via-black to-zinc-900 overflow-hidden">
+    <main className="relative flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-zinc-700 via-black to-zinc-900 overflow-hidden">
       {/* Fond interactif */}
       <BackgroundRippleEffect rows={8} cols={20} cellSize={50} />
 
       {/* Texte animé futuriste */}
-      <div className="absolute top-10 left-1/2 transform -translate-x-1/2 z-20">
+      <div className="w-full flex justify-center absolute top-16 z-20">
         <AnimatedGradientText
-          words={["Côte d'Ivoire", "Le Port autonome d'Abidjan", ""]}
+          words={["Côte d'Ivoire", "Le Port autonome d'Abidjan", "Anyaman"]}
           interval={1500}
-          className="text-3xl md:text-4xl"
+          className="text-1xl md:text-2xl text-center"
           zIndex={20}
         />
       </div>
 
       {/* Card centrale */}
-      <div className="relative z-10 w-[340px] p-14 bg-black/40 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl text-center">
+      <div className="relative z-10 w-[340px] p-14 bg-black/40 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl text-center mt-32">
         {/* Logo / titre */}
         <h1 className="text-3xl font-extrabold bg-gradient-to-r from-green-700 to-blue-400 bg-clip-text text-transparent mb-3 drop-shadow-lg">
           Nonnzytrasformium
