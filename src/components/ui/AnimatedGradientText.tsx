@@ -27,12 +27,11 @@ export const AnimatedGradientText = ({
   return (
     <>
       <h1
-        className={`relative z-[${zIndex}] text-4xl font-bold uppercase bg-gradient-to-r from-green-700 via-blue-400 to-green-700 bg-clip-text text-transparent animate-gradient-x ${className}`}
+        className={`relative z-[${zIndex}] text-4xl md:text-5xl font-bold uppercase bg-gradient-to-r from-green-700 via-gray-400 to-green-700 bg-clip-text text-transparent wind-gradient ${className}`}
       >
         {words[currentIndex]}
       </h1>
 
-      {/* Style CSS directement dans le composant */}
       <style jsx>{`
         @keyframes gradient-x {
           0% {
@@ -46,9 +45,28 @@ export const AnimatedGradientText = ({
           }
         }
 
-        .animate-gradient-x {
+        @keyframes wind-move {
+          0% {
+            transform: translateX(0) translateY(0);
+          }
+          25% {
+            transform: translateX(-2px) translateY(1px);
+          }
+          50% {
+            transform: translateX(2px) translateY(-1px);
+          }
+          75% {
+            transform: translateX(-1px) translateY(1px);
+          }
+          100% {
+            transform: translateX(0) translateY(0);
+          }
+        }
+
+        .wind-gradient {
           background-size: 200% 200%;
-          animation: gradient-x 3s linear infinite;
+          animation: gradient-x 3s linear infinite,
+            wind-move 2s ease-in-out infinite;
         }
       `}</style>
     </>
