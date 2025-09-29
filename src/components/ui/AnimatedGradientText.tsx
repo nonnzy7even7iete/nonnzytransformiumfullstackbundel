@@ -9,7 +9,7 @@ type AnimatedGradientTextProps = {
   zIndex?: number;
 };
 
-export const AnimatedGradientText = ({
+export default const AnimatedGradientText = ({
   words,
   interval = 2000,
   className,

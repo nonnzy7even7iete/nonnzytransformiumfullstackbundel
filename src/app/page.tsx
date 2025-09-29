@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { FcGoogle } from "react-icons/fc";
 import Loader from "@/components/Loader";
 import { BackgroundRippleEffect } from "@/components/ui/BackgroundRippleEffect";
+import { AnimatedGradientText } from "@/components/ui/AnimatedGradientText";
 
 export default function HomePage() {
   const { data: session, status } = useSession();
@@ -21,6 +22,16 @@ export default function HomePage() {
     <main className="relative flex items-center justify-center min-h-screen bg-gradient-to-br from-zinc-700 via-black to-zinc-900 overflow-hidden">
       {/* Fond interactif */}
       <BackgroundRippleEffect rows={8} cols={20} cellSize={50} />
+
+      {/* Texte animé futuriste */}
+      <div className="absolute top-10 left-1/2 transform -translate-x-1/2 z-20">
+        <AnimatedGradientText
+          words={["Côte d'Ivoire", "Abidjan", "Anyaman"]}
+          interval={1500}
+          className="text-3xl md:text-4xl"
+          zIndex={20}
+        />
+      </div>
 
       {/* Card centrale */}
       <div className="relative z-10 w-[340px] p-14 bg-black/40 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl text-center">
