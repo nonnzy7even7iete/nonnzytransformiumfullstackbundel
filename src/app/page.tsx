@@ -23,7 +23,7 @@ export default function HomePage() {
       <div className="absolute -bottom-40 -right-40 w-[500px] h-[500px] bg-blue-500/30 rounded-full blur-3xl animate-pulse"></div>
 
       {/* Card centrale */}
-      <div className="relative w-[340px] p-8 bg-black/40 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl text-center">
+      <div className="relative w-[340px] p-14 bg-black/40 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl text-center">
         {/* Logo / titre */}
         <h1 className="text-3xl font-extrabold bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent mb-3 drop-shadow-lg">
           Nonnzytrasformium
