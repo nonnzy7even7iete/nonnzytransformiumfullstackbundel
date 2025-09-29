@@ -5,6 +5,7 @@ import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { FcGoogle } from "react-icons/fc";
 import Loader from "@/components/Loader";
+import { BackgroundRippleEffect } from "@/components/ui/BackgroundRippleEffect";
 
 export default function HomePage() {
   const { data: session, status } = useSession();
@@ -17,13 +18,12 @@ export default function HomePage() {
   if (status === "loading" || status === "authenticated") return <Loader />;
 
   return (
-    <main className="flex items-center justify-center min-h-screen bg-gradient-to-br from-zinc-900 via-black to-zinc-900 relative overflow-hidden">
-      {/* Halo lumineux animé */}
-      <div className="absolute -top-40 -left-40 w-[500px] h-[500px] bg-purple-500/30 rounded-full blur-3xl animate-pulse"></div>
-      <div className="absolute -bottom-40 -right-40 w-[500px] h-[500px] bg-blue-500/30 rounded-full blur-3xl animate-pulse"></div>
+    <main className="relative flex items-center justify-center min-h-screen bg-gradient-to-br from-zinc-900 via-black to-zinc-900 overflow-hidden">
+      {/* Fond interactif */}
+      <BackgroundRippleEffect rows={8} cols={20} cellSize={50} />
 
       {/* Card centrale */}
-      <div className="relative w-[340px] p-14 bg-black/40 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl text-center">
+      <div className="relative z-10 w-[340px] p-14 bg-black/40 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl text-center">
         {/* Logo / titre */}
         <h1 className="text-3xl font-extrabold bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent mb-3 drop-shadow-lg">
           Nonnzytrasformium
