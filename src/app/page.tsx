@@ -26,7 +26,7 @@ export default function HomePage() {
       {/* Texte animé futuriste */}
       <div className="absolute top-10 left-1/2 transform -translate-x-1/2 z-20">
         <AnimatedGradientText
-          words={["Côte d'Ivoire", "Abidjan", "Anyaman"]}
+          words={["Côte d'Ivoire", "Port autonome d Abidjan", "Anyaman"]}
           interval={1500}
           className="text-3xl md:text-4xl"
           zIndex={20}
