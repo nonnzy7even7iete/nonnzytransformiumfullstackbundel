@@ -27,9 +27,8 @@ export default function HomePage() {
       <div className="w-full flex justify-center absolute top-16 z-20">
         <AnimatedGradientText
           words={["Côte d'Ivoire", "Le Port autonome d'Abidjan", "Anyaman"]}
-          interval={1500}
-          className="text-1xl md:text-2xl text-center"
-          zIndex={20}
+          interval={2000}
+          className="text-xl md:text-2xl text-center"
         />
       </div>
 
