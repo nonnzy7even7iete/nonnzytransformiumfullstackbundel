@@ -13,7 +13,10 @@ export default function UserMenu() {
   if (!session) return null;
 
   return (
-    <div className="relative font-sans">
+    <div
+      className="relative flex items-center border-b"
+      style={{ borderImage: "linear-gradient(to right, #047857, #9ca3af) 1" }}
+    >
       {/* Avatar cliquable */}
       <button
         onClick={() => setOpen(!open)}
@@ -36,11 +39,11 @@ export default function UserMenu() {
       {open && (
         <div
           className="absolute right-0 mt-2 w-56 rounded-xl border border-white/10
-                     bg-black/90 backdrop-blur-md shadow-xl overflow-hidden
-                     animate-in fade-in slide-in-from-top-2"
+                        bg-black/90 backdrop-blur-md shadow-xl overflow-hidden
+                        animate-in fade-in slide-in-from-top-2"
         >
           {/* Header */}
-          <div className="px-4 py-3 border-b border-white/10">
+          <div className="px-4 py-3 border-b border-white/10 pl-6">
             <p className="text-sm font-semibold text-white truncate">
               {session.user?.name}
             </p>
@@ -50,25 +53,28 @@ export default function UserMenu() {
           </div>
 
           {/* Actions */}
-          <div className="flex flex-col">
+          <div className="flex flex-col gap-1 px-2 py-1">
             <button
               onClick={() => router.push("/dashboard/profile")}
-              className="w-full text-left px-4 py-3 text-sm text-gray-300 hover:bg-white/5 flex items-center gap-3 transition-colors"
+              className="w-full text-left px-4 py-3 pl-6 text-sm text-gray-300
+                         transition-colors rounded-[7px] hover:bg-white/10 flex items-center gap-3"
             >
               <User size={16} /> Mon profil
             </button>
 
             <button
               onClick={() => router.push("/dashboard/settings")}
-              className="w-full text-left px-4 py-3 text-sm text-gray-300 hover:bg-white/5 flex items-center gap-3 transition-colors"
+              className="w-full text-left px-4 py-3 pl-6 text-sm text-gray-300
+                         transition-colors rounded-[7px] hover:bg-white/10 flex items-center gap-3"
             >
               <Settings size={16} /> Paramètres
             </button>
 
-            <div className="border-t border-white/10">
+            <div className="border-t border-white/10 mt-1 pt-1">
               <button
                 onClick={() => signOut({ callbackUrl: "/" })}
-                className="w-full text-left px-4 py-3 text-sm text-red-400 hover:bg-red-500/10 flex items-center gap-3 transition-colors"
+                className="w-full text-left px-4 py-3 pl-6 text-sm text-red-400
+                           transition-colors rounded-[7px] hover:bg-red-500/10 flex items-center gap-3"
               >
                 <LogOut size={16} /> Se déconnecter
               </button>
