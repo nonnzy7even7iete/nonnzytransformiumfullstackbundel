@@ -17,7 +17,7 @@ export default function UserMenu() {
       {/* Avatar cliquable */}
       <button
         onClick={() => setOpen(!open)}
-        className="w-10 h-10 rounded-full overflow-hidden border border-white/10 hover:border-green-400/50 transition-colors focus:outline-none focus:ring-2 focus:ring-green-400"
+        className="w-12 h-12 rounded-full overflow-hidden border border-white/20 hover:border-green-400/60 transition-colors focus:outline-none focus:ring-2 focus:ring-green-400"
       >
         {session.user?.image ? (
           <img
@@ -26,59 +26,63 @@ export default function UserMenu() {
             className="w-full h-full object-cover"
           />
         ) : (
-          <div className="w-full h-full flex items-center justify-center bg-green-500/20 text-green-300 font-semibold text-lg">
+          <div className="w-full h-full flex items-center justify-center bg-green-500/20 text-green-300 font-bold text-xl">
             {session.user?.name?.[0] ?? "U"}
           </div>
         )}
       </button>
 
-      {/* Dropdown menu */}
+      {/* Dropdown */}
       {open && (
         <div
-          className="absolute right-0 mt-2 w-56 min-h-[20rem] rounded-xl border border-white/10
-                     bg-black/90 backdrop-blur-md shadow-2xl overflow-hidden
-                     animate-in fade-in slide-in-from-top-2 font-sans"
+          className="absolute right-0 mt-3 w-60 rounded-xl border border-white/20
+                        bg-black/90 backdrop-blur-lg shadow-2xl overflow-hidden
+                        min-h-[22rem] flex flex-col"
         >
           {/* Header */}
-          <div className="px-6 py-6 border-b border-white/10 flex flex-col items-center">
-            <p className="text-base font-semibold text-white truncate">
+          <div className="px-6 py-6 border-b border-white/20 flex flex-col items-center justify-center text-center">
+            <p className="text-lg font-semibold text-white truncate">
               {session.user?.name}
             </p>
-            <p className="text-sm text-gray-300 truncate">
+            <p className="text-sm text-gray-300 truncate mt-1">
               {session.user?.email}
             </p>
           </div>
 
           {/* Actions */}
-          <div className="flex flex-col gap-3 p-4">
-            <button
-              onClick={() => router.push("/dashboard/profile")}
-              className="w-full flex items-center justify-start gap-3 px-6 py-4 text-base text-gray-200
-                         rounded-[7px] hover:bg-white/10 transition-all duration-200"
-            >
-              <User size={18} />{" "}
-              <span className="flex-1 text-center">Mon profil</span>
-            </button>
-
-            <button
-              onClick={() => router.push("/dashboard/settings")}
-              className="w-full flex items-center justify-start gap-3 px-6 py-4 text-base text-gray-200
-                         rounded-[7px] hover:bg-white/10 transition-all duration-200"
-            >
-              <Settings size={18} />{" "}
-              <span className="flex-1 text-center">Paramètres</span>
-            </button>
-
-            <div className="border-t border-white/20 mt-2 pt-2">
+          <div className="flex flex-col gap-3 p-4 flex-1 justify-center">
+            {[
+              {
+                label: "Mon profil",
+                icon: <User size={20} />,
+                action: () => router.push("/dashboard/profile"),
+              },
+              {
+                label: "Paramètres",
+                icon: <Settings size={20} />,
+                action: () => router.push("/dashboard/settings"),
+              },
+              {
+                label: "Se déconnecter",
+                icon: <LogOut size={20} />,
+                action: () => signOut({ callbackUrl: "/" }),
+                color: "text-red-400",
+                hover: "hover:bg-red-500/10",
+              },
+            ].map((item, idx) => (
               <button
-                onClick={() => signOut({ callbackUrl: "/" })}
-                className="w-full flex items-center justify-start gap-3 px-6 py-4 text-base text-red-400
-                           rounded-[7px] hover:bg-red-500/10 transition-all duration-200"
+                key={idx}
+                onClick={item.action}
+                className={`w-full flex items-center justify-center gap-3 px-6 py-5 text-base ${
+                  item.color ?? "text-gray-200"
+                } rounded-[7px] ${
+                  item.hover ?? "hover:bg-white/10"
+                } transition-all duration-200`}
               >
-                <LogOut size={18} />{" "}
-                <span className="flex-1 text-center">Se déconnecter</span>
+                {item.icon}{" "}
+                <span className="flex-1 text-center">{item.label}</span>
               </button>
-            </div>
+            ))}
           </div>
         </div>
       )}
