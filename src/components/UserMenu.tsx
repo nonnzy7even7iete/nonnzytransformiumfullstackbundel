@@ -40,7 +40,7 @@ export default function UserMenu() {
                      animate-in fade-in slide-in-from-top-2 font-sans"
         >
           {/* Header */}
-          <div className="px-6 py-6 border-b border-white/10">
+          <div className="px-6 py-6 border-b border-white/10 flex flex-col items-center">
             <p className="text-base font-semibold text-white truncate">
               {session.user?.name}
             </p>
@@ -50,30 +50,33 @@ export default function UserMenu() {
           </div>
 
           {/* Actions */}
-          <div className="flex flex-col gap-2 p-4">
+          <div className="flex flex-col gap-3 p-4">
             <button
               onClick={() => router.push("/dashboard/profile")}
-              className="w-full text-left px-6 py-4 text-base text-gray-200
-                         rounded-[7px] hover:bg-white/10 flex items-center gap-3 transition-all duration-200"
+              className="w-full flex items-center justify-start gap-3 px-6 py-4 text-base text-gray-200
+                         rounded-[7px] hover:bg-white/10 transition-all duration-200"
             >
-              <User size={18} /> Mon profil
+              <User size={18} />{" "}
+              <span className="flex-1 text-center">Mon profil</span>
             </button>
 
             <button
               onClick={() => router.push("/dashboard/settings")}
-              className="w-full text-left px-6 py-4 text-base text-gray-200
-                         rounded-[7px] hover:bg-white/10 flex items-center gap-3 transition-all duration-200"
+              className="w-full flex items-center justify-start gap-3 px-6 py-4 text-base text-gray-200
+                         rounded-[7px] hover:bg-white/10 transition-all duration-200"
             >
-              <Settings size={18} /> Paramètres
+              <Settings size={18} />{" "}
+              <span className="flex-1 text-center">Paramètres</span>
             </button>
 
             <div className="border-t border-white/20 mt-2 pt-2">
               <button
                 onClick={() => signOut({ callbackUrl: "/" })}
-                className="w-full text-left px-6 py-4 text-base text-red-400
-                           rounded-[7px] hover:bg-red-500/10 flex items-center gap-3 transition-all duration-200"
+                className="w-full flex items-center justify-start gap-3 px-6 py-4 text-base text-red-400
+                           rounded-[7px] hover:bg-red-500/10 transition-all duration-200"
               >
-                <LogOut size={18} /> Se déconnecter
+                <LogOut size={18} />{" "}
+                <span className="flex-1 text-center">Se déconnecter</span>
               </button>
             </div>
           </div>
