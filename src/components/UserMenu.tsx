@@ -14,7 +14,7 @@ export default function UserMenu() {
 
   return (
     <div className="relative font-sans">
-      {/* Avatar cliquable */}
+      {/* Avatar */}
       <button
         onClick={() => setOpen(!open)}
         className="w-12 h-12 rounded-full overflow-hidden border border-white/20 hover:border-green-400/60 transition-colors focus:outline-none focus:ring-2 focus:ring-green-400"
@@ -35,9 +35,8 @@ export default function UserMenu() {
       {/* Dropdown */}
       {open && (
         <div
-          className="absolute right-0 mt-3 w-60 rounded-xl border border-white/20
-                        bg-black/90 backdrop-blur-lg shadow-2xl overflow-hidden
-                        min-h-[22rem] flex flex-col"
+          className="absolute right-0 mt-3 w-60 min-h-[22rem] rounded-xl border border-white/20
+                        bg-black/90 backdrop-blur-lg shadow-2xl overflow-hidden flex flex-col"
         >
           {/* Header */}
           <div className="px-6 py-6 border-b border-white/20 flex flex-col items-center justify-center text-center">
@@ -73,14 +72,15 @@ export default function UserMenu() {
               <button
                 key={idx}
                 onClick={item.action}
-                className={`w-full flex items-center justify-center gap-3 px-6 py-5 text-base ${
+                className={`w-full flex items-center justify-center gap-2 px-6 py-4 text-base ${
                   item.color ?? "text-gray-200"
                 } rounded-[7px] ${
                   item.hover ?? "hover:bg-white/10"
                 } transition-all duration-200`}
               >
-                {item.icon}{" "}
-                <span className="flex-1 text-center">{item.label}</span>
+                <span className="flex items-center justify-center gap-2">
+                  {item.icon} <span>{item.label}</span>
+                </span>
               </button>
             ))}
           </div>
