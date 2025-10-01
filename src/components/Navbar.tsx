@@ -21,7 +21,7 @@ export default function Navbar() {
       }`}
       style={{
         borderBottom: "1px solid",
-        borderImage: "linear-gradient(to right, #ffffffff, #f1f1f1ff) 1",
+        borderImage: "linear-gradient(to right, #ffffff2a, #f1f1f111) 1",
       }}
     >
       <div className="max-w-6xl mx-auto px-6 h-full flex items-center justify-end">
