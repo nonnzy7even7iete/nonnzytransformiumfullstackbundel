@@ -16,12 +16,12 @@ export default function Navbar() {
 
   return (
     <nav
-      className={`fixed top-0 left-0 w-full h-16 z-50 transition-colors duration-300 ${
+      className={`fixed top-0 left-0 w-full h-24 z-50 transition-colors duration-300 ${
         scrolled ? "bg-black/50 backdrop-blur-md shadow-sm" : "bg-black"
       }`}
       style={{
         borderBottom: "1px solid",
-        borderImage: "linear-gradient(to right, #064e3b, #9ca3af) 1",
+        borderImage: "linear-gradient(to right, #ffffffff, #f1f1f1ff) 1",
       }}
     >
       <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-end">
