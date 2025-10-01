@@ -7,8 +7,12 @@ import { Settings } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 
 const navItems = [
-  { icon: GrAppsRounded, href: "/dashboard", label: "Accueil" },
-  { icon: LuChartNoAxesCombined, href: "/dashboard/awards", label: "Statistiques" }, // label mis à jour
+  { icon: GrAppsRounded, href: "/dashboard", label: "Zy App" },
+  {
+    icon: LuChartNoAxesCombined,
+    href: "/dashboard/awards",
+    label: "Statistiques",
+  }, // label mis à jour
   { icon: TbWorldCode, href: "/dashboard/students", label: "Codeurs" }, // label mis à jour
   { icon: Settings, href: "/dashboard/settings", label: "Paramètres" },
 ];
@@ -37,7 +41,9 @@ export default function Sidebar() {
             className={`
               flex flex-col md:flex-col items-center justify-center gap-1
               text-white/70 hover:text-green-400 transition-colors
-              ${isActive ? "text-green-400 bg-white/5 rounded-lg px-2 py-1" : ""}
+              ${
+                isActive ? "text-green-700 bg-white/5 rounded-lg px-2 py-1" : ""
+              }
             `}
           >
             {/* ⚡️ gestion spéciale pour react-icons */}
