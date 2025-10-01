@@ -24,11 +24,12 @@ export default function HomePage() {
       <BackgroundRippleEffect rows={8} cols={20} cellSize={50} />
 
       {/* Texte animé futuriste */}
-      <div className="w-full flex justify-center absolute top-16 z-20">
+      <div className="absolute top-16 w-full flex justify-center z-20 px-4">
         <AnimatedGradientText
           words={["Côte d'Ivoire", "Le Port autonome d'Abidjan", "Anyaman"]}
           interval={2000}
           className="text-xl md:text-2xl text-center"
+          zIndex={30}
         />
       </div>
 
