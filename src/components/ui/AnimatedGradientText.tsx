@@ -18,11 +18,12 @@ export const AnimatedGradientText = ({
   const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
+    if (!words || words.length === 0) return; // sécurité
     const timer = setInterval(() => {
       setCurrentIndex((prev) => (prev + 1) % words.length);
     }, interval);
     return () => clearInterval(timer);
-  }, [words.length, interval]);
+  }, [words, interval]);
 
   return (
     <div className="w-full flex justify-center items-center" style={{ zIndex }}>
@@ -62,7 +63,6 @@ export const AnimatedGradientText = ({
         .animate-wind-letter {
           display: inline-block;
           animation: wind-move-letter 1.5s ease-in-out infinite;
-          /* Ne plus mettre color: transparent ici */
         }
       `}</style>
     </div>
