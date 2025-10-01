@@ -27,7 +27,7 @@ export const AnimatedGradientText = ({
   return (
     <div className="w-full flex justify-center items-center" style={{ zIndex }}>
       <h1
-        className={`text-1xl font-bold uppercase bg-gradient-to-r from-green-700 via-blue-400 to-green-700 bg-clip-text text-transparent ${className}`}
+        className={`text-4xl md:text-5xl font-bold uppercase bg-gradient-to-r from-green-700 via-blue-400 to-green-700 bg-clip-text text-transparent ${className}`}
       >
         {words[currentIndex].split("").map((letter, i) => (
           <span
@@ -41,18 +41,6 @@ export const AnimatedGradientText = ({
       </h1>
 
       <style jsx>{`
-        @keyframes gradient-x {
-          0% {
-            background-position: 0% 50%;
-          }
-          50% {
-            background-position: 100% 50%;
-          }
-          100% {
-            background-position: 0% 50%;
-          }
-        }
-
         @keyframes wind-move-letter {
           0% {
             transform: translateX(0) translateY(0) rotate(0deg);
@@ -73,11 +61,7 @@ export const AnimatedGradientText = ({
 
         .animate-wind-letter {
           display: inline-block;
-          animation: wind-move-letter 1.5s ease-in-out infinite,
-            gradient-x 3s linear infinite;
-          background-clip: text;
-          -webkit-background-clip: text;
-          color: transparent;
+          animation: wind-move-letter 1.5s ease-in-out infinite;
         }
       `}</style>
     </div>
