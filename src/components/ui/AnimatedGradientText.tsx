@@ -62,6 +62,7 @@ export const AnimatedGradientText = ({
         .animate-wind-letter {
           display: inline-block;
           animation: wind-move-letter 1.5s ease-in-out infinite;
+          /* Ne plus mettre color: transparent ici */
         }
       `}</style>
     </div>
