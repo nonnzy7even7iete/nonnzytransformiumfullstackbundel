@@ -6,7 +6,9 @@ import { useRouter } from "next/navigation";
 import { FcGoogle } from "react-icons/fc";
 import Loader from "@/components/Loader";
 import { BackgroundRippleEffect } from "@/components/ui/BackgroundRippleEffect";
-import { AnimatedGradientText } from "@/components/ui/AnimatedGradientText";
+
+// 🔥 Import de ton composant
+import { TextHoverEffect } from "@/components/ui/TextHoverEffect";
 
 export default function HomePage() {
   const { data: session, status } = useSession();
@@ -23,13 +25,11 @@ export default function HomePage() {
       {/* Fond interactif */}
       <BackgroundRippleEffect rows={8} cols={20} cellSize={50} />
 
-      {/* Texte animé futuriste */}
-      <div className="absolute top-16 w-full flex justify-center z-20 px-4">
-        <AnimatedGradientText
-          words={["Côte d'Ivoire", "Le Port autonome d'Abidjan", "Anyaman"]}
-          interval={2000}
-          className="text-xl md:text-2xl text-center"
-          zIndex={30}
+      {/* Texte animé au-dessus */}
+      <div className="absolute top-16 w-full flex justify-center z-20">
+        <TextHoverEffect
+          text="Soyez informé de toute les traction"
+          duration={0.5}
         />
       </div>
 
