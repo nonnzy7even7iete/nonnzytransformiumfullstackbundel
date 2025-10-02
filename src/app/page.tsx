@@ -6,8 +6,6 @@ import { useRouter } from "next/navigation";
 import { FcGoogle } from "react-icons/fc";
 import Loader from "@/components/Loader";
 import { BackgroundRippleEffect } from "@/components/ui/BackgroundRippleEffect";
-
-// 🔥 Import de ton composant
 import { TextHoverEffect } from "@/components/ui/TextHoverEffect";
 
 export default function HomePage() {
@@ -25,10 +23,10 @@ export default function HomePage() {
       {/* Fond interactif */}
       <BackgroundRippleEffect rows={8} cols={20} cellSize={50} />
 
-      {/* Texte animé au-dessus */}
-      <div className="absolute top-16 w-full flex justify-center z-20">
+      {/* Texte animé futuriste */}
+      <div className="w-full flex justify-center absolute top-[7px] z-20">
         <TextHoverEffect
-          text="Soyez informé de toute les traction"
+          text="Soyez informé de toutes les transactions"
           duration={0.5}
         />
       </div>
