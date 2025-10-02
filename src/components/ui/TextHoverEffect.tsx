@@ -30,7 +30,7 @@ export const TextHoverEffect = ({
     <svg
       ref={svgRef}
       width={style?.width || "auto"}
-      height={style?.height || "40px"}
+      height={style?.height || "50px"}
       viewBox="0 0 600 150"
       xmlns="http://www.w3.org/2000/svg"
       className="select-none"
@@ -96,7 +96,7 @@ export const TextHoverEffect = ({
         strokeWidth="0.5"
         stroke="url(#textGradient)"
         mask="url(#textMask)"
-        className="fill-transparent font-[helvetica] text-xl font-bold"
+        className="fill-transparent font-[helvetica] text-2xl sm:text-3xl font-bold"
         initial={{ strokeDasharray: 1000, strokeDashoffset: 1000 }}
         animate={{ strokeDashoffset: 0 }}
         transition={{ duration: 2, ease: "easeInOut" }}

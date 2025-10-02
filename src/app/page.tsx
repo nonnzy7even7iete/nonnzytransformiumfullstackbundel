@@ -23,12 +23,16 @@ export default function HomePage() {
       {/* Fond interactif */}
       <BackgroundRippleEffect rows={8} cols={20} cellSize={50} />
 
-      {/* Texte animé proche du top */}
-      <div className="absolute top-[7px] w-full flex justify-center z-20">
+      {/* Texte animé proche du top, responsive */}
+      <div className="absolute top-[7px] sm:top-[15px] w-full flex justify-center z-20">
         <TextHoverEffect
           text="Soyez informé de toutes les transactions"
           duration={0.5}
-          style={{ height: "40px", width: "auto" }} // compact
+          style={{
+            height: "50px",
+            width: "90%",
+            maxWidth: "600px",
+          }}
         />
       </div>
 
