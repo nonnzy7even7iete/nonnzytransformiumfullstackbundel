@@ -29,7 +29,7 @@ export default function HomePage() {
           text="Soyez informé de toutes les transactions"
           duration={0.5}
           style={{
-            height: "50px",
+            height: "100px",
             width: "90%",
             maxWidth: "600px",
           }}
