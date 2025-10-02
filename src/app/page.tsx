@@ -23,17 +23,17 @@ export default function HomePage() {
       {/* Fond interactif */}
       <BackgroundRippleEffect rows={8} cols={20} cellSize={50} />
 
-      {/* Texte animé futuriste */}
-      <div className="w-full flex justify-center absolute top-[7px] z-20">
+      {/* Texte animé proche du top */}
+      <div className="absolute top-[7px] w-full flex justify-center z-20">
         <TextHoverEffect
           text="Soyez informé de toutes les transactions"
           duration={0.5}
+          style={{ height: "40px", width: "auto" }} // compact
         />
       </div>
 
       {/* Card centrale */}
       <div className="relative z-10 w-[340px] p-14 bg-black/40 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl text-center mt-32">
-        {/* Logo / titre */}
         <h1 className="text-3xl font-extrabold bg-gradient-to-r from-green-700 to-blue-400 bg-clip-text text-transparent mb-3 drop-shadow-lg">
           Nonnzytrasformium
         </h1>
@@ -41,7 +41,6 @@ export default function HomePage() {
           Votre aventure commence ici ✨
         </p>
 
-        {/* Bouton Google */}
         <button
           onClick={() => signIn("google", { callbackUrl: "/dashboard" })}
           className="w-full py-3 flex items-center justify-center gap-2 
@@ -53,7 +52,6 @@ export default function HomePage() {
           Continuer avec Google
         </button>
 
-        {/* Texte secondaire */}
         <p className="text-white/50 text-xs mt-6 italic">
           Connexion sécurisée via Google requise pour accéder au Workflow.
         </p>

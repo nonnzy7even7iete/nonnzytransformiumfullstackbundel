@@ -1,38 +1,42 @@
 "use client";
 import React, { useRef, useEffect, useState } from "react";
-import { motion } from "framer-motion"; // bien vérifier que tu utilises framer-motion
+import { motion } from "framer-motion";
 
 export const TextHoverEffect = ({
   text,
   duration = 0.3,
+  style,
 }: {
   text: string;
   duration?: number;
+  style?: React.CSSProperties;
 }) => {
   const svgRef = useRef<SVGSVGElement>(null);
-  const [cursor, setCursor] = useState({ x: 0, y: 0 });
   const [maskPosition, setMaskPosition] = useState({ cx: "50%", cy: "50%" });
 
+  // Animation automatique du masque radial
   useEffect(() => {
-    if (svgRef.current) {
-      const svgRect = svgRef.current.getBoundingClientRect();
-      const cxPercentage = ((cursor.x - svgRect.left) / svgRect.width) * 100;
-      const cyPercentage = ((cursor.y - svgRect.top) / svgRect.height) * 100;
-      setMaskPosition({ cx: `${cxPercentage}%`, cy: `${cyPercentage}%` });
-    }
-  }, [cursor]);
+    let angle = 0;
+    const interval = setInterval(() => {
+      angle += 2;
+      const cx = 50 + 30 * Math.cos((angle * Math.PI) / 180);
+      const cy = 50 + 30 * Math.sin((angle * Math.PI) / 180);
+      setMaskPosition({ cx: `${cx}%`, cy: `${cy}%` });
+    }, 50);
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <svg
       ref={svgRef}
-      width="100%"
-      height="100%"
+      width={style?.width || "auto"}
+      height={style?.height || "40px"}
       viewBox="0 0 600 150"
       xmlns="http://www.w3.org/2000/svg"
       className="select-none"
     >
       <defs>
-        {/* Dégradé animé */}
+        {/* Dégradé animé continu */}
         <linearGradient id="textGradient" x1="0%" y1="0%" x2="100%" y2="0%">
           <stop offset="0%" stopColor="#eab308">
             <animate
@@ -65,7 +69,6 @@ export const TextHoverEffect = ({
           id="revealMask"
           gradientUnits="userSpaceOnUse"
           r="25%"
-          initial={{ cx: "50%", cy: "50%" }}
           animate={maskPosition}
           transition={{ duration, ease: "easeOut" }}
         >
