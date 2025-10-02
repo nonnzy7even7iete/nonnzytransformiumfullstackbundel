@@ -1,10 +1,10 @@
 "use client";
 import React, { useRef, useEffect, useState } from "react";
-import { motion } from "framer-motion";
+import { motion } from "framer-motion"; // bien vérifier que tu utilises framer-motion
 
 export const TextHoverEffect = ({
   text,
-  duration = 0.5,
+  duration = 0.3,
 }: {
   text: string;
   duration?: number;
@@ -13,17 +13,14 @@ export const TextHoverEffect = ({
   const [cursor, setCursor] = useState({ x: 0, y: 0 });
   const [maskPosition, setMaskPosition] = useState({ cx: "50%", cy: "50%" });
 
-  // Animation automatique indépendante du hover
   useEffect(() => {
-    let angle = 0;
-    const interval = setInterval(() => {
-      angle += 2;
-      const cx = 50 + 30 * Math.cos((angle * Math.PI) / 180);
-      const cy = 50 + 30 * Math.sin((angle * Math.PI) / 180);
-      setMaskPosition({ cx: `${cx}%`, cy: `${cy}%` });
-    }, 50);
-    return () => clearInterval(interval);
-  }, []);
+    if (svgRef.current) {
+      const svgRect = svgRef.current.getBoundingClientRect();
+      const cxPercentage = ((cursor.x - svgRect.left) / svgRect.width) * 100;
+      const cyPercentage = ((cursor.y - svgRect.top) / svgRect.height) * 100;
+      setMaskPosition({ cx: `${cxPercentage}%`, cy: `${cyPercentage}%` });
+    }
+  }, [cursor]);
 
   return (
     <svg
@@ -35,20 +32,42 @@ export const TextHoverEffect = ({
       className="select-none"
     >
       <defs>
-        {/* Gradient animé continu */}
+        {/* Dégradé animé */}
         <linearGradient id="textGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-          <stop offset="0%" stopColor="#eab308" />
-          <stop offset="50%" stopColor="#3b82f6" />
-          <stop offset="100%" stopColor="#8b5cf6" />
+          <stop offset="0%" stopColor="#eab308">
+            <animate
+              attributeName="offset"
+              values="0;1;0"
+              dur="4s"
+              repeatCount="indefinite"
+            />
+          </stop>
+          <stop offset="50%" stopColor="#3b82f6">
+            <animate
+              attributeName="offset"
+              values="0.5;1.5;0.5"
+              dur="4s"
+              repeatCount="indefinite"
+            />
+          </stop>
+          <stop offset="100%" stopColor="#8b5cf6">
+            <animate
+              attributeName="offset"
+              values="1;2;1"
+              dur="4s"
+              repeatCount="indefinite"
+            />
+          </stop>
         </linearGradient>
 
-        {/* Masque radial qui bouge automatiquement */}
+        {/* Masque radial animé automatiquement */}
         <motion.radialGradient
           id="revealMask"
           gradientUnits="userSpaceOnUse"
           r="25%"
+          initial={{ cx: "50%", cy: "50%" }}
           animate={maskPosition}
-          transition={{ duration, ease: "linear" }}
+          transition={{ duration, ease: "easeOut" }}
         >
           <stop offset="0%" stopColor="white" />
           <stop offset="100%" stopColor="black" />
@@ -65,7 +84,7 @@ export const TextHoverEffect = ({
         </mask>
       </defs>
 
-      {/* Texte animé plus petit */}
+      {/* Texte animé */}
       <motion.text
         x="50%"
         y="50%"
@@ -74,7 +93,7 @@ export const TextHoverEffect = ({
         strokeWidth="0.5"
         stroke="url(#textGradient)"
         mask="url(#textMask)"
-        className="fill-transparent font-[helvetica] text-3xl font-bold"
+        className="fill-transparent font-[helvetica] text-xl font-bold"
         initial={{ strokeDasharray: 1000, strokeDashoffset: 1000 }}
         animate={{ strokeDashoffset: 0 }}
         transition={{ duration: 2, ease: "easeInOut" }}
