@@ -19,8 +19,8 @@ export const TextHoverEffect = ({
     let angle = 0;
     const interval = setInterval(() => {
       angle += 2;
-      const cx = 50 + 30 * Math.cos((angle * Math.PI) / 180);
-      const cy = 50 + 30 * Math.sin((angle * Math.PI) / 180);
+      const cx = 50 + 35 * Math.cos((angle * Math.PI) / 180);
+      const cy = 50 + 35 * Math.sin((angle * Math.PI) / 180);
       setMaskPosition({ cx: `${cx}%`, cy: `${cy}%` });
     }, 50);
     return () => clearInterval(interval);
@@ -29,8 +29,8 @@ export const TextHoverEffect = ({
   return (
     <svg
       ref={svgRef}
-      width={style?.width || "auto"}
-      height={style?.height || "50px"}
+      width={style?.width || "90%"}
+      height={style?.height || "70px"}
       viewBox="0 0 600 150"
       xmlns="http://www.w3.org/2000/svg"
       className="select-none"
@@ -64,7 +64,7 @@ export const TextHoverEffect = ({
           </stop>
         </linearGradient>
 
-        {/* Masque radial animé automatiquement */}
+        {/* Masque radial animé */}
         <motion.radialGradient
           id="revealMask"
           gradientUnits="userSpaceOnUse"
@@ -96,7 +96,7 @@ export const TextHoverEffect = ({
         strokeWidth="0.5"
         stroke="url(#textGradient)"
         mask="url(#textMask)"
-        className="fill-transparent font-[helvetica] text-2xl sm:text-3xl font-bold"
+        className="fill-transparent font-[helvetica] text-4xl sm:text-5xl font-bold"
         initial={{ strokeDasharray: 1000, strokeDashoffset: 1000 }}
         animate={{ strokeDashoffset: 0 }}
         transition={{ duration: 2, ease: "easeInOut" }}
