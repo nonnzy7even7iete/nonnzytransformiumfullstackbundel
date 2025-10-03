@@ -3,6 +3,7 @@
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
+import Loader from "@/components/Loader"; // ✅ import du composant Loader
 import Navbar from "@/components/Navbar";
 import Sidebar from "@/components/Sidebar";
 
@@ -18,7 +19,7 @@ export default function DashboardLayout({
     if (status === "unauthenticated") router.replace("/");
   }, [status, router]);
 
-  if (status === "loading" || !session) return <p>Chargement...</p>;
+  if (status === "loading" || !session) return <Loader />;
 
   return (
     <div className="flex flex-col h-screen bg-black/90 text-white">

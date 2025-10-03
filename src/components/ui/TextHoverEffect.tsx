@@ -47,7 +47,7 @@ export const TextHoverEffect = ({
               repeatCount="indefinite"
             />
           </stop>
-          <stop offset="50%" stopColor="#3b82f6">
+          <stop offset="50%" stopColor="#6591d8ff">
             <animate
               attributeName="offset"
               values="0.5;1.5;0.5"
