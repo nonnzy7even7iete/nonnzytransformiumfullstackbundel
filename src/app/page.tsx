@@ -26,7 +26,7 @@ export default function HomePage() {
       {/* Texte animé XXL près du top */}
       <div className="absolute top-[10px] sm:top-[20px] w-full flex justify-center z-20">
         <TextHoverEffect
-          text="Soyez informé de toutes les transactions"
+          text="Nonnzytransformium"
           duration={0.6}
           style={{
             height: "160px", // grand rendu
