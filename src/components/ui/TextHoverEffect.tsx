@@ -14,7 +14,7 @@ export const TextHoverEffect = ({
   const svgRef = useRef<SVGSVGElement>(null);
   const [maskPosition, setMaskPosition] = useState({ cx: "50%", cy: "50%" });
 
-  // Animation automatique du masque radial
+  // Animation auto du masque radial (tourne en cercle)
   useEffect(() => {
     let angle = 0;
     const interval = setInterval(() => {
@@ -29,14 +29,14 @@ export const TextHoverEffect = ({
   return (
     <svg
       ref={svgRef}
-      width={style?.width || "90%"}
-      height={style?.height || "70px"}
-      viewBox="0 0 600 150"
+      width={style?.width || "95%"}
+      height={style?.height || "160px"} // Hauteur triplée
+      viewBox="0 0 1200 300" // plus large pour grosse taille
       xmlns="http://www.w3.org/2000/svg"
       className="select-none"
     >
       <defs>
-        {/* Dégradé animé continu */}
+        {/* Dégradé coloré en mouvement */}
         <linearGradient id="textGradient" x1="0%" y1="0%" x2="100%" y2="0%">
           <stop offset="0%" stopColor="#eab308">
             <animate
@@ -68,7 +68,7 @@ export const TextHoverEffect = ({
         <motion.radialGradient
           id="revealMask"
           gradientUnits="userSpaceOnUse"
-          r="25%"
+          r="35%" // plus grand pour couvrir plus de texte
           animate={maskPosition}
           transition={{ duration, ease: "easeOut" }}
         >
@@ -87,19 +87,19 @@ export const TextHoverEffect = ({
         </mask>
       </defs>
 
-      {/* Texte animé */}
+      {/* Texte central géant */}
       <motion.text
         x="50%"
         y="50%"
         textAnchor="middle"
         dominantBaseline="middle"
-        strokeWidth="0.5"
+        strokeWidth="1.2"
         stroke="url(#textGradient)"
         mask="url(#textMask)"
-        className="fill-transparent font-[helvetica] text-4xl sm:text-5xl font-bold"
-        initial={{ strokeDasharray: 1000, strokeDashoffset: 1000 }}
+        className="fill-transparent font-[helvetica] text-6xl sm:text-7xl md:text-8xl font-extrabold"
+        initial={{ strokeDasharray: 2000, strokeDashoffset: 2000 }}
         animate={{ strokeDashoffset: 0 }}
-        transition={{ duration: 2, ease: "easeInOut" }}
+        transition={{ duration: 2.5, ease: "easeInOut" }}
       >
         {text}
       </motion.text>

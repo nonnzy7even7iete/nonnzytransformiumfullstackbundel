@@ -20,28 +20,28 @@ export default function HomePage() {
 
   return (
     <main className="relative flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-zinc-700 via-black to-zinc-900 overflow-hidden">
-      {/* Fond interactif */}
+      {/* Fond dynamique */}
       <BackgroundRippleEffect rows={8} cols={20} cellSize={50} />
 
-      {/* Texte animé impactant proche du top */}
-      <div className="absolute top-[7px] sm:top-[15px] w-full flex justify-center z-20">
+      {/* Texte animé XXL près du top */}
+      <div className="absolute top-[10px] sm:top-[20px] w-full flex justify-center z-20">
         <TextHoverEffect
           text="Soyez informé de toutes les transactions"
-          duration={0.5}
+          duration={0.6}
           style={{
-            height: "70px", // plus visible
-            width: "90%",
-            maxWidth: "600px",
+            height: "160px", // grand rendu
+            width: "95%",
+            maxWidth: "1200px",
           }}
         />
       </div>
 
       {/* Card centrale */}
-      <div className="relative z-10 w-[340px] p-14 bg-black/40 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl text-center mt-32">
-        <h1 className="text-3xl font-extrabold bg-gradient-to-r from-green-700 to-blue-400 bg-clip-text text-transparent mb-3 drop-shadow-lg">
+      <div className="relative z-10 w-[360px] p-14 bg-black/40 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl text-center mt-40">
+        <h1 className="text-4xl font-extrabold bg-gradient-to-r from-green-700 to-blue-400 bg-clip-text text-transparent mb-3 drop-shadow-lg">
           Nonnzytrasformium
         </h1>
-        <p className="text-white/70 text-sm mb-8">
+        <p className="text-white/70 text-base mb-8">
           Votre aventure commence ici ✨
         </p>
 
