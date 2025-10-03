@@ -39,7 +39,7 @@ export const TextHoverEffect = ({
       <defs>
         {/* Dégradé animé */}
         <linearGradient id="textGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-          <stop offset="0%" stopColor="#eab308">
+          <stop offset="0%" stopColor="#099e16ff">
             <animate
               attributeName="offset"
               values="0;1;0"
