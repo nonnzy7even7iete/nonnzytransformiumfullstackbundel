@@ -14,7 +14,7 @@ export const TextHoverEffect = ({
   const svgRef = useRef<SVGSVGElement>(null);
   const [maskPosition, setMaskPosition] = useState({ cx: "50%", cy: "50%" });
 
-  // Animation auto du masque radial (tourne en cercle)
+  // Animation auto (masque radial qui tourne)
   useEffect(() => {
     let angle = 0;
     const interval = setInterval(() => {
@@ -29,14 +29,15 @@ export const TextHoverEffect = ({
   return (
     <svg
       ref={svgRef}
-      width={style?.width || "95%"}
-      height={style?.height || "160px"} // Hauteur triplée
-      viewBox="0 0 1200 300" // plus large pour grosse taille
+      width={style?.width || "100%"}
+      height={style?.height || "200px"} // plus haut pour respirer
+      viewBox="0 0 1800 400" // <-- élargi pour caser tout le texte
+      preserveAspectRatio="xMidYMid meet" // texte centré et non tronqué
       xmlns="http://www.w3.org/2000/svg"
       className="select-none"
     >
       <defs>
-        {/* Dégradé coloré en mouvement */}
+        {/* Dégradé animé */}
         <linearGradient id="textGradient" x1="0%" y1="0%" x2="100%" y2="0%">
           <stop offset="0%" stopColor="#eab308">
             <animate
@@ -68,7 +69,7 @@ export const TextHoverEffect = ({
         <motion.radialGradient
           id="revealMask"
           gradientUnits="userSpaceOnUse"
-          r="35%" // plus grand pour couvrir plus de texte
+          r="40%"
           animate={maskPosition}
           transition={{ duration, ease: "easeOut" }}
         >
@@ -77,29 +78,23 @@ export const TextHoverEffect = ({
         </motion.radialGradient>
 
         <mask id="textMask">
-          <rect
-            x="0"
-            y="0"
-            width="100%"
-            height="100%"
-            fill="url(#revealMask)"
-          />
+          <rect width="100%" height="100%" fill="url(#revealMask)" />
         </mask>
       </defs>
 
-      {/* Texte central géant */}
+      {/* Texte principal */}
       <motion.text
         x="50%"
         y="50%"
         textAnchor="middle"
         dominantBaseline="middle"
-        strokeWidth="1.2"
+        strokeWidth="1.5"
         stroke="url(#textGradient)"
         mask="url(#textMask)"
-        className="fill-transparent font-[helvetica] text-6xl sm:text-7xl md:text-8xl font-extrabold"
-        initial={{ strokeDasharray: 2000, strokeDashoffset: 2000 }}
+        className="fill-transparent font-[helvetica] text-7xl sm:text-8xl md:text-9xl font-extrabold"
+        initial={{ strokeDasharray: 3000, strokeDashoffset: 3000 }}
         animate={{ strokeDashoffset: 0 }}
-        transition={{ duration: 2.5, ease: "easeInOut" }}
+        transition={{ duration: 3, ease: "easeInOut" }}
       >
         {text}
       </motion.text>
