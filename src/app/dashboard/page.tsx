@@ -59,8 +59,8 @@ export default function DashboardPage() {
       <div className="flex flex-1">
         <Sidebar />
 
-        <main className="flex-1 p-8 overflow-auto ml-0 md:ml-20 mb-16 md:mb-0">
-          <header className="mb-8">
+        <main className="flex-1 pt-28 px-3 overflow-auto ml-0 md:ml-20 mb-16 md:mb-0">
+          <header className="mb-8 text-center">
             <h1 className="text-4xl font-bold text-green-400/80">
               Awards Côte d’Ivoire 2026
             </h1>
@@ -71,11 +71,11 @@ export default function DashboardPage() {
 
           {/* Stats */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-            <div className="p-4 bg-white/5 rounded-xl border border-white/10">
+            <div className="p-4 bg-white/5 rounded-xl border border-white/10 text-center">
               <h2 className="text-xl font-bold">{total}</h2>
               <p className="text-sm text-gray-400">Total Awards</p>
             </div>
-            <div className="p-4 bg-white/5 rounded-xl border border-white/10">
+            <div className="p-4 bg-white/5 rounded-xl border border-white/10 text-center">
               <h2 className="text-xl font-bold text-green-400">{valides}</h2>
               <p className="text-sm text-gray-400">Validés</p>
             </div>
@@ -87,7 +87,9 @@ export default function DashboardPage() {
               <div
                 key={award.id}
                 onClick={() => setSelected(award)}
-                className="p-6 rounded-2xl bg-white/5 backdrop-blur-lg border border-white/10 hover:border-green-400/40 hover:scale-105 transition-all cursor-pointer"
+                className="p-6 rounded-2xl bg-white/5 backdrop-blur-lg border border-white/10 
+                           hover:border-green-400/40 hover:scale-105 transition-all cursor-pointer 
+                           flex flex-col items-center justify-center text-center h-40"
               >
                 <h2 className="text-lg font-semibold mb-1 text-white/90">
                   {award.title}
@@ -113,7 +115,7 @@ export default function DashboardPage() {
       {/* Modal */}
       {selected && (
         <div className="fixed inset-0 bg-black/70 flex items-center justify-center p-4 z-50">
-          <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-6 max-w-md w-full border border-white/20">
+          <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-6 max-w-md w-full border border-white/20 text-center">
             <h2 className="text-2xl font-bold text-green-400 mb-2">
               {selected.title}
             </h2>
@@ -123,7 +125,8 @@ export default function DashboardPage() {
             </p>
             <button
               onClick={() => setSelected(null)}
-              className="px-4 py-2 bg-green-500/20 text-green-300 rounded-xl hover:bg-green-500/30 transition"
+              className="px-6 py-2 bg-green-500/20 text-green-300 rounded-xl 
+                         hover:bg-green-500/30 transition font-semibold"
             >
               Fermer
             </button>
