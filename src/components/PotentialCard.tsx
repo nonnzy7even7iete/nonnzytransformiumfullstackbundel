@@ -68,7 +68,7 @@ export default function PotentialCard({
           transition-all duration-300
         "
       >
-        Comprendre davantage <ArrowRight size={18} />
+        Comprendre ce sous entendue <ArrowRight size={18} />
       </button>
 
       {/* Animations internes */}
