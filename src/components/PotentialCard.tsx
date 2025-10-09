@@ -1,6 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import ShinyTitle from "./ShinyTitle"; // Assure-toi que ce composant existe
 
 interface PotentialCardProps {
   title?: string;
@@ -29,10 +30,13 @@ export default function PotentialCard({
         cursor-pointer
       "
     >
-      {/* Titre */}
-      <h2 className="text-2xl font-bold text-green-400 mb-4 tracking-wide">
-        {title}
-      </h2>
+      {/* Titre en shiny gradient */}
+      <ShinyTitle
+        text={title}
+        gradientFrom="green-700"
+        gradientTo="blue-400"
+        className="mb-4 tracking-wide"
+      />
 
       {/* Description */}
       <p className="text-gray-300 text-sm md:text-base mb-6 leading-relaxed">
