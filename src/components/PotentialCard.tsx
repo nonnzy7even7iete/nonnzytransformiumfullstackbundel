@@ -16,10 +16,21 @@ export default function PotentialCard({
   const router = useRouter();
 
   return (
-    <div className="max-w-md w-full mx-auto bg-gray-800 text-white rounded-xl p-6 flex flex-col items-center text-center shadow-md">
+    <div
+      className="
+        relative w-full max-w-md mx-auto
+        bg-white/10 backdrop-blur-md
+        border border-white/20
+        rounded-2xl p-8
+        flex flex-col items-center text-center
+        shadow-lg shadow-black/30
+        hover:scale-[1.03] hover:shadow-green-400/20
+        transition-all duration-300
+      "
+    >
       {/* Titre avec gradient */}
       <h2
-        className="text-xl font-bold mb-4 text-transparent bg-clip-text"
+        className="text-2xl md:text-3xl font-bold mb-4 text-transparent bg-clip-text"
         style={{
           backgroundImage: "linear-gradient(90deg, #15803d, #60a5fa)",
         }}
@@ -28,12 +39,16 @@ export default function PotentialCard({
       </h2>
 
       {/* Description */}
-      <p className="text-gray-300 mb-6">{description}</p>
+      <p className="text-gray-200 mb-6">{description}</p>
 
       {/* Bouton de redirection */}
       <button
         onClick={() => router.push(redirectPath)}
-        className="bg-white text-black font-semibold px-6 py-3 rounded-lg hover:bg-gray-100 transition-colors"
+        className="
+          bg-white text-black font-semibold px-6 py-3 rounded-lg
+          shadow-md shadow-black/30
+          hover:bg-gray-100 transition-colors
+        "
       >
         Comprendre davantage
       </button>
