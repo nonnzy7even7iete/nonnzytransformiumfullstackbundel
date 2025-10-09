@@ -40,7 +40,7 @@ export default function UserMenu() {
       {/* Dropdown */}
       {open && (
         <div
-          className="absolute right-0 mt-3 w-60 min-h-[22rem] rounded-xl border border-white/20
+          className="absolute right-0 mt-3 w-64 min-h-[22rem] rounded-xl border border-white/20
                      bg-black/90 backdrop-blur-lg shadow-2xl overflow-hidden flex flex-col z-50"
         >
           {/* Header */}
@@ -54,7 +54,7 @@ export default function UserMenu() {
           </div>
 
           {/* Actions */}
-          <div className="flex flex-col gap-3 p-4 flex-1 justify-center">
+          <div className="flex flex-col gap-3 p-5 flex-1 justify-center">
             {[
               {
                 label: "Mon profil",
@@ -82,11 +82,12 @@ export default function UserMenu() {
                 } transition-all duration-200`}
               >
                 <span
-                  className={`flex items-center gap-2 rounded-[7px] px-[7px] py-[7px] ${
+                  className={`flex items-center gap-3 rounded-[9px] px-4 py-3 ${
                     item.hover ?? "hover:bg-white/10"
-                  } hover:-translate-y-[7px] transition-all duration-200`}
+                  } hover:-translate-y-[2px] transition-all duration-200`}
                 >
-                  {item.icon} <span>{item.label}</span>
+                  {item.icon}
+                  <span className="whitespace-nowrap">{item.label}</span>
                 </span>
               </button>
             ))}
