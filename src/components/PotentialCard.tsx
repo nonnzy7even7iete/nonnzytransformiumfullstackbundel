@@ -11,7 +11,7 @@ interface PotentialCardProps {
 
 export default function PotentialCard({
   title = "Potentiel inexploité",
-  description = "Découvrez comment booster votre application et exploiter tout votre potentiel.",
+  description = "Découvrez comment exploiter pleinement vos ressources et développer votre application.",
   redirectPath,
 }: PotentialCardProps) {
   const router = useRouter();
@@ -19,23 +19,22 @@ export default function PotentialCard({
   return (
     <div
       className="
-        relative
-        max-w-sm w-full mx-auto
-        bg-gradient-to-br from-black/70 to-black/40
-        backdrop-blur-xl border border-white/10
-        rounded-2xl p-8 flex flex-col items-center text-center
-        shadow-lg shadow-black/40
-        hover:shadow-green-400/30 hover:scale-[1.03]
+        relative w-full max-w-sm mx-auto
+        bg-black/70 backdrop-blur-xl border border-white/10
+        rounded-2xl p-8
+        flex flex-col items-center text-center
+        shadow-lg shadow-black/50
+        hover:scale-[1.02] hover:shadow-green-400/20
         transition-all duration-300
       "
     >
-      {/* Badge Titre flottant */}
+      {/* --- BADGE FLOTTANT (50% intérieur / 50% extérieur) --- */}
       <div
         className="
           absolute -top-8 left-1/2 transform -translate-x-1/2
-          px-6 py-2 rounded-xl
-          border border-white/20 bg-black/90
-          shadow-md shadow-green-400/10
+          px-8 py-2 rounded-xl
+          bg-black/90 border border-white/20
+          shadow-md shadow-green-400/20
         "
       >
         <h2
@@ -43,19 +42,19 @@ export default function PotentialCard({
             text-2xl md:text-3xl font-extrabold
             text-transparent bg-clip-text
             bg-gradient-to-r from-green-500 via-blue-400 to-green-500
-            animate-gradient-shine
+            bg-[length:200%_auto] animate-gradient-flow
           "
         >
           {title}
         </h2>
       </div>
 
-      {/* Description */}
+      {/* --- DESCRIPTION --- */}
       <p className="mt-10 text-gray-300 text-sm md:text-base mb-8 leading-relaxed">
         {description}
       </p>
 
-      {/* Bouton blanc stylé */}
+      {/* --- BOUTON DE REDIRECTION --- */}
       <button
         onClick={() => router.push(redirectPath)}
         className="
@@ -63,17 +62,16 @@ export default function PotentialCard({
           bg-white text-black font-semibold
           px-6 py-3 rounded-lg
           shadow-md shadow-black/30
-          hover:bg-gradient-to-r hover:from-green-400 hover:to-blue-400
-          hover:text-white hover:shadow-green-400/40
+          hover:shadow-green-400/40 hover:scale-[1.03]
           transition-all duration-300
         "
       >
-        Comprendre ce sous entendue <ArrowRight size={18} />
+        Comprendre davantage <ArrowRight size={18} />
       </button>
 
-      {/* Animations internes */}
+      {/* --- ANIMATIONS INTERNES --- */}
       <style jsx>{`
-        @keyframes gradientMove {
+        @keyframes gradientFlow {
           0% {
             background-position: 0% 50%;
           }
@@ -84,10 +82,8 @@ export default function PotentialCard({
             background-position: 0% 50%;
           }
         }
-
-        .animate-gradient-shine {
-          background-size: 200% auto;
-          animation: gradientMove 4s ease infinite;
+        .animate-gradient-flow {
+          animation: gradientFlow 4s ease infinite;
         }
       `}</style>
     </div>
