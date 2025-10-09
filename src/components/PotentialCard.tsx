@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 interface PotentialCardProps {
   title?: string;
   description?: string;
-  redirectPath: string; // page cible pour la demande de financement
+  redirectPath: string;
 }
 
 export default function PotentialCard({
@@ -27,55 +27,9 @@ export default function PotentialCard({
         transition-all duration-300 cursor-pointer
       "
     >
-      {/* Titre shiny gradient */}
-      <h2 className="relative text-3xl md:text-4xl font-extrabold mb-4 tracking-wide bg-clip-text text-transparent">
+      {/* Titre shiny gradient corrigé */}
+      <h2 className="text-3xl md:text-4xl font-extrabold mb-4 tracking-wide text-transparent bg-clip-text animate-shine-gradient">
         {title}
-        <span className="shine-overlay"></span>
-
-        <style jsx>{`
-          h2 {
-            background-image: linear-gradient(
-              to right,
-              #047857,
-              #60a5fa
-            ); /* green-700 -> blue-400 */
-            background-size: 200% auto;
-            animation: shine 3s linear infinite;
-          }
-
-          @keyframes shine {
-            0% {
-              background-position: -200% 0;
-            }
-            100% {
-              background-position: 200% 0;
-            }
-          }
-
-          .shine-overlay {
-            position: absolute;
-            inset: 0;
-            background: rgba(255, 255, 255, 0.3);
-            opacity: 0;
-            pointer-events: none;
-            animation: shine-overlay 2.5s ease-in-out infinite;
-          }
-
-          @keyframes shine-overlay {
-            0% {
-              opacity: 0;
-              transform: translateX(-100%);
-            }
-            50% {
-              opacity: 0.5;
-              transform: translateX(50%);
-            }
-            100% {
-              opacity: 0;
-              transform: translateX(100%);
-            }
-          }
-        `}</style>
       </h2>
 
       {/* Description */}
@@ -97,6 +51,24 @@ export default function PotentialCard({
       >
         Comprendre d’avantage
       </button>
+
+      {/* CSS intégré */}
+      <style jsx>{`
+        .animate-shine-gradient {
+          background-image: linear-gradient(90deg, #047857, #60a5fa, #047857);
+          background-size: 200% auto;
+          animation: shine 3s linear infinite;
+        }
+
+        @keyframes shine {
+          0% {
+            background-position: -200% 0;
+          }
+          100% {
+            background-position: 200% 0;
+          }
+        }
+      `}</style>
     </div>
   );
 }
