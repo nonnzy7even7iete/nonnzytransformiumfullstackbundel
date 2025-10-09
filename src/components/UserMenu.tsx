@@ -81,12 +81,33 @@ export default function UserMenu() {
                   item.color ?? "text-gray-200"
                 } transition-all duration-200`}
               >
+                {/* 
+                  ⬇️  SECTION DE CONTRÔLE DE L’EFFET HOVER
+                  
+                  Tu peux modifier ici :
+                  - La largeur de la zone hover
+                  - Le padding interne (marge entre le texte et les bords du fond)
+                  - Le rayon d’arrondi
+                  - La couleur du fond au hover
+                  - Les transitions / animations
+                */}
                 <span
-                  className={`flex items-center gap-3 rounded-[10px] px-5 py-3 ${
-                    item.hover ?? "hover:bg-white/10"
-                  } hover:-translate-y-[2px] transition-all duration-200`}
+                  className={`
+                    flex items-center gap-3 
+                    rounded-[10px]            /* ← contrôle du rayon des coins */
+                    px-5 py-3                 /* ← padding interne (ajuste la taille globale du fond) */
+                    ${
+                      item.hover ?? "hover:bg-white/10"
+                    }  /* ← couleur de fond au survol */
+                    hover:-translate-y-[2px]  /* ← effet de “lift” subtil au hover */
+                    transition-all duratirgba(170, 94, 94, 0.08)
+                  `}
+                  style={{
+                    width: "70%",
+                    backgroundColor: "rgba(255,255,255,0.08)", // ← couleur de fond par défaut (si tu veux un effet même sans hover)
+                  }}
                 >
-                  {/* Sous-wrapper pour créer un vrai coussin autour du texte */}
+                  {/* Sous-wrapper interne pour créer une marge de respiration */}
                   <span className="flex items-center gap-3 px-2 py-1">
                     {item.icon}
                     <span className="whitespace-nowrap">{item.label}</span>
