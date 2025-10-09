@@ -27,7 +27,7 @@ export default function PotentialCard({
         transition-all duration-300
         hover:scale-[1.03] hover:shadow-green-400/20
       "
-      style={{ minHeight: "350px" }} // optionnel pour mieux centrer verticalement
+      style={{ minHeight: "350px" }}
     >
       {/* Titre avec gradient */}
       <h2
@@ -42,17 +42,17 @@ export default function PotentialCard({
       {/* Description */}
       <p className="text-gray-200 mb-8">{description}</p>
 
-      {/* Bouton glassmorphique */}
+      {/* Bouton glassmorphique stylé */}
       <button
         onClick={() => router.push(redirectPath)}
         className="
-          px-6 py-3 rounded-lg
+          relative px-6 py-3 rounded-lg
           bg-white/20 backdrop-blur-sm
           text-white font-semibold
-          border border-white/20
-          shadow-md shadow-black/30
+          border border-white/30
+          shadow-md shadow-black/40
           hover:bg-white/30 hover:text-black
-          hover:shadow-green-400/40
+          hover:shadow-lg hover:shadow-green-400/50
           transition-all duration-300
         "
       >
