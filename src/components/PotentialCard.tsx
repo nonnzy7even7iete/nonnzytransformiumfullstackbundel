@@ -42,11 +42,11 @@ export default function PotentialCard({
       {/* Description */}
       <p className="text-gray-200 mb-8">{description}</p>
 
-      {/* Bouton glassmorphique stylé */}
+      {/* Bouton glassmorphique intégré */}
       <button
         onClick={() => router.push(redirectPath)}
         className="
-          relative px-6 py-3 rounded-lg
+          px-6 py-3 rounded-lg
           bg-white/20 backdrop-blur-sm
           text-white font-semibold
           border border-white/30
