@@ -18,16 +18,16 @@ export default function PotentialCard({
   return (
     <div
       className="
-        relative w-full max-w-md mx-auto
-        bg-white/10 backdrop-blur-md
-        border border-white/20
-        rounded-2xl p-8
-        flex flex-col items-center justify-center text-center
-        shadow-lg shadow-black/30
-        transition-all duration-300
-        hover:scale-[1.03] hover:shadow-green-400/20
-      "
-      style={{ minHeight: "250px" }}
+                     relative w-full max-w-md mx-auto
+                     bg-white/10 backdrop-blur-md
+                     border border-white/20
+                     rounded-2xl p-10
+                     flex flex-col items-center justify-center text-center
+                     shadow-lg shadow-black/30
+                     transition-all duration-300
+                     hover:scale-[1.03] hover:shadow-green-400/20
+              "
+      style={{ minHeight: "350px" }}
     >
       {/* Titre avec gradient */}
       <h2
@@ -40,21 +40,23 @@ export default function PotentialCard({
       </h2>
 
       {/* Description */}
-      <p className="text-gray-200 mb-8">{description}</p>
+      <p className="text-gray-200 mb-8 px-4">{description}</p>
 
-      {/* Bouton glassmorphique intégré */}
+      {/* Bouton glassmorphique */}
       <button
         onClick={() => router.push(redirectPath)}
         className="
-          px-6 py-3 rounded-lg
-          bg-white/20 backdrop-blur-sm
-          text-white font-semibold
-          border border-white/30
-          shadow-md shadow-black/40
-          hover:bg-white/30 hover:text-black
-          hover:shadow-lg hover:shadow-green-400/50
-          transition-all duration-300
-        "
+              px-8 py-4 rounded-xl
+              bg-white/10 backdrop-blur-md
+              text-white font-semibold
+              border border-white/20
+              shadow-[0_8px_15px_rgba(0,0,0,0.2),inset_0_2px_4px_rgba(255,255,255,0.2)]
+              hover:shadow-[0_12px_20px_rgba(0,0,0,0.3),inset_0_2px_6px_rgba(255,255,255,0.25)]
+              hover:bg-white/20
+              hover:translate-y-[-2px]
+              transition-all duration-300
+              focus:outline-none focus:ring-2 focus:ring-green-400
+              "
       >
         Comprendre davantage
       </button>
