@@ -1,20 +1,30 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { ArrowRight } from "lucide-react";
 
 interface PotentialCardProps {
-  title?: string;
-  description?: string;
+  steps: { title: string; description: string }[];
   redirectPath: string;
 }
 
 export default function PotentialCard({
-  title = "Potentiel inexploité",
-  description = "Découvrez comment exploiter pleinement vos ressources et développer votre application.",
+  steps,
   redirectPath,
 }: PotentialCardProps) {
   const router = useRouter();
+  const [stepIndex, setStepIndex] = useState(0);
+
+  const handleClick = () => {
+    if (stepIndex < steps.length - 1) {
+      setStepIndex(stepIndex + 1); // passe à l'étape suivante
+    } else {
+      router.push(redirectPath); // redirection finale
+    }
+  };
+
+  const { title, description } = steps[stepIndex];
 
   return (
     <div
@@ -29,7 +39,6 @@ export default function PotentialCard({
         hover:scale-[1.03] hover:shadow-green-400/20
       "
     >
-      {/* --- BOX GLASSMORPHIQUE FLOTTANTE POUR LE TITRE --- */}
       <div
         className="
           absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2
@@ -48,14 +57,12 @@ export default function PotentialCard({
         </h2>
       </div>
 
-      {/* --- DESCRIPTION --- */}
       <p className="text-gray-300 text-sm md:text-base mb-8 leading-relaxed">
         {description}
       </p>
 
-      {/* --- BOUTON AVEC ICÔNE --- */}
       <button
-        onClick={() => router.push(redirectPath)}
+        onClick={handleClick}
         className="
           flex items-center justify-center gap-2
           bg-white text-black font-semibold
@@ -69,7 +76,6 @@ export default function PotentialCard({
         Comprendre davantage <ArrowRight size={18} />
       </button>
 
-      {/* --- CSS ANIMATION GRADIENT SHINE --- */}
       <style jsx>{`
         .animate-shine {
           background-image: linear-gradient(90deg, #15803d, #60a5fa, #15803d);

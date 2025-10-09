@@ -22,6 +22,22 @@ export default function DashboardPage() {
   if (status === "loading") return <Loader />; // affichage loader
   if (!session) return null;
 
+  // --- Définition du flux multi-étapes ---
+  const steps = [
+    {
+      title: "Engagement sincère",
+      description: "Vous avancez avec clarté et conviction.",
+    },
+    {
+      title: "Engagement hésitant",
+      description: "Prenez le temps de réfléchir à votre choix.",
+    },
+    {
+      title: "Engagement audacieux",
+      description: "Préparez-vous à des surprises excitantes.",
+    },
+  ];
+
   return (
     <div className="flex flex-col h-screen bg-black text-white font-sans relative overflow-hidden">
       <Navbar />
@@ -43,8 +59,7 @@ export default function DashboardPage() {
           {/* Carte principale */}
           <div className="relative z-10">
             <PotentialCard
-              title="Potentiel inexploité"
-              description="Je souhaite obtenir un financement pour l’achat de matériel et développer l’intérêt de mon application."
+              steps={steps}
               redirectPath="/dashboard/financement"
             />
           </div>
