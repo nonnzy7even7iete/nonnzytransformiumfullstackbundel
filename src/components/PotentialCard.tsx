@@ -46,8 +46,8 @@ export default function PotentialCard({
       <button
         onClick={() => router.push(redirectPath)}
         className="
-          relative px-8 py-4 rounded-xl
-          bg-white/20 backdrop-blur-md
+          relative  px-8 py-4 rounded-xl
+          bg-white backdrop-blur-md
           text-transparent font-bold
           bg-clip-text
           bg-gradient-to-r from-blue-700 to-blue-400
