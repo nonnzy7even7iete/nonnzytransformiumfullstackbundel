@@ -88,7 +88,7 @@ export default function UserMenu() {
                   }`}
                   style={{
                     width: "70%", // largeur du hover = 70% du menu
-                    padding: "12px 0", // padding vertical pour centrer le texte
+                    padding: "7px 0", // padding vertical pour centrer le texte
                   }}
                 >
                   {/* Wrapper interne pour centrer le texte + icône */}
