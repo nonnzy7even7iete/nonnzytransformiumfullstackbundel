@@ -84,7 +84,7 @@ export default function UserMenu() {
                 <span
                   className={`flex items-center gap-2 rounded-[7px] px-[7px] py-[7px] ${
                     item.hover ?? "hover:bg-white/10"
-                  } hover:-translate-y-[2px] transition-all duration-200`}
+                  } hover:-translate-y-[7px] transition-all duration-200`}
                 >
                   {item.icon} <span>{item.label}</span>
                 </span>
