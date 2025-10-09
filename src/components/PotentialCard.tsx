@@ -27,7 +27,7 @@ export default function PotentialCard({
         transition-all duration-300
         hover:scale-[1.03] hover:shadow-green-400/20
       "
-      style={{ minHeight: "350px" }}
+      style={{ minHeight: "270px" }}
     >
       {/* Titre avec gradient */}
       <h2
@@ -57,7 +57,7 @@ export default function PotentialCard({
           transition-all duration-300
         "
       >
-        Comprendre davantage
+        Comprendre d avantage
         <span className="absolute inset-0 rounded-xl bg-gradient-to-b from-white/20 to-transparent opacity-30 pointer-events-none"></span>
       </button>
     </div>
