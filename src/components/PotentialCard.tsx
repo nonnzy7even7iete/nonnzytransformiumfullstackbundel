@@ -20,30 +20,35 @@ export default function PotentialCard({
     <div
       className="
         relative w-full max-w-sm mx-auto
-        bg-black/70 backdrop-blur-xl border border-white/10
+        bg-black/80 backdrop-blur-xl border border-white/10
         rounded-2xl p-8
         flex flex-col items-center text-center
-        shadow-lg shadow-black/50
-        hover:scale-[1.02] hover:shadow-green-400/20
+        shadow-lg shadow-black/40
+        hover:scale-[1.03] hover:shadow-green-400/20
         transition-all duration-300
       "
     >
-      {/* --- BADGE FLOTTANT (50% intérieur / 50% extérieur) --- */}
+      {/* --- TITRE DÉPASSANT À 50 % --- */}
       <div
         className="
-          absolute -top-8 left-1/2 transform -translate-x-1/2
+          absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2
           px-8 py-2 rounded-xl
-          bg-black/90 border border-white/20
-          shadow-md shadow-green-400/20
+          bg-gradient-to-r from-green-700 to-blue-400
+          shadow-lg shadow-black/40
+          border border-white/20
         "
       >
         <h2
           className="
-            text-2xl md:text-3xl font-extrabold
-            text-transparent bg-clip-text
-            bg-gradient-to-r from-green-500 via-blue-400 to-green-500
-            bg-[length:200%_auto] animate-gradient-flow
+            text-2xl md:text-3xl font-extrabold text-transparent bg-clip-text
+            text-white drop-shadow-lg
           "
+          style={{
+            backgroundImage: "linear-gradient(90deg, #15803d, #60a5fa)",
+            WebkitBackgroundClip: "text",
+            backgroundClip: "text",
+            color: "transparent",
+          }}
         >
           {title}
         </h2>
@@ -54,7 +59,7 @@ export default function PotentialCard({
         {description}
       </p>
 
-      {/* --- BOUTON DE REDIRECTION --- */}
+      {/* --- BOUTON --- */}
       <button
         onClick={() => router.push(redirectPath)}
         className="
@@ -62,30 +67,13 @@ export default function PotentialCard({
           bg-white text-black font-semibold
           px-6 py-3 rounded-lg
           shadow-md shadow-black/30
-          hover:shadow-green-400/40 hover:scale-[1.03]
+          hover:bg-gradient-to-r hover:from-green-600 hover:to-blue-500
+          hover:text-white hover:shadow-green-400/40
           transition-all duration-300
         "
       >
         Comprendre davantage <ArrowRight size={18} />
       </button>
-
-      {/* --- ANIMATIONS INTERNES --- */}
-      <style jsx>{`
-        @keyframes gradientFlow {
-          0% {
-            background-position: 0% 50%;
-          }
-          50% {
-            background-position: 100% 50%;
-          }
-          100% {
-            background-position: 0% 50%;
-          }
-        }
-        .animate-gradient-flow {
-          animation: gradientFlow 4s ease infinite;
-        }
-      `}</style>
     </div>
   );
 }
