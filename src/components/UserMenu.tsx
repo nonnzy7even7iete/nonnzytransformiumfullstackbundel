@@ -40,7 +40,7 @@ export default function UserMenu() {
       {/* Dropdown */}
       {open && (
         <div
-          className="absolute right-0 mt-3 w-64 min-h-[22rem] rounded-xl border border-white/20
+          className="absolute right-0 mt-3 w-60 min-h-[22rem] rounded-xl border border-white/20
                      bg-black/90 backdrop-blur-lg shadow-2xl overflow-hidden flex flex-col z-50"
         >
           {/* Header */}
@@ -54,7 +54,7 @@ export default function UserMenu() {
           </div>
 
           {/* Actions */}
-          <div className="flex flex-col gap-3 p-5 flex-1 justify-center">
+          <div className="flex flex-col gap-3 p-4 flex-1 justify-center">
             {[
               {
                 label: "Mon profil",
@@ -81,37 +81,12 @@ export default function UserMenu() {
                   item.color ?? "text-gray-200"
                 } transition-all duration-200`}
               >
-                {/* 
-                  ⬇️  SECTION DE CONTRÔLE DE L’EFFET HOVER
-                  
-                  Tu peux modifier ici :
-                  - La largeur de la zone hover
-                  - Le padding interne (marge entre le texte et les bords du fond)
-                  - Le rayon d’arrondi
-                  - La couleur du fond au hover
-                  - Les transitions / animations
-                */}
                 <span
-                  className={`
-                    flex items-center gap-3 
-                    rounded-[10px]            /* ← contrôle du rayon des coins */
-                    px-5 py-3                 /* ← padding interne (ajuste la taille globale du fond) */
-                    ${
-                      item.hover ?? "hover:bg-white/10"
-                    }  /* ← couleur de fond au survol */
-                    hover:-translate-y-[2px]  /* ← effet de “lift” subtil au hover */
-                    transition-all duratirgba(170, 94, 94, 0.08)
-                  `}
-                  style={{
-                    width: "70%",
-                    backgroundColor: "rgba(255,255,255,0.08)", // ← couleur de fond par défaut (si tu veux un effet même sans hover)
-                  }}
+                  className={`flex items-center gap-2 rounded-[7px] px-[7px] py-[7px] ${
+                    item.hover ?? "hover:bg-white/10"
+                  } hover:-translate-y-[2px] transition-all duration-200`}
                 >
-                  {/* Sous-wrapper interne pour créer une marge de respiration */}
-                  <span className="flex items-center gap-3 px-2 py-1">
-                    {item.icon}
-                    <span className="whitespace-nowrap">{item.label}</span>
-                  </span>
+                  {item.icon} <span>{item.label}</span>
                 </span>
               </button>
             ))}
