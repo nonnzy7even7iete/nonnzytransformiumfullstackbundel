@@ -6,7 +6,7 @@ import { ArrowRight } from "lucide-react";
 interface PotentialCardProps {
   title?: string;
   description?: string;
-  redirectPath: string;
+  redirectPath: string; // obligatoire pour la navigation
 }
 
 export default function PotentialCard({
@@ -25,11 +25,11 @@ export default function PotentialCard({
         rounded-2xl p-8 pt-14
         flex flex-col items-center text-center
         shadow-lg shadow-black/40
-        transition-all duration-300
         hover:scale-[1.03] hover:shadow-green-400/20
+        transition-all duration-300
       "
     >
-      {/* --- BOX GLASSMORPHIQUE FLOTTANTE POUR LE TITRE --- */}
+      {/* Badge flottant du titre */}
       <div
         className="
           absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2
@@ -40,27 +40,33 @@ export default function PotentialCard({
       >
         <h2
           className="
-            text-2xl md:text-3xl font-extrabold text-transparent bg-clip-text
-            animate-shine
+            text-2xl md:text-3xl font-extrabold
+            text-transparent bg-clip-text
           "
+          style={{
+            backgroundImage: "linear-gradient(90deg, #15803d, #60a5fa)",
+            WebkitBackgroundClip: "text",
+            backgroundClip: "text",
+            color: "transparent",
+          }}
         >
           {title}
         </h2>
       </div>
 
-      {/* --- DESCRIPTION --- */}
-      <p className="text-gray-300 text-sm md:text-base mb-8 leading-relaxed">
+      {/* Description */}
+      <p className="mt-10 text-gray-300 text-sm md:text-base mb-8 leading-relaxed">
         {description}
       </p>
 
-      {/* --- BOUTON AVEC ICÔNE --- */}
+      {/* Bouton de redirection */}
       <button
         onClick={() => router.push(redirectPath)}
         className="
           flex items-center justify-center gap-2
           bg-white text-black font-semibold
           px-6 py-3 rounded-lg
-          shadow-md shadow-black/40
+          shadow-md shadow-black/30
           hover:bg-gradient-to-r hover:from-green-600 hover:to-blue-500
           hover:text-white hover:shadow-green-400/40
           transition-all duration-300
@@ -68,24 +74,6 @@ export default function PotentialCard({
       >
         Comprendre davantage <ArrowRight size={18} />
       </button>
-
-      {/* --- CSS ANIMATION GRADIENT SHINE --- */}
-      <style jsx>{`
-        .animate-shine {
-          background-image: linear-gradient(90deg, #15803d, #60a5fa, #15803d);
-          background-size: 200% auto;
-          animation: shine 3s linear infinite;
-        }
-
-        @keyframes shine {
-          0% {
-            background-position: -200% center;
-          }
-          100% {
-            background-position: 200% center;
-          }
-        }
-      `}</style>
     </div>
   );
 }
