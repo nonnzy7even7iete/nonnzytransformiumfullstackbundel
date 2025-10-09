@@ -82,12 +82,15 @@ export default function UserMenu() {
                 } transition-all duration-200`}
               >
                 <span
-                  className={`flex items-center gap-3 rounded-[9px] px-4 py-3 ${
+                  className={`flex items-center gap-3 rounded-[10px] px-5 py-3 ${
                     item.hover ?? "hover:bg-white/10"
                   } hover:-translate-y-[2px] transition-all duration-200`}
                 >
-                  {item.icon}
-                  <span className="whitespace-nowrap">{item.label}</span>
+                  {/* Sous-wrapper pour créer un vrai coussin autour du texte */}
+                  <span className="flex items-center gap-3 px-2 py-1">
+                    {item.icon}
+                    <span className="whitespace-nowrap">{item.label}</span>
+                  </span>
                 </span>
               </button>
             ))}
