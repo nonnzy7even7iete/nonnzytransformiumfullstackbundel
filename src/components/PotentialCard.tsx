@@ -17,8 +17,15 @@ export default function PotentialCard({
 
   return (
     <div className="max-w-md w-full mx-auto bg-gray-800 text-white rounded-xl p-6 flex flex-col items-center text-center shadow-md">
-      {/* Titre */}
-      <h2 className="text-xl font-bold mb-4">{title}</h2>
+      {/* Titre avec gradient */}
+      <h2
+        className="text-xl font-bold mb-4 text-transparent bg-clip-text"
+        style={{
+          backgroundImage: "linear-gradient(90deg, #15803d, #60a5fa)",
+        }}
+      >
+        {title}
+      </h2>
 
       {/* Description */}
       <p className="text-gray-300 mb-6">{description}</p>
