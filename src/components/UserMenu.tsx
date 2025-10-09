@@ -82,7 +82,7 @@ export default function UserMenu() {
                 } transition-all duration-200`}
               >
                 <span
-                  className={`flex items-center gap-2 rounded-[7px] px-[7px] py-[7px] ${
+                  className={`flex items-center gap-2 rounded-[7px] px-[14px] py-[7px] ${
                     item.hover ?? "hover:bg-white/10"
                   } hover:-translate-y-[2px] transition-all duration-200`}
                 >
