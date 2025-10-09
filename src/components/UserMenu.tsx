@@ -17,7 +17,9 @@ export default function UserMenu() {
       {/* Avatar */}
       <button
         onClick={() => setOpen(!open)}
-        className="w-14 h-14 rounded-full overflow-hidden border border-white/20 hover:border-gray-400/60 transition-colors focus:outline-none focus:ring-2 focus:ring-gray-400"
+        className="w-14 h-14 rounded-full overflow-hidden border border-white/20 
+                   hover:border-gray-400/60 transition-colors focus:outline-none 
+                   focus:ring-2 focus:ring-gray-400"
       >
         {session.user?.image ? (
           <img
@@ -26,7 +28,10 @@ export default function UserMenu() {
             className="w-full h-full object-cover"
           />
         ) : (
-          <div className="w-full h-full flex items-center justify-center bg-gray-700/20 text-green-300 font-bold text-xl">
+          <div
+            className="w-full h-full flex items-center justify-center bg-gray-700/20 
+                          text-green-300 font-bold text-xl"
+          >
             {session.user?.name?.[0] ?? "U"}
           </div>
         )}
@@ -36,7 +41,7 @@ export default function UserMenu() {
       {open && (
         <div
           className="absolute right-0 mt-3 w-60 min-h-[22rem] rounded-xl border border-white/20
-                        bg-black/90 backdrop-blur-lg shadow-2xl overflow-hidden flex flex-col"
+                     bg-black/90 backdrop-blur-lg shadow-2xl overflow-hidden flex flex-col z-50"
         >
           {/* Header */}
           <div className="px-6 py-6 border-b border-white/20 flex flex-col items-center justify-center text-center">
@@ -72,13 +77,15 @@ export default function UserMenu() {
               <button
                 key={idx}
                 onClick={item.action}
-                className={`w-full flex items-center justify-center gap-2 px-6 py-4 text-base ${
+                className={`w-full flex items-center justify-center text-base ${
                   item.color ?? "text-gray-200"
-                } rounded-[7px] ${
-                  item.hover ?? "hover:bg-white/10"
                 } transition-all duration-200`}
               >
-                <span className="flex items-center justify-center gap-2">
+                <span
+                  className={`flex items-center gap-2 rounded-[7px] px-[7px] py-[7px] ${
+                    item.hover ?? "hover:bg-white/10"
+                  } hover:-translate-y-[2px] transition-all duration-200`}
+                >
                   {item.icon} <span>{item.label}</span>
                 </span>
               </button>

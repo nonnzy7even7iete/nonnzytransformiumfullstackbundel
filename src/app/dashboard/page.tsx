@@ -17,7 +17,7 @@ const mockAwards = [
   },
   {
     id: 2,
-    title: "Artiste de l’année",
+    title: "Potentiel ",
     status: "En attente",
     desc: "Vote du public en cours",
   },
