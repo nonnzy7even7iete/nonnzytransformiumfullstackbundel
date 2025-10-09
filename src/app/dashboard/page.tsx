@@ -1,70 +1,91 @@
 "use client";
 
-import { useSession } from "next-auth/react";
-import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import Navbar from "@/components/Navbar";
-import Sidebar from "@/components/Sidebar";
-import Loader from "@/components/Loader";
-import PotentialCard from "@/components/PotentialCard";
+import { ArrowRight } from "lucide-react";
 
-export default function DashboardPage() {
-  const { data: session, status } = useSession();
+interface PotentialCardProps {
+  title?: string;
+  description?: string;
+  redirectPath: string;
+}
+
+export default function PotentialCard({
+  title = "Potentiel inexploité",
+  description = "Découvrez comment exploiter pleinement vos ressources et développer votre application.",
+  redirectPath,
+}: PotentialCardProps) {
   const router = useRouter();
 
-  // Redirection si non connecté
-  useEffect(() => {
-    if (status === "unauthenticated") {
-      router.push("/");
-    }
-  }, [status, router]);
-
-  if (status === "loading") return <Loader />; // affichage loader
-  if (!session) return null;
-
-  // --- Définition du flux multi-étapes ---
-  const steps = [
-    {
-      title: "Engagement sincère",
-      description: "Vous avancez avec clarté et conviction.",
-    },
-    {
-      title: "Engagement hésitant",
-      description: "Prenez le temps de réfléchir à votre choix.",
-    },
-    {
-      title: "Engagement audacieux",
-      description: "Préparez-vous à des surprises excitantes.",
-    },
-  ];
-
   return (
-    <div className="flex flex-col h-screen bg-black text-white font-sans relative overflow-hidden">
-      <Navbar />
-      <div className="flex flex-1">
-        <Sidebar />
-
-        {/* Contenu central */}
-        <main
+    <div
+      className="
+        relative w-full max-w-md mx-auto
+        bg-black/70 backdrop-blur-xl
+        border border-white/10
+        rounded-2xl p-8 pt-14
+        flex flex-col items-center text-center
+        shadow-lg shadow-black/40
+        transition-all duration-300
+        hover:scale-[1.03] hover:shadow-green-400/20
+      "
+    >
+      {/* --- BOX GLASSMORPHIQUE FLOTTANTE POUR LE TITRE --- */}
+      <div
+        className="
+          absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2
+          px-6 py-2 rounded-xl
+          bg-white/10 backdrop-blur-md border border-white/20
+          shadow-lg shadow-black/30
+        "
+      >
+        <h2
           className="
-            flex-1 pt-28 px-3 md:px-8 
-            ml-0 md:ml-20 mb-16 md:mb-0
-            flex items-center justify-center
-            relative
+            text-2xl md:text-3xl font-extrabold text-transparent bg-clip-text
+            animate-shine
           "
         >
-          {/* Effet décoratif de fond subtil */}
-          <div className="absolute inset-0 bg-gradient-to-br from-green-900/20 via-transparent to-blue-800/10 pointer-events-none blur-3xl"></div>
-
-          {/* Carte principale */}
-          <div className="relative z-10">
-            <PotentialCard
-              steps={steps}
-              redirectPath="/dashboard/financement"
-            />
-          </div>
-        </main>
+          {title}
+        </h2>
       </div>
+
+      {/* --- DESCRIPTION --- */}
+      <p className="text-gray-300 text-sm md:text-base mb-8 leading-relaxed">
+        {description}
+      </p>
+
+      {/* --- BOUTON AVEC ICÔNE --- */}
+      <button
+        onClick={() => router.push(redirectPath)}
+        className="
+          flex items-center justify-center gap-2
+          bg-white text-black font-semibold
+          px-6 py-3 rounded-lg
+          shadow-md shadow-black/40
+          hover:bg-gradient-to-r hover:from-green-600 hover:to-blue-500
+          hover:text-white hover:shadow-green-400/40
+          transition-all duration-300
+        "
+      >
+        Comprendre davantage <ArrowRight size={18} />
+      </button>
+
+      {/* --- CSS ANIMATION GRADIENT SHINE --- */}
+      <style jsx>{`
+        .animate-shine {
+          background-image: linear-gradient(90deg, #15803d, #60a5fa, #15803d);
+          background-size: 200% auto;
+          animation: shine 3s linear infinite;
+        }
+
+        @keyframes shine {
+          0% {
+            background-position: -200% center;
+          }
+          100% {
+            background-position: 200% center;
+          }
+        }
+      `}</style>
     </div>
   );
 }
