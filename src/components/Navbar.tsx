@@ -24,9 +24,9 @@ export default function Navbar() {
         borderImage: "linear-gradient(to right, #ffffff2a, #f1f1f111) 1",
       }}
     >
-      <div className="max-w-6xl mx-auto px-6 h-full flex items-center justify-end">
+      <div className="max-w-6xl mx-auto  h-full flex items-center justify-end">
         {session && (
-          <div className="text-gray-200 font-medium  rounded-md">
+          <div className="text-gray-200 font-medium px-3 py-1 rounded-md">
             <UserMenu />
           </div>
         )}
