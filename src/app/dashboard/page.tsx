@@ -27,7 +27,7 @@ export default function DashboardPage() {
         mt-[37px]       /* margin-top spécifique */
         min-h-screen
         flex flex-col items-center justify-start
-        bg-gray-950 text-white
+        bg-black text-white
         gap-10
         px-8 md:px-12
       "
