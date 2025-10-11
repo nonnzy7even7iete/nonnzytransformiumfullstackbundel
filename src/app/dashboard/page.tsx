@@ -25,7 +25,8 @@ export default function DashboardPage() {
       className="
         min-h-screen flex flex-col items-center justify-start
         bg-gray-950 text-white
-        px-8 md:px-12 pt-[120px] pb-16
+        px-8 md:px-12
+        mt-[37px]  /* margin-top de 37px pour éviter chevauchement Navbar */
         gap-10
       "
     >
@@ -34,24 +35,12 @@ export default function DashboardPage() {
         Bienvenue, {session.user?.name?.split(" ")[0] || "explorateur"} 👋
       </h1>
 
-      {/* Grille des cartes */}
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8 w-full max-w-7xl justify-items-center">
-        <PotentialCard
-          title="Découvre ton potentiel"
-          description="Explore les mécanismes du futur et révèle la puissance de ton esprit créatif."
-          redirectPath="/exploration"
-        />
-        <PotentialCard
-          title="Transforme ton savoir"
-          description="Deviens architecte de ton avenir grâce à la maîtrise des outils numériques."
-          redirectPath="/formation"
-        />
-        <PotentialCard
-          title="Inspire et innove"
-          description="Pense différemment, imagine des solutions et propulse ton univers vers demain."
-          redirectPath="/innovation"
-        />
-      </div>
+      {/* Un seul PotentialCard */}
+      <PotentialCard
+        title="Découvre ton potentiel"
+        description="Explore les mécanismes du futur et révèle la puissance de ton esprit créatif."
+        redirectPath="/exploration"
+      />
     </main>
   );
 }
