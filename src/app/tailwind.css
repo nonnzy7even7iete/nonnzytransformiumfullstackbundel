@@ -3,17 +3,26 @@
 @tailwind components;
 @tailwind utilities;
 
-/* 🔹 RESET GLOBAL — supprime toutes marges/paddings par défaut */
+/* 🔹 RESET GLOBAL — supprime toutes marges par défaut, mais garde le padding pour certains éléments */
 *,
 *::before,
 *::after {
   margin: 0;
-  padding: 0;
   box-sizing: border-box;
 }
 
+/* ⚡ Éléments à garder padding par défaut */
+button,
+span,
+input,
+textarea,
+select {
+  padding: revert;
+}
+
 /* 🔹 Garantir que html/body prennent tout l’écran */
-html, body {
+html,
+body {
   height: 100%;
   width: 100%;
   margin: 0;
