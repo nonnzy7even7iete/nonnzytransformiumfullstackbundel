@@ -17,9 +17,8 @@ export default function PotentialCard({
   const router = useRouter();
   const [animationClass, setAnimationClass] = useState("");
   const [backgroundPosition, setBackgroundPosition] = useState(0);
-  const [glowOpacity, setGlowOpacity] = useState(0.5);
+  const [glowOpacity, setGlowOpacity] = useState(0.4);
 
-  // Animation de gradient + glow
   useEffect(() => {
     setTimeout(() => setAnimationClass("opacity-100 translate-y-0"), 50);
 
@@ -27,8 +26,8 @@ export default function PotentialCard({
     const interval = setInterval(() => {
       pos = (pos + 1) % 200;
       setBackgroundPosition(pos);
-      setGlowOpacity(0.4 + 0.3 * Math.sin((pos / 100) * Math.PI));
-    }, 50);
+      setGlowOpacity(0.35 + 0.25 * Math.sin((pos / 100) * Math.PI));
+    }, 60);
 
     return () => clearInterval(interval);
   }, []);
@@ -38,15 +37,15 @@ export default function PotentialCard({
       className={`
         relative w-full max-w-md mx-auto
         p-[2px] rounded-2xl
-        transition-all duration-300
+        transition-all duration-500
         ${animationClass || "opacity-0 translate-y-3"}
       `}
       style={{
-        background: "linear-gradient(90deg, #9ca3af, #374151, #9ca3af)",
+        background: "linear-gradient(90deg, #262626, #1a1a1a, #262626)",
         backgroundSize: "200% 200%",
         backgroundPosition: `${backgroundPosition}% 50%`,
-        borderRadius: "14px",
-        boxShadow: `0 0 25px rgba(56, 189, 248, ${glowOpacity}), 0 0 40px rgba(34, 197, 94, ${
+        borderRadius: "21px",
+        boxShadow: `0 0 30px rgba(34,197,94,${glowOpacity}), 0 0 50px rgba(56,189,248,${
           glowOpacity / 2
         })`,
       }}
@@ -54,45 +53,36 @@ export default function PotentialCard({
       <div
         className="
           relative flex flex-col items-center justify-center text-center
-          bg-white/10 backdrop-blur-md
-          border border-white/10
-          rounded-2xl
-          p-10
-          gap-[7px]
-          shadow-lg shadow-black/30
+          bg-[#0d0d0d] text-gray-100
+          rounded-2xl p-10 gap-[21px]
           transition-all duration-300
-          hover:scale-[1.03] hover:shadow-green-400/20
+          hover:scale-[1.02] hover:shadow-green-400/20
         "
-        style={{ minHeight: "200px" }}
+        style={{ minHeight: "220px" }}
       >
-        {/* Titre avec gradient */}
-        <h2
-          className="text-2xl md:text-3xl font-bold text-transparent bg-clip-text"
-          style={{
-            backgroundImage: "linear-gradient(90deg, #15803d, #60a5fa)",
-          }}
-        >
+        {/* Capsule titre */}
+        <div className="bg-white text-black font-bold text-xl px-6 py-3 rounded-[21px] shadow-sm">
           {title}
-        </h2>
+        </div>
 
         {/* Description */}
-        <p className="text-gray-200 px-4">{description}</p>
+        <p className="text-gray-300 max-w-md leading-relaxed">{description}</p>
 
-        {/* Bouton 3D blanc */}
+        {/* Bouton blanc arrondi */}
         <button
           onClick={() => router.push(redirectPath)}
           className="
-            relative text-gray-900 font-semibold
-            rounded-[7px]
-            bg-white shadow-[0_5px_0_rgba(200,200,200,1)]
+            relative text-black font-semibold
+            rounded-[21px] bg-white
             px-8 py-3
+            shadow-[0_5px_0_rgba(220,220,220,1)]
             active:translate-y-[2px] active:shadow-[0_3px_0_rgba(180,180,180,1)]
             transition-all duration-200 ease-out
             hover:scale-[1.03]
           "
         >
           Comprendre davantage
-          <span className="absolute inset-0 rounded-[7px] bg-gradient-to-b from-white/40 to-transparent opacity-40 pointer-events-none"></span>
+          <span className="absolute inset-0 rounded-[21px] bg-gradient-to-b from-white/50 to-transparent opacity-30 pointer-events-none"></span>
         </button>
       </div>
     </div>
