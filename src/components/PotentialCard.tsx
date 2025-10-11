@@ -36,7 +36,7 @@ export default function PotentialCard({
     <div
       className={`
         relative w-full max-w-md mx-auto
-        p-[2px] rounded-2xl
+        p-[2px] rounded-[21px]
         transition-all duration-500
         ${animationClass || "opacity-0 translate-y-3"}
       `}
@@ -44,7 +44,6 @@ export default function PotentialCard({
         background: "linear-gradient(90deg, #262626, #1a1a1a, #262626)",
         backgroundSize: "200% 200%",
         backgroundPosition: `${backgroundPosition}% 50%`,
-        borderRadius: "21px",
         boxShadow: `0 0 30px rgba(34,197,94,${glowOpacity}), 0 0 50px rgba(56,189,248,${
           glowOpacity / 2
         })`,
@@ -54,27 +53,28 @@ export default function PotentialCard({
         className="
           relative flex flex-col items-center justify-center text-center
           bg-[#0d0d0d] text-gray-100
-          rounded-2xl p-10 gap-[21px]
+          rounded-[21px] p-10 gap-[21px]
           transition-all duration-300
           hover:scale-[1.02] hover:shadow-green-400/20
         "
-        style={{ minHeight: "220px" }}
       >
-        {/* Capsule titre */}
-        <div className="bg-white text-black font-bold text-xl px-6 py-3 rounded-[21px] shadow-sm">
+        {/* Capsule du titre — avec padding intérieur plus généreux */}
+        <div className="bg-white text-black font-bold text-xl px-8 py-4 rounded-[21px] shadow-sm max-w-[80%]">
           {title}
         </div>
 
-        {/* Description */}
-        <p className="text-gray-300 max-w-md leading-relaxed">{description}</p>
+        {/* Description — avec bonne largeur + espacement */}
+        <p className="text-gray-300 leading-relaxed px-6 max-w-md">
+          {description}
+        </p>
 
-        {/* Bouton blanc arrondi */}
+        {/* Bouton — avec padding cohérent et bon radius */}
         <button
           onClick={() => router.push(redirectPath)}
           className="
             relative text-black font-semibold
             rounded-[21px] bg-white
-            px-8 py-3
+            px-10 py-3
             shadow-[0_5px_0_rgba(220,220,220,1)]
             active:translate-y-[2px] active:shadow-[0_3px_0_rgba(180,180,180,1)]
             transition-all duration-200 ease-out
