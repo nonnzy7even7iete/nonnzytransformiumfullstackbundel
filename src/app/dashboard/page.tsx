@@ -23,11 +23,13 @@ export default function DashboardPage() {
   return (
     <main
       className="
-        min-h-screen flex flex-col items-center justify-start
+        m-0             /* toutes les marges à zéro */
+        mt-[37px]       /* margin top spécifique */
+        min-h-screen
+        flex flex-col items-center justify-start
         bg-gray-950 text-white
-        px-8 md:px-12
-        mt-[37px]  /* margin-top de 37px pour éviter chevauchement Navbar */
         gap-10
+        px-8 md:px-12
       "
     >
       {/* Message d’accueil */}
