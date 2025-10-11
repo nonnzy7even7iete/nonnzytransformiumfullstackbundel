@@ -46,7 +46,7 @@ export default function PotentialCard({
             transition-all duration-300
             hover:scale-[1.03] hover:shadow-green-400/20
           "
-          style={{ minHeight: "270px" }}
+          style={{ minHeight: "200px" }}
         >
           {/* Titre avec gradient */}
           <h2
