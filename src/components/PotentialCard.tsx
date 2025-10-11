@@ -16,10 +16,21 @@ export default function PotentialCard({
 }: PotentialCardProps) {
   const router = useRouter();
   const [animationClass, setAnimationClass] = useState("");
+  const [backgroundPosition, setBackgroundPosition] = useState(0);
+  const [glowOpacity, setGlowOpacity] = useState(0.5);
 
-  // Ajout d’une légère animation au mount
+  // Animation de gradient + glow
   useEffect(() => {
     setTimeout(() => setAnimationClass("opacity-100 translate-y-0"), 50);
+
+    let pos = 0;
+    const interval = setInterval(() => {
+      pos = (pos + 1) % 200;
+      setBackgroundPosition(pos);
+      setGlowOpacity(0.4 + 0.3 * Math.sin((pos / 100) * Math.PI));
+    }, 50);
+
+    return () => clearInterval(interval);
   }, []);
 
   return (
@@ -27,15 +38,17 @@ export default function PotentialCard({
       className={`
         relative w-full max-w-md mx-auto
         p-[2px] rounded-2xl
-        bg-gradient-to-r from-gray-400 via-gray-500 to-gray-700
-        animate-gradient-move
         transition-all duration-300
         ${animationClass || "opacity-0 translate-y-3"}
       `}
       style={{
+        background: "linear-gradient(90deg, #9ca3af, #374151, #9ca3af)",
         backgroundSize: "200% 200%",
-        animation: "gradientFlow 5s ease infinite",
+        backgroundPosition: `${backgroundPosition}% 50%`,
         borderRadius: "14px",
+        boxShadow: `0 0 25px rgba(56, 189, 248, ${glowOpacity}), 0 0 40px rgba(34, 197, 94, ${
+          glowOpacity / 2
+        })`,
       }}
     >
       <div
@@ -50,9 +63,9 @@ export default function PotentialCard({
           transition-all duration-300
           hover:scale-[1.03] hover:shadow-green-400/20
         "
-        style={{ minHeight: "270px" }}
+        style={{ minHeight: "200px" }}
       >
-        {/* Titre */}
+        {/* Titre avec gradient */}
         <h2
           className="text-2xl md:text-3xl font-bold text-transparent bg-clip-text"
           style={{
@@ -82,21 +95,6 @@ export default function PotentialCard({
           <span className="absolute inset-0 rounded-[7px] bg-gradient-to-b from-white/40 to-transparent opacity-40 pointer-events-none"></span>
         </button>
       </div>
-
-      {/* Animation CSS pour le gradient border */}
-      <style jsx>{`
-        @keyframes gradientFlow {
-          0% {
-            background-position: 0% 50%;
-          }
-          50% {
-            background-position: 100% 50%;
-          }
-          100% {
-            background-position: 0% 50%;
-          }
-        }
-      `}</style>
     </div>
   );
 }
