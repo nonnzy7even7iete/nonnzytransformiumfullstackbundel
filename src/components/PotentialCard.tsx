@@ -49,26 +49,27 @@ export default function PotentialCard({
         })`,
       }}
     >
+      {/* Box principale avec vrai padding intérieur */}
       <div
         className="
           relative flex flex-col items-center justify-center text-center
           bg-[#0d0d0d] text-gray-100
-          rounded-[21px] p-10 gap-[21px]
+          rounded-[21px] p-12 gap-[21px]
           transition-all duration-300
           hover:scale-[1.02] hover:shadow-green-400/20
         "
       >
-        {/* Capsule du titre — avec padding intérieur plus généreux */}
-        <div className="bg-white text-black font-bold text-xl px-8 py-4 rounded-[21px] shadow-sm max-w-[80%]">
+        {/* Capsule du titre */}
+        <div className="bg-white text-black font-bold text-xl px-10 py-5 rounded-[21px] shadow-sm max-w-[80%]">
           {title}
         </div>
 
-        {/* Description — avec bonne largeur + espacement */}
-        <p className="text-gray-300 leading-relaxed px-6 max-w-md">
+        {/* Description — aérée et centrée */}
+        <p className="text-gray-300 leading-relaxed px-6 max-w-[90%]">
           {description}
         </p>
 
-        {/* Bouton — avec padding cohérent et bon radius */}
+        {/* Bouton blanc arrondi */}
         <button
           onClick={() => router.push(redirectPath)}
           className="
