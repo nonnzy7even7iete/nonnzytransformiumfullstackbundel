@@ -37,7 +37,7 @@ export default function DashboardPage() {
   return (
     <div className="min-h-screen flex flex-col bg-gray-950 text-white">
       {/* Navbar */}
-      <Navbar user={session.user} />
+      <Navbar />
 
       <div className="flex flex-1">
         {/* Sidebar */}
