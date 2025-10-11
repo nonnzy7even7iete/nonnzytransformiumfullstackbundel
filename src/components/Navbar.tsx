@@ -26,7 +26,7 @@ export default function Navbar() {
     >
       <div className="max-w-6xl mx-auto px-6 h-full flex items-center justify-end">
         {session && (
-          <div className="text-gray-200 font-medium px-3 py-1 rounded-md">
+          <div className="text-gray-200 font-medium  rounded-md">
             <UserMenu />
           </div>
         )}
