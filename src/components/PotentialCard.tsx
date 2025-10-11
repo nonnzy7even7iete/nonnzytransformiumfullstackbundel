@@ -49,7 +49,7 @@ export default function PotentialCard({
         })`,
       }}
     >
-      {/* Box principale avec vrai padding intérieur */}
+      {/* Conteneur principal */}
       <div
         className="
           relative flex flex-col items-center justify-center text-center
@@ -59,30 +59,27 @@ export default function PotentialCard({
           hover:scale-[1.02] hover:shadow-green-400/20
         "
       >
-        {/* Capsule du titre */}
+        {/* Capsule titre */}
         <div className="bg-white text-black font-bold text-xl px-10 py-5 rounded-[21px] shadow-sm max-w-[80%]">
           {title}
         </div>
 
-        {/* Description — aérée et centrée */}
+        {/* Description */}
         <p className="text-gray-300 leading-relaxed px-6 max-w-[90%]">
           {description}
         </p>
 
-        {/* Bouton blanc arrondi */}
+        {/* Bouton avec padding corrigé */}
         <button
           onClick={() => router.push(redirectPath)}
-          className="
-            relative text-black font-semibold
-            rounded-[21px] bg-white
-            px-10 py-3
-            shadow-[0_5px_0_rgba(220,220,220,1)]
-            active:translate-y-[2px] active:shadow-[0_3px_0_rgba(180,180,180,1)]
-            transition-all duration-200 ease-out
-            hover:scale-[1.03]
-          "
+          className="relative rounded-[21px] bg-white shadow-[0_5px_0_rgba(220,220,220,1)] transition-all duration-200 ease-out hover:scale-[1.03]"
         >
-          Comprendre davantage
+          {/* Wrapper pour padding correct */}
+          <span className="block px-10 py-3 relative z-10 font-semibold text-black">
+            Comprendre davantage
+          </span>
+
+          {/* Overlay */}
           <span className="absolute inset-0 rounded-[21px] bg-gradient-to-b from-white/50 to-transparent opacity-30 pointer-events-none"></span>
         </button>
       </div>
