@@ -69,7 +69,7 @@ export default function PotentialCard({
           {description}
         </p>
 
-        {/* Bouton avec padding corrigé */}
+        {/* Bouton avec padding fiable */}
         <button
           onClick={() => router.push(redirectPath)}
           className="relative rounded-[21px] bg-white shadow-[0_5px_0_rgba(220,220,220,1)] transition-all duration-200 ease-out hover:scale-[1.03]"

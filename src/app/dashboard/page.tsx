@@ -24,7 +24,7 @@ export default function DashboardPage() {
     <main
       className="
         m-0             /* toutes les marges à zéro */
-        mt-[37px]       /* margin top spécifique */
+        mt-[37px]       /* margin-top spécifique */
         min-h-screen
         flex flex-col items-center justify-start
         bg-gray-950 text-white
