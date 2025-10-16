@@ -17,20 +17,20 @@ export default function UserMenu() {
       {/* Avatar */}
       <button
         onClick={() => setOpen(!open)}
-        className="w-14 h-14 rounded-full overflow-hidden border border-white/20 
-                   hover:border-gray-400/60 transition-colors focus:outline-none 
+        className="w-14 h-14 rounded-full overflow-hidden border border-transparent 
+                   bg-gray-200 hover:brightness-95 transition-colors focus:outline-none 
                    focus:ring-2 focus:ring-gray-400"
       >
         {session.user?.image ? (
           <img
             src={session.user.image}
             alt={session.user.name ?? "User"}
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover bg-gray-200"
           />
         ) : (
           <div
-            className="w-full h-full flex items-center justify-center bg-gray-700/20 
-                          text-green-300 font-bold text-xl"
+            className="w-full h-full flex items-center justify-center bg-gray-400 
+                       text-white font-bold text-xl"
           >
             {session.user?.name?.[0] ?? "U"}
           </div>
@@ -40,7 +40,7 @@ export default function UserMenu() {
       {/* Dropdown */}
       {open && (
         <div
-          className="absolute right-0 mt-3 w-64 min-h-[22rem] rounded-xl border border-white/20
+          className="absolute right-0 mt-0 w-64 min-h-[22rem] rounded-xl border border-white/20
                      bg-black/90 backdrop-blur-lg shadow-2xl overflow-hidden flex flex-col z-50"
         >
           {/* Header */}
@@ -81,17 +81,15 @@ export default function UserMenu() {
                   item.color ?? "text-gray-200"
                 } transition-all duration-200`}
               >
-                {/* Hover background 70 % largeur */}
                 <span
                   className={`flex items-center justify-center gap-3 rounded-[10px] hover:-translate-y-[2px] transition-all duration-200 ${
                     item.hover ?? "hover:bg-white/10"
                   }`}
                   style={{
-                    width: "70%", // largeur du hover = 70% du menu
-                    padding: "7px 0", // padding vertical pour centrer le texte
+                    width: "70%",
+                    padding: "7px 0",
                   }}
                 >
-                  {/* Wrapper interne pour centrer le texte + icône */}
                   <span className="flex items-center justify-center gap-2 w-full">
                     {item.icon}
                     <span className="whitespace-nowrap text-center">
