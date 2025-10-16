@@ -17,20 +17,20 @@ export default function UserMenu() {
       {/* Avatar */}
       <button
         onClick={() => setOpen(!open)}
-        className="w-14 h-14 rounded-full overflow-hidden border border-transparent 
-                   bg-gray-200 hover:brightness-95 transition-colors focus:outline-none 
+        className="w-14 h-14 rounded-full overflow-hidden border border-transparent
+                   bg-gray-200 hover:brightness-95 transition-colors focus:outline-none
                    focus:ring-2 focus:ring-gray-400"
       >
         {session.user?.image ? (
           <img
             src={session.user.image}
             alt={session.user.name ?? "User"}
-            className="w-full h-full object-cover bg-gray-200"
+            className="w-14 h-14 object-cover rounded-full bg-gray-200"
           />
         ) : (
           <div
-            className="w-full h-full flex items-center justify-center bg-gray-400 
-                       text-white font-bold text-xl"
+            className="w-14 h-14 flex items-center justify-center rounded-full 
+                       bg-gray-400 text-white font-bold text-xl"
           >
             {session.user?.name?.[0] ?? "U"}
           </div>
