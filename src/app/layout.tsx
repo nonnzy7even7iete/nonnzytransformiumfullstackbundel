@@ -26,7 +26,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <Providers>
-          <main className="pt-20">{children}</main>
+          <main>{children}</main>
         </Providers>
       </body>
     </html>
