@@ -39,7 +39,7 @@ export default function HomePage() {
       {/* Card centrale */}
       <div className="relative z-10 w-[360px] p-14 bg-black/40 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl text-center mt-40">
         <h1 className="text-4xl font-extrabold bg-gradient-to-r from-green-700 to-blue-400 bg-clip-text text-transparent mb-3 drop-shadow-lg">
-          Nonnzytrasformium
+          Nonnzytransformium
         </h1>
         <p className="text-white/70 text-base mb-8">
           Votre aventure commence ici ✨
