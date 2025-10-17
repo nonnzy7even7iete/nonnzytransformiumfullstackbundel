@@ -19,7 +19,7 @@ export default function HomePage() {
   if (status === "loading" || status === "authenticated") return <Loader />;
 
   return (
-    <main className="relative flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-zinc-700 via-black to-zinc-900 overflow-hidden">
+    <main className="relative flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-zinc-700 via-black to-zinc-900 overflow-visible">
       {/* Fond dynamique */}
       <BackgroundRippleEffect rows={8} cols={20} cellSize={50} />
 
@@ -37,8 +37,8 @@ export default function HomePage() {
       </div>
 
       {/* Card centrale */}
-      <div className="relative z-10 w-[360px] p-14 bg-black/40 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl text-center mt-40">
-        <h1 className="text-4xl font-extrabold bg-gradient-to-r from-green-700 to-blue-400 bg-clip-text text-transparent mb-3 drop-shadow-lg">
+      <div className="relative z-10 w-[360px] sm:w-[450px] p-14 bg-black/40 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl text-center mt-40">
+        <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold bg-gradient-to-r from-green-700 to-blue-400 bg-clip-text text-transparent mb-3 drop-shadow-lg break-words">
           Nonnzytransformium
         </h1>
         <p className="text-white/70 text-base mb-8">
