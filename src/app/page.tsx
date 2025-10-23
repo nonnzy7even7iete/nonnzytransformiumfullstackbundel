@@ -23,13 +23,13 @@ export default function HomePage() {
       {/* Fond dynamique */}
       <BackgroundRippleEffect rows={8} cols={20} cellSize={50} />
 
-      {/* Texte animé XXL près du top */}
-      <div className="absolute top-[10px] sm:top-[20px] w-full flex justify-center z-20">
+      {/* Texte animé flottant au-dessus */}
+      <div className="absolute top-[10px] sm:top-[20px] w-full flex justify-center z-20 overflow-visible">
         <TextHoverEffect
           text="Nonnzytransformium"
           duration={0.6}
           style={{
-            height: "160px", // grand rendu
+            height: "160px",
             width: "95%",
             maxWidth: "1200px",
           }}
@@ -37,10 +37,15 @@ export default function HomePage() {
       </div>
 
       {/* Card centrale */}
-      <div className="relative z-10 w-[360px] sm:w-[450px] p-14 bg-black/40 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl text-center mt-40">
-        <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold bg-gradient-to-r from-green-700 to-blue-400 bg-clip-text text-transparent mb-3 drop-shadow-lg break-words">
+      <div className="relative z-10 w-[360px] sm:w-[450px] p-14 bg-black/40 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl text-center mt-40 overflow-visible">
+        {/* Titre responsive */}
+        <h1
+          className="font-extrabold bg-gradient-to-r from-green-700 to-blue-400 bg-clip-text text-transparent mb-3 drop-shadow-lg leading-tight overflow-visible"
+          style={{ fontSize: "clamp(2rem, 10vw, 5rem)" }}
+        >
           Nonnzytransformium
         </h1>
+
         <p className="text-white/70 text-base mb-8">
           Votre aventure commence ici ✨
         </p>
