@@ -40,8 +40,8 @@ export default function HomePage() {
       <div className="relative z-10 w-[360px] sm:w-[450px] p-14 bg-black/40 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl text-center mt-40 overflow-visible">
         {/* Titre responsive */}
         <h1
-          className="font-extrabold bg-gradient-to-r from-green-700 to-blue-400 bg-clip-text text-transparent mb-3 drop-shadow-lg leading-tight overflow-visible"
-          style={{ fontSize: "clamp(2rem, 10vw, 5rem)" }}
+          className="font-extrabold bg-gradient-to-r from-green-700 to-blue-400 bg-clip-text text-transparent mb-3 drop-shadow-lg leading-tight overflow-visible max-w-full text-center"
+          style={{ fontSize: "clamp(2rem, 6vw, 4rem)" }}
         >
           Nonnzytransformium
         </h1>
