@@ -34,9 +34,9 @@ export default function HomePage() {
             text="Nonnzytransformium"
             duration={0.6}
             style={{
-              height: "clamp(180px, 18vw, 260px)", // plus haut
-              width: "95%",
-              maxWidth: "1100px",
+              height: "clamp(200px, 20vw, 300px)", // parfait équilibre vertical
+              width: "clamp(280px, 90vw, 1200px)", // s’adapte bien sans dépasser
+              fontSize: "clamp(2.8rem, 8vw, 6.5rem)", // équilibré entre mobile et grand écran
             }}
           />
         </div>
