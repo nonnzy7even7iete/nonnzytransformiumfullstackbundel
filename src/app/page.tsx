@@ -20,23 +20,23 @@ export default function HomePage() {
   if (status === "loading" || status === "authenticated") return <Loader />;
 
   return (
-    <main className="relative flex flex-col md:flex-row items-center justify-center min-h-screen bg-gradient-to-br from-zinc-700 via-black to-zinc-900 overflow-hidden px-6 py-10 gap-8">
+    <main className="relative flex flex-col md:flex-row items-center justify-center min-h-screen bg-gradient-to-br from-zinc-700 via-black to-zinc-900 overflow-hidden px-4 md:px-8 py-10">
       {/* Fond dynamique */}
       <div className="absolute inset-0 z-0">
         <BackgroundRippleEffect rows={8} cols={20} cellSize={50} />
       </div>
 
-      {/* Contenu principal */}
-      <div className="relative z-10 flex flex-col items-center justify-center text-center w-full md:w-[450px] mt-10 md:mt-0">
-        {/* Texte animé */}
+      {/* Bloc principal centré */}
+      <div className="relative z-10 flex flex-col items-center justify-center text-center w-full md:w-[460px] max-w-[90vw] mt-8 md:mt-0">
+        {/* Texte animé plus large */}
         <div className="w-full flex justify-center mb-6">
           <TextHoverEffect
             text="Nonnzytransformium"
             duration={0.6}
             style={{
-              height: "clamp(80px, 12vw, 160px)",
+              height: "clamp(120px, 16vw, 220px)",
               width: "95%",
-              maxWidth: "800px",
+              maxWidth: "1100px",
             }}
           />
         </div>
@@ -45,7 +45,7 @@ export default function HomePage() {
         <div className="w-full p-10 bg-black/40 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl">
           <h1
             className="font-extrabold bg-gradient-to-r from-green-700 to-blue-400 bg-clip-text text-transparent mb-4 drop-shadow-lg leading-tight text-center"
-            style={{ fontSize: "clamp(2rem, 6vw, 3.5rem)" }}
+            style={{ fontSize: "clamp(2.5rem, 7vw, 4rem)" }}
           >
             Nonnzytrans
           </h1>
@@ -71,8 +71,8 @@ export default function HomePage() {
         </div>
       </div>
 
-      {/* SideCard responsive */}
-      <aside className="relative z-10 w-full md:w-[320px] flex justify-center md:justify-end">
+      {/* SideCard collée à la marge droite */}
+      <aside className="relative z-10 mt-10 md:mt-0 md:absolute md:right-[3px] flex justify-center md:justify-end">
         <SideCard
           imageSrc="/images/sample1.jpg"
           title="Explorez votre univers"
