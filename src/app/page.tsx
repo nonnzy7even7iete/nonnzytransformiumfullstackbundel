@@ -47,7 +47,7 @@ export default function HomePage() {
             className="font-extrabold bg-gradient-to-r from-green-700 to-blue-400 bg-clip-text text-transparent mb-4 drop-shadow-lg leading-tight text-center"
             style={{ fontSize: "clamp(2.5rem, 7vw, 4rem)" }}
           >
-            Nonnzytrans
+            Nonnzytr
           </h1>
 
           <p className="text-white/70 text-base mb-8">
