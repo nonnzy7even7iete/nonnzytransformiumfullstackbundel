@@ -74,7 +74,7 @@ export default function HomePage() {
       {/* SideCard collée à la marge droite */}
       <aside className="relative z-10 mt-10 md:mt-0 md:absolute md:right-[3px] flex justify-center md:justify-end">
         <SideCard
-          imageSrc="/images/sample1.jpg"
+          imageSrc="/zy.png"
           title="Explorez votre univers"
           description="Découvrez les secrets du workflow Nonnzytransformium."
         />
