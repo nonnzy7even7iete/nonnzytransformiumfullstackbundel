@@ -74,7 +74,7 @@ export default function HomePage() {
       {/* SideCard collée à la marge droite */}
       <aside className="relative z-10 mt-10 md:mt-0 md:absolute md:right-[3px] flex justify-center md:justify-end">
         <SideCard
-          imageSrc="/zy.png"
+          imageSrc="/zyy.png"
           title="Zy recherche un financement orienté workspace"
           description="Exécution de la logique métier et serveur en burn out."
           location="Anyama, Abidjan, Côte d'Ivoire"
