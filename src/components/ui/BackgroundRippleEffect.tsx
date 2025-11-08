@@ -38,8 +38,11 @@ export const BackgroundRippleEffect = ({
       {cells.map((_, idx) => (
         <div
           key={idx}
-          className="w-[56px] h-[56px] rounded-xl bg-gradient-to-tr from-purple-700/10 to-blue-500/10 
-                     animate-ripple-slow opacity-20"
+          className={`
+            w-[56px] h-[56px] rounded-xl 
+            bg-gradient-to-tr from-purple-700/10 to-blue-500/10 
+            animate-ripple-slow opacity-20
+          `}
         />
       ))}
 
