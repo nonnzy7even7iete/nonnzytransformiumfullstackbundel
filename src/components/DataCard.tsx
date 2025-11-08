@@ -1,13 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import { Info } from "lucide-react";
 
 export default function DataCard() {
-  // <- export par défaut
-  const [showCard, setShowCard] = useState(false);
+  const [open, setOpen] = useState(false);
 
   const data = {
     visiteurs: 7500,
@@ -16,26 +13,23 @@ export default function DataCard() {
   };
 
   return (
-    <div className="relative flex flex-col items-center mt-6">
-      <Button
-        variant="ghost"
-        onClick={() => setShowCard(!showCard)}
-        className="p-4 rounded-full bg-gray-800 hover:bg-gray-700 shadow-neumorph"
+    <div className="fixed left-4 top-1/4 z-50 flex flex-col items-center">
+      {/* Bouton icône */}
+      <button
+        onClick={() => setOpen(!open)}
+        className="p-4 rounded-full bg-gray-800/80 hover:bg-gray-700/90 shadow-neumorph transition"
       >
         <Info className="w-6 h-6 text-white" />
-      </Button>
+      </button>
 
-      {showCard && (
-        <Card className="mt-4 w-80 bg-gray-900 text-white shadow-neumorph transition-transform transform hover:scale-105">
-          <CardHeader>
-            <CardTitle>Statistiques du Centre</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-2">
-            <p>Visiteurs hebdomadaires : {data.visiteurs}</p>
-            <p>Revenu mensuel estimé : {data.revenuMois}</p>
-            <p>Emplois directs : {data.emploisDirects}</p>
-          </CardContent>
-        </Card>
+      {/* Card flottante */}
+      {open && (
+        <div className="mt-4 w-72 bg-black/30 backdrop-blur-xl border border-white/20 rounded-2xl shadow-lg p-4 text-white">
+          <h2 className="font-semibold text-lg mb-2">Statistiques du Centre</h2>
+          <p>Visiteurs hebdomadaires : {data.visiteurs}</p>
+          <p>Revenu mensuel estimé : {data.revenuMois}</p>
+          <p>Emplois directs : {data.emploisDirects}</p>
+        </div>
       )}
     </div>
   );
