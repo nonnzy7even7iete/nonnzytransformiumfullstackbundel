@@ -1,14 +1,14 @@
 "use client";
 
 import { signIn, useSession } from "next-auth/react";
-import { useEffect } from "next";
+import { useEffect } from "react"; // corrigé
 import { useRouter } from "next/navigation";
 import { FcGoogle } from "react-icons/fc";
 import Loader from "@/components/Loader";
 import { BackgroundRippleEffect } from "@/components/ui/BackgroundRippleEffect";
 import { TextHoverEffect } from "@/components/ui/TextHoverEffect";
 import SideCard from "@/components/SideCard";
-import DataCard from "@/components/DataCard"; // <-- composant ajouté ici
+import DataCard from "@/components/DataCard"; // composant dans components
 
 export default function HomePage() {
   const { data: session, status } = useSession();
