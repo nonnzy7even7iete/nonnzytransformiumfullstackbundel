@@ -1,7 +1,7 @@
 "use client";
 
 import { signIn, useSession } from "next-auth/react";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { FcGoogle } from "react-icons/fc";
 import Loader from "@/components/Loader";
@@ -13,18 +13,6 @@ import DataCard from "@/components/DataCard";
 export default function HomePage() {
   const { data: session, status } = useSession();
   const router = useRouter();
-  const [cellSize, setCellSize] = useState(50);
-
-  // Ajuste dynamique des carreaux selon la largeur de l'écran
-  useEffect(() => {
-    const updateCellSize = () => {
-      const width = window.innerWidth;
-      setCellSize(Math.min(Math.floor(width / 20), 50));
-    };
-    updateCellSize();
-    window.addEventListener("resize", updateCellSize);
-    return () => window.removeEventListener("resize", updateCellSize);
-  }, []);
 
   useEffect(() => {
     if (status === "authenticated") router.replace("/dashboard");
@@ -34,9 +22,9 @@ export default function HomePage() {
 
   return (
     <main className="relative flex flex-col md:flex-row items-center justify-center min-h-screen bg-gradient-to-br from-zinc-700 via-black to-zinc-900 overflow-hidden px-4 md:px-8 py-10">
-      {/* Fond dynamique */}
+      {/* Fond dynamique intact */}
       <div className="absolute inset-0 z-0">
-        <BackgroundRippleEffect rows={8} cols={20} cellSize={cellSize} />
+        <BackgroundRippleEffect rows={8} cols={27} cellSize={56} />
       </div>
 
       {/* DataCard flottante gauche */}
