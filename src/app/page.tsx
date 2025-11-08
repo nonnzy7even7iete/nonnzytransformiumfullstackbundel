@@ -1,18 +1,30 @@
 "use client";
 
 import { signIn, useSession } from "next-auth/react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { FcGoogle } from "react-icons/fc";
 import Loader from "@/components/Loader";
 import { BackgroundRippleEffect } from "@/components/ui/BackgroundRippleEffect";
 import { TextHoverEffect } from "@/components/ui/TextHoverEffect";
 import SideCard from "@/components/SideCard";
-import DataCard from "@/components/DataCard"; // ajout du composant
+import DataCard from "@/components/DataCard";
 
 export default function HomePage() {
   const { data: session, status } = useSession();
   const router = useRouter();
+  const [cellSize, setCellSize] = useState(50);
+
+  // Ajuste dynamique des carreaux selon la largeur de l'écran
+  useEffect(() => {
+    const updateCellSize = () => {
+      const width = window.innerWidth;
+      setCellSize(Math.min(Math.floor(width / 20), 50));
+    };
+    updateCellSize();
+    window.addEventListener("resize", updateCellSize);
+    return () => window.removeEventListener("resize", updateCellSize);
+  }, []);
 
   useEffect(() => {
     if (status === "authenticated") router.replace("/dashboard");
@@ -24,7 +36,7 @@ export default function HomePage() {
     <main className="relative flex flex-col md:flex-row items-center justify-center min-h-screen bg-gradient-to-br from-zinc-700 via-black to-zinc-900 overflow-hidden px-4 md:px-8 py-10">
       {/* Fond dynamique */}
       <div className="absolute inset-0 z-0">
-        <BackgroundRippleEffect rows={8} cols={20} cellSize={50} />
+        <BackgroundRippleEffect rows={8} cols={20} cellSize={cellSize} />
       </div>
 
       {/* DataCard flottante gauche */}
@@ -32,7 +44,7 @@ export default function HomePage() {
 
       {/* Bloc principal centré */}
       <div className="relative z-10 flex flex-col items-center justify-center text-center w-full md:w-[460px] max-w-[90vw] mt-8 md:mt-0">
-        {/* Texte animé plus large */}
+        {/* Texte animé */}
         <div className="w-full flex justify-center mb-6">
           <TextHoverEffect
             text="Nonnzytransformium"
@@ -75,7 +87,7 @@ export default function HomePage() {
         </div>
       </div>
 
-      {/* SideCard collée à la marge droite */}
+      {/* SideCard collée à droite */}
       <aside className="relative z-10 mt-10 md:mt-0 md:absolute md:right-[3px] flex justify-center md:justify-end">
         <SideCard
           imageSrc="/zyy.png"
