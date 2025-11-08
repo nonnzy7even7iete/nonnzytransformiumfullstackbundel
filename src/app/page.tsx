@@ -8,7 +8,7 @@ import Loader from "@/components/Loader";
 import { BackgroundRippleEffect } from "@/components/ui/BackgroundRippleEffect";
 import { TextHoverEffect } from "@/components/ui/TextHoverEffect";
 import SideCard from "@/components/SideCard";
-import DataCard from "@/components/DataCard";
+import DataCard from "@/components/DataCard"; // composant dans components
 
 export default function HomePage() {
   const { data: session, status } = useSession();
@@ -22,17 +22,13 @@ export default function HomePage() {
 
   return (
     <main className="relative flex flex-col md:flex-row items-center justify-center min-h-screen bg-gradient-to-br from-zinc-700 via-black to-zinc-900 overflow-hidden px-4 md:px-8 py-10">
-      {/* Fond dynamique intact */}
+      {/* Fond dynamique */}
       <div className="absolute inset-0 z-0">
         <BackgroundRippleEffect rows={8} cols={27} cellSize={56} />
       </div>
 
-      {/* DataCard flottante gauche */}
-      <DataCard />
-
       {/* Bloc principal centré */}
       <div className="relative z-10 flex flex-col items-center justify-center text-center w-full md:w-[460px] max-w-[90vw] mt-8 md:mt-0">
-        {/* Texte animé */}
         <div className="w-full flex justify-center mb-6">
           <TextHoverEffect
             text="Nonnzytransformium"
@@ -45,7 +41,6 @@ export default function HomePage() {
           />
         </div>
 
-        {/* Card centrale */}
         <div className="w-full p-10 bg-black/40 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl">
           <h1
             className="font-extrabold bg-gradient-to-r from-green-700 to-blue-400 bg-clip-text text-transparent mb-4 drop-shadow-lg leading-tight text-center"
@@ -74,6 +69,15 @@ export default function HomePage() {
           </p>
         </div>
       </div>
+
+      {/* DataCard flottante à gauche */}
+      <aside className="relative z-10 mt-10 md:mt-0 md:absolute md:left-[3px] flex justify-center md:justify-start">
+        <DataCard
+          title="Exemple de data driving"
+          description="Analyse prédictive du centre commercial et flux attendu."
+          location="Anyama, Abidjan, Côte d'Ivoire"
+        />
+      </aside>
 
       {/* SideCard collée à droite */}
       <aside className="relative z-10 mt-10 md:mt-0 md:absolute md:right-[3px] flex justify-center md:justify-end">
