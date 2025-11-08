@@ -1,14 +1,14 @@
 "use client";
 
 import { signIn, useSession } from "next-auth/react";
-import { useEffect } from "react"; // corrigé
+import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { FcGoogle } from "react-icons/fc";
 import Loader from "@/components/Loader";
 import { BackgroundRippleEffect } from "@/components/ui/BackgroundRippleEffect";
 import { TextHoverEffect } from "@/components/ui/TextHoverEffect";
 import SideCard from "@/components/SideCard";
-import DataCard from "@/components/DataCard"; // composant dans components
+import DataCard from "@/components/DataCard"; // ajout du composant
 
 export default function HomePage() {
   const { data: session, status } = useSession();
@@ -27,13 +27,11 @@ export default function HomePage() {
         <BackgroundRippleEffect rows={8} cols={20} cellSize={50} />
       </div>
 
+      {/* DataCard flottante gauche */}
+      <DataCard />
+
       {/* Bloc principal centré */}
       <div className="relative z-10 flex flex-col items-center justify-center text-center w-full md:w-[460px] max-w-[90vw] mt-8 md:mt-0">
-        {/* DataCard intégrée */}
-        <div className="w-full flex justify-center mb-6 z-20 relative">
-          <DataCard />
-        </div>
-
         {/* Texte animé plus large */}
         <div className="w-full flex justify-center mb-6">
           <TextHoverEffect
