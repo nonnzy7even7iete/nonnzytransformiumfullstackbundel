@@ -1,13 +1,14 @@
 "use client";
 
 import { signIn, useSession } from "next-auth/react";
-import { useEffect } from "react";
+import { useEffect } from "next";
 import { useRouter } from "next/navigation";
 import { FcGoogle } from "react-icons/fc";
 import Loader from "@/components/Loader";
 import { BackgroundRippleEffect } from "@/components/ui/BackgroundRippleEffect";
 import { TextHoverEffect } from "@/components/ui/TextHoverEffect";
 import SideCard from "@/components/SideCard";
+import DataCard from "@/components/DataCard"; // <-- composant ajouté ici
 
 export default function HomePage() {
   const { data: session, status } = useSession();
@@ -28,15 +29,20 @@ export default function HomePage() {
 
       {/* Bloc principal centré */}
       <div className="relative z-10 flex flex-col items-center justify-center text-center w-full md:w-[460px] max-w-[90vw] mt-8 md:mt-0">
+        {/* DataCard intégrée */}
+        <div className="w-full flex justify-center mb-6 z-20 relative">
+          <DataCard />
+        </div>
+
         {/* Texte animé plus large */}
         <div className="w-full flex justify-center mb-6">
           <TextHoverEffect
             text="Nonnzytransformium"
             duration={0.6}
             style={{
-              height: "clamp(200px, 20vw, 300px)", // parfait équilibre vertical
-              width: "clamp(280px, 90vw, 1200px)", // s’adapte bien sans dépasser
-              fontSize: "clamp(2.8rem, 8vw, 6.5rem)", // équilibré entre mobile et grand écran
+              height: "clamp(200px, 20vw, 300px)",
+              width: "clamp(280px, 90vw, 1200px)",
+              fontSize: "clamp(2.8rem, 8vw, 6.5rem)",
             }}
           />
         </div>
