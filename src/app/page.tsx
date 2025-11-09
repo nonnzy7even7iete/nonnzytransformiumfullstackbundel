@@ -8,7 +8,8 @@ import Loader from "@/components/Loader";
 import { BackgroundRippleEffect } from "@/components/ui/BackgroundRippleEffect";
 import { TextHoverEffect } from "@/components/ui/TextHoverEffect";
 import SideCard from "@/components/SideCard";
-import DataCard from "@/components/DataCard"; // composant animé avec modal
+import DataCard from "@/components/DataCard"; // version flexible et animée
+import { Info } from "lucide-react";
 
 export default function HomePage() {
   const { data: session, status } = useSession();
@@ -72,17 +73,49 @@ export default function HomePage() {
 
       {/* DataCard flottante à gauche */}
       <aside className="relative z-10 mt-10 md:mt-0 md:absolute md:left-[3px] flex justify-center md:justify-start">
-        {/* Ici on intègre la version animée et interactive */}
         <DataCard
           width={270}
           height={270}
-          title="Statistiques du Centre"
-          info={{
-            visiteurs: 7500,
-            revenuMois: "420 000 €",
-            emploisDirects: 180,
-          }}
-          buttonText="Comprendre"
+          title={
+            <div className="flex items-center justify-center gap-2 text-white">
+              <Info className="w-4 h-4 text-blue-400" />
+              <span className="font-semibold">Statistiques du Centre</span>
+            </div>
+          }
+          content={
+            <div className="flex flex-col gap-1 text-white text-sm">
+              <p>
+                Visiteurs hebdomadaires :{" "}
+                <span className="text-blue-300">7 500</span>
+              </p>
+              <p>
+                Revenu mensuel :{" "}
+                <span className="text-green-300">420 000 €</span>
+              </p>
+              <p>
+                Emplois directs : <span className="text-purple-300">180</span>
+              </p>
+            </div>
+          }
+          buttonContent={
+            <span className="text-sm font-medium text-white">Comprendre</span>
+          }
+          modalContent={
+            <div className="flex flex-col gap-2 text-white text-sm">
+              <p>
+                📊 Ces données représentent les performances hebdomadaires du
+                centre, analysées automatiquement via le module interne.
+              </p>
+              <p>
+                💼 Le revenu mensuel correspond à la moyenne glissante des 4
+                dernières semaines.
+              </p>
+              <p>
+                👷 Emplois directs inclut les équipes de maintenance et
+                d’exploitation.
+              </p>
+            </div>
+          }
         />
       </aside>
 

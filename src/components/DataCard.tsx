@@ -1,29 +1,27 @@
 "use client";
 
-import React, { useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import React, { useState, ReactNode } from "react";
+import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Info, ChevronRight } from "lucide-react";
+import { ChevronRight, XCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface DataCardProps {
-  title?: string;
-  info?: {
-    visiteurs?: number;
-    revenuMois?: string;
-    emploisDirects?: number;
-  };
+  title?: ReactNode; // n'importe quel JSX
+  content?: ReactNode; // contenu principal
   width?: number;
   height?: number;
-  buttonText?: string;
+  buttonContent?: ReactNode; // bouton “Comprendre”
+  modalContent?: ReactNode; // contenu du modal
 }
 
 export default function DataCard({
-  title = "Statistiques du Centre",
-  info = { visiteurs: 7500, revenuMois: "420 000 €", emploisDirects: 180 },
+  title,
+  content,
   width = 270,
   height = 270,
-  buttonText = "Comprendre",
+  buttonContent,
+  modalContent,
 }: DataCardProps) {
   const [modalOpen, setModalOpen] = useState(false);
 
@@ -33,29 +31,23 @@ export default function DataCard({
       <Card
         className={cn(
           "relative flex flex-col items-center justify-start p-4 gap-4",
-          "bg-black/30 backdrop-blur-xl border border-white/20 rounded-2xl shadow-lg"
+          "bg-black/30 backdrop-blur-xl border border-white/10 rounded-2xl shadow-lg"
         )}
         style={{ width, height }}
       >
         {/* Titre */}
-        <Card className="w-full bg-white/10 backdrop-blur-md rounded-xl p-2">
-          <CardTitle className="text-center text-white font-semibold">
+        {title && (
+          <Card className="w-full bg-black/30 backdrop-blur-xl rounded-xl p-2 border border-white/10">
             {title}
-          </CardTitle>
-        </Card>
+          </Card>
+        )}
 
-        {/* Infos */}
-        <Card className="w-full bg-white/10 backdrop-blur-md rounded-xl p-2 flex flex-col gap-1">
-          <p className="text-white text-sm">
-            Visiteurs hebdomadaires : {info.visiteurs}
-          </p>
-          <p className="text-white text-sm">
-            Revenu mensuel : {info.revenuMois}
-          </p>
-          <p className="text-white text-sm">
-            Emplois directs : {info.emploisDirects}
-          </p>
-        </Card>
+        {/* Contenu principal */}
+        {content && (
+          <Card className="w-full bg-black/30 backdrop-blur-xl rounded-xl p-2 border border-white/10 flex flex-col gap-1">
+            {content}
+          </Card>
+        )}
 
         {/* Bouton */}
         <Button
@@ -64,7 +56,7 @@ export default function DataCard({
           onClick={() => setModalOpen(true)}
         >
           <ChevronRight className="w-4 h-4" />
-          {buttonText}
+          {buttonContent || "Comprendre"}
         </Button>
       </Card>
 
@@ -74,39 +66,31 @@ export default function DataCard({
           <Card
             className={cn(
               "relative flex flex-col items-center justify-start p-4 gap-4",
-              "bg-black/30 backdrop-blur-xl border border-white/20 rounded-2xl shadow-lg"
+              "bg-black/30 backdrop-blur-xl border border-white/10 rounded-2xl shadow-lg"
             )}
             style={{ width: width + 50, height: height + 50 }}
           >
-            {/* Titre dans modal */}
-            <Card className="w-full bg-white/10 backdrop-blur-md rounded-xl p-2">
-              <CardTitle className="text-center text-white font-semibold">
-                {title} - Détails
-              </CardTitle>
-            </Card>
+            {/* Modal Titre */}
+            {title && (
+              <Card className="w-full bg-black/30 backdrop-blur-xl rounded-xl p-2 border border-white/10">
+                {title}
+              </Card>
+            )}
 
-            {/* Infos supplémentaires */}
-            <Card className="w-full bg-white/10 backdrop-blur-md rounded-xl p-2 flex flex-col gap-1">
-              <p className="text-white text-sm">
-                Visiteurs hebdomadaires : {info.visiteurs}
-              </p>
-              <p className="text-white text-sm">
-                Revenu mensuel : {info.revenuMois}
-              </p>
-              <p className="text-white text-sm">
-                Emplois directs : {info.emploisDirects}
-              </p>
-              <p className="text-white text-sm">
-                Autres informations modifiables via props
-              </p>
-            </Card>
+            {/* Modal Contenu */}
+            {modalContent && (
+              <Card className="w-full bg-black/30 backdrop-blur-xl rounded-xl p-2 border border-white/10 flex flex-col gap-1">
+                {modalContent}
+              </Card>
+            )}
 
             {/* Bouton fermeture */}
             <Button
               variant="destructive"
-              className="mt-auto w-full"
+              className="mt-auto w-full flex items-center justify-center gap-2"
               onClick={() => setModalOpen(false)}
             >
+              <XCircle className="w-4 h-4" />
               Fermer
             </Button>
           </Card>
