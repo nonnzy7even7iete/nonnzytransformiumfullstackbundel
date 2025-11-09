@@ -114,7 +114,7 @@ export default function HomePage() {
                 que votre territoire est sous-évalué.
               </p>
               <p>
-                💼 Le revenu mensuel correspond à la moyenne glissante des 4
+                Le revenu mensuel correspond à la moyenne glissante des 4
                 dernières semaines.
               </p>
               <p>
