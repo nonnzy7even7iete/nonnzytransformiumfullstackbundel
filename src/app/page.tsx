@@ -72,7 +72,7 @@ export default function HomePage() {
       </div>
 
       {/* DataCard flottante à gauche */}
-      <aside className="relative z-10 mt-10 md:mt-0 md:absolute md:left-3 md:ml-4 flex justify-center md:justify-start w-full md:w-auto">
+      <aside className="relative z-10 mt-10 md:mt-0 md:absolute md:left-3 md:ml-6 lg:ml-8 flex justify-center md:justify-start w-full md:w-auto">
         <DataCard
           width={270}
           height={270}
@@ -86,7 +86,7 @@ export default function HomePage() {
             </div>
           }
           content={
-            <div className="flex flex-col gap-1 text-white text-sm">
+            <div className="flex flex-col gap-1 text-white text-sm overflow-auto max-h-[200px] md:max-h-[250px]">
               <p>
                 Les métriques d’attractivité et les flux d’investissement
                 convergent vers une réalité : le vrai potentiel se mesure dans
@@ -108,7 +108,7 @@ export default function HomePage() {
             <span className="text-sm font-medium text-black">Comprendre</span>
           }
           modalContent={
-            <div className="flex flex-col gap-2 text-white text-sm">
+            <div className="flex flex-col gap-2 text-white text-sm overflow-auto max-h-[400px] md:max-h-[450px]">
               <p>
                 Potentiel latent détecté : chaque flux, chaque indicateur montre
                 que votre territoire est sous-évalué.
@@ -127,7 +127,7 @@ export default function HomePage() {
       </aside>
 
       {/* SideCard collée à droite */}
-      <aside className="relative z-10 mt-10 md:mt-0 md:absolute md:right-3 md:mr-4 flex justify-center md:justify-end w-full md:w-auto">
+      <aside className="relative z-10 mt-10 md:mt-0 md:absolute md:right-3 md:mr-6 lg:mr-8 flex justify-center md:justify-end w-full md:w-auto">
         <SideCard
           imageSrc="/zyy.png"
           title="Zy recherche un financement orienté workspace & Workflow"
