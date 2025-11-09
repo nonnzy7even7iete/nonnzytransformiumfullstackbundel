@@ -95,11 +95,11 @@ export default function HomePage() {
                 <span className="text-blue-300">Vision partager</span>
               </p>
               <p>
-                Revenu mensuel :{" "}
-                <span className="text-green-300">420 000 €</span>
+                Les chiffres sont là. Les investisseurs arrivent. La question,
+                c’est : serez-vous prêts ?
               </p>
               <p>
-                Emplois directs : <span className="text-purple-300">180</span>
+                votre commune entre dans une zone d’attractivité stratégique.
               </p>
             </div>
           }
