@@ -72,7 +72,7 @@ export default function HomePage() {
       </div>
 
       {/* DataCard flottante à gauche */}
-      <aside className="relative z-10 mt-10 md:mt-0 flex justify-center md:justify-start w-full md:w-auto">
+      <aside className="relative z-10 mt-10 md:mt-0 md:absolute md:left-3 md:ml-4 flex justify-center md:justify-start w-full md:w-auto">
         <DataCard
           width={270}
           height={270}
@@ -127,7 +127,7 @@ export default function HomePage() {
       </aside>
 
       {/* SideCard collée à droite */}
-      <aside className="relative z-10 mt-10 md:mt-0 flex justify-center md:justify-end w-full md:w-auto">
+      <aside className="relative z-10 mt-10 md:mt-0 md:absolute md:right-3 md:mr-4 flex justify-center md:justify-end w-full md:w-auto">
         <SideCard
           imageSrc="/zyy.png"
           title="Zy recherche un financement orienté workspace & Workflow"
