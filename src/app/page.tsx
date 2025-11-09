@@ -75,7 +75,7 @@ export default function HomePage() {
       <aside className="relative z-10 mt-10 md:mt-0 md:absolute md:left-[3px] flex justify-center md:justify-start">
         <DataCard
           width={270}
-          height={370}
+          height={270}
           title={
             <div className="flex items-center justify-center gap-2 text-white">
               <Info className="w-4 h-4 text-blue-400" />
