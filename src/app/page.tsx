@@ -8,7 +8,7 @@ import Loader from "@/components/Loader";
 import { BackgroundRippleEffect } from "@/components/ui/BackgroundRippleEffect";
 import { TextHoverEffect } from "@/components/ui/TextHoverEffect";
 import SideCard from "@/components/SideCard";
-import DataCard from "@/components/DataCard"; // version flexible et animée
+import DataCard from "@/components/DataCard";
 import { Info } from "lucide-react";
 
 export default function HomePage() {
@@ -72,7 +72,7 @@ export default function HomePage() {
       </div>
 
       {/* DataCard flottante à gauche */}
-      <aside className="relative z-10 mt-10 md:mt-0 md:absolute md:left-[3px] flex justify-center md:justify-start">
+      <aside className="relative z-10 mt-10 md:mt-0 flex justify-center md:justify-start w-full md:w-auto">
         <DataCard
           width={270}
           height={270}
@@ -81,7 +81,7 @@ export default function HomePage() {
               <Info className="w-4 h-4 text-blue-400" />
               <span className="font-semibold">
                 Data-driven growth : chaque flux, chaque métrique confirme le
-                potentiel d anyama{" "}
+                potentiel d'Anyama
               </span>
             </div>
           }
@@ -90,7 +90,7 @@ export default function HomePage() {
               <p>
                 Les métriques d’attractivité et les flux d’investissement
                 convergent vers une réalité : le vrai potentiel se mesure dans
-                ce qui reste à révéler.Anyama dispose d’un avantage strategique
+                ce qui reste à révéler. Anyama dispose d’un avantage stratégique
                 encore invisible à la majorité des acteurs. La data ne ment pas
                 — la question, c’est qui l’exploitera en premier. :{" "}
                 <span className="text-blue-300">Vision partager</span>
@@ -100,7 +100,7 @@ export default function HomePage() {
                 c’est : serez-vous prêts ?
               </p>
               <p>
-                votre commune entre dans une zone d’attractivité stratégique.
+                Votre commune entre dans une zone d’attractivité stratégique.
               </p>
             </div>
           }
@@ -123,11 +123,12 @@ export default function HomePage() {
               </p>
             </div>
           }
+          className="w-full max-w-[270px] min-h-[270px] overflow-auto"
         />
       </aside>
 
       {/* SideCard collée à droite */}
-      <aside className="relative z-10 mt-10 md:mt-0 md:absolute md:right-[3px] flex justify-center md:justify-end">
+      <aside className="relative z-10 mt-10 md:mt-0 flex justify-center md:justify-end w-full md:w-auto">
         <SideCard
           imageSrc="/zyy.png"
           title="Zy recherche un financement orienté workspace & Workflow"
