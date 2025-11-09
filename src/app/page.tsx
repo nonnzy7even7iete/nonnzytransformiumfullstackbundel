@@ -80,7 +80,8 @@ export default function HomePage() {
             <div className="flex items-center justify-center gap-2 text-white">
               <Info className="w-4 h-4 text-blue-400" />
               <span className="font-semibold">
-                Data la commune, mais de révéler son potentiel
+                Data-driven growth : chaque flux, chaque métrique confirme le
+                potentiel d anyama{" "}
               </span>
             </div>
           }
@@ -88,10 +89,10 @@ export default function HomePage() {
             <div className="flex flex-col gap-1 text-white text-sm">
               <p>
                 Les métriques d’attractivité et les flux d’investissement
-                convergent vers une réalité : Anyama dispose d’un avantage
-                concurrentiel encore invisible à la majorité des acteurs. La
-                data ne ment pas — la question, c’est qui l’exploitera en
-                premier. :{" "}
+                convergent vers une réalité : le vrai potentiel se mesure dans
+                ce qui reste à révéler.Anyama dispose d’un avantage strategique
+                encore invisible à la majorité des acteurs. La data ne ment pas
+                — la question, c’est qui l’exploitera en premier. :{" "}
                 <span className="text-blue-300">Vision partager</span>
               </p>
               <p>
@@ -109,8 +110,8 @@ export default function HomePage() {
           modalContent={
             <div className="flex flex-col gap-2 text-white text-sm">
               <p>
-                📊 Ces données représentent les performances hebdomadaires du
-                centre, analysées automatiquement via le module interne.
+                Potentiel latent détecté : chaque flux, chaque indicateur montre
+                que votre territoire est sous-évalué.
               </p>
               <p>
                 💼 Le revenu mensuel correspond à la moyenne glissante des 4
