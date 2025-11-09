@@ -8,7 +8,7 @@ import Loader from "@/components/Loader";
 import { BackgroundRippleEffect } from "@/components/ui/BackgroundRippleEffect";
 import { TextHoverEffect } from "@/components/ui/TextHoverEffect";
 import SideCard from "@/components/SideCard";
-import DataCard from "@/components/DataCard"; // composant dans components
+import DataCard from "@/components/DataCard"; // composant animé avec modal
 
 export default function HomePage() {
   const { data: session, status } = useSession();
@@ -72,7 +72,18 @@ export default function HomePage() {
 
       {/* DataCard flottante à gauche */}
       <aside className="relative z-10 mt-10 md:mt-0 md:absolute md:left-[3px] flex justify-center md:justify-start">
-        <DataCard />
+        {/* Ici on intègre la version animée et interactive */}
+        <DataCard
+          width={270}
+          height={270}
+          title="Statistiques du Centre"
+          info={{
+            visiteurs: 7500,
+            revenuMois: "420 000 €",
+            emploisDirects: 180,
+          }}
+          buttonText="Comprendre"
+        />
       </aside>
 
       {/* SideCard collée à droite */}
