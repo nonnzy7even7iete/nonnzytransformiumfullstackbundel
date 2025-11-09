@@ -8,7 +8,7 @@ import Loader from "@/components/Loader";
 import { BackgroundRippleEffect } from "@/components/ui/BackgroundRippleEffect";
 import { TextHoverEffect } from "@/components/ui/TextHoverEffect";
 import SideCard from "@/components/SideCard";
-import DataCard from "@/components/DataCard";
+import DataCard from "@/components/DataCard"; // version flexible et animée
 import { Info } from "lucide-react";
 
 export default function HomePage() {
@@ -87,25 +87,19 @@ export default function HomePage() {
           content={
             <div className="flex flex-col gap-1 text-white text-sm">
               <p>
-                <span className="inline-block px-2 py-1 rounded-md bg-gradient-to-r from-green-700 to-orange-500 animate-[gradient_3s_ease_infinite]">
-                  Badge
-                </span>{" "}
                 Les métriques d’attractivité et les flux d’investissement
                 convergent vers une réalité : Anyama dispose d’un avantage
-                concurrentiel encore invisible à la majorité des acteurs.
+                concurrentiel encore invisible à la majorité des acteurs. La
+                data ne ment pas — la question, c’est qui l’exploitera en
+                premier. :{" "}
+                <span className="text-blue-300">Vision partager</span>
               </p>
               <p>
-                <span className="inline-block px-2 py-1 rounded-md bg-gradient-to-r from-green-700 to-white animate-[gradient_3s_ease_infinite]">
-                  Badge
-                </span>{" "}
                 Les chiffres sont là. Les investisseurs arrivent. La question,
                 c’est : serez-vous prêts ?
               </p>
               <p>
-                <span className="inline-block px-2 py-1 rounded-md bg-gradient-to-r from-orange-500 to-white animate-[gradient_3s_ease_infinite]">
-                  Badge
-                </span>{" "}
-                Votre commune entre dans une zone d’attractivité stratégique.
+                votre commune entre dans une zone d’attractivité stratégique.
               </p>
             </div>
           }
