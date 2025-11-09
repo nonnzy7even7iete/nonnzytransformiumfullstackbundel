@@ -79,14 +79,20 @@ export default function HomePage() {
           title={
             <div className="flex items-center justify-center gap-2 text-white">
               <Info className="w-4 h-4 text-blue-400" />
-              <span className="font-semibold">Statistiques du Centre</span>
+              <span className="font-semibold">
+                Data la commune, mais de révéler son potentiel
+              </span>
             </div>
           }
           content={
             <div className="flex flex-col gap-1 text-white text-sm">
               <p>
-                Visiteurs hebdomadaires :{" "}
-                <span className="text-blue-300">7 500</span>
+                Les métriques d’attractivité et les flux d’investissement
+                convergent vers une réalité : Anyama dispose d’un avantage
+                concurrentiel encore invisible à la majorité des acteurs. La
+                data ne ment pas — la question, c’est qui l’exploitera en
+                premier. :{" "}
+                <span className="text-blue-300">Vision partager</span>
               </p>
               <p>
                 Revenu mensuel :{" "}
