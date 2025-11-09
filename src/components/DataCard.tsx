@@ -31,7 +31,8 @@ export default function DataCard({
       <Card
         className={cn(
           "relative flex flex-col items-center justify-start p-4 gap-4",
-          "bg-black/30 backdrop-blur-xl border border-white/10 rounded-2xl shadow-lg"
+          "bg-black/30 backdrop-blur-xl border border-white/10 rounded-2xl shadow-lg",
+          "w-full max-w-[270px] min-h-[270px]"
         )}
         style={{ width, height }}
       >
