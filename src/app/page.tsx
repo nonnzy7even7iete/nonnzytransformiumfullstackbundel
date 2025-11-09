@@ -22,15 +22,15 @@ export default function HomePage() {
   if (status === "loading" || status === "authenticated") return <Loader />;
 
   return (
-    <main className="relative flex flex-col md:flex-row items-center justify-center min-h-screen bg-gradient-to-br from-zinc-700 via-black to-zinc-900 overflow-hidden px-4 md:px-8 py-10 space-y-10 md:space-y-0">
+    <main className="relative flex flex-col md:flex-row items-center justify-center min-h-screen bg-gradient-to-br from-zinc-700 via-black to-zinc-900 overflow-hidden px-4 md:px-8 py-10">
       {/* Fond dynamique */}
       <div className="absolute inset-0 z-0">
         <BackgroundRippleEffect rows={8} cols={27} cellSize={56} />
       </div>
 
       {/* Bloc principal centré */}
-      <div className="relative z-10 flex flex-col items-center justify-center text-center w-full md:w-[460px] max-w-[90vw] mt-8 md:mt-0 space-y-6">
-        <div className="w-full flex justify-center">
+      <div className="relative z-10 flex flex-col items-center justify-center text-center w-full md:w-[460px] max-w-[90vw] mt-8 md:mt-0">
+        <div className="w-full flex justify-center mb-6">
           <TextHoverEffect
             text="Nonnzytransformium"
             duration={0.6}
@@ -42,15 +42,15 @@ export default function HomePage() {
           />
         </div>
 
-        <div className="w-full p-10 bg-black/40 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl space-y-6">
+        <div className="w-full p-10 bg-black/40 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl">
           <h1
-            className="font-extrabold bg-gradient-to-r from-green-700 to-blue-400 bg-clip-text text-transparent drop-shadow-lg leading-tight text-center"
+            className="font-extrabold bg-gradient-to-r from-green-700 to-blue-400 bg-clip-text text-transparent mb-4 drop-shadow-lg leading-tight text-center"
             style={{ fontSize: "clamp(2.5rem, 7vw, 4rem)" }}
           >
             Nonnzytr
           </h1>
 
-          <p className="text-white/70 text-base">
+          <p className="text-white/70 text-base mb-8">
             Votre aventure commence ici ✨
           </p>
 
@@ -65,14 +65,14 @@ export default function HomePage() {
             Continuer avec Google
           </button>
 
-          <p className="text-white/50 text-xs italic">
+          <p className="text-white/50 text-xs mt-6 italic">
             Connexion sécurisée via Google requise pour accéder au Workflow.
           </p>
         </div>
       </div>
 
       {/* DataCard flottante à gauche */}
-      <aside className="relative z-10 mt-10 mb-10 md:mt-0 md:mb-0 md:absolute md:left-3 md:ml-4 flex justify-center md:justify-start w-full md:w-auto">
+      <aside className="relative z-10 mt-10 md:mt-0 md:absolute md:left-3 md:ml-4 flex justify-center md:justify-start w-full md:w-auto">
         <DataCard
           width={270}
           height={270}
@@ -86,7 +86,7 @@ export default function HomePage() {
             </div>
           }
           content={
-            <div className="flex flex-col gap-2 text-white text-sm">
+            <div className="flex flex-col gap-1 text-white text-sm">
               <p>
                 Les métriques d’attractivité et les flux d’investissement
                 convergent vers une réalité : le vrai potentiel se mesure dans
@@ -127,7 +127,7 @@ export default function HomePage() {
       </aside>
 
       {/* SideCard collée à droite */}
-      <aside className="relative z-10 mt-10 mb-10 md:mt-0 md:mb-0 md:absolute md:right-3 md:mr-4 flex justify-center md:justify-end w-full md:w-auto">
+      <aside className="relative z-10 mt-10 md:mt-0 md:absolute md:right-3 md:mr-4 flex justify-center md:justify-end w-full md:w-auto">
         <SideCard
           imageSrc="/zyy.png"
           title="Zy recherche un financement orienté workspace & Workflow"
