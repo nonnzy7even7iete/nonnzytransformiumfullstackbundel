@@ -72,11 +72,7 @@ export default function HomePage() {
 
       {/* DataCard flottante à gauche */}
       <aside className="relative z-10 mt-10 md:mt-0 md:absolute md:left-[3px] flex justify-center md:justify-start">
-        <DataCard
-          title="Exemple de data driving"
-          description="Analyse prédictive du centre commercial et flux attendu."
-          location="Anyama, Abidjan, Côte d'Ivoire"
-        />
+        <DataCard />
       </aside>
 
       {/* SideCard collée à droite */}
