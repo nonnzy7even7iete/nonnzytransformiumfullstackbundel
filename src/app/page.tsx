@@ -98,7 +98,7 @@ export default function HomePage() {
             </div>
           }
           buttonContent={
-            <span className="text-sm font-medium text-white">Comprendre</span>
+            <span className="text-sm font-medium text-black">Comprendre</span>
           }
           modalContent={
             <div className="flex flex-col gap-2 text-white text-sm">
