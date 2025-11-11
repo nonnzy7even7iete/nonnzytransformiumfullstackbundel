@@ -22,14 +22,14 @@ export default function HomePage() {
   if (status === "loading" || status === "authenticated") return <Loader />;
 
   return (
-    <main className="relative flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-zinc-700 via-black to-zinc-900 overflow-hidden px-4 md:px-8 py-10 gap-10 md:gap-0">
+    <main className="relative flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-zinc-700 via-black to-zinc-900 overflow-hidden px-4 md:px-8 py-10 gap-10">
       {/* Fond dynamique */}
       <div className="absolute inset-0 z-0">
         <BackgroundRippleEffect rows={8} cols={27} cellSize={56} />
       </div>
 
       {/* Bloc principal centré */}
-      <div className="relative z-10 flex flex-col items-center justify-center text-center w-full md:w-[460px] max-w-[90vw] mt-8 md:mt-0">
+      <div className="relative z-10 flex flex-col items-center justify-center text-center w-full md:w-[460px] max-w-[90vw] mt-8 md:mt-0 transition-all duration-500">
         <div className="w-full flex justify-center mb-6">
           <TextHoverEffect
             text="Nonnzytransformium"
@@ -71,9 +71,9 @@ export default function HomePage() {
         </div>
       </div>
 
-      {/* DataCard flottante à gauche */}
-      <aside className="relative z-10 flex justify-center md:justify-start w-full md:w-auto md:absolute md:left-3 md:ml-6 lg:ml-8">
-        <div className="w-[90vw] md:w-[270px]">
+      {/* DataCard */}
+      <aside className="relative z-10 flex justify-center w-full md:w-auto transition-all duration-500 md:absolute md:left-3 md:ml-6 lg:ml-8">
+        <div className="min-w-[90vw] max-w-full md:w-[270px] transition-all duration-500">
           <DataCard
             width={270}
             height={270}
@@ -109,29 +109,13 @@ export default function HomePage() {
             buttonContent={
               <span className="text-sm font-medium text-black">Comprendre</span>
             }
-            modalContent={
-              <div className="flex flex-col gap-2 text-white text-sm overflow-auto max-h-[400px] md:max-h-[450px]">
-                <p>
-                  Potentiel latent détecté : chaque flux, chaque indicateur
-                  montre que votre territoire est sous-évalué.
-                </p>
-                <p>
-                  💼 Le revenu mensuel correspond à la moyenne glissante des 4
-                  dernières semaines.
-                </p>
-                <p>
-                  👷 Emplois directs inclut les équipes de maintenance et
-                  d’exploitation.
-                </p>
-              </div>
-            }
           />
         </div>
       </aside>
 
-      {/* SideCard collée à droite */}
-      <aside className="relative z-10 flex justify-center md:justify-end w-full md:w-auto md:absolute md:right-3 md:mr-6 lg:mr-8">
-        <div className="w-[90vw] md:w-[270px]">
+      {/* SideCard */}
+      <aside className="relative z-10 flex justify-center w-full md:w-auto transition-all duration-500 md:absolute md:right-3 md:mr-6 lg:mr-8">
+        <div className="min-w-[90vw] max-w-full md:w-[270px] transition-all duration-500">
           <SideCard
             imageSrc="/zyy.png"
             title="Zy recherche un financement orienté workspace & Workflow"
