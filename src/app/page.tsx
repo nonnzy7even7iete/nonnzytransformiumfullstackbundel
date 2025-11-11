@@ -22,14 +22,14 @@ export default function HomePage() {
   if (status === "loading" || status === "authenticated") return <Loader />;
 
   return (
-    <main className="relative flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-zinc-700 via-black to-zinc-900 overflow-hidden px-4 md:px-8 py-10 gap-10">
+    <main className="relative flex flex-col md:flex-row items-center justify-center min-h-screen bg-gradient-to-br from-zinc-700 via-black to-zinc-900 overflow-hidden px-4 md:px-8 py-10">
       {/* Fond dynamique */}
       <div className="absolute inset-0 z-0">
         <BackgroundRippleEffect rows={8} cols={27} cellSize={56} />
       </div>
 
       {/* Bloc principal centré */}
-      <div className="relative z-10 flex flex-col items-center justify-center text-center w-full md:w-[460px] max-w-[90vw] mt-8 md:mt-0 transition-all duration-500">
+      <div className="relative z-10 flex flex-col items-center justify-center text-center w-full md:w-[460px] max-w-[90vw] mt-8 md:mt-0">
         <div className="w-full flex justify-center mb-6">
           <TextHoverEffect
             text="Nonnzytransformium"
@@ -71,58 +71,69 @@ export default function HomePage() {
         </div>
       </div>
 
-      {/* DataCard */}
-      <aside className="relative z-10 flex justify-center w-full md:w-auto transition-all duration-500 md:absolute md:left-3 md:ml-6 lg:ml-8">
-        <div className="min-w-[90vw] max-w-full md:w-[270px] transition-all duration-500">
-          <DataCard
-            width={270}
-            height={270}
-            title={
-              <div className="flex items-center justify-center gap-2 text-white">
-                <Info className="w-4 h-4 text-blue-400" />
-                <span className="font-semibold">
-                  Data-driven growth : chaque flux, chaque métrique confirme le
-                  potentiel d'Anyama
-                </span>
-              </div>
-            }
-            content={
-              <div className="flex flex-col gap-1 text-white text-sm overflow-auto max-h-[200px] md:max-h-[250px]">
-                <p>
-                  Les métriques d’attractivité et les flux d’investissement
-                  convergent vers une réalité : le vrai potentiel se mesure dans
-                  ce qui reste à révéler. Anyama dispose d’un avantage
-                  stratégique encore invisible à la majorité des acteurs. La
-                  data ne ment pas — la question, c’est qui l’exploitera en
-                  premier. :{" "}
-                  <span className="text-blue-300">Vision partagée</span>
-                </p>
-                <p>
-                  Les chiffres sont là. Les investisseurs arrivent. La question,
-                  c’est : serez-vous prêts ?
-                </p>
-                <p>
-                  Votre commune entre dans une zone d’attractivité stratégique.
-                </p>
-              </div>
-            }
-            buttonContent={
-              <span className="text-sm font-medium text-black">Comprendre</span>
-            }
-          />
-        </div>
+      {/* DataCard flottante à gauche */}
+      <aside className="relative z-10 mt-10 md:mt-0 md:absolute md:left-3 md:ml-6 lg:ml-8 flex justify-center md:justify-start w-full md:w-auto">
+        <DataCard
+          width={270}
+          height={270}
+          title={
+            <div className="flex items-center justify-center gap-2 text-white">
+              <Info className="w-4 h-4 text-blue-400" />
+              <span className="font-semibold">
+                Data-driven growth : chaque flux, chaque métrique confirme le
+                potentiel d'Anyama
+              </span>
+            </div>
+          }
+          content={
+            <div className="flex flex-col gap-1 text-white text-sm overflow-auto max-h-[200px] md:max-h-[250px]">
+              <p>
+                Les métriques d’attractivité et les flux d’investissement
+                convergent vers une réalité : le vrai potentiel se mesure dans
+                ce qui reste à révéler. Anyama dispose d’un avantage stratégique
+                encore invisible à la majorité des acteurs. La data ne ment pas
+                — la question, c’est qui l’exploitera en premier. :{" "}
+                <span className="text-blue-300">Vision partager</span>
+              </p>
+              <p>
+                Les chiffres sont là. Les investisseurs arrivent. La question,
+                c’est : serez-vous prêts ?
+              </p>
+              <p>
+                Votre commune entre dans une zone d’attractivité stratégique.
+              </p>
+            </div>
+          }
+          buttonContent={
+            <span className="text-sm font-medium text-black">Comprendre</span>
+          }
+          modalContent={
+            <div className="flex flex-col gap-2 text-white text-sm overflow-auto max-h-[400px] md:max-h-[450px]">
+              <p>
+                Potentiel latent détecté : chaque flux, chaque indicateur montre
+                que votre territoire est sous-évalué.
+              </p>
+              <p>
+                💼 Le revenu mensuel correspond à la moyenne glissante des 4
+                dernières semaines.
+              </p>
+              <p>
+                👷 Emplois directs inclut les équipes de maintenance et
+                d’exploitation.
+              </p>
+            </div>
+          }
+        />
       </aside>
 
-      {/* SideCard */}
-      <aside className="relative z-10 flex justify-center w-full md:w-auto transition-all duration-500 md:absolute md:right-3 md:mr-6 lg:mr-8">
-        <div className="min-w-[90vw] max-w-full md:w-[270px] transition-all duration-500">
-          <SideCard
-            imageSrc="/zyy.png"
-            title="Zy recherche un financement orienté workspace & Workflow"
-            description="Exécution de la logique métier et serveur en burn out."
-            location="Anyama, Abidjan, Côte d'Ivoire"
-          />
-        </div>
+      {/* SideCard collée à droite */}
+      <aside className="relative z-10 mt-10 md:mt-0 md:absolute md:right-3 md:mr-6 lg:mr-8 flex justify-center md:justify-end w-full md:w-auto">
+        <SideCard
+          imageSrc="/zyy.png"
+          title="Zy recherche un financement orienté workspace & Workflow"
+          description="Exécution de la logique métier et serveur en burn out."
+          location="Anyama, Abidjan, Côte d'Ivoire"
+        />
       </aside>
     </main>
   );
