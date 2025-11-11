@@ -43,8 +43,14 @@ export default function HomePage() {
           className="w-full p-10 bg-black/40 backdrop-blur-xl border border-white/10 
           rounded-2xl shadow-2xl min-w-[300px] mb-10 sm:mb-12 md:mb-6 lg:mb-8"
         >
-          {/* Titre remplacé par TextHoverEffect */}
-          <TextHoverEffect text="Nonnzytr" duration={0.6} />
+          {/* Titre remplacé par TextHoverEffect agrandi */}
+          <TextHoverEffect
+            text="Nonnzytr"
+            duration={0.6}
+            style={{
+              fontSize: "clamp(4rem, 10vw, 6rem)", // taille agrandie
+            }}
+          />
 
           <p className="text-white/70 text-base mb-8">
             Votre aventure commence ici ✨
