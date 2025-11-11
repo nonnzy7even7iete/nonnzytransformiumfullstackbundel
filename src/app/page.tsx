@@ -90,7 +90,7 @@ export default function HomePage() {
         mb-10 sm:mb-12 md:mb-6 lg:mb-8"
       >
         <DataCard
-          width={270}
+          width={300}
           height={270}
           title={
             <div className="flex items-center justify-center gap-2 text-white">
