@@ -38,30 +38,30 @@ export default function HomePage() {
         w-full md:w-[460px] max-w-[90vw] min-w-[300px] mt-8 md:mt-0 
         mb-10 sm:mb-12 md:mb-6 lg:mb-8"
       >
+        {/* Titre avec effet de survol */}
         <div className="w-full flex justify-center mb-6">
           <TextHoverEffect
-            text="Nonnzytransformium"
+            text="Nonnzytr"
             duration={0.6}
             style={{
-              height: "clamp(200px, 20vw, 300px)",
-              width: "clamp(280px, 90vw, 1200px)",
-              fontSize: "clamp(2.8rem, 8vw, 6.5rem)",
+              height: "clamp(80px, 10vw, 120px)",
+              width: "100%",
+              fontSize: "clamp(2.5rem, 7vw, 4rem)",
+              fontWeight: 800,
+              textAlign: "center",
+              background: "linear-gradient(to right, #16a34a, #3b82f6)",
+              WebkitBackgroundClip: "text",
+              color: "transparent",
+              textShadow: "0 2px 4px rgba(0,0,0,0.5)",
             }}
           />
         </div>
 
+        {/* Bloc de connexion */}
         <div
           className="w-full p-10 bg-black/40 backdrop-blur-xl border border-white/10 
           rounded-2xl shadow-2xl min-w-[300px] mb-10 sm:mb-12 md:mb-6 lg:mb-8"
         >
-          <h1
-            className="font-extrabold bg-gradient-to-r from-green-700 to-blue-400 
-            bg-clip-text text-transparent mb-4 drop-shadow-lg leading-tight text-center"
-            style={{ fontSize: "clamp(2.5rem, 7vw, 4rem)" }}
-          >
-            Nonnzytr
-          </h1>
-
           <p className="text-white/70 text-base mb-8">
             Votre aventure commence ici ✨
           </p>
