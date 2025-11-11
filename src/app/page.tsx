@@ -35,7 +35,8 @@ export default function HomePage() {
       {/* Bloc principal centré */}
       <div
         className="relative z-10 flex flex-col items-center justify-center text-center 
-        w-full md:w-[460px] max-w-[90vw] min-w-[300px] mt-8 md:mt-0 mb-10"
+        w-full md:w-[460px] max-w-[90vw] min-w-[300px] mt-8 md:mt-0 
+        mb-10 sm:mb-12 md:mb-6 lg:mb-8"
       >
         <div className="w-full flex justify-center mb-6">
           <TextHoverEffect
@@ -51,7 +52,7 @@ export default function HomePage() {
 
         <div
           className="w-full p-10 bg-black/40 backdrop-blur-xl border border-white/10 
-          rounded-2xl shadow-2xl min-w-[300px] mb-10"
+          rounded-2xl shadow-2xl min-w-[300px] mb-10 sm:mb-12 md:mb-6 lg:mb-8"
         >
           <h1
             className="font-extrabold bg-gradient-to-r from-green-700 to-blue-400 
@@ -85,7 +86,8 @@ export default function HomePage() {
       {/* DataCard flottante à gauche */}
       <aside
         className="relative z-10 mt-10 md:mt-0 md:absolute md:left-3 md:ml-6 lg:ml-8 
-        flex justify-center md:justify-start w-full md:w-auto min-w-[300px] mb-10"
+        flex justify-center md:justify-start w-full md:w-auto min-w-[300px] 
+        mb-10 sm:mb-12 md:mb-6 lg:mb-8"
       >
         <DataCard
           width={270}
@@ -143,7 +145,8 @@ export default function HomePage() {
       {/* SideCard collée à droite */}
       <aside
         className="relative z-10 mt-10 md:mt-0 md:absolute md:right-3 md:mr-6 lg:mr-8 
-        flex justify-center md:justify-end w-full md:w-auto min-w-[300px]"
+        flex justify-center md:justify-end w-full md:w-auto min-w-[300px] 
+        mb-10 sm:mb-12 md:mb-6 lg:mb-8"
       >
         <SideCard
           imageSrc="/zyy.png"
