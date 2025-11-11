@@ -25,8 +25,7 @@ export default function HomePage() {
     <main
       className="relative flex flex-col md:flex-row items-center justify-center 
       min-h-screen bg-gradient-to-br from-zinc-700 via-black to-zinc-900 
-      overflow-hidden px-4 md:px-8 py-10 
-      space-y-10 md:space-y-0 md:space-x-10"
+      overflow-hidden px-4 md:px-8 py-10"
     >
       {/* Fond dynamique */}
       <div className="absolute inset-0 z-0">
@@ -36,7 +35,7 @@ export default function HomePage() {
       {/* Bloc principal centré */}
       <div
         className="relative z-10 flex flex-col items-center justify-center text-center 
-        w-full md:w-[460px] max-w-[90vw] min-w-[300px] mt-8 md:mt-0"
+        w-full md:w-[460px] max-w-[90vw] min-w-[300px] mt-8 md:mt-0 mb-10"
       >
         <div className="w-full flex justify-center mb-6">
           <TextHoverEffect
@@ -52,17 +51,17 @@ export default function HomePage() {
 
         <div
           className="w-full p-10 bg-black/40 backdrop-blur-xl border border-white/10 
-          rounded-2xl shadow-2xl space-y-6 min-w-[300px]"
+          rounded-2xl shadow-2xl min-w-[300px] mb-10"
         >
           <h1
             className="font-extrabold bg-gradient-to-r from-green-700 to-blue-400 
-            bg-clip-text text-transparent drop-shadow-lg leading-tight text-center"
+            bg-clip-text text-transparent mb-4 drop-shadow-lg leading-tight text-center"
             style={{ fontSize: "clamp(2.5rem, 7vw, 4rem)" }}
           >
             Nonnzytr
           </h1>
 
-          <p className="text-white/70 text-base">
+          <p className="text-white/70 text-base mb-8">
             Votre aventure commence ici ✨
           </p>
 
@@ -71,7 +70,7 @@ export default function HomePage() {
             className="w-full py-3 flex items-center justify-center gap-2 
             bg-white text-black font-semibold rounded-xl shadow-md
             hover:shadow-xl hover:scale-105 active:scale-95 
-            transition-all duration-300"
+            transition-all duration-300 mb-6"
           >
             <FcGoogle className="text-2xl" />
             Continuer avec Google
@@ -86,7 +85,7 @@ export default function HomePage() {
       {/* DataCard flottante à gauche */}
       <aside
         className="relative z-10 mt-10 md:mt-0 md:absolute md:left-3 md:ml-6 lg:ml-8 
-        flex justify-center md:justify-start w-full md:w-auto min-w-[300px]"
+        flex justify-center md:justify-start w-full md:w-auto min-w-[300px] mb-10"
       >
         <DataCard
           width={270}
