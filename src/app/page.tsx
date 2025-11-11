@@ -85,7 +85,7 @@ export default function HomePage() {
 
       {/* DataCard flottante à gauche */}
       <aside
-        className="relative z-10 mt-10 md:mt-0 md:absolute md:left-3 md:ml-6 lg:ml-8 
+        className="relative z-11 mt-10 md:mt-0 md:absolute md:left-3 md:ml-6 lg:ml-8 
         flex justify-center md:justify-start w-full md:w-auto min-w-[300px] 
         mb-10 sm:mb-12 md:mb-6 lg:mb-8"
       >
