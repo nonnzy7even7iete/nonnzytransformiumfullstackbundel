@@ -48,7 +48,11 @@ export default function HomePage() {
             text="Nonnzytr"
             duration={0.6}
             style={{
-              fontSize: "clamp(4rem, 10vw, 6rem)", // taille agrandie
+              width: "min(100%, 1000px)", // largeur max mais responsive
+              minWidth: "300px", // largeur minimum
+              height: "min(20vw, 400px)", // hauteur responsive avec max
+              minHeight: "300px", // hauteur minimum
+              fontSize: "clamp(7rem, 10vw, 6rem)", // taille du texte
             }}
           />
 
