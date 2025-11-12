@@ -35,7 +35,7 @@ export default function HomePage() {
       {/* Bloc principal centré */}
       <div
         className="relative z-10 flex flex-col items-center justify-center text-center 
-        w-full md:w-[460px] max-w-[90vw] min-w-[300px] mt-8 md:mt-0 
+        w-full md:w-[460px] max-w-[90vw] min-w-[300px] mt-8 md:mt-10 
         mb-10 sm:mb-12 md:mb-6 lg:mb-8"
       >
         {/* Bloc de connexion */}
