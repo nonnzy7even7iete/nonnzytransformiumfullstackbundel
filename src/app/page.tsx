@@ -52,7 +52,7 @@ export default function HomePage() {
               minWidth: "300px", // largeur minimum
               height: "min(20vw, 400px)", // hauteur responsive avec max
               minHeight: "300px", // hauteur minimum
-              fontSize: "clamp(17rem, 37vw, 67rem)", // taille du texte
+              fontSize: "clamp(4rem, 10vw, 6rem)", // taille du texte
             }}
           />
 
