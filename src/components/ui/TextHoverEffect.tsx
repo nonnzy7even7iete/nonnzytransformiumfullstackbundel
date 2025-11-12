@@ -30,7 +30,7 @@ export const TextHoverEffect = ({
     <svg
       ref={svgRef}
       width={style?.width || "100%"}
-      height={style?.height || "200px"} // plus haut pour respirer
+      height={style?.height || "400px"} // plus haut pour respirer
       viewBox="0 0 1800 400" // <-- élargi pour caser tout le texte
       preserveAspectRatio="xMidYMid meet" // texte centré et non tronqué
       xmlns="http://www.w3.org/2000/svg"
