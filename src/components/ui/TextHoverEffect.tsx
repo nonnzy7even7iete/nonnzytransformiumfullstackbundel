@@ -26,15 +26,24 @@ export const TextHoverEffect = ({
     return () => clearInterval(interval);
   }, []);
 
+  // Largeur et hauteur dynamiques
+  const width = style?.width || "100%";
+  const height = style?.height || "100%";
+
   return (
     <svg
       ref={svgRef}
-      width={style?.width || "100%"}
-      height={style?.height || "400px"} // plus haut pour respirer
-      viewBox="0 0 1800 400" // <-- élargi pour caser tout le texte
-      preserveAspectRatio="xMidYMid meet" // texte centré et non tronqué
+      width={width}
+      height={height}
+      viewBox="0 0 1800 600" // plus grand pour plus de place
+      preserveAspectRatio="xMidYMid meet"
       xmlns="http://www.w3.org/2000/svg"
       className="select-none"
+      style={{
+        minWidth: style?.minWidth || "300px",
+        minHeight: style?.minHeight || "300px",
+        ...style,
+      }}
     >
       <defs>
         {/* Dégradé animé */}
@@ -91,7 +100,10 @@ export const TextHoverEffect = ({
         strokeWidth="1.5"
         stroke="url(#textGradient)"
         mask="url(#textMask)"
-        className="fill-transparent font-[helvetica] text-7xl sm:text-8xl md:text-9xl font-extrabold"
+        className="fill-transparent font-[helvetica] font-extrabold"
+        style={{
+          fontSize: style?.fontSize || "clamp(4rem, 10vw, 7rem)",
+        }}
         initial={{ strokeDasharray: 3000, strokeDashoffset: 3000 }}
         animate={{ strokeDashoffset: 0 }}
         transition={{ duration: 3, ease: "easeInOut" }}
