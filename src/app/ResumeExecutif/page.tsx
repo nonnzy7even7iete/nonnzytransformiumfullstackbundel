@@ -1,33 +1,24 @@
 "use client";
 
 import NavbarFront from "@/components/NavbarFront";
-import { WorldMap } from "@/components/WorldMap"; // adapte le chemin si nécessaire
 
 export default function ResumeExecutifPage() {
-  const dots = [
-    {
-      start: { lat: 48.8566, lng: 2.3522 },
-      end: { lat: 40.7128, lng: -74.006 },
-    },
-    {
-      start: { lat: 35.6895, lng: 139.6917 },
-      end: { lat: 51.5074, lng: -0.1278 },
-    },
-  ];
-
   return (
     <>
-      <NavbarFront /> {/* Navbar en haut */}
-      <main className="min-h-screen flex flex-col items-center justify-center bg-black text-white p-6">
-        <h1 className="text-4xl font-bold mb-6">Résumé Exécutif</h1>
-        <p className="text-gray-300 text-center max-w-xl mb-8">
-          Cette page est accessible sans authentification.
-        </p>
+      <NavbarFront />
 
-        {/* Globe / Carte interactive */}
-        <div className="w-full max-w-7xl">
-          <WorldMap dots={dots} lineColor="#0ea5e9" />
+      <main className="min-h-screen bg-black text-white px-6 py-20 flex flex-col items-center">
+        <div className="max-w-3xl text-center mb-16">
+          <h1 className="text-5xl font-extrabold tracking-tight mb-4 text-white/90">
+            Résumé Exécutif
+          </h1>
+
+          <p className="text-lg text-white/60 leading-relaxed">
+            En crous de redaction{" "}
+          </p>
         </div>
+
+        <div className="text-center text-white/50 mt-24 text-sm">© 2025</div>
       </main>
     </>
   );
