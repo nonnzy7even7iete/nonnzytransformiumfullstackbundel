@@ -6,7 +6,7 @@ import { useSession } from "next-auth/react";
 import { FileText, LayoutDashboard } from "lucide-react";
 import { SlArrowDown } from "react-icons/sl";
 
-export default function Navbar() {
+export default function NavbarFront() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
   const { data: session } = useSession();
