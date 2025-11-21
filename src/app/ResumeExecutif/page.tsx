@@ -1,4 +1,4 @@
-import NavbarFront from "../components/NavbarFront"; // ajuste le chemin si nécessaire
+import NavbarFront from "@/components/NavbarFront"; // ajuste le chemin si nécessaire
 
 export default function ResumeExecutifPage() {
   return (
