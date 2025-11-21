@@ -147,8 +147,17 @@ export default function HomePage() {
                   d’innovation.
                 </p>
                 <p>
-                  👷“Investir dans la data, c’est éviter des dépenses
-                  évitables.”
+                  La donnée réduit les coûts structurels de l’État (et ce de
+                  façon massive) Les administrations gèrent des millions de
+                  microdécisions quotidiennes. Sans data : Décisions
+                  approximatives → dépenses imprécises → surcoûts →
+                  inefficacités → retards → litiges. Avec la data : Décisions
+                  optimisées → réduction des gaspillages → maîtrise des dépenses
+                  publiques → accélération des services. On parle de milliards
+                  potentiels économisés sur : la logistique l'énergie les achats
+                  publics les fraudes et erreurs les allocations la maintenance
+                  des infrastructures Investir dans la data, ce n’est pas une
+                  dépense : c’est un amortisseur de dépenses futures.
                 </p>
               </div>
             }
