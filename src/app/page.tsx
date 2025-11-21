@@ -135,12 +135,20 @@ export default function HomePage() {
                   montre que votre territoire est sous-évalué.
                 </p>
                 <p>
-                  💼 Le revenu mensuel correspond à la moyenne glissante des 4
-                  dernières semaines.
+                  La donnée est le premier moteur de croissance du XXIᵉ siècle
+                  Les économies modernes sont tirées par : la précision des
+                  décisions, la rapidité d’exécution, la capacité à anticiper
+                  les crises plutôt que les subir. Or, tout cela dépend de la
+                  donnée. Un État qui n’investit pas dans la data : avance à
+                  vue, perd du temps, gaspille des ressources, devient dépendant
+                  d’acteurs privés mieux structurés. Un État qui investit dans
+                  la data : gagne en souveraineté, augmente sa productivité
+                  globale, attire davantage d’investissements, devient un moteur
+                  d’innovation.
                 </p>
                 <p>
-                  👷 Emplois directs inclut les équipes de maintenance et
-                  d’exploitation.
+                  👷“Investir dans la data, c’est éviter des dépenses
+                  évitables.”
                 </p>
               </div>
             }
