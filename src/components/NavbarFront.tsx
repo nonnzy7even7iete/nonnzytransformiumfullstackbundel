@@ -35,10 +35,10 @@ export default function Navbar() {
 
   return (
     <>
-      {/* Toggle bouton plus petit (à droite) */}
+      {/* Toggle bouton mini (à droite) */}
       <button
         onClick={() => setIsVisible(!isVisible)}
-        className="fixed right-3 top-3 z-50 text-white p-0 m-0 hover:text-green-400 transition-transform duration-300"
+        className="fixed right-3 top-3 z-50 text-white hover:text-green-400 transition-transform duration-300"
       >
         <SlArrowDown
           className={`w-3 h-3 transition-transform duration-500 ${
@@ -53,23 +53,24 @@ export default function Navbar() {
         ${isVisible ? "translate-y-0" : "-translate-y-20"}
         ${
           isScrolled
-            ? "bg-black/20 backdrop-blur-sm border-b border-white/10 shadow-md"
-            : "bg-black/40 backdrop-blur-lg border-b border-white/20 shadow-md"
+            ? "bg-black/20 backdrop-blur-sm border-b border-white/10"
+            : "bg-black/40 backdrop-blur-lg border-b border-white/20"
         }
-        h-16`}
+        h-16 shadow-md`}
       >
         <div className="max-w-7xl mx-auto px-4 py-2 flex items-center justify-between">
-          {/* Branding "Nonntre" gradient */}
-          <span
+          {/* Branding "Nonntre" cliquable */}
+          <Link
+            href="/"
             className="text-transparent bg-clip-text 
-            bg-gradient-to-r from-green-500 via-green-300 to-blue-700
-            font-semibold text-lg tracking-wide"
+              bg-gradient-to-r from-green-500 via-green-300 to-blue-700
+              font-semibold text-lg tracking-wide transition-all duration-300 hover:brightness-110"
           >
-            Nonntr
-          </span>
+            Nonntre
+          </Link>
 
-          {/* Liens */}
-          <div className="flex justify-center gap-8 md:gap-10">
+          {/* Liens centrés */}
+          <div className="flex gap-8 md:gap-10 mx-auto">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
@@ -77,11 +78,11 @@ export default function Navbar() {
                 className="flex flex-col items-center relative text-white transition-all duration-300 hover:-translate-y-1 hover:scale-105"
               >
                 {link.icon}
-                <span className="mt-1 md:mt-0 text-xs md:text-sm font-light">
+                <span className="mt-1 text-xs md:text-sm font-light">
                   {link.label}
                 </span>
 
-                {/* Hover premium – fond vert glassmorphique */}
+                {/* Hover premium glass */}
                 <span
                   className="absolute inset-0 rounded-xl opacity-0 
                   hover:opacity-100 transition-all duration-300 
