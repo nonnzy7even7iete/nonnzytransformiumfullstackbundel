@@ -21,12 +21,12 @@ export default function Navbar() {
     {
       href: "/",
       label: "Accueil",
-      icon: <Home className="w-5 h-5 md:w-6 md:h-6" />,
+      icon: <Home className="w-4 h-4 md:w-5 md:h-5" />,
     },
     {
       href: "/resume-executif",
       label: "Résumé",
-      icon: <FileText className="w-5 h-5 md:w-6 md:h-6" />,
+      icon: <FileText className="w-4 h-4 md:w-5 md:h-5" />,
     },
   ];
 
@@ -34,19 +34,19 @@ export default function Navbar() {
     navLinks.push({
       href: "/dashboard",
       label: "Dashboard",
-      icon: <LayoutDashboard className="w-5 h-5 md:w-6 md:h-6" />,
+      icon: <LayoutDashboard className="w-4 h-4 md:w-5 md:h-5" />,
     });
   }
 
   return (
     <>
-      {/* Toggle Button */}
+      {/* Toggle Button à droite */}
       <button
         onClick={() => setIsVisible(!isVisible)}
-        className={`fixed left-2 top-2 z-50 p-1 bg-black/50 backdrop-blur-md rounded-full text-white hover:bg-green-600 transition-colors`}
+        className="fixed right-2 top-2 z-50 text-white p-0 m-0 hover:text-green-400 transition-transform duration-300"
       >
         <SlArrowDown
-          className={`w-4 h-4 transition-transform duration-500 ${
+          className={`w-5 h-5 transition-transform duration-500 ${
             isVisible ? "rotate-0" : "rotate-180"
           }`}
         />
@@ -59,7 +59,7 @@ export default function Navbar() {
         } ${
           isScrolled
             ? "bg-black/30 backdrop-blur-lg border-b border-white/20 shadow-md"
-            : "bg-black border-b border-white/10"
+            : "bg-black/10 border-b border-white/10"
         } h-16`}
       >
         <div className="max-w-7xl mx-auto px-4 py-2 flex justify-around md:justify-center">
@@ -68,12 +68,15 @@ export default function Navbar() {
               <Link
                 key={link.href}
                 href={link.href}
-                className="flex flex-col items-center text-white transform transition-all duration-300 hover:-translate-y-1 hover:scale-105"
+                className="flex flex-col items-center relative text-white transition-all duration-300"
               >
                 {link.icon}
-                <span className="mt-1 md:mt-0 text-xs md:text-sm font-semibold text-white hover:text-transparent bg-clip-text bg-gradient-to-r from-green-500 to-green-400 hover:from-green-400 hover:to-green-500 transition-all duration-500 animate-pulse">
+                <span className="mt-1 md:mt-0 text-xs md:text-sm font-light">
                   {link.label}
                 </span>
+
+                {/* Background glassmorphique sur hover */}
+                <span className="absolute inset-0 rounded-xl opacity-0 hover:opacity-100 transition-all duration-300 bg-green-400/20 backdrop-blur-md p-4 -z-10"></span>
               </Link>
             ))}
           </div>
