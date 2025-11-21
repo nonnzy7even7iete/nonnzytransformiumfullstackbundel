@@ -58,8 +58,8 @@ export default function Navbar() {
           isVisible ? "translate-y-0" : "-translate-y-20 md:-translate-y-20"
         } ${
           isScrolled
-            ? "bg-black/30 backdrop-blur-lg border-b border-white/20 shadow-md"
-            : "bg-black/10 border-b border-white/10"
+            ? "bg-black/20 backdrop-blur-sm border-b border-white/10 shadow-md"
+            : "bg-black/40 backdrop-blur-lg border-b border-white/20 shadow-md"
         } h-16`}
       >
         <div className="max-w-7xl mx-auto px-4 py-2 flex justify-around md:justify-center">
@@ -68,7 +68,7 @@ export default function Navbar() {
               <Link
                 key={link.href}
                 href={link.href}
-                className="flex flex-col items-center relative text-white transition-all duration-300"
+                className="flex flex-col items-center relative text-white transition-all duration-300 hover:-translate-y-1 hover:scale-105"
               >
                 {link.icon}
                 <span className="mt-1 md:mt-0 text-xs md:text-sm font-light">
