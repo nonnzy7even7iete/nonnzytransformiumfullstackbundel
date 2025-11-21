@@ -1,5 +1,5 @@
 import NavbarFront from "@/components/NavbarFront";
-import { World, GlobeConfig, Position } from "@/components/Globe"; // adapte le chemin si nécessaire
+import { World, GlobeConfig, Position } from "@/components/GlobeVisualizer"; // adapte le chemin si nécessaire
 
 export default function ResumeExecutifPage() {
   const globeData: Position[] = [
