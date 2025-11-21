@@ -18,7 +18,9 @@ export default function ResumeExecutifPage() {
           </p>
         </div>
 
-        <div className="text-center text-white/50 mt-24 text-sm">© 2025</div>
+        <div className="text-center text-white/50 mt-24 text-sm">
+          © Nonnzytransformium2025
+        </div>
       </main>
     </>
   );
