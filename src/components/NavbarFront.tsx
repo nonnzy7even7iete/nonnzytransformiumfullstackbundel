@@ -34,23 +34,24 @@ export default function Navbar() {
 
   return (
     <nav
-      className={`fixed top-0 w-full z-50 transition-all duration-500
+      className={`fixed w-full z-50 transition-all duration-500
         ${
           isScrolled
-            ? "bg-black/30 backdrop-blur-lg border-b border-white/20 shadow-md"
-            : "bg-black border-b border-white/10"
-        }`}
+            ? "bg-black/30 backdrop-blur-lg border-t border-white/20 shadow-md"
+            : "bg-black border-t border-white/10"
+        }
+        bottom-0 md:top-0`}
     >
-      <div className="max-w-7xl mx-auto px-6 py-4 flex justify-center">
-        <div className="flex flex-wrap justify-center gap-8">
+      <div className="max-w-7xl mx-auto px-4 py-2 flex justify-around md:justify-center">
+        <div className="flex w-full md:flex-wrap justify-around gap-4 md:gap-8">
           {navLinks.map((link) => (
             <Link
               key={link.href}
               href={link.href}
-              className="flex flex-col items-center md:flex-row md:gap-2 text-white hover:text-red-500 transition-colors duration-300"
+              className="flex flex-col items-center text-white hover:text-cyan-400 transition-transform duration-300 transform hover:-translate-y-1 md:flex-row md:gap-2"
             >
               {link.icon}
-              <span className="text-xs md:text-sm mt-1 md:mt-0">
+              <span className="text-xs mt-1 md:mt-0 md:text-sm">
                 {link.label}
               </span>
             </Link>
