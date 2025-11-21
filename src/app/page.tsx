@@ -25,7 +25,7 @@ export default function HomePage() {
   return (
     <>
       {/* Navbar fixée */}
-      <Navbar />
+      <NavbarFront />
 
       <main
         className="relative flex flex-col md:flex-row items-center justify-center 

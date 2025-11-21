@@ -10,20 +10,17 @@ export default function Navbar() {
   const { data: session } = useSession();
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
-    };
+    const handleScroll = () => setIsScrolled(window.scrollY > 20);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Définition des liens avec icônes et label
   const navLinks = [
-    { href: "/", label: "Accueil", icon: <Home className="w-5 h-5" /> },
+    { href: "/", label: "Accueil", icon: <Home className="w-6 h-6" /> },
     {
       href: "/resume-executif",
       label: "Résumé",
-      icon: <FileText className="w-5 h-5" />,
+      icon: <FileText className="w-6 h-6" />,
     },
   ];
 
@@ -31,7 +28,7 @@ export default function Navbar() {
     navLinks.push({
       href: "/dashboard",
       label: "Dashboard",
-      icon: <LayoutDashboard className="w-5 h-5" />,
+      icon: <LayoutDashboard className="w-6 h-6" />,
     });
   }
 
@@ -44,14 +41,8 @@ export default function Navbar() {
             : "bg-black border-b border-white/10"
         }`}
     >
-      <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-        {/* Logo */}
-        <Link href="/">
-          <span className="text-white font-bold text-xl">Nonnzytr</span>
-        </Link>
-
-        {/* Liens */}
-        <div className="flex gap-6">
+      <div className="max-w-7xl mx-auto px-6 py-4 flex justify-center">
+        <div className="flex flex-wrap justify-center gap-8">
           {navLinks.map((link) => (
             <Link
               key={link.href}
@@ -59,7 +50,9 @@ export default function Navbar() {
               className="flex flex-col items-center md:flex-row md:gap-2 text-white hover:text-red-500 transition-colors duration-300"
             >
               {link.icon}
-              <span className="text-xs md:text-sm">{link.label}</span>
+              <span className="text-xs md:text-sm mt-1 md:mt-0">
+                {link.label}
+              </span>
             </Link>
           ))}
         </div>
