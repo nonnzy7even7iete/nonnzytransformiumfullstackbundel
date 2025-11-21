@@ -3,101 +3,95 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
-import { FileText, LayoutDashboard } from "lucide-react";
-import { SlArrowDown } from "react-icons/sl";
+import { Menu } from "lucide-react";
 
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
-  const [isVisible, setIsVisible] = useState(true);
+  const [isOpen, setIsOpen] = useState(true);
   const { data: session } = useSession();
 
   useEffect(() => {
-    const handleScroll = () => setIsScrolled(window.scrollY > 20);
+    const handleScroll = () => setIsScrolled(window.scrollY > 10);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const navLinks = [
-    {
-      href: "/resume-executif",
-      label: "Résumé",
-      icon: <FileText className="w-4 h-4 md:w-5 md:h-5" />,
-    },
-  ];
-
-  if (session) {
-    navLinks.push({
-      href: "/dashboard",
-      label: "Dashboard",
-      icon: <LayoutDashboard className="w-4 h-4 md:w-5 md:h-5" />,
-    });
-  }
-
   return (
-    <>
-      {/* Toggle mini (à droite) */}
-      <button
-        onClick={() => setIsVisible(!isVisible)}
-        className="fixed right-3 top-3 z-50 text-white hover:text-green-400 transition-transform duration-300"
-      >
-        <SlArrowDown
-          className={`w-3 h-3 transition-transform duration-500 ${
-            isVisible ? "rotate-0" : "rotate-180"
-          }`}
-        />
-      </button>
+    <nav
+      className={`
+        fixed inset-x-0 
+        ${isOpen ? "top-0" : "-top-20"} 
+        z-50 flex items-center justify-between
+        transition-all duration-500
 
-      {/* Navbar */}
-      <nav
-        className={`fixed top-0 w-full z-40 transition-transform duration-500
-        ${isVisible ? "translate-y-0" : "-translate-y-20"}
-        ${
-          isScrolled
-            ? "bg-black/20 backdrop-blur-sm border-b border-white/10"
-            : "bg-black/40 backdrop-blur-lg border-b border-white/20"
-        }
-        h-16 shadow-md`}
-      >
-        {/* GRID 3 COLONNES POUR UN ALIGNEMENT PARFAIT */}
-        <div className="max-w-7xl mx-auto px-4 py-2 grid grid-cols-3 items-center">
-          {/* Colonne gauche : Nonntre */}
-          <div>
-            <Link
-              href="/"
-              className="text-transparent bg-clip-text 
-                bg-gradient-to-r from-green-700 via-green-300 to-blue-400
-                font-semibold text-lg tracking-wide transition-all duration-300 hover:brightness-110"
-            >
-              Nonnzytr
-            </Link>
-          </div>
+        bg-black/20 backdrop-blur-xl
+        border-b border-white/10
 
-          {/* Colonne centrale : MENU 100% CENTRÉ */}
-          <div className="flex justify-center gap-8 md:gap-10">
-            {navLinks.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className="flex flex-col items-center relative text-white transition-all duration-300 hover:-translate-y-1 hover:scale-105"
-              >
-                {link.icon}
-                <span className="mt-1 text-xs md:text-sm font-light">
-                  {link.label}
-                </span>
+        ${isScrolled ? "backdrop-blur-2xl bg-black/30 border-white/20" : ""}
+        
+        md:top-0
+        md:h-16
+      `}
+    >
+      {/* LEFT — Brand + Toggle */}
+      <div className="flex items-center gap-3 px-4 py-3">
+        {/* Toggle (petit) */}
+        <button
+          onClick={() => setIsOpen(!isOpen)}
+          className="p-1 opacity-70 hover:opacity-100 transition-all"
+        >
+          <Menu className="w-4 h-4 text-white" />
+        </button>
 
-                <span
-                  className="absolute inset-0 rounded-xl opacity-0 
-                  hover:opacity-100 transition-all duration-300 
-                  bg-green-400/20 backdrop-blur-md p-4 -z-10"
-                />
-              </Link>
-            ))}
-          </div>
+        {/* Brand */}
+        <Link href="/" className="font-bold text-lg tracking-wide">
+          <span
+            className="
+              bg-gradient-to-r from-green-400 via-green-300 to-blue-700 
+              bg-clip-text text-transparent
+            "
+          >
+            Nonntr
+          </span>
+        </Link>
+      </div>
 
-          {/* Colonne droite : toggle laisse un espace équilibré */}
-          <div />
-        </div>
-      </nav>
-    </>
+      {/* CENTER — Navigation links */}
+      <div className="flex items-center gap-6 px-4">
+        {/* Résumé Exécutif */}
+        <Link
+          href="/ResumeExecutif"
+          className="
+            text-white/80 text-sm font-light 
+            transition-all
+            py-2 px-4 rounded-xl
+            hover:text-white
+            hover:bg-gradient-to-r 
+            hover:from-green-400/20 hover:to-blue-400/20
+            hover:backdrop-blur-2xl
+          "
+        >
+          Résumé Exécutif
+        </Link>
+
+        {/* Dashboard si connecté */}
+        {session && (
+          <Link
+            href="/dashboard"
+            className="
+              text-white/80 text-sm font-light 
+              transition-all
+              py-2 px-4 rounded-xl
+              hover:text-white
+              hover:bg-gradient-to-r 
+              hover:from-green-400/20 hover:to-blue-400/20
+              hover:backdrop-blur-2xl
+            "
+          >
+            Dashboard
+          </Link>
+        )}
+      </div>
+    </nav>
   );
 }
