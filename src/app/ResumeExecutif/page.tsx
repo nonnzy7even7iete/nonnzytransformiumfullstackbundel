@@ -14,7 +14,7 @@ export default function ResumeExecutifPage() {
           </h1>
 
           <p className="text-lg text-white/60 leading-relaxed">
-            En crous de redaction{" "}
+            En cours de redaction{" "}
           </p>
         </div>
 
