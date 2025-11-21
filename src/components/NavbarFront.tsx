@@ -20,7 +20,7 @@ export default function Navbar() {
   const navLinks = [
     {
       href: "/ResumeExecutif", // ✅ correction ici
-      label: "Résumé Executif",
+      label: "Résumé Exécutif",
       icon: <FileText className="w-4 h-4 md:w-5 md:h-5" />,
     },
   ];
