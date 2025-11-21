@@ -9,7 +9,7 @@ import * as THREE from "three";
 // Étend ThreeGlobe pour React Three Fiber
 extend({ ThreeGlobe });
 
-// Type pour les arcs et points
+// Types pour les arcs et points
 export type Position = {
   order: number;
   startLat: number;
@@ -20,16 +20,36 @@ export type Position = {
   color: string;
 };
 
-interface GlobeProps {
-  data: Position[];
-}
+// Type pour la config du globe
+export type GlobeConfig = {
+  globeColor?: string;
+  atmosphereColor?: string;
+  showAtmosphere?: boolean;
+  autoRotate?: boolean;
+  autoRotateSpeed?: number;
+};
 
-export default function Globe({ data }: GlobeProps) {
+// Composant Globe
+export function World({
+  data,
+  globeConfig,
+}: {
+  data: Position[];
+  globeConfig?: GlobeConfig;
+}) {
   const globeRef = useRef<ThreeGlobe | null>(null);
   const groupRef = useRef<THREE.Group>(null);
   const [initialized, setInitialized] = useState(false);
 
-  // Initialise le globe
+  const defaultConfig: GlobeConfig = {
+    globeColor: "#1d072e",
+    atmosphereColor: "#ffffff",
+    showAtmosphere: true,
+    autoRotate: true,
+    autoRotateSpeed: 0.2,
+    ...globeConfig,
+  };
+
   useEffect(() => {
     if (!globeRef.current && groupRef.current) {
       globeRef.current = new ThreeGlobe({ animateIn: true });
@@ -38,11 +58,9 @@ export default function Globe({ data }: GlobeProps) {
     }
   }, []);
 
-  // Configure points et arcs
   useEffect(() => {
     if (!initialized || !globeRef.current) return;
 
-    // Points
     globeRef.current.pointsData(
       data.map((d) => ({
         lat: d.startLat,
@@ -52,30 +70,32 @@ export default function Globe({ data }: GlobeProps) {
       }))
     );
 
-    // Arcs
     globeRef.current
       .arcsData(data)
-      .arcStartLat((d: object) => (d as Position).startLat)
-      .arcStartLng((d: object) => (d as Position).startLng)
-      .arcEndLat((d: object) => (d as Position).endLat)
-      .arcEndLng((d: object) => (d as Position).endLng)
-      .arcAltitude((d: object) => (d as Position).arcAlt)
-      .arcColor((d: object) => (d as Position).color)
+      .arcStartLat((d: any) => d.startLat)
+      .arcStartLng((d: any) => d.startLng)
+      .arcEndLat((d: any) => d.endLat)
+      .arcEndLng((d: any) => d.endLng)
+      .arcAltitude((d: any) => d.arcAlt)
+      .arcColor((d: any) => d.color)
       .arcDashLength(0.8)
       .arcDashGap(4)
       .arcDashAnimateTime(1000);
   }, [initialized, data]);
 
   return (
-    <Canvas camera={{ position: [0, 0, 300], fov: 50 }}>
+    <Canvas
+      camera={{ position: [0, 0, 300], fov: 50 }}
+      className="rounded-xl bg-black"
+    >
       <ambientLight intensity={0.6} />
       <pointLight position={[0, 200, 200]} intensity={0.8} />
       <group ref={groupRef} />
       <OrbitControls
         enableZoom={false}
         enablePan={false}
-        autoRotate
-        autoRotateSpeed={0.3}
+        autoRotate={defaultConfig.autoRotate}
+        autoRotateSpeed={defaultConfig.autoRotateSpeed || 0.2}
       />
     </Canvas>
   );
