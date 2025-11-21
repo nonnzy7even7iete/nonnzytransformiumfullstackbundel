@@ -1,5 +1,5 @@
 import NavbarFront from "@/components/NavbarFront";
-import { World, GlobeConfig, Position } from "@/components/GlobeVisualizer"; // ajuste le chemin si nécessaire
+import { World, Position } from "@/components/GlobeVisualizer"; // globe fonctionnel
 
 export default function ResumeExecutifPage() {
   const globeData: Position[] = [
@@ -23,25 +23,16 @@ export default function ResumeExecutifPage() {
     },
   ];
 
-  const globeConfig: GlobeConfig = {
-    globeColor: "#1d072e",
-    atmosphereColor: "#ffffff",
-    showAtmosphere: true,
-    autoRotate: true,
-    autoRotateSpeed: 0.2,
-  };
-
   return (
     <>
-      <NavbarFront /> {/* Navbar affichée en haut */}
-      <main className="min-h-screen flex flex-col items-center justify-center bg-gray-900 text-white p-6">
+      <NavbarFront />
+      <main className="min-h-screen flex flex-col items-center justify-center bg-black text-white p-6">
         <h1 className="text-4xl font-bold mb-6">Résumé Exécutif</h1>
         <p className="text-gray-300 text-center max-w-xl mb-8">
           Cette page est accessible sans authentification.
         </p>
-        {/* Globe 3D */}
-        <div className="w-full max-w-7xl">
-          <World globeConfig={globeConfig} data={globeData} />
+        <div className="w-full max-w-7xl h-[500px]">
+          <World data={globeData} />
         </div>
       </main>
     </>
