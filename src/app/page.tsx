@@ -103,7 +103,9 @@ export default function HomePage() {
                 ce qui reste à révéler. Anyama dispose d’un avantage stratégique
                 encore invisible à la majorité des acteurs. La data ne ment pas
                 — la question, c’est qui l’exploitera en premier. :{" "}
-                <span className="text-blue-300">Vision partager</span>
+                <span className="bg-gradient-to-r from-green-500 to-blue-300 bg-clip-text text-transparent font-semibold">
+                  Vision partager
+                </span>
               </p>
               <p>
                 Les chiffres sont là. Les investisseurs arrivent. La question,
@@ -111,6 +113,9 @@ export default function HomePage() {
               </p>
               <p>
                 Votre commune entre dans une zone d’attractivité stratégique.
+                <span className="bg-gradient-to-r from-green-500 to-blue-300 bg-clip-text text-transparent font-semibold">
+                  Vision partager
+                </span>
               </p>
             </div>
           }
