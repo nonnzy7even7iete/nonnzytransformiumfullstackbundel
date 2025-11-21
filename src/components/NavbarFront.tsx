@@ -35,7 +35,7 @@ export default function Navbar() {
 
   return (
     <>
-      {/* Toggle bouton mini (à droite) */}
+      {/* Toggle mini (à droite) */}
       <button
         onClick={() => setIsVisible(!isVisible)}
         className="fixed right-3 top-3 z-50 text-white hover:text-green-400 transition-transform duration-300"
@@ -58,19 +58,22 @@ export default function Navbar() {
         }
         h-16 shadow-md`}
       >
-        <div className="max-w-7xl mx-auto px-4 py-2 flex items-center justify-between">
-          {/* Branding "Nonntre" cliquable */}
-          <Link
-            href="/"
-            className="text-transparent bg-clip-text 
-              bg-gradient-to-r from-green-500 via-green-300 to-blue-700
-              font-semibold text-lg tracking-wide transition-all duration-300 hover:brightness-110"
-          >
-            Nonntre
-          </Link>
+        {/* GRID 3 COLONNES POUR UN ALIGNEMENT PARFAIT */}
+        <div className="max-w-7xl mx-auto px-4 py-2 grid grid-cols-3 items-center">
+          {/* Colonne gauche : Nonntre */}
+          <div>
+            <Link
+              href="/"
+              className="text-transparent bg-clip-text 
+                bg-gradient-to-r from-green-700 via-green-300 to-blue-400
+                font-semibold text-lg tracking-wide transition-all duration-300 hover:brightness-110"
+            >
+              Nonnzytr
+            </Link>
+          </div>
 
-          {/* Liens centrés */}
-          <div className="flex gap-8 md:gap-10 mx-auto">
+          {/* Colonne centrale : MENU 100% CENTRÉ */}
+          <div className="flex justify-center gap-8 md:gap-10">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
@@ -82,7 +85,6 @@ export default function Navbar() {
                   {link.label}
                 </span>
 
-                {/* Hover premium glass */}
                 <span
                   className="absolute inset-0 rounded-xl opacity-0 
                   hover:opacity-100 transition-all duration-300 
@@ -91,6 +93,9 @@ export default function Navbar() {
               </Link>
             ))}
           </div>
+
+          {/* Colonne droite : toggle laisse un espace équilibré */}
+          <div />
         </div>
       </nav>
     </>
