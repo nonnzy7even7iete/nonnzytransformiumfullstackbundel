@@ -86,7 +86,10 @@ export default function DataCard({
             {/* Bouton fermeture */}
             <Button
               variant="destructive"
-              className="mt-auto w-full flex items-center justify-center gap-2"
+              className="mt-auto w-full flex items-center justify-center gap-2 
+             bg-gradient-to-r from-red-600 via-transparent to-black 
+             text-red-500 border border-red-500 hover:from-red-700 hover:to-black 
+             hover:text-red-600 transition-all duration-300"
               onClick={() => setModalOpen(false)}
             >
               <XCircle className="w-4 h-4" />
