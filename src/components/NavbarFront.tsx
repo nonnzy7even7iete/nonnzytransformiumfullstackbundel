@@ -43,15 +43,19 @@ export default function Navbar() {
       {/* Toggle Button */}
       <button
         onClick={() => setIsVisible(!isVisible)}
-        className="fixed left-2 top-2 z-50 p-1 bg-black/40 backdrop-blur-md rounded-full text-white hover:bg-green-600 transition-colors"
+        className={`fixed left-2 top-2 z-50 p-1 bg-black/50 backdrop-blur-md rounded-full text-white hover:bg-green-600 transition-colors`}
       >
-        <SlArrowDown className="w-4 h-4" />
+        <SlArrowDown
+          className={`w-4 h-4 transition-transform duration-500 ${
+            isVisible ? "rotate-0" : "rotate-180"
+          }`}
+        />
       </button>
 
       {/* Navbar */}
       <nav
         className={`fixed top-0 w-full z-40 transition-transform duration-500 ${
-          isVisible ? "translate-y-0" : "-translate-y-16"
+          isVisible ? "translate-y-0" : "-translate-y-20 md:-translate-y-20"
         } ${
           isScrolled
             ? "bg-black/30 backdrop-blur-lg border-b border-white/20 shadow-md"
@@ -64,10 +68,10 @@ export default function Navbar() {
               <Link
                 key={link.href}
                 href={link.href}
-                className="flex flex-col items-center text-white transform transition-transform duration-300 hover:-translate-y-1"
+                className="flex flex-col items-center text-white transform transition-all duration-300 hover:-translate-y-1 hover:scale-105"
               >
                 {link.icon}
-                <span className="mt-1 md:mt-0 text-xs md:text-sm font-semibold text-white hover:text-transparent bg-clip-text bg-gradient-to-r from-green-600 to-green-400 transition-all duration-300">
+                <span className="mt-1 md:mt-0 text-xs md:text-sm font-semibold text-white hover:text-transparent bg-clip-text bg-gradient-to-r from-green-500 to-green-400 hover:from-green-400 hover:to-green-500 transition-all duration-500 animate-pulse">
                   {link.label}
                 </span>
               </Link>
