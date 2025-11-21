@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { Home, FileText, LayoutDashboard } from "lucide-react";
 
-export default function NavbarFront() {
+export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const { data: session } = useSession();
 
