@@ -69,11 +69,11 @@ export default function NavbarFront() {
       >
         <div className="h-full flex items-center px-6 md:px-8">
           {/* Logo petit à gauche */}
-          <div className="flex-shrink-0">
-            <div className="scale-100 origin-left">
+          <Link href="/" className="flex-shrink-0">
+            <div className="scale-75 origin-left hover:opacity-80 transition-opacity duration-300">
               <TextHoverEffect text="Nonnzytr" />
             </div>
-          </div>
+          </Link>
 
           {/* Menu centré absolument au centre */}
           <div className="absolute left-1/2 -translate-x-1/2 flex justify-center gap-8 md:gap-12">
@@ -118,11 +118,7 @@ export default function NavbarFront() {
                   <span
                     className={`absolute inset-x-0 inset-y-1/2 -translate-y-1/2 rounded-xl opacity-0 
                     group-hover:opacity-100 transition-all duration-300 
-                    ${
-                      isResumeExecutif
-                        ? "bg-gradient-to-r from-green-700/20 to-blue-400/20 backdrop-blur-md p-4 -z-10"
-                        : "bg-green-400/20 backdrop-blur-md p-4 -z-10"
-                    }`}
+                    ${isResumeExecutif ? "bg-gradient-to-r from-green-700 to-blue-400 backdrop-blur-md p-4 -z-10" : "bg-green-400/20 backdrop-blur-md p-4 -z-10"}`}
                   />
                 </Link>
               );
