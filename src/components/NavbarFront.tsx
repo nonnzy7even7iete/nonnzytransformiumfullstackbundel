@@ -4,7 +4,12 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { FileText, LayoutDashboard } from "lucide-react";
-import { SlArrowDown } from "react-icons/sl";
+import { IoAppsOutline } from "react-icons/io5";
+import { motion } from "framer-motion"; // Framer Motion est conservé si d'autres parties du composant l'utilisent.
+
+// NOUVEAUTÉ : Import du composant externe TextHoverEffect
+// ATTENTION : Vérifiez et ajustez ce chemin en fonction de votre structure de dossiers réelle
+import { TextHoverEffect } from "../TextHoverEffect";
 
 export default function NavbarFront() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -19,7 +24,7 @@ export default function NavbarFront() {
 
   const navLinks = [
     {
-      href: "/ResumeExecutif", // ✅ correction ici
+      href: "/ResumeExecutif",
       label: "Résumé Exécutif",
       icon: <FileText className="w-4 h-4 md:w-5 md:h-5" />,
     },
@@ -40,8 +45,8 @@ export default function NavbarFront() {
         onClick={() => setIsVisible(!isVisible)}
         className="fixed right-3 top-3 z-50 text-white hover:text-green-400 transition-transform duration-300"
       >
-        <SlArrowDown
-          className={`w-3 h-3 transition-transform duration-500 ${
+        <IoAppsOutline
+          className={`w-6 h-6 transition-transform duration-500 ${
             isVisible ? "rotate-0" : "rotate-180"
           }`}
         />
@@ -60,15 +65,18 @@ export default function NavbarFront() {
       >
         {/* GRID 3 COLONNES POUR UN ALIGNEMENT PARFAIT */}
         <div className="max-w-7xl mx-auto px-4 py-2 grid grid-cols-3 items-center">
-          {/* Colonne gauche : Nonntre */}
-          <div>
-            <Link
-              href="/"
-              className="text-transparent bg-clip-text 
-                bg-gradient-to-r from-green-700 via-green-300 to-blue-400
-                font-semibold text-lg tracking-wide transition-all duration-300 hover:brightness-110"
-            >
-              Nonnzytr
+          {/* Colonne gauche : Logo (MAJ) */}
+          <div className="flex items-center h-full">
+            <Link href="/" className="h-full flex items-center">
+              <TextHoverEffect // Le composant est maintenant importé
+                text="Nonnzytr"
+                // Les props de style pour le scaling sont conservées
+                style={{
+                  width: "200px",
+                  height: "100%",
+                  fontSize: "3rem",
+                }}
+              />
             </Link>
           </div>
 
