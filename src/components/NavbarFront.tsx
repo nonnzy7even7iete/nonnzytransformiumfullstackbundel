@@ -67,22 +67,21 @@ export default function NavbarFront() {
         }
         h-16 shadow-md`}
       >
-        {/* GRID 3 COLONNES POUR UN ALIGNEMENT PARFAIT */}
-        <div className="max-w-7xl mx-auto px-4 py-2 grid grid-cols-3 items-center">
-          {/* Colonne gauche : Logo */}
-          <div>
+        <div className="max-w-7xl mx-auto px-4 h-full flex items-center justify-between">
+          {/* Logo gauche */}
+          <div className="flex-shrink-0">
             <TextHoverEffect text="Nonnzytr" />
           </div>
 
-          {/* Colonne centrale : MENU 100% CENTRÉ */}
-          <div className="flex justify-center gap-8 md:gap-10">
+          {/* Menu centré */}
+          <div className="flex-1 flex justify-center gap-8 md:gap-10 px-4">
             {navLinks.map((link) => {
               const IconComponent = link.icon;
               return (
                 <Link
                   key={link.href}
                   href={link.href}
-                  className="group flex flex-col items-center relative text-white transition-all duration-300 hover:-translate-y-1 hover:scale-105"
+                  className="group flex flex-col items-center relative text-white transition-all duration-300 hover:-translate-y-1 hover:scale-105 whitespace-nowrap"
                 >
                   <IconComponent className="w-4 h-4 md:w-5 md:h-5 transition-colors group-hover:text-green-400" />
                   <span className="mt-1 text-xs md:text-sm font-light transition-colors group-hover:text-green-400">
@@ -99,8 +98,8 @@ export default function NavbarFront() {
             })}
           </div>
 
-          {/* Colonne droite : espace pour équilibrer */}
-          <div />
+          {/* Espace droite */}
+          <div className="flex-shrink-0 w-16" />
         </div>
       </nav>
     </>
