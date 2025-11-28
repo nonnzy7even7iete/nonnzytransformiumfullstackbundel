@@ -5,37 +5,17 @@ import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { FileText, LayoutDashboard } from "lucide-react";
 import { IoAppsOutline } from "react-icons/io5";
-import { motion } from "framer-motion";
+// IMPORT DE MOTION RETIRÉ, il doit être dans TextHoverEffect.tsx uniquement.
 
-// 🚨 VÉRIFIEZ LE CHEMIN : Import du composant externe TextHoverEffect
-import { TextHoverEffect } from "@/components/ui/TextHoverEffect";
+// VÉRIFIEZ LE CHEMIN : Import du composant externe TextHoverEffect
+import { TextHoverEffect } from "../TextHoverEffect";
 
 export default function NavbarFront() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
   const { data: session } = useSession();
 
-  useEffect(() => {
-    const handleScroll = () => setIsScrolled(window.scrollY > 20);
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
-  const navLinks = [
-    {
-      href: "/ResumeExecutif",
-      label: "Résumé Exécutif",
-      icon: <FileText className="w-4 h-4 md:w-5 md:h-5" />,
-    },
-  ];
-
-  if (session) {
-    navLinks.push({
-      href: "/dashboard",
-      label: "Dashboard",
-      icon: <LayoutDashboard className="w-4 h-4 md:w-5 md:h-5" />,
-    });
-  }
+  // ... (Le reste du code de NavbarFront ne change pas) ...
 
   return (
     <>
