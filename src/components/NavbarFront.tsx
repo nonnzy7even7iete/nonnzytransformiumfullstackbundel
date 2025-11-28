@@ -108,7 +108,7 @@ export default function NavbarFront() {
                   <span
                     className={`mt-1 text-xs md:text-sm font-light transition-all duration-300 ${
                       isResumeExecutif
-                        ? "group-hover:bg-gradient-to-r group-hover:from-green-700 group-hover:to-blue-400 group-hover:text-transparent group-hover:bg-clip-text"
+                        ? "group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-green-700 group-hover:to-blue-400 group-hover:bg-clip-text"
                         : "group-hover:text-green-400"
                     }`}
                   >
@@ -118,7 +118,11 @@ export default function NavbarFront() {
                   <span
                     className={`absolute inset-x-0 inset-y-1/2 -translate-y-1/2 rounded-xl opacity-0 
                     group-hover:opacity-100 transition-all duration-300 
-                    ${isResumeExecutif ? "bg-gradient-to-r from-green-700 to-blue-400 backdrop-blur-md p-4 -z-10" : "bg-green-400/20 backdrop-blur-md p-4 -z-10"}`}
+                    ${
+                      isResumeExecutif
+                        ? "bg-green-400/20 backdrop-blur-md p-4 -z-10"
+                        : "bg-green-400/20 backdrop-blur-md p-4 -z-10"
+                    }`}
                   />
                 </Link>
               );
