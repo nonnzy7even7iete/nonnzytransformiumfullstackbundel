@@ -9,7 +9,7 @@ import { motion } from "framer-motion"; // Framer Motion est conservé si d'autr
 
 // NOUVEAUTÉ : Import du composant externe TextHoverEffect
 // ATTENTION : Vérifiez et ajustez ce chemin en fonction de votre structure de dossiers réelle
-import { TextHoverEffect } from "../TextHoverEffect";
+import { TextHoverEffect } from "./ui/TextHoverEffect";
 
 export default function NavbarFront() {
   const [isScrolled, setIsScrolled] = useState(false);
