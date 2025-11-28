@@ -8,7 +8,7 @@ import { IoAppsOutline } from "react-icons/io5";
 import { motion } from "framer-motion";
 
 // 🚨 VÉRIFIEZ LE CHEMIN : Import du composant externe TextHoverEffect
-import { TextHoverEffect } from "./ui/TextHoverEffect";
+import { TextHoverEffect } from "@/components/ui/TextHoverEffect";
 
 export default function NavbarFront() {
   const [isScrolled, setIsScrolled] = useState(false);
