@@ -22,18 +22,19 @@ export default function NavbarFront() {
   const navLinks = [
     {
       href: "/ResumeExecutif",
-      label: "Résumé Exécutif", // J'ai corrigé l'encodage ici
-      icon: <FileText className="w-4 h-4 md:w-5 md:h-5" />,
+      label: "Résumé Exécutif",
+      icon: FileText,
     },
+    ...(session
+      ? [
+          {
+            href: "/dashboard",
+            label: "Dashboard",
+            icon: LayoutDashboard,
+          },
+        ]
+      : []),
   ];
-
-  if (session) {
-    navLinks.push({
-      href: "/dashboard",
-      label: "Dashboard",
-      icon: <LayoutDashboard className="w-4 h-4 md:w-5 md:h-5" />,
-    });
-  }
 
   return (
     <>
@@ -53,8 +54,12 @@ export default function NavbarFront() {
 
       {/* Navbar */}
       <nav
-        className={`fixed top-0 w-full z-40 transition-transform duration-500
-        ${isVisible ? "translate-y-0" : "-translate-y-20"}
+        className={`fixed top-0 w-full z-40 transition-all duration-500
+        ${
+          isVisible
+            ? "opacity-100 pointer-events-auto"
+            : "opacity-0 pointer-events-none"
+        }
         ${
           isScrolled
             ? "bg-black/20 backdrop-blur-sm border-b border-white/10"
@@ -71,24 +76,27 @@ export default function NavbarFront() {
 
           {/* Colonne centrale : MENU 100% CENTRÉ */}
           <div className="flex justify-center gap-8 md:gap-10">
-            {navLinks.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className="flex flex-col items-center relative text-white transition-all duration-300 hover:-translate-y-1 hover:scale-105"
-              >
-                {link.icon}
-                <span className="mt-1 text-xs md:text-sm font-light">
-                  {link.label}
-                </span>
+            {navLinks.map((link) => {
+              const IconComponent = link.icon;
+              return (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className="group flex flex-col items-center relative text-white transition-all duration-300 hover:-translate-y-1 hover:scale-105"
+                >
+                  <IconComponent className="w-4 h-4 md:w-5 md:h-5 transition-colors group-hover:text-green-400" />
+                  <span className="mt-1 text-xs md:text-sm font-light transition-colors group-hover:text-green-400">
+                    {link.label}
+                  </span>
 
-                <span
-                  className="absolute inset-0 rounded-xl opacity-0 
-                  hover:opacity-100 transition-all duration-300 
-                  bg-green-400/20 backdrop-blur-md p-4 -z-10"
-                />
-              </Link>
-            ))}
+                  <span
+                    className="absolute inset-x-0 inset-y-1/2 -translate-y-1/2 rounded-xl opacity-0 
+                    group-hover:opacity-100 transition-all duration-300 
+                    bg-green-400/20 backdrop-blur-md p-4 -z-10"
+                  />
+                </Link>
+              );
+            })}
           </div>
 
           {/* Colonne droite : espace pour équilibrer */}
