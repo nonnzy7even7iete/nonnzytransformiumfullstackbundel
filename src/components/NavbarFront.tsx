@@ -41,10 +41,10 @@ export default function NavbarFront() {
       {/* Toggle mini (à droite) */}
       <button
         onClick={() => setIsVisible(!isVisible)}
-        className="group fixed right-3 top-3 z-50 text-white transition-all duration-300 hover:scale-110"
+        className="fixed right-3 top-3 z-50 text-white transition-all duration-300 hover:scale-x-110"
       >
         <IoAppsOutline
-          className={`w-6 h-6 transition-all duration-500 group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-green-700 group-hover:to-blue-400 group-hover:bg-clip-text ${
+          className={`w-6 h-6 transition-transform duration-500 ${
             isVisible ? "rotate-0" : "rotate-180"
           }`}
         />
@@ -68,7 +68,7 @@ export default function NavbarFront() {
         <div className="h-full flex items-center justify-between px-4 md:px-6">
           {/* Logo petit à gauche */}
           <Link href="/" className="flex-shrink-0 w-20">
-            <div className="scale-75 origin-left hover:opacity-80 transition-opacity duration-300">
+            <div className="scale-90 origin-left hover:opacity-80 transition-opacity duration-300">
               <TextHoverEffect text="Nonnzytr" />
             </div>
           </Link>
@@ -77,21 +77,38 @@ export default function NavbarFront() {
           <div className="absolute left-1/2 -translate-x-1/2 flex justify-center gap-8 md:gap-12">
             {navLinks.map((link) => {
               const IconComponent = link.icon;
+              const isResumeExecutif = link.href === "/ResumeExecutif";
               return (
                 <Link
                   key={link.href}
                   href={link.href}
-                  className="group flex flex-col items-center relative text-white transition-all duration-300 hover:-translate-y-1 hover:scale-105 whitespace-nowrap"
+                  className={`group flex flex-col items-center relative text-white transition-all duration-300 whitespace-nowrap ${
+                    isResumeExecutif
+                      ? "hover:scale-x-110"
+                      : "hover:-translate-y-1 hover:scale-105"
+                  }`}
                 >
-                  <IconComponent className="w-4 h-4 md:w-5 md:h-5 transition-colors group-hover:text-green-400" />
-                  <span className="mt-1 text-xs md:text-sm font-light text-white transition-colors group-hover:text-green-400">
+                  <IconComponent
+                    className={`w-4 h-4 md:w-5 md:h-5 transition-colors ${
+                      isResumeExecutif ? "" : "group-hover:text-green-400"
+                    }`}
+                  />
+                  <span
+                    className={`mt-1 text-xs md:text-sm font-light text-white transition-colors ${
+                      isResumeExecutif ? "" : "group-hover:text-green-400"
+                    }`}
+                  >
                     {link.label}
                   </span>
 
                   <span
-                    className="absolute inset-x-0 inset-y-1/2 -translate-y-1/2 rounded-xl opacity-0 
+                    className={`absolute inset-x-0 inset-y-1/2 -translate-y-1/2 rounded-xl opacity-0 
                     group-hover:opacity-100 transition-all duration-300 
-                    bg-green-400/20 backdrop-blur-md p-4 -z-10"
+                    ${
+                      isResumeExecutif
+                        ? ""
+                        : "bg-green-400/20 backdrop-blur-md p-4 -z-10"
+                    }`}
                   />
                 </Link>
               );
