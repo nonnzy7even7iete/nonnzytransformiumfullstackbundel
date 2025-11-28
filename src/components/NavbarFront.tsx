@@ -5,10 +5,9 @@ import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { FileText, LayoutDashboard } from "lucide-react";
 import { IoAppsOutline } from "react-icons/io5";
-import { motion } from "framer-motion"; // Framer Motion est conservé si d'autres parties du composant l'utilisent.
+import { motion } from "framer-motion";
 
-// NOUVEAUTÉ : Import du composant externe TextHoverEffect
-// ATTENTION : Vérifiez et ajustez ce chemin en fonction de votre structure de dossiers réelle
+// 🚨 VÉRIFIEZ LE CHEMIN : Import du composant externe TextHoverEffect
 import { TextHoverEffect } from "./ui/TextHoverEffect";
 
 export default function NavbarFront() {
@@ -68,9 +67,8 @@ export default function NavbarFront() {
           {/* Colonne gauche : Logo (MAJ) */}
           <div className="flex items-center h-full">
             <Link href="/" className="h-full flex items-center">
-              <TextHoverEffect // Le composant est maintenant importé
+              <TextHoverEffect
                 text="Nonnzytr"
-                // Les props de style pour le scaling sont conservées
                 style={{
                   width: "200px",
                   height: "100%",
