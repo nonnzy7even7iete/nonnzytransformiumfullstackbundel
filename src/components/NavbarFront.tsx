@@ -67,14 +67,16 @@ export default function NavbarFront() {
         }
         h-16 shadow-md`}
       >
-        <div className="max-w-7xl mx-auto px-4 h-full flex items-center justify-between">
-          {/* Logo gauche */}
-          <div className="flex-shrink-0">
-            <TextHoverEffect text="Nonnzytr" />
+        <div className="h-full flex items-center px-6 md:px-8">
+          {/* Logo petit à gauche */}
+          <div className="flex-shrink-0 w-24 md:w-28">
+            <div className="scale-75 origin-left">
+              <TextHoverEffect text="Nonnzytr" />
+            </div>
           </div>
 
-          {/* Menu centré */}
-          <div className="flex-1 flex justify-center gap-8 md:gap-10 px-4">
+          {/* Menu centré absolument au centre */}
+          <div className="absolute left-1/2 -translate-x-1/2 flex justify-center gap-8 md:gap-12">
             {navLinks.map((link) => {
               const IconComponent = link.icon;
               return (
@@ -98,8 +100,8 @@ export default function NavbarFront() {
             })}
           </div>
 
-          {/* Espace droite */}
-          <div className="flex-shrink-0 w-16" />
+          {/* Espace droite vide */}
+          <div className="flex-1" />
         </div>
       </nav>
     </>
