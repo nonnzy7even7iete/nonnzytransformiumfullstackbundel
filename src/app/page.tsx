@@ -118,8 +118,8 @@ export default function HomePage() {
                   c’est : serez-vous prêts ?
                 </p>
                 <p>
-                  Votre commune entre dans une zone d’attractivité stratégique.:
-                  <span className="bg-gradient-to-r from-green-500 to-bleu-300 bg-clip-text text-transparent font-semibold">
+                  Votre commune entre dans une zone d’attractivité stratégique:
+                  <span className="bg-gradient-to-r from-green-500 to-blue-300 bg-clip-text text-transparent font-semibold">
                     Sans insights, chaque décision est un pari perdu d’avance.
                   </span>
                 </p>
