@@ -19,7 +19,7 @@ export default function ResumeExecutifPage() {
         </div>
 
         <div className="text-center text-white/50 mt-24 text-sm">
-          © Nonnzytransformium2025
+          Abidjan , Anyama , cote d ivoire : © Nonnzytransformium2025
         </div>
       </main>
     </>
