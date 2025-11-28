@@ -68,7 +68,7 @@ export default function NavbarFront() {
         <div className="h-full flex items-center justify-between px-4 md:px-6">
           {/* Logo petit à gauche */}
           <Link href="/" className="flex-shrink-0 w-20">
-            <div className="scale-90 origin-left hover:opacity-80 transition-opacity duration-300">
+            <div className="scale-100 origin-left hover:opacity-80 transition-opacity duration-300">
               <TextHoverEffect text="Nonnzytr" />
             </div>
           </Link>
