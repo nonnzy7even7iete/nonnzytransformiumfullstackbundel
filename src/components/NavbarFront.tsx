@@ -69,8 +69,8 @@ export default function NavbarFront() {
       >
         <div className="h-full flex items-center px-6 md:px-8">
           {/* Logo petit à gauche */}
-          <div className="flex-shrink-0 w-24 md:w-28">
-            <div className="scale-75 origin-left">
+          <div className="flex-shrink-0">
+            <div className="scale-100 origin-left">
               <TextHoverEffect text="Nonnzytr" />
             </div>
           </div>
@@ -79,21 +79,50 @@ export default function NavbarFront() {
           <div className="absolute left-1/2 -translate-x-1/2 flex justify-center gap-8 md:gap-12">
             {navLinks.map((link) => {
               const IconComponent = link.icon;
+              const isResumeExecutif = link.href === "/ResumeExecutif";
               return (
                 <Link
                   key={link.href}
                   href={link.href}
-                  className="group flex flex-col items-center relative text-white transition-all duration-300 hover:-translate-y-1 hover:scale-105 whitespace-nowrap"
+                  className={`group flex flex-col items-center relative text-white transition-all duration-300 hover:-translate-y-1 hover:scale-105 whitespace-nowrap ${
+                    isResumeExecutif
+                      ? "hover:text-transparent bg-clip-text"
+                      : ""
+                  }`}
+                  style={
+                    isResumeExecutif
+                      ? {
+                          background:
+                            "linear-gradient(135deg, #16a34a 0%, #22d3ee 100%)",
+                        }
+                      : undefined
+                  }
                 >
-                  <IconComponent className="w-4 h-4 md:w-5 md:h-5 transition-colors group-hover:text-green-400" />
-                  <span className="mt-1 text-xs md:text-sm font-light transition-colors group-hover:text-green-400">
+                  <IconComponent
+                    className={`w-4 h-4 md:w-5 md:h-5 transition-colors ${
+                      isResumeExecutif
+                        ? "group-hover:text-green-400"
+                        : "group-hover:text-green-400"
+                    }`}
+                  />
+                  <span
+                    className={`mt-1 text-xs md:text-sm font-light transition-all duration-300 ${
+                      isResumeExecutif
+                        ? "group-hover:bg-gradient-to-r group-hover:from-green-700 group-hover:to-blue-400 group-hover:text-transparent group-hover:bg-clip-text"
+                        : "group-hover:text-green-400"
+                    }`}
+                  >
                     {link.label}
                   </span>
 
                   <span
-                    className="absolute inset-x-0 inset-y-1/2 -translate-y-1/2 rounded-xl opacity-0 
+                    className={`absolute inset-x-0 inset-y-1/2 -translate-y-1/2 rounded-xl opacity-0 
                     group-hover:opacity-100 transition-all duration-300 
-                    bg-green-400/20 backdrop-blur-md p-4 -z-10"
+                    ${
+                      isResumeExecutif
+                        ? "bg-gradient-to-r from-green-700/20 to-blue-400/20 backdrop-blur-md p-4 -z-10"
+                        : "bg-green-400/20 backdrop-blur-md p-4 -z-10"
+                    }`}
                   />
                 </Link>
               );
