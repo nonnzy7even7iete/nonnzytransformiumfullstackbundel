@@ -84,19 +84,7 @@ export default function NavbarFront() {
                 <Link
                   key={link.href}
                   href={link.href}
-                  className={`group flex flex-col items-center relative text-white transition-all duration-300 hover:-translate-y-1 hover:scale-105 whitespace-nowrap ${
-                    isResumeExecutif
-                      ? "hover:text-transparent bg-clip-text"
-                      : ""
-                  }`}
-                  style={
-                    isResumeExecutif
-                      ? {
-                          background:
-                            "linear-gradient(135deg, #16a34a 0%, #22d3ee 100%)",
-                        }
-                      : undefined
-                  }
+                  className="group flex flex-col items-center relative text-white transition-all duration-300 hover:-translate-y-1 hover:scale-105 whitespace-nowrap"
                 >
                   <IconComponent
                     className={`w-4 h-4 md:w-5 md:h-5 transition-colors ${
@@ -106,7 +94,7 @@ export default function NavbarFront() {
                     }`}
                   />
                   <span
-                    className={`mt-1 text-xs md:text-sm font-light transition-all duration-300 ${
+                    className={`mt-1 text-xs md:text-sm font-light text-white transition-all duration-300 ${
                       isResumeExecutif
                         ? "group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-green-700 group-hover:to-blue-400 group-hover:bg-clip-text"
                         : "group-hover:text-green-400"
