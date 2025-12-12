@@ -11,6 +11,7 @@ import { TextHoverEffect } from "./ui/TextHoverEffect";
 export default function NavbarFront() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
+  const [isButtonAnimating, setIsButtonAnimating] = useState(false);
   const { data: session } = useSession();
 
   useEffect(() => {
@@ -18,6 +19,15 @@ export default function NavbarFront() {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  const handleToggleClick = () => {
+    setIsVisible(!isVisible);
+    setIsButtonAnimating(true);
+    
+    setTimeout(() => {
+      setIsButtonAnimating(false);
+    }, 1500);
+  };
 
   const navLinks = [
     {
@@ -40,14 +50,14 @@ export default function NavbarFront() {
     <>
       {/* Toggle mini (à droite) */}
       <button
-        onClick={() => setIsVisible(!isVisible)}
-        className="fixed right-3 top-3 z-50 text-white transition-all duration-300 hover:scale-x-110"
+        onClick={handleToggleClick}
+        className={`fixed right-3 top-3 z-50 transition-all duration-500 ${
+          isButtonAnimating
+            ? "opacity-0 scale-75 -translate-y-2"
+            : "opacity-100 scale-100 translate-y-0"
+        }`}
       >
-        <IoAppsOutline
-          className={`w-6 h-6 transition-transform duration-500 ${
-            isVisible ? "rotate-0" : "rotate-180"
-          }`}
-        />
+        <IoAppsOutline className="w-6 h-6 text-white transition-all duration-300 hover:scale-110" />
       </button>
 
       {/* Navbar */}
