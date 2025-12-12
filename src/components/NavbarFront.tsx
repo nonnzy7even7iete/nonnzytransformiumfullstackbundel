@@ -23,10 +23,10 @@ export default function NavbarFront() {
   const handleToggleClick = () => {
     setIsVisible(!isVisible);
     setIsButtonAnimating(true);
-    
+
     setTimeout(() => {
       setIsButtonAnimating(false);
-    }, 1500);
+    }, 500);
   };
 
   const navLinks = [
@@ -53,11 +53,11 @@ export default function NavbarFront() {
         onClick={handleToggleClick}
         className={`fixed right-3 top-3 z-50 transition-all duration-500 ${
           isButtonAnimating
-            ? "opacity-0 scale-75 -translate-y-2"
-            : "opacity-100 scale-100 translate-y-0"
+            ? "opacity-0 pointer-events-none"
+            : "opacity-100 pointer-events-auto"
         }`}
       >
-        <IoAppsOutline className="w-6 h-6 text-white transition-all duration-300 hover:scale-110" />
+        <IoAppsOutline className="w-6 h-6 text-white transition-all duration-300 hover:scale-110 rotate-0" />
       </button>
 
       {/* Navbar */}
