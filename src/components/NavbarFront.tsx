@@ -52,12 +52,10 @@ export default function NavbarFront() {
       <button
         onClick={handleToggleClick}
         className={`fixed right-3 top-3 z-50 transition-all duration-500 ${
-          isButtonAnimating
-            ? "opacity-0 pointer-events-none"
-            : "opacity-100 pointer-events-auto"
+          isButtonAnimating ? "opacity-0" : "opacity-100"
         }`}
       >
-        <IoAppsOutline className="w-6 h-6 text-white transition-all duration-300 hover:scale-110 rotate-0" />
+        <IoAppsOutline className="w-6 h-6 text-white hover:scale-110" />
       </button>
 
       {/* Navbar */}
