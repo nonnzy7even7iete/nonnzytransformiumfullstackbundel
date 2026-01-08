@@ -3,8 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
-import { FileText, LayoutDashboard } from "lucide-react";
-// 1. Import de la nouvelle icône
+import { LayoutDashboard } from "lucide-react"; // Supprimé FileText
 import { IoAppsOutline } from "react-icons/io5";
 import { TextHoverEffect } from "./ui/TextHoverEffect";
 
@@ -33,7 +32,6 @@ export default function NavbarFront() {
     {
       href: "/ResumeExecutif",
       label: "Résumé Exécutif",
-      icon: FileText,
     },
     ...(session
       ? [
@@ -96,11 +94,9 @@ export default function NavbarFront() {
                       : "hover:-translate-y-1 hover:scale-105"
                   }`}
                 >
-                  <IconComponent
-                    className={`w-4 h-4 md:w-5 md:h-5 transition-colors ${
-                      isResumeExecutif ? "" : "group-hover:text-green-400"
-                    }`}
-                  />
+                  {!isResumeExecutif && IconComponent && (
+                    <IconComponent className="w-4 h-4 md:w-5 md:h-5 transition-colors group-hover:text-green-400" />
+                  )}
                   <span
                     className={`mt-1 text-xs md:text-sm font-light text-white transition-colors ${
                       isResumeExecutif ? "" : "group-hover:text-green-400"
