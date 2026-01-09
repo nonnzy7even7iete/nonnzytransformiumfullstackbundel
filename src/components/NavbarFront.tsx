@@ -62,7 +62,7 @@ export default function NavbarFront() {
           background: linear-gradient(90deg, #ef4444, #22c55e, #3b82f6, #ef4444);
           background-size: 200% 200%;
           animation: gradientShine 7s ease-in-out infinite;
-          height: 2px;
+          height: 1px;
         }
       `}</style>
 
