@@ -64,7 +64,7 @@ export default function DataCard({
 
       {/* Modal overlay */}
       {modalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-md p-4">
+        <div className="fixed inset-0 z-70 flex items-center justify-center bg-black/50 backdrop-blur-md p-4">
           <Card
             className="relative flex flex-col items-center justify-start p-4 gap-4 bg-black/30 backdrop-blur-xl border border-white/10 rounded-2xl shadow-lg max-w-full max-h-full overflow-auto"
             style={{ maxWidth: width + 50, minHeight: height + 50 }}
