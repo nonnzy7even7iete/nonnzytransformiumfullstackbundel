@@ -59,9 +59,10 @@ export default function NavbarFront() {
           }
         }
         .gradient-border {
-          animation: gradientShine 7s ease-in-out infinite;
           background: linear-gradient(90deg, #ef4444, #22c55e, #3b82f6, #ef4444);
           background-size: 200% 200%;
+          animation: gradientShine 7s ease-in-out infinite;
+          height: 2px;
         }
       `}</style>
 
@@ -83,11 +84,10 @@ export default function NavbarFront() {
         }
         ${
           isScrolled
-            ? "bg-black/20 backdrop-blur-sm"
-            : "bg-black/40 backdrop-blur-lg"
+            ? "bg-black/70 backdrop-blur-sm"
+            : "bg-black/50 backdrop-blur-lg"
         }
-        h-16 shadow-md gradient-border`}
-        style={{ borderBottom: "2px solid transparent" }}
+        h-16 shadow-md`}
       >
         <div className="h-full flex items-center justify-between px-4 md:px-6">
           <Link href="/" className="flex-shrink-0 w-20">
@@ -139,6 +139,8 @@ export default function NavbarFront() {
 
           <div className="flex-shrink-0 w-20" />
         </div>
+
+        <div className="gradient-border" />
       </nav>
     </>
   );
