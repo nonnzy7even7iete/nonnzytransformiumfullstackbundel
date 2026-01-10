@@ -33,17 +33,10 @@ export default function DataCard({
       <Card
         className={cn(
           "relative flex flex-col items-center justify-start p-4 gap-4 bg-black/30 backdrop-blur-xl border border-white/10 rounded-2xl shadow-lg",
-          /* AJOUT : 90vw sur mobile, mais on laisse 'width' décider sur desktop (md) */
-          "w-[90vw] md:w-full",
+          "w-[90vw] md:w-[300px]", // Taille explicite ici pour le Desktop
           className
         )}
-        /* MODIFICATION : Le maxWidth devient dynamique */
-        style={
-          {
-            maxWidth: "var(--card-width)",
-            minHeight: height,
-          } as React.CSSProperties & { "--card-width": string }
-        }
+        style={{ minHeight: height }}
       >
         {/* Injecter la largeur via une variable CSS pour respecter les breakpoints Tailwind */}
         <style jsx>{`
