@@ -16,19 +16,23 @@ export default function NavbarFront() {
 
   useEffect(() => {
     const cycle = () => {
-      // 7 secondes de noir complet
+      // 1. On s'assure que c'est éteint au début du cycle
+      setShowBorder(false);
+
+      // 2. On attend 7 secondes (latence d'apparition)
       setTimeout(() => {
         setShowBorder(true);
 
-        // 3 secondes de brillance (shadow + opacity)
+        // 3. On laisse apparaître pendant 5 secondes
         setTimeout(() => {
           setShowBorder(false);
-        }, 3000);
+        }, 5000);
       }, 7000);
     };
 
     cycle();
-    const interval = setInterval(cycle, 10000);
+    // L'intervalle doit être la somme des deux (7s + 5s = 12s)
+    const interval = setInterval(cycle, 12000);
 
     return () => clearInterval(interval);
   }, []);
@@ -67,9 +71,14 @@ export default function NavbarFront() {
           background-size: 200% 200%;
           animation: gradientShine 7s ease-in-out infinite;
           height: 1px;
-          /* ✅ Shadow ajouté : effet néon qui suit les couleurs du dégradé */
-          box-shadow: 0px 1px 10px rgba(34, 197, 94, 0.5), 0px 1px 5px rgba(59, 130, 246, 0.5);
-          transition: opacity 1000ms ease-in-out, transform 1000ms ease-in-out;
+          box-shadow: 0px 1px 12px rgba(34, 197, 94, 0.5);
+          transition: opacity 1000ms ease-in-out;
+        }
+
+        /* Halo sur le corps de la navbar */
+        .navbar-glow {
+          box-shadow: 0px 10px 30px -10px rgba(34, 197, 94, 0.2);
+          transition: box-shadow 1000ms ease-in-out;
         }
       `}</style>
 
@@ -83,7 +92,7 @@ export default function NavbarFront() {
       </button>
 
       <nav
-        className={`fixed top-0 w-full z-40 transition-all duration-500
+        className={`fixed top-0 w-full z-40 transition-all duration-1000
         ${
           isVisible
             ? "opacity-100 pointer-events-auto"
@@ -94,7 +103,12 @@ export default function NavbarFront() {
             ? "bg-black/70 backdrop-blur-sm"
             : "bg-black/50 backdrop-blur-lg"
         }
-        h-16 shadow-md`}
+        ${
+          showBorder
+            ? "navbar-glow border-b border-white/5"
+            : "border-b border-transparent"
+        }
+        h-16`}
       >
         <div className="h-full flex items-center justify-between px-4 md:px-6">
           <Link href="/" className="flex-shrink-0 w-20">
@@ -145,10 +159,9 @@ export default function NavbarFront() {
           <div className="flex-shrink-0 w-20" />
         </div>
 
-        {/* ✅ L'élément avec l'opacité et le shadow gérés par showBorder */}
         <div
           className={`gradient-border ${
-            showBorder ? "opacity-100 scale-y-110" : "opacity-0 scale-y-100"
+            showBorder ? "opacity-100" : "opacity-0"
           }`}
         />
       </nav>
