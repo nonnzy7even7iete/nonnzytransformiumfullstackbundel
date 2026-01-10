@@ -11,25 +11,24 @@ export default function NavbarFront() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
   const [isButtonAnimating, setIsButtonAnimating] = useState(false);
-  const [showBorder, setShowBorder] = useState(false); // ✅ Ajouté
+  const [showBorder, setShowBorder] = useState(false);
   const { data: session } = useSession();
 
-  // --- LOGIQUE DU CYCLE DE LA BORDURE (7s OFF / 3s ON) ---
   useEffect(() => {
     const cycle = () => {
-      // 1. On attend 7 secondes (caché par défaut)
+      // 7 secondes de noir complet
       setTimeout(() => {
-        setShowBorder(true); // 2. On affiche
+        setShowBorder(true);
 
-        // 3. On laisse affiché pendant 3 secondes
+        // 3 secondes de brillance (shadow + opacity)
         setTimeout(() => {
-          setShowBorder(false); // 4. On cache
+          setShowBorder(false);
         }, 3000);
       }, 7000);
     };
 
-    cycle(); // Premier lancement
-    const interval = setInterval(cycle, 10000); // Répète le cycle toutes les 10s (7+3)
+    cycle();
+    const interval = setInterval(cycle, 10000);
 
     return () => clearInterval(interval);
   }, []);
@@ -68,8 +67,9 @@ export default function NavbarFront() {
           background-size: 200% 200%;
           animation: gradientShine 7s ease-in-out infinite;
           height: 1px;
-          /* ✅ Transition pour une apparition douce */
-          transition: opacity 800ms ease-in-out; 
+          /* ✅ Shadow ajouté : effet néon qui suit les couleurs du dégradé */
+          box-shadow: 0px 1px 10px rgba(34, 197, 94, 0.5), 0px 1px 5px rgba(59, 130, 246, 0.5);
+          transition: opacity 1000ms ease-in-out, transform 1000ms ease-in-out;
         }
       `}</style>
 
@@ -145,10 +145,10 @@ export default function NavbarFront() {
           <div className="flex-shrink-0 w-20" />
         </div>
 
-        {/* ✅ Modification ici : Ajout de la condition d'opacité */}
+        {/* ✅ L'élément avec l'opacité et le shadow gérés par showBorder */}
         <div
           className={`gradient-border ${
-            showBorder ? "opacity-100" : "opacity-0"
+            showBorder ? "opacity-100 scale-y-110" : "opacity-0 scale-y-100"
           }`}
         />
       </nav>
