@@ -11,7 +11,28 @@ export default function NavbarFront() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
   const [isButtonAnimating, setIsButtonAnimating] = useState(false);
+  const [showBorder, setShowBorder] = useState(false); // ✅ Ajouté
   const { data: session } = useSession();
+
+  // --- LOGIQUE DU CYCLE DE LA BORDURE (7s OFF / 3s ON) ---
+  useEffect(() => {
+    const cycle = () => {
+      // 1. On attend 7 secondes (caché par défaut)
+      setTimeout(() => {
+        setShowBorder(true); // 2. On affiche
+
+        // 3. On laisse affiché pendant 3 secondes
+        setTimeout(() => {
+          setShowBorder(false); // 4. On cache
+        }, 3000);
+      }, 7000);
+    };
+
+    cycle(); // Premier lancement
+    const interval = setInterval(cycle, 10000); // Répète le cycle toutes les 10s (7+3)
+
+    return () => clearInterval(interval);
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 20);
@@ -22,25 +43,15 @@ export default function NavbarFront() {
   const handleToggleClick = () => {
     setIsVisible(!isVisible);
     setIsButtonAnimating(true);
-
     setTimeout(() => {
       setIsButtonAnimating(false);
     }, 500);
   };
 
   const navLinks = [
-    {
-      href: "/ResumeExecutif",
-      label: "Résumé Exécutif",
-    },
+    { href: "/ResumeExecutif", label: "Résumé Exécutif" },
     ...(session
-      ? [
-          {
-            href: "/dashboard",
-            label: "Dashboard",
-            icon: LayoutDashboard,
-          },
-        ]
+      ? [{ href: "/dashboard", label: "Dashboard", icon: LayoutDashboard }]
       : []),
   ];
 
@@ -48,21 +59,17 @@ export default function NavbarFront() {
     <>
       <style>{`
         @keyframes gradientShine {
-          0% {
-            background-position: 0% 50%;
-          }
-          50% {
-            background-position: 100% 50%;
-          }
-          100% {
-            background-position: 0% 50%;
-          }
+          0% { background-position: 0% 50%; }
+          50% { background-position: 100% 50%; }
+          100% { background-position: 0% 50%; }
         }
         .gradient-border {
           background: linear-gradient(90deg, #ef4444, #22c55e, #3b82f6, #ef4444);
           background-size: 200% 200%;
           animation: gradientShine 7s ease-in-out infinite;
           height: 1px;
+          /* ✅ Transition pour une apparition douce */
+          transition: opacity 800ms ease-in-out; 
         }
       `}</style>
 
@@ -122,7 +129,6 @@ export default function NavbarFront() {
                   >
                     {link.label}
                   </span>
-
                   <span
                     className={`absolute inset-x-0 inset-y-1/2 -translate-y-1/2 rounded-xl opacity-0 
                     group-hover:opacity-100 transition-all duration-300 
@@ -136,11 +142,15 @@ export default function NavbarFront() {
               );
             })}
           </div>
-
           <div className="flex-shrink-0 w-20" />
         </div>
 
-        <div className="gradient-border" />
+        {/* ✅ Modification ici : Ajout de la condition d'opacité */}
+        <div
+          className={`gradient-border ${
+            showBorder ? "opacity-100" : "opacity-0"
+          }`}
+        />
       </nav>
     </>
   );
