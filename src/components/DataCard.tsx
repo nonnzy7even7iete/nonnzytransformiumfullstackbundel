@@ -13,7 +13,7 @@ interface DataCardProps {
   height?: number;
   buttonContent?: ReactNode;
   modalContent?: ReactNode;
-  className?: string; // ✅ ajouté pour pouvoir passer des styles externes
+  className?: string;
 }
 
 export default function DataCard({
@@ -33,10 +33,30 @@ export default function DataCard({
       <Card
         className={cn(
           "relative flex flex-col items-center justify-start p-4 gap-4 bg-black/30 backdrop-blur-xl border border-white/10 rounded-2xl shadow-lg",
+          /* AJOUT : 90vw sur mobile, mais on laisse 'width' décider sur desktop (md) */
+          "w-[90vw] md:w-full",
           className
         )}
-        style={{ maxWidth: width, minHeight: height }}
+        /* MODIFICATION : Le maxWidth devient dynamique */
+        style={
+          {
+            maxWidth: "var(--card-width)",
+            minHeight: height,
+          } as React.CSSProperties & { "--card-width": string }
+        }
       >
+        {/* Injecter la largeur via une variable CSS pour respecter les breakpoints Tailwind */}
+        <style jsx>{`
+          div {
+            --card-width: 90vw;
+          }
+          @media (min-width: 768px) {
+            div {
+              --card-width: ${width}px;
+            }
+          }
+        `}</style>
+
         {/* Titre */}
         {title && (
           <Card className="w-full bg-black/30 backdrop-blur-xl rounded-xl p-2 border border-white/10">
@@ -64,10 +84,10 @@ export default function DataCard({
 
       {/* Modal overlay */}
       {modalOpen && (
-        <div className="fixed inset-0 z-80 flex items-center justify-center bg-black/50 backdrop-blur-md p-4">
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/50 backdrop-blur-md p-4">
           <Card
-            className="relative flex flex-col items-center justify-start z-80 p-4 gap-4 bg-black/30 backdrop-blur-xl border border-white/10 rounded-2xl shadow-lg max-w-full max-h-full overflow-auto"
-            style={{ maxWidth: width + 50, minHeight: height + 50 }}
+            className="relative flex flex-col items-center justify-start z-[101] p-4 gap-4 bg-black/30 backdrop-blur-xl border border-white/10 rounded-2xl shadow-lg max-w-[95vw] max-h-[90vh] overflow-auto"
+            style={{ minWidth: "min(90vw, 400px)", minHeight: height + 50 }}
           >
             {/* Modal Titre */}
             {title && (
