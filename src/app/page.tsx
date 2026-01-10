@@ -30,7 +30,7 @@ export default function HomePage() {
       <main
         className="relative flex flex-col md:flex-row items-center justify-center 
 min-h-screen bg-gradient-to-br from-zinc-700 via-black to-zinc-900 
-overflow-hidden px-4 md:px-8 py-10 gap-6 md:gap-0 pt-6 md:pt-[17px]"
+overflow-hidden px-4 md:px-8 py-10 gap-6 md:gap-0 pt-8 md:pt-20"
       >
         {/* Fond dynamique */}
         <div className="absolute inset-0 z-0">
@@ -40,12 +40,12 @@ overflow-hidden px-4 md:px-8 py-10 gap-6 md:gap-0 pt-6 md:pt-[17px]"
         {/* Bloc principal centré */}
         <div
           className="relative z-10 flex flex-col items-center justify-center text-center 
-        w-full md:w-[460px] max-w-[90vw] min-w-[300px] mt-8 md:mt-10"
+w-full md:w-[460px] max-w-[90vw] min-w-[300px]"
         >
           {/* Bloc de connexion */}
           <div
             className="w-full p-10 bg-black/40 backdrop-blur-xl border border-white/10 
-          rounded-2xl shadow-2xl min-w-[300px]"
+rounded-2xl shadow-2xl min-w-[300px]"
           >
             {/* Titre remplacé par TextHoverEffect agrandi */}
             <TextHoverEffect
@@ -67,9 +67,9 @@ overflow-hidden px-4 md:px-8 py-10 gap-6 md:gap-0 pt-6 md:pt-[17px]"
             <button
               onClick={() => signIn("google", { callbackUrl: "/dashboard" })}
               className="w-full py-3 flex items-center justify-center gap-2 
-            bg-white text-black font-semibold rounded-xl shadow-md
-            hover:shadow-xl hover:scale-105 active:scale-95 
-            transition-all duration-300 mb-6"
+bg-white text-black font-semibold rounded-xl shadow-md
+hover:shadow-xl hover:scale-105 active:scale-95 
+transition-all duration-300 mb-6"
             >
               <FcGoogle className="text-2xl" />
               Continuer avec Google
@@ -84,7 +84,7 @@ overflow-hidden px-4 md:px-8 py-10 gap-6 md:gap-0 pt-6 md:pt-[17px]"
         {/* DataCard flottante à gauche */}
         <aside
           className="relative z-11 md:absolute md:left-3 md:ml-6 lg:ml-8 
-        flex justify-center md:justify-start w-full md:w-auto min-w-[300px]"
+flex justify-center md:justify-start w-full md:w-auto min-w-[300px]"
         >
           <DataCard
             width={300}
@@ -165,7 +165,7 @@ overflow-hidden px-4 md:px-8 py-10 gap-6 md:gap-0 pt-6 md:pt-[17px]"
         {/* SideCard collée à droite */}
         <aside
           className="relative z-10 md:absolute md:right-3 md:mr-6 lg:mr-8 
-        flex justify-center md:justify-end w-full md:w-auto min-w-[300px]"
+flex justify-center md:justify-end w-full md:w-auto min-w-[300px]"
         >
           <SideCard
             imageSrc="/zyy.png"
