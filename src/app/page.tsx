@@ -30,7 +30,7 @@ export default function HomePage() {
       <main
         className="relative flex flex-col md:flex-row items-center justify-center 
       min-h-screen bg-gradient-to-br from-zinc-700 via-black to-zinc-900 
-      overflow-hidden px-4 md:px-8 py-10"
+      overflow-hidden px-4 md:px-8 py-10 gap-6 md:gap-0 pt-6 md:pt-0"
       >
         {/* Fond dynamique */}
         <div className="absolute inset-0 z-0">
@@ -40,13 +40,12 @@ export default function HomePage() {
         {/* Bloc principal centré */}
         <div
           className="relative z-10 flex flex-col items-center justify-center text-center 
-        w-full md:w-[460px] max-w-[90vw] min-w-[300px] mt-8 md:mt-10 
-        mb-10 sm:mb-12 md:mb-6 lg:mb-8"
+        w-full md:w-[460px] max-w-[90vw] min-w-[300px] mt-8 md:mt-10"
         >
           {/* Bloc de connexion */}
           <div
             className="w-full p-10 bg-black/40 backdrop-blur-xl border border-white/10 
-          rounded-2xl shadow-2xl min-w-[300px] mb-10 sm:mb-12 md:mb-6 lg:mb-8"
+          rounded-2xl shadow-2xl min-w-[300px]"
           >
             {/* Titre remplacé par TextHoverEffect agrandi */}
             <TextHoverEffect
@@ -84,9 +83,8 @@ export default function HomePage() {
 
         {/* DataCard flottante à gauche */}
         <aside
-          className="relative z-11 mt-10 md:mt-0 md:absolute md:left-3 md:ml-6 lg:ml-8 
-        flex justify-center md:justify-start w-full md:w-auto min-w-[300px] 
-        mb-10 sm:mb-12 md:mb-6 lg:mb-8"
+          className="relative z-11 md:absolute md:left-3 md:ml-6 lg:ml-8 
+        flex justify-center md:justify-start w-full md:w-auto min-w-[300px]"
         >
           <DataCard
             width={300}
@@ -103,11 +101,11 @@ export default function HomePage() {
             content={
               <div className="flex flex-col gap-1 text-white text-sm overflow-auto max-h-[200px] md:max-h-[250px]">
                 <p>
-                  Les métriques d’attractivité et les flux d’investissement
+                  Les métriques d'attractivité et les flux d'investissement
                   convergent vers une réalité : le vrai potentiel se mesure dans
-                  ce qui reste à révéler. Anyama dispose d’un avantage
+                  ce qui reste à révéler. Anyama dispose d'un avantage
                   stratégique encore invisible à la majorité des acteurs. La
-                  data ne ment pas — la question, c’est qui l’exploitera en
+                  data ne ment pas — la question, c'est qui l'exploitera en
                   premier. :{" "}
                   <span className="bg-gradient-to-r from-green-500 to-blue-300 bg-clip-text text-transparent font-semibold">
                     Vision partager
@@ -115,12 +113,12 @@ export default function HomePage() {
                 </p>
                 <p>
                   Les chiffres sont là. Les investisseurs arrivent. La question,
-                  c’est : serez-vous prêts ?
+                  c'est : serez-vous prêts ?
                 </p>
                 <p>
-                  Votre commune entre dans une zone d’attractivité stratégique:
+                  Votre commune entre dans une zone d'attractivité stratégique:
                   <span className="bg-gradient-to-r from-green-500 to-blue-300 bg-clip-text text-transparent font-semibold">
-                    Sans insights, chaque décision est un pari perdu d’avance.
+                    Sans insights, chaque décision est un pari perdu d'avance.
                   </span>
                 </p>
               </div>
@@ -137,17 +135,17 @@ export default function HomePage() {
                 <p>
                   La donnée est le premier moteur de croissance du XXIᵉ siècle
                   Les économies modernes sont tirées par : la précision des
-                  décisions, la rapidité d’exécution, la capacité à anticiper
+                  décisions, la rapidité d'exécution, la capacité à anticiper
                   les crises plutôt que les subir. Or, tout cela dépend de la
-                  donnée. Un État qui n’investit pas dans la data : avance à
+                  donnée. Un État qui n'investit pas dans la data : avance à
                   vue, perd du temps, gaspille des ressources, devient dépendant
-                  d’acteurs privés mieux structurés. Un État qui investit dans
+                  d'acteurs privés mieux structurés. Un État qui investit dans
                   la data : gagne en souveraineté, augmente sa productivité
-                  globale, attire davantage d’investissements, devient un moteur
-                  d’innovation.
+                  globale, attire davantage d'investissements, devient un moteur
+                  d'innovation.
                 </p>
                 <p>
-                  La donnée réduit les coûts structurels de l’État (et ce de
+                  La donnée réduit les coûts structurels de l'État (et ce de
                   façon massive) Les administrations gèrent des millions de
                   microdécisions quotidiennes. Sans data : Décisions
                   approximatives → dépenses imprécises → surcoûts →
@@ -156,8 +154,8 @@ export default function HomePage() {
                   publiques → accélération des services. On parle de milliards
                   potentiels économisés sur : la logistique l'énergie les achats
                   publics les fraudes et erreurs les allocations la maintenance
-                  des infrastructures Investir dans la data, ce n’est pas une
-                  dépense : c’est un amortisseur de dépenses futures.
+                  des infrastructures Investir dans la data, ce n'est pas une
+                  dépense : c'est un amortisseur de dépenses futures.
                 </p>
               </div>
             }
@@ -166,9 +164,8 @@ export default function HomePage() {
 
         {/* SideCard collée à droite */}
         <aside
-          className="relative z-10 mt-10 md:mt-0 md:absolute md:right-3 md:mr-6 lg:mr-8 
-        flex justify-center md:justify-end w-full md:w-auto min-w-[300px] 
-        mb-10 sm:mb-12 md:mb-6 lg:mb-8"
+          className="relative z-10 md:absolute md:right-3 md:mr-6 lg:mr-8 
+        flex justify-center md:justify-end w-full md:w-auto min-w-[300px]"
         >
           <SideCard
             imageSrc="/zyy.png"
