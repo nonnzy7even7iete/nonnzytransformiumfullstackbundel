@@ -33,12 +33,11 @@ export default function DataCard({
       <Card
         className={cn(
           "relative flex flex-col items-center justify-start p-4 gap-4 bg-black/30 backdrop-blur-xl border border-white/10 rounded-2xl shadow-lg",
-          "w-[90vw] md:w-[300px] md:min-w-[300px] md:max-w-[300px]", // Modifié pour 300px strict
+          "w-[90vw] md:w-[300px] md:min-w-[300px] md:max-w-[300px]",
           className
         )}
         style={{ minHeight: height }}
       >
-        {/* Injecter la largeur via une variable CSS pour respecter les breakpoints Tailwind */}
         <style jsx>{`
           div {
             --card-width: 90vw;
@@ -50,21 +49,18 @@ export default function DataCard({
           }
         `}</style>
 
-        {/* Titre */}
         {title && (
           <Card className="w-full bg-black/30 backdrop-blur-xl rounded-xl p-2 border border-white/10">
             {title}
           </Card>
         )}
 
-        {/* Contenu principal */}
         {content && (
           <Card className="w-full bg-black/30 backdrop-blur-xl rounded-xl p-2 border border-white/10 flex flex-col gap-1 overflow-auto">
             {content}
           </Card>
         )}
 
-        {/* Bouton */}
         <Button
           variant="secondary"
           className="mt-auto w-full flex items-center justify-center gap-2"
@@ -80,21 +76,24 @@ export default function DataCard({
         <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/50 backdrop-blur-md p-4">
           <Card
             className={cn(
-              "relative flex flex-col items-center justify-start z-[101] p-4 gap-4 bg-black/30 backdrop-blur-xl border border-white/10 rounded-2xl shadow-lg max-h-[90vh] overflow-auto",
-              "w-[90vw] md:w-[300px] md:min-w-[300px] md:max-w-[300px]" // Ajouté pour 90vw mobile et 300px desktop
+              "relative flex flex-col items-center justify-start z-[101] p-4 gap-4 bg-black/30 backdrop-blur-xl border border-white/10 rounded-2xl shadow-lg max-h-[85vh] overflow-auto",
+              /* MODAL : 90vw mobile | 400px desktop */
+              "w-[90vw] md:w-[400px] md:min-w-[400px] md:max-w-[400px]",
+              /* Sécurité Navbar : On ajoute une marge haute pour décoller du header */
+              "mt-16 md:mt-20"
             )}
             style={{ minHeight: height + 50 }}
           >
             {/* Modal Titre */}
             {title && (
-              <Card className="w-full bg-black/30 backdrop-blur-xl rounded-xl p-2 border border-white/10">
+              <Card className="w-full bg-black/30 backdrop-blur-xl rounded-xl p-2 border border-white/10 font-bold text-white">
                 {title}
               </Card>
             )}
 
             {/* Modal Contenu */}
             {modalContent && (
-              <Card className="w-full bg-black/30 backdrop-blur-xl rounded-xl p-2 border border-white/10 flex flex-col gap-1 overflow-auto">
+              <Card className="w-full bg-black/30 backdrop-blur-xl rounded-xl p-2 border border-white/10 flex flex-col gap-1 overflow-auto text-white/90">
                 {modalContent}
               </Card>
             )}
