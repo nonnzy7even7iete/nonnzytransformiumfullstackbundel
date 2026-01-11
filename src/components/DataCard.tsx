@@ -73,14 +73,13 @@ export default function DataCard({
 
       {/* Modal overlay */}
       {modalOpen && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/50 backdrop-blur-md p-4">
+        /* MODIFICATION ICI : pt-24 (padding-top) pour forcer l'espace sous la navbar fixed */
+        <div className="fixed inset-0 z-[100] flex items-start justify-center bg-black/50 backdrop-blur-md p-4 pt-24 md:pt-32 overflow-y-auto">
           <Card
             className={cn(
-              "relative flex flex-col items-center justify-start z-[101] p-4 gap-4 bg-black/30 backdrop-blur-xl border border-white/10 rounded-2xl shadow-lg max-h-[85vh] overflow-auto",
+              "relative flex flex-col items-center justify-start z-[101] p-4 gap-4 bg-black/30 backdrop-blur-xl border border-white/10 rounded-2xl shadow-lg mb-8",
               /* MODAL : 90vw mobile | 400px desktop */
-              "w-[90vw] md:w-[400px] md:min-w-[400px] md:max-w-[400px]",
-              /* Sécurité Navbar : On ajoute une marge haute pour décoller du header */
-              "mt-16 md:mt-20"
+              "w-[90vw] md:w-[400px] md:min-w-[400px] md:max-w-[400px]"
             )}
             style={{ minHeight: height + 50 }}
           >
