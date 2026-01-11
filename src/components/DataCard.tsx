@@ -33,11 +33,12 @@ export default function DataCard({
       <Card
         className={cn(
           "relative flex flex-col items-center justify-start p-4 gap-4 bg-black/30 backdrop-blur-xl border border-white/10 rounded-2xl shadow-lg",
-          "w-[90vw] md:w-[300px] md:min-w-[300px] md:max-w-[300px]",
+          "w-[90vw] md:w-[300px] md:min-w-[300px] md:max-w-[300px]", // Conservé : 300px desktop
           className
         )}
         style={{ minHeight: height }}
       >
+        {/* Injecter la largeur via une variable CSS pour respecter les breakpoints Tailwind */}
         <style jsx>{`
           div {
             --card-width: 90vw;
@@ -49,18 +50,21 @@ export default function DataCard({
           }
         `}</style>
 
+        {/* Titre */}
         {title && (
           <Card className="w-full bg-black/30 backdrop-blur-xl rounded-xl p-2 border border-white/10">
             {title}
           </Card>
         )}
 
+        {/* Contenu principal */}
         {content && (
           <Card className="w-full bg-black/30 backdrop-blur-xl rounded-xl p-2 border border-white/10 flex flex-col gap-1 overflow-auto">
             {content}
           </Card>
         )}
 
+        {/* Bouton */}
         <Button
           variant="secondary"
           className="mt-auto w-full flex items-center justify-center gap-2"
@@ -73,26 +77,32 @@ export default function DataCard({
 
       {/* Modal overlay */}
       {modalOpen && (
-        /* MODIFICATION ICI : pt-24 (padding-top) pour forcer l'espace sous la navbar fixed */
-        <div className="fixed inset-0 z-[100] flex items-start justify-center bg-black/50 backdrop-blur-md p-4 pt-24 md:pt-32 overflow-y-auto">
+        /* Ajout de flex-col pour gérer l'espaceur */
+        <div className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-black/50 backdrop-blur-md p-4">
+          {/* Espaceur pour décoller de la navbar */}
+          <div className="h-20 w-full flex-shrink-0" />
+
           <Card
-            className={cn(
-              "relative flex flex-col items-center justify-start z-[101] p-4 gap-4 bg-black/30 backdrop-blur-xl border border-white/10 rounded-2xl shadow-lg mb-8",
-              /* MODAL : 90vw mobile | 400px desktop */
-              "w-[90vw] md:w-[400px] md:min-w-[400px] md:max-w-[400px]"
-            )}
-            style={{ minHeight: height + 50 }}
+            className="relative flex flex-col items-center justify-start z-[101] p-4 gap-4 bg-black/30 backdrop-blur-xl border border-white/10 rounded-2xl shadow-lg overflow-auto"
+            /* 1. Largeur à 400px sur desktop | 2. Hauteur limitée à 75vh pour forcer le scroll INTERNE */
+            style={{
+              width: "var(--modal-width, 90vw)",
+              minWidth: "min(90vw, 400px)",
+              maxWidth: "400px",
+              maxHeight: "75vh",
+              minHeight: height + 50,
+            }}
           >
             {/* Modal Titre */}
             {title && (
-              <Card className="w-full bg-black/30 backdrop-blur-xl rounded-xl p-2 border border-white/10 font-bold text-white">
+              <Card className="w-full bg-black/30 backdrop-blur-xl rounded-xl p-2 border border-white/10">
                 {title}
               </Card>
             )}
 
             {/* Modal Contenu */}
             {modalContent && (
-              <Card className="w-full bg-black/30 backdrop-blur-xl rounded-xl p-2 border border-white/10 flex flex-col gap-1 overflow-auto text-white/90">
+              <Card className="w-full bg-black/30 backdrop-blur-xl rounded-xl p-2 border border-white/10 flex flex-col gap-1 overflow-auto">
                 {modalContent}
               </Card>
             )}
@@ -110,6 +120,9 @@ export default function DataCard({
               Fermer
             </Button>
           </Card>
+
+          {/* Espaceur bas pour équilibrer le centrage */}
+          <div className="flex-grow" />
         </div>
       )}
     </>
