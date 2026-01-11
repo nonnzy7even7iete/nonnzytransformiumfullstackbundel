@@ -33,7 +33,7 @@ export default function DataCard({
       <Card
         className={cn(
           "relative flex flex-col items-center justify-start p-4 gap-4 bg-black/30 backdrop-blur-xl border border-white/10 rounded-2xl shadow-lg",
-          "w-[90vw] md:w-[300px]", // Taille explicite ici pour le Desktop
+          "w-[90vw] md:w-[300px] md:min-w-[300px] md:max-w-[300px]", // Modifié pour 300px strict
           className
         )}
         style={{ minHeight: height }}
@@ -45,7 +45,7 @@ export default function DataCard({
           }
           @media (min-width: 768px) {
             div {
-              --card-width: ${width}px;
+              --card-width: 300px;
             }
           }
         `}</style>
@@ -79,8 +79,11 @@ export default function DataCard({
       {modalOpen && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/50 backdrop-blur-md p-4">
           <Card
-            className="relative flex flex-col items-center justify-start z-[101] p-4 gap-4 bg-black/30 backdrop-blur-xl border border-white/10 rounded-2xl shadow-lg max-w-[95vw] max-h-[90vh] overflow-auto"
-            style={{ minWidth: "min(90vw, 400px)", minHeight: height + 50 }}
+            className={cn(
+              "relative flex flex-col items-center justify-start z-[101] p-4 gap-4 bg-black/30 backdrop-blur-xl border border-white/10 rounded-2xl shadow-lg max-h-[90vh] overflow-auto",
+              "w-[90vw] md:w-[300px] md:min-w-[300px] md:max-w-[300px]" // Ajouté pour 90vw mobile et 300px desktop
+            )}
+            style={{ minHeight: height + 50 }}
           >
             {/* Modal Titre */}
             {title && (
