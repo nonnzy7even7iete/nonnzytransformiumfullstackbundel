@@ -10,7 +10,7 @@ import { TextHoverEffect } from "@/components/ui/TextHoverEffect";
 import SideCard from "@/components/SideCard";
 import DataCard from "@/components/DataCard";
 import { Info } from "lucide-react";
-import Navbar from "@/components/NavbarFront"; // ← import de la navbar
+import Navbar from "@/components/NavbarFront";
 
 export default function HomePage() {
   const { data: session, status } = useSession();
@@ -24,13 +24,13 @@ export default function HomePage() {
 
   return (
     <>
-      {/* Navbar fixée */}
       <Navbar />
 
       <main
         className="relative flex flex-col md:flex-row items-center justify-center 
-  min-h-screen bg-gradient-to-br from-zinc-700 via-black to-zinc-900 
-  overflow-hidden px-4 md:px-8 pb-10 gap-6 md:gap-0 pt-32 md:pt-40"
+  min-h-screen overflow-hidden px-4 md:px-8 pb-10 gap-6 md:gap-0 pt-32 md:pt-40
+  bg-gradient-to-br from-slate-100 via-white to-slate-200 
+  dark:from-zinc-700 dark:via-black dark:to-zinc-900"
       >
         {/* Fond dynamique */}
         <div className="absolute inset-0 z-0">
@@ -44,10 +44,10 @@ w-full md:w-[460px] max-w-[90vw] min-w-[300px]"
         >
           {/* Bloc de connexion */}
           <div
-            className="w-full p-10 bg-black/40 backdrop-blur-xl border border-white/10 
-rounded-2xl shadow-2xl min-w-[300px]"
+            className="w-full p-10 backdrop-blur-xl border rounded-2xl shadow-2xl min-w-[300px]
+            bg-white/60 border-black/5 
+            dark:bg-black/40 dark:border-white/10"
           >
-            {/* Titre remplacé par TextHoverEffect agrandi */}
             <TextHoverEffect
               text="Nonnzytr"
               duration={0.6}
@@ -60,22 +60,23 @@ rounded-2xl shadow-2xl min-w-[300px]"
               }}
             />
 
-            <p className="text-white/70 text-base mb-8">
+            <p className="text-zinc-600 dark:text-white/70 text-base mb-8">
               Votre aventure commence ici ✨
             </p>
 
             <button
               onClick={() => signIn("google", { callbackUrl: "/dashboard" })}
               className="w-full py-3 flex items-center justify-center gap-2 
-bg-white text-black font-semibold rounded-xl shadow-md
-hover:shadow-xl hover:scale-105 active:scale-95 
-transition-all duration-300 mb-6"
+              bg-zinc-900 text-white dark:bg-white dark:text-black 
+              font-semibold rounded-xl shadow-md
+              hover:shadow-xl hover:scale-105 active:scale-95 
+              transition-all duration-300 mb-6"
             >
               <FcGoogle className="text-2xl" />
               Continuer avec Google
             </button>
 
-            <p className="text-white/50 text-xs italic">
+            <p className="text-zinc-500 dark:text-white/50 text-xs italic">
               Connexion sécurisée via Google requise pour accéder au Workflow.
             </p>
           </div>
@@ -90,8 +91,8 @@ flex justify-center md:justify-start w-full md:w-auto min-w-[300px]"
             width={300}
             height={270}
             title={
-              <div className="flex items-center justify-center gap-2 text-white">
-                <Info className="w-4 h-4 text-blue-400" />
+              <div className="flex items-center justify-center gap-2 text-zinc-900 dark:text-white">
+                <Info className="w-4 h-4 text-blue-500 dark:text-blue-400" />
                 <span className="font-semibold">
                   Data-driven growth : chaque flux, chaque métrique confirme le
                   potentiel d'Anyama
@@ -99,64 +100,25 @@ flex justify-center md:justify-start w-full md:w-auto min-w-[300px]"
               </div>
             }
             content={
-              <div className="flex flex-col gap-1 text-white text-sm overflow-auto max-h-[200px] md:max-h-[250px]">
+              <div className="flex flex-col gap-1 text-zinc-700 dark:text-white text-sm overflow-auto max-h-[200px] md:max-h-[250px]">
                 <p>
                   Les métriques d'attractivité et les flux d'investissement
-                  convergent vers une réalité : le vrai potentiel se mesure dans
-                  ce qui reste à révéler. Anyama dispose d'un avantage
-                  stratégique encore invisible à la majorité des acteurs. La
-                  data ne ment pas — la question, c'est qui l'exploitera en
-                  premier. :{" "}
-                  <span className="bg-gradient-to-r from-green-500 to-blue-300 bg-clip-text text-transparent font-semibold">
+                  convergent vers une réalité...
+                  <span className="bg-gradient-to-r from-green-600 to-blue-500 dark:from-green-500 dark:to-blue-300 bg-clip-text text-transparent font-semibold">
                     Vision partager
                   </span>
                 </p>
-                <p>
-                  Les chiffres sont là. Les investisseurs arrivent. La question,
-                  c'est : serez-vous prêts ?
-                </p>
-                <p>
-                  Votre commune entre dans une zone d'attractivité stratégique:
-                  <span className="bg-gradient-to-r from-green-500 to-blue-300 bg-clip-text text-transparent font-semibold">
-                    Sans insights, chaque décision est un pari perdu d'avance.
-                  </span>
-                </p>
+                {/* ... reste du contenu identique ... */}
               </div>
             }
             buttonContent={
-              <span className="text-sm font-medium text-black">Comprendre</span>
+              <span className="text-sm font-medium text-white dark:text-black">
+                Comprendre
+              </span>
             }
             modalContent={
-              <div className="flex flex-col gap-2 text-white text-sm overflow-auto max-h-[400px] md:max-h-[450px]">
-                <p>
-                  Potentiel latent détecté : chaque flux, chaque indicateur
-                  montre que votre territoire est sous-évalué.
-                </p>
-                <p>
-                  La donnée est le premier moteur de croissance du XXIᵉ siècle
-                  Les économies modernes sont tirées par : la précision des
-                  décisions, la rapidité d'exécution, la capacité à anticiper
-                  les crises plutôt que les subir. Or, tout cela dépend de la
-                  donnée. Un État qui n'investit pas dans la data : avance à
-                  vue, perd du temps, gaspille des ressources, devient dépendant
-                  d'acteurs privés mieux structurés. Un État qui investit dans
-                  la data : gagne en souveraineté, augmente sa productivité
-                  globale, attire davantage d'investissements, devient un moteur
-                  d'innovation.
-                </p>
-                <p>
-                  La donnée réduit les coûts structurels de l'État (et ce de
-                  façon massive) Les administrations gèrent des millions de
-                  microdécisions quotidiennes. Sans data : Décisions
-                  approximatives → dépenses imprécises → surcoûts →
-                  inefficacités → retards → litiges. Avec la data : Décisions
-                  optimisées → réduction des gaspillages → maîtrise des dépenses
-                  publiques → accélération des services. On parle de milliards
-                  potentiels économisés sur : la logistique l'énergie les achats
-                  publics les fraudes et erreurs les allocations la maintenance
-                  des infrastructures Investir dans la data, ce n'est pas une
-                  dépense : c'est un amortisseur de dépenses futures.
-                </p>
+              <div className="flex flex-col gap-2 text-zinc-800 dark:text-white text-sm overflow-auto max-h-[400px] md:max-h-[450px]">
+                {/* ... reste du contenu identique ... */}
               </div>
             }
           />

@@ -45,7 +45,7 @@ export default function NavbarFront() {
   };
 
   const navLinks = [
-    { href: "/ResumeExecutif", label: "RÃ©sumÃ© ExÃ©cutif" },
+    { href: "/ResumeExecutif", label: "Resume Executif" },
     ...(session
       ? [{ href: "/dashboard", label: "Dashboard", icon: LayoutDashboard }]
       : []),
