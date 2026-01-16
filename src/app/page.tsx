@@ -10,7 +10,7 @@ import { TextHoverEffect } from "@/components/ui/TextHoverEffect";
 import SideCard from "@/components/SideCard";
 import DataCard from "@/components/DataCard";
 import { Info } from "lucide-react";
-import Navbar from "@/components/NavbarFront";
+import Navbar from "@/components/NavbarFront"; // ← import de la navbar
 
 export default function HomePage() {
   const { data: session, status } = useSession();
@@ -24,6 +24,7 @@ export default function HomePage() {
 
   return (
     <>
+      {/* Navbar fixée */}
       <Navbar />
 
       <main
@@ -45,9 +46,9 @@ w-full md:w-[460px] max-w-[90vw] min-w-[300px]"
           {/* Bloc de connexion */}
           <div
             className="w-full p-10 backdrop-blur-xl border rounded-2xl shadow-2xl min-w-[300px]
-            bg-white/60 border-black/5 
-            dark:bg-black/40 dark:border-white/10"
+            bg-white/60 border-black/5 dark:bg-black/40 dark:border-white/10"
           >
+            {/* Titre remplacé par TextHoverEffect agrandi */}
             <TextHoverEffect
               text="Nonnzytr"
               duration={0.6}
@@ -67,10 +68,9 @@ w-full md:w-[460px] max-w-[90vw] min-w-[300px]"
             <button
               onClick={() => signIn("google", { callbackUrl: "/dashboard" })}
               className="w-full py-3 flex items-center justify-center gap-2 
-              bg-zinc-900 text-white dark:bg-white dark:text-black 
-              font-semibold rounded-xl shadow-md
-              hover:shadow-xl hover:scale-105 active:scale-95 
-              transition-all duration-300 mb-6"
+bg-zinc-900 text-white dark:bg-white dark:text-black font-semibold rounded-xl shadow-md
+hover:shadow-xl hover:scale-105 active:scale-95 
+transition-all duration-300 mb-6"
             >
               <FcGoogle className="text-2xl" />
               Continuer avec Google
@@ -92,7 +92,7 @@ flex justify-center md:justify-start w-full md:w-auto min-w-[300px]"
             height={270}
             title={
               <div className="flex items-center justify-center gap-2 text-zinc-900 dark:text-white">
-                <Info className="w-4 h-4 text-blue-500 dark:text-blue-400" />
+                <Info className="w-4 h-4 text-blue-600 dark:text-blue-400" />
                 <span className="font-semibold">
                   Data-driven growth : chaque flux, chaque métrique confirme le
                   potentiel d'Anyama
@@ -103,22 +103,43 @@ flex justify-center md:justify-start w-full md:w-auto min-w-[300px]"
               <div className="flex flex-col gap-1 text-zinc-700 dark:text-white text-sm overflow-auto max-h-[200px] md:max-h-[250px]">
                 <p>
                   Les métriques d'attractivité et les flux d'investissement
-                  convergent vers une réalité...
-                  <span className="bg-gradient-to-r from-green-600 to-blue-500 dark:from-green-500 dark:to-blue-300 bg-clip-text text-transparent font-semibold">
+                  convergent vers une réalité : le vrai potentiel se mesure dans
+                  ce qui reste à révéler. Anyama dispose d'un avantage
+                  stratégique encore invisible à la majorité des acteurs. La
+                  data ne ment pas — la question, c'est qui l'exploitera en
+                  premier. :{" "}
+                  <span className="bg-gradient-to-r from-green-600 to-blue-600 dark:from-green-500 dark:to-blue-300 bg-clip-text text-transparent font-semibold">
                     Vision partager
                   </span>
                 </p>
-                {/* ... reste du contenu identique ... */}
+                <p>
+                  Les chiffres sont là. Les investisseurs arrivent. La question,
+                  c'est : serez-vous prêts ?
+                </p>
+                <p>
+                  Votre commune entre dans une zone d'attractivité stratégique:
+                  <span className="bg-gradient-to-r from-green-600 to-blue-600 dark:from-green-500 dark:to-blue-300 bg-clip-text text-transparent font-semibold">
+                    Sans insights, chaque décision est un pari perdu d'avance.
+                  </span>
+                </p>
               </div>
             }
             buttonContent={
-              <span className="text-sm font-medium text-white dark:text-black">
+              <span className="text-sm font-medium text-zinc-900 dark:text-black">
                 Comprendre
               </span>
             }
             modalContent={
               <div className="flex flex-col gap-2 text-zinc-800 dark:text-white text-sm overflow-auto max-h-[400px] md:max-h-[450px]">
-                {/* ... reste du contenu identique ... */}
+                <p>
+                  Potentiel latent détecté : chaque flux, chaque indicateur
+                  montre que votre territoire est sous-évalué.
+                </p>
+                <p>
+                  La donnée est le premier moteur de croissance du XXIᵉ
+                  siècle...
+                  {/* ... reste du texte identique ... */}
+                </p>
               </div>
             }
           />
