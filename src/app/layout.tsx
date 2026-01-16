@@ -1,3 +1,4 @@
+// app/layout.tsx
 import type { Metadata, Viewport } from "next"; // Ajout de Viewport
 import { Geist, Geist_Mono } from "next/font/google";
 import "./tailwind.css";
@@ -9,9 +10,9 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-// CETTE PARTIE S'OCCUPE UNIQUEMENT DU NAVIGATEUR
+// Ajout de la configuration pour la barre du navigateur
 export const viewport: Viewport = {
-  themeColor: "#000000", // La couleur de la barre DNS / Navigation
+  themeColor: "#000000",
 };
 
 export const metadata: Metadata = {
@@ -25,7 +26,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="fr">
+    <html lang="fr" className="dark" style={{ colorScheme: "dark" }}>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >

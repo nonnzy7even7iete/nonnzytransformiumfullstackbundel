@@ -6,7 +6,7 @@ import { useSession } from "next-auth/react";
 import { LayoutDashboard } from "lucide-react";
 import { IoAppsOutline } from "react-icons/io5";
 import { TextHoverEffect } from "./ui/TextHoverEffect";
-
+import { ThemeToggle } from "@/components/ui/themeToggle"; // Chemin corrigé
 export default function NavbarFront() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
@@ -16,14 +16,9 @@ export default function NavbarFront() {
 
   useEffect(() => {
     const cycle = () => {
-      // 1. On s'assure que c'est éteint au début du cycle
       setShowBorder(false);
-
-      // 2. On attend 7 secondes (latence d'apparition)
       setTimeout(() => {
         setShowBorder(true);
-
-        // 3. On laisse apparaître pendant 5 secondes
         setTimeout(() => {
           setShowBorder(false);
         }, 5000);
@@ -31,9 +26,7 @@ export default function NavbarFront() {
     };
 
     cycle();
-    // L'intervalle doit être la somme des deux (7s + 5s = 12s)
     const interval = setInterval(cycle, 12000);
-
     return () => clearInterval(interval);
   }, []);
 
@@ -52,7 +45,7 @@ export default function NavbarFront() {
   };
 
   const navLinks = [
-    { href: "/ResumeExecutif", label: "Résumé Exécutif" },
+    { href: "/ResumeExecutif", label: "RÃ©sumÃ© ExÃ©cutif" },
     ...(session
       ? [{ href: "/dashboard", label: "Dashboard", icon: LayoutDashboard }]
       : []),
@@ -75,21 +68,24 @@ export default function NavbarFront() {
           transition: opacity 1000ms ease-in-out;
         }
 
-        /* Halo sur le corps de la navbar */
         .navbar-glow {
           box-shadow: 0px 10px 30px -10px rgba(34, 197, 94, 0.2);
           transition: box-shadow 1000ms ease-in-out;
         }
       `}</style>
 
-      <button
-        onClick={handleToggleClick}
-        className={`fixed right-3 top-3 z-50 transition-all duration-500 ${
-          isButtonAnimating ? "opacity-0 scale-50" : "opacity-100 scale-100"
-        }`}
-      >
-        <IoAppsOutline className="w-6 h-6 text-white hover:scale-110" />
-      </button>
+      {/* Groupe de boutons en haut à droite */}
+      <div className="fixed right-3 top-3 z-50 flex items-center gap-3">
+        <ThemeToggle /> {/* Le bouton Dark/Light s'insère ici */}
+        <button
+          onClick={handleToggleClick}
+          className={`transition-all duration-500 ${
+            isButtonAnimating ? "opacity-0 scale-50" : "opacity-100 scale-100"
+          }`}
+        >
+          <IoAppsOutline className="w-6 h-6 text-white hover:scale-110" />
+        </button>
+      </div>
 
       <nav
         className={`fixed top-0 w-full z-40 transition-all duration-1000
