@@ -46,7 +46,8 @@ w-full md:w-[460px] max-w-[90vw] min-w-[300px]"
           {/* Bloc de connexion */}
           <div
             className="w-full p-10 backdrop-blur-xl border rounded-2xl shadow-2xl min-w-[300px]
-            bg-white/60 border-black/5 dark:bg-black/40 dark:border-white/10"
+            bg-white/60 border-black/5 
+            dark:bg-black/40 dark:border-white/10"
           >
             {/* Titre remplacé par TextHoverEffect agrandi */}
             <TextHoverEffect
@@ -68,9 +69,10 @@ w-full md:w-[460px] max-w-[90vw] min-w-[300px]"
             <button
               onClick={() => signIn("google", { callbackUrl: "/dashboard" })}
               className="w-full py-3 flex items-center justify-center gap-2 
-bg-zinc-900 text-white dark:bg-white dark:text-black font-semibold rounded-xl shadow-md
-hover:shadow-xl hover:scale-105 active:scale-95 
-transition-all duration-300 mb-6"
+              bg-zinc-900 text-white dark:bg-white dark:text-black 
+              font-semibold rounded-xl shadow-md
+              hover:shadow-xl hover:scale-105 active:scale-95 
+              transition-all duration-300 mb-6"
             >
               <FcGoogle className="text-2xl" />
               Continuer avec Google
@@ -100,7 +102,7 @@ flex justify-center md:justify-start w-full md:w-auto min-w-[300px]"
               </div>
             }
             content={
-              <div className="flex flex-col gap-1 text-zinc-700 dark:text-white text-sm overflow-auto max-h-[200px] md:max-h-[250px]">
+              <div className="flex flex-col gap-1 text-zinc-800 dark:text-white text-sm overflow-auto max-h-[200px] md:max-h-[250px]">
                 <p>
                   Les métriques d'attractivité et les flux d'investissement
                   convergent vers une réalité : le vrai potentiel se mesure dans
@@ -136,10 +138,12 @@ flex justify-center md:justify-start w-full md:w-auto min-w-[300px]"
                   montre que votre territoire est sous-évalué.
                 </p>
                 <p>
-                  La donnée est le premier moteur de croissance du XXIᵉ
-                  siècle...
-                  {/* ... reste du texte identique ... */}
+                  La donnée est le premier moteur de croissance du XXIᵉ siècle
+                  Les économies modernes sont tirées par : la précision des
+                  décisions, la rapidité d'exécution, la capacité à anticiper
+                  les crises plutôt que les subir...
                 </p>
+                {/* Reste du contenu identique */}
               </div>
             }
           />
