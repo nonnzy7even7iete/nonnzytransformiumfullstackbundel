@@ -34,30 +34,27 @@ body {
 
 /* 🔹 CONFIGURATION DU THÈME (Le Menu) */
 @theme inline {
-  /* --- Logique Duale (Gère le switch automatiquement) --- */
+  /* --- Logique Duale (Switch Automatique) --- */
 
   /* 1. Le fond d'écran principal */
   --background-image-app-gradient: light-dark(linear-gradient(to bottom right, #cbd5e1, #f8fafc, #cbd5e1),
-      /* Light */
-      linear-gradient(to bottom right, #3f3f46, #000000, #18181b)
-      /* Dark (Ton design) */
-    );
+      linear-gradient(to bottom right, #3f3f46, #000000, #18181b));
 
-  /* 2. Le fond des cartes "Glass" */
-  --color-glass-dual: light-dark(rgba(255, 255, 255, 0.6),
-      /* Light */
+  /* 2. Le fond des cartes "Glass" (Refacto : Dégradé 225° en Light) */
+  --color-glass-dual: light-dark(linear-gradient(225deg, #e2e8f0, #94a3b8),
+      /* Light: Gris clair vers Gris foncé */
       rgba(0, 0, 0, 0.4)
-      /* Dark (Ton design) */
+      /* Dark: Ton design original */
     );
 
-  /* 3. La bordure des cartes */
-  --color-border-dual: light-dark(rgba(0, 0, 0, 0.05),
-      /* Light */
+  /* 3. La bordure des cartes (Refacto : Plus claire en Light pour le relief) */
+  --color-border-dual: light-dark(rgba(255, 255, 255, 0.4),
+      /* Light: Bordure blanche/verre */
       rgba(255, 255, 255, 0.1)
-      /* Dark (Ton design) */
+      /* Dark: Ton design original */
     );
 
-  /* --- Variables Shadcn existantes (Gardées intactes) --- */
+  /* --- Variables Shadcn --- */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-border: var(--border);
@@ -87,7 +84,6 @@ body {
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
 
-  /* Rayons */
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
@@ -98,15 +94,17 @@ body {
 :root {
   --radius: 0.625rem;
   color-scheme: light dark;
-  /* Indispensable pour que light-dark() fonctionne */
 
-  /* Light Values */
+  /* --- Light Values --- */
   --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
+
+  /* Refacto : On force le texte en blanc (100% Lightness) même en mode Light */
+  --foreground: oklch(1 0 0);
+
   --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
+  --card-foreground: oklch(1 0 0);
   --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
+  --popover-foreground: oklch(1 0 0);
   --primary: oklch(0.205 0 0);
   --primary-foreground: oklch(0.985 0 0);
   --secondary: oklch(0.97 0 0);
@@ -130,7 +128,7 @@ body {
 }
 
 .dark {
-  /* Dark Values (Ton design actuel) */
+  /* --- Dark Values (Ton design original préservé à 100%) --- */
   --background: oklch(0.145 0 0);
   --foreground: oklch(0.985 0 0);
   --card: oklch(0.205 0 0);
@@ -165,7 +163,6 @@ body {
   }
 
   body {
-    /* bg-background et text-foreground changent déjà via le fichier CSS */
     @apply bg-background text-foreground transition-colors duration-300;
   }
 }
