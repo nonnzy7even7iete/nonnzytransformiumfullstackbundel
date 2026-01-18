@@ -34,24 +34,28 @@ body {
 
 /* 🔹 CONFIGURATION DU THÈME */
 @theme inline {
-  /* --- Logique Duale (Switch Automatique) --- */
-
   /* 1. Le fond d'écran principal */
-  --background-image-app-gradient: light-dark(linear-gradient(to bottom right, #cbd5e1, #f8fafc, #cbd5e1),
-      linear-gradient(to bottom right, #3f3f46, #000000, #18181b));
-
-  /* 2. Le fond des cartes "Glass" (Calibré sur SideCard : bg-black/40) */
-  --color-glass-dual: light-dark(linear-gradient(225deg, #e2e8f0, #94a3b8),
-      /* Light : Dégradé Gris */
-      rgba(0, 0, 0, 0.4)
-      /* Dark : Le style SideCard pur */
+  --background-image-app-gradient: light-dark(linear-gradient(to bottom right, #f8fafc, #e2e8f0, #cbd5e1),
+      /* Light plus clair */
+      linear-gradient(to bottom right, #18181b, #000000, #09090b)
+      /* Dark plus profond */
     );
 
-  /* 3. La bordure des cartes (Synchronisé border-white/10) */
-  --color-border-dual: light-dark(rgba(255, 255, 255, 0.4),
-      rgba(255, 255, 255, 0.1));
+  /* 2. Le fond des cartes "Glass" - OPTIMISÉ */
+  --color-glass-dual: light-dark(rgba(255, 255, 255, 0.7),
+      /* ☀️ Light : Effet "Givre" blanc pur translucide */
+      rgba(0, 0, 0, 0.6)
+      /* 🌙 Dark : Noir plus dense pour plus de profondeur */
+    );
 
-  /* --- Variables Shadcn --- */
+  /* 3. La bordure des cartes - OPTIMISÉE */
+  --color-border-dual: light-dark(rgba(255, 255, 255, 0.8),
+      /* Bordure blanche solide en Light */
+      rgba(255, 255, 255, 0.15)
+      /* Bordure fine brillante en Dark */
+    );
+
+  /* --- Variables Shadcn & Radius --- */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-border: var(--border);
@@ -93,15 +97,14 @@ body {
   color-scheme: light dark;
 
   /* --- Light Values --- */
-  --background: oklch(1 0 0);
-
-  /* Force le texte en blanc par défaut pour le contraste sur les cartes grises */
-  --foreground: oklch(1 0 0);
+  --background: oklch(0.98 0 0);
+  --foreground: oklch(0.145 0 0);
+  /* Texte sombre en mode Light pour lisibilité */
 
   --card: oklch(1 0 0);
-  --card-foreground: oklch(1 0 0);
+  --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);
-  --popover-foreground: oklch(1 0 0);
+  --popover-foreground: oklch(0.145 0 0);
   --primary: oklch(0.205 0 0);
   --primary-foreground: oklch(0.985 0 0);
   --secondary: oklch(0.97 0 0);
@@ -125,12 +128,13 @@ body {
 }
 
 .dark {
-  /* --- Dark Values --- */
-  --background: oklch(0.145 0 0);
+  /* --- Dark Values (Le plus sombre possible) --- */
+  --background: oklch(0.1 0 0);
+  /* Noir Zinc-950 */
   --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
+  --card: oklch(0.145 0 0);
   --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
+  --popover: oklch(0.145 0 0);
   --popover-foreground: oklch(0.985 0 0);
   --primary: oklch(0.922 0 0);
   --primary-foreground: oklch(0.205 0 0);
@@ -144,7 +148,7 @@ body {
   --border: oklch(1 0 0 / 10%);
   --input: oklch(1 0 0 / 15%);
   --ring: oklch(0.556 0 0);
-  --sidebar: oklch(0.205 0 0);
+  --sidebar: oklch(0.145 0 0);
   --sidebar-foreground: oklch(0.985 0 0);
   --sidebar-primary: oklch(0.488 0.243 264.376);
   --sidebar-primary-foreground: oklch(0.985 0 0);
