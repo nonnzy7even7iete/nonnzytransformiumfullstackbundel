@@ -39,6 +39,7 @@ export default function HomePage() {
           className="relative z-10 flex flex-col items-center justify-center text-center 
 w-full md:w-[460px] max-w-[90vw] min-w-[300px]"
         >
+          {/* Bloc de connexion avec le MÊME glassmorphism que les autres cartes */}
           <div
             className="w-full p-10 backdrop-blur-xl rounded-2xl shadow-2xl min-w-[300px]
             bg-glass-dual border border-border-dual"
@@ -55,22 +56,24 @@ w-full md:w-[460px] max-w-[90vw] min-w-[300px]"
               }}
             />
 
-            <p className="text-black text-base mb-8">
+            {/* Texte noir pour contraste sur le gris/blanc du mode light */}
+            <p className="text-black dark:text-white text-base mb-8">
               Votre aventure commence ici ✨
             </p>
 
             <button
               onClick={() => signIn("google", { callbackUrl: "/dashboard" })}
               className="w-full py-3 flex items-center justify-center gap-2 
-              bg-black dark:bg-white text-white dark:text-black font-semibold rounded-xl shadow-md
+              bg-black text-white dark:bg-white dark:text-black font-semibold rounded-xl shadow-md
               hover:shadow-xl hover:scale-105 active:scale-95 
               transition-all duration-300 mb-6"
+              /* 🪄 Noir sur blanc en Light / Blanc sur noir en Dark */
             >
               <FcGoogle className="text-2xl" />
               Continuer avec Google
             </button>
 
-            <p className="text-black/50 text-xs italic">
+            <p className="text-black/50 dark:text-white/50 text-xs italic">
               Connexion sécurisée via Google requise pour accéder au Workflow.
             </p>
           </div>
@@ -118,8 +121,8 @@ flex justify-center md:justify-start w-full md:w-auto min-w-[300px]"
               </div>
             }
             buttonContent={
-              <div className="px-6 py-2 rounded-lg bg-gradient-to-br from-white/20 via-transparent to-black/20 border border-white/10 shadow-xl transition-transform hover:scale-105 flex items-center justify-center">
-                <span className="text-sm font-bold bg-gradient-to-br from-white/80 to-black/40 bg-clip-text text-transparent">
+              <div className="px-6 py-2 rounded-lg bg-gradient-to-br from-white/20 via-transparent to-black/30 border border-white/10 shadow-xl transition-transform hover:scale-105 flex items-center justify-center">
+                <span className="text-sm font-bold bg-gradient-to-br from-white/80 to-black/60 bg-clip-text text-transparent">
                   Comprendre
                 </span>
               </div>
@@ -150,10 +153,10 @@ flex justify-center md:justify-start w-full md:w-auto min-w-[300px]"
                   inefficacités → retards → litiges. Avec la data : Décisions
                   optimisées → réduction des gaspillages → maîtrise des dépenses
                   publiques → accélération des services. On parle de milliards
-                  potentiels économisés sur : la logistique, l'énergie, les achats
-                  publics, les fraudes et erreurs, les allocations, la maintenance
-                  des infrastructures. Investir dans la donnée n'est pas une
-                  dépense : c'est un amortisseur de dépenses futures.
+                  potentiels économisés sur : la logistique, l'énergie, les
+                  achats publics, les fraudes et erreurs, les allocations, la
+                  maintenance des infrastructures. Investir dans la donnée n'est
+                  pas une dépense : c'est un amortisseur de dépenses futures.
                 </p>
               </div>
             }
