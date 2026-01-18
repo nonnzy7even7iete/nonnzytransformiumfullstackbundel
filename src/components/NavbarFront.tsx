@@ -6,7 +6,8 @@ import { useSession } from "next-auth/react";
 import { LayoutDashboard } from "lucide-react";
 import { IoAppsOutline } from "react-icons/io5";
 import { TextHoverEffect } from "./ui/TextHoverEffect";
-import { ThemeToggle } from "@/components/ui/themeToggle"; // Chemin corrigé
+import { ThemeToggle } from "@/components/ui/themeToggle";
+
 export default function NavbarFront() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
@@ -76,14 +77,15 @@ export default function NavbarFront() {
 
       {/* Groupe de boutons en haut à droite */}
       <div className="fixed right-3 top-3 z-50 flex items-center gap-3">
-        <ThemeToggle /> {/* Le bouton Dark/Light s'insère ici */}
+        <ThemeToggle />
         <button
           onClick={handleToggleClick}
           className={`transition-all duration-500 ${
             isButtonAnimating ? "opacity-0 scale-50" : "opacity-100 scale-100"
           }`}
         >
-          <IoAppsOutline className="w-6 h-6 text-white hover:scale-110" />
+          {/* Correction couleur icône pour visibilité sur fond transparent */}
+          <IoAppsOutline className="w-6 h-6 text-foreground hover:scale-110" />
         </button>
       </div>
 
@@ -94,14 +96,13 @@ export default function NavbarFront() {
             ? "opacity-100 pointer-events-auto"
             : "opacity-0 pointer-events-none"
         }
-        ${
-          isScrolled
-            ? "bg-black/70 backdrop-blur-sm"
-            : "bg-black/50 backdrop-blur-lg"
-        }
+        /* FORCE TRANSPARENCE : Suppression des bg-black
+           On garde le backdrop-blur uniquement au scroll pour la lisibilité
+        */
+        bg-transparent ${isScrolled ? "backdrop-blur-md" : ""}
         ${
           showBorder
-            ? "navbar-glow border-b border-white/5"
+            ? "navbar-glow border-b border-foreground/10"
             : "border-b border-transparent"
         }
         h-16`}
@@ -121,20 +122,20 @@ export default function NavbarFront() {
                 <Link
                   key={link.href}
                   href={link.href}
-                  className={`group flex flex-col items-center relative text-white transition-all duration-300 whitespace-nowrap ${
+                  className={`group flex flex-col items-center relative text-foreground transition-all duration-300 whitespace-nowrap ${
                     isResumeExecutif
                       ? "hover:scale-x-110 font-semibold"
                       : "hover:-translate-y-1 hover:scale-105"
                   }`}
                 >
                   {!isResumeExecutif && IconComponent && (
-                    <IconComponent className="w-4 h-4 md:w-5 md:h-5 transition-colors group-hover:text-green-400" />
+                    <IconComponent className="w-4 h-4 md:w-5 md:h-5 transition-colors group-hover:text-green-500" />
                   )}
                   <span
                     className={`mt-1 text-xs md:text-sm transition-colors ${
                       isResumeExecutif
-                        ? "font-semibold text-white"
-                        : "font-light text-white group-hover:text-green-400"
+                        ? "font-semibold text-foreground"
+                        : "font-light text-foreground group-hover:text-green-500"
                     }`}
                   >
                     {link.label}
@@ -145,7 +146,7 @@ export default function NavbarFront() {
                     ${
                       isResumeExecutif
                         ? ""
-                        : "bg-green-400/20 backdrop-blur-md p-4 -z-10"
+                        : "bg-green-500/10 backdrop-blur-md p-4 -z-10"
                     }`}
                   />
                 </Link>

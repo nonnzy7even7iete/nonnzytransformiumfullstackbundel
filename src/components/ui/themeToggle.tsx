@@ -24,12 +24,10 @@ export function ThemeToggle() {
         backdrop-blur-sm
         text-foreground transition-all duration-300
         hover:scale-110 active:scale-95
-        /* Suppression du contour de focus par défaut */
         focus:outline-none focus-visible:ring-0
       "
       aria-label="Toggle theme"
     >
-      {/* Icône Soleil : Jaune vif avec une lueur */}
       <Sun
         className={`h-5 w-5 text-yellow-400 transition-all duration-300 
         ${
@@ -37,9 +35,8 @@ export function ThemeToggle() {
         }`}
       />
 
-      {/* Icône Lune : Indigo profond */}
       <Moon
-        className={`h-5 w-5 text-indigo-600 transition-all duration-300 
+        className={`h-5 w-5 text-gray-700 transition-all duration-300 
         ${
           theme === "light"
             ? "scale-100 rotate-0"
