@@ -8,7 +8,7 @@
 @tailwind components;
 @tailwind utilities;
 
-/* 🔹 RESET GLOBAL — supprime toutes marges par défaut, mais garde le padding pour certains éléments */
+/* 🔹 RESET & GLOBAL */
 *,
 *::before,
 *::after {
@@ -16,7 +16,6 @@
   box-sizing: border-box;
 }
 
-/* ⚡ Éléments à garder padding par défaut */
 button,
 span,
 input,
@@ -25,7 +24,6 @@ select {
   padding: revert;
 }
 
-/* 🔹 Garantir que html/body prennent tout l’écran */
 html,
 body {
   height: 100%;
@@ -34,52 +32,75 @@ body {
   padding: 0;
 }
 
-/* 🔹 Variables de thème */
-
+/* 🔹 CONFIGURATION DU THÈME (Le Menu) */
 @theme inline {
+  /* --- Logique Duale (Gère le switch automatiquement) --- */
+
+  /* 1. Le fond d'écran principal */
+  --background-image-app-gradient: light-dark(linear-gradient(to bottom right, #cbd5e1, #f8fafc, #cbd5e1),
+      /* Light */
+      linear-gradient(to bottom right, #3f3f46, #000000, #18181b)
+      /* Dark (Ton design) */
+    );
+
+  /* 2. Le fond des cartes "Glass" */
+  --color-glass-dual: light-dark(rgba(255, 255, 255, 0.6),
+      /* Light */
+      rgba(0, 0, 0, 0.4)
+      /* Dark (Ton design) */
+    );
+
+  /* 3. La bordure des cartes */
+  --color-border-dual: light-dark(rgba(0, 0, 0, 0.05),
+      /* Light */
+      rgba(255, 255, 255, 0.1)
+      /* Dark (Ton design) */
+    );
+
+  /* --- Variables Shadcn existantes (Gardées intactes) --- */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-  --color-sidebar-ring: var(--sidebar-ring);
-  --color-sidebar-border: var(--sidebar-border);
-  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-  --color-sidebar-accent: var(--sidebar-accent);
-  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-  --color-sidebar-primary: var(--sidebar-primary);
-  --color-sidebar-foreground: var(--sidebar-foreground);
-  --color-sidebar: var(--sidebar);
-  --color-chart-5: var(--chart-5);
-  --color-chart-4: var(--chart-4);
-  --color-chart-3: var(--chart-3);
-  --color-chart-2: var(--chart-2);
-  --color-chart-1: var(--chart-1);
+  --color-border: var(--border);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
   --color-ring: var(--ring);
   --color-input: var(--input);
-  --color-border: var(--border);
   --color-destructive: var(--destructive);
-  --color-accent-foreground: var(--accent-foreground);
-  --color-accent: var(--accent);
-  --color-muted-foreground: var(--muted-foreground);
-  --color-muted: var(--muted);
-  --color-secondary-foreground: var(--secondary-foreground);
-  --color-secondary: var(--secondary);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-primary: var(--primary);
-  --color-popover-foreground: var(--popover-foreground);
-  --color-popover: var(--popover);
-  --color-card-foreground: var(--card-foreground);
-  --color-card: var(--card);
+
+  /* Sidebar & Charts */
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+
+  /* Rayons */
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
 }
 
-/* 🔹 Styles body */
-
+/* 🔹 DEFINITION DES VALEURS OKLCH (La Cuisine) */
 :root {
   --radius: 0.625rem;
+  color-scheme: light dark;
+  /* Indispensable pour que light-dark() fonctionne */
+
+  /* Light Values */
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
   --card: oklch(1 0 0);
@@ -98,11 +119,6 @@ body {
   --border: oklch(0.922 0 0);
   --input: oklch(0.922 0 0);
   --ring: oklch(0.708 0 0);
-  --chart-1: oklch(0.646 0.222 41.116);
-  --chart-2: oklch(0.6 0.118 184.704);
-  --chart-3: oklch(0.398 0.07 227.392);
-  --chart-4: oklch(0.828 0.189 84.429);
-  --chart-5: oklch(0.769 0.188 70.08);
   --sidebar: oklch(0.985 0 0);
   --sidebar-foreground: oklch(0.145 0 0);
   --sidebar-primary: oklch(0.205 0 0);
@@ -114,6 +130,7 @@ body {
 }
 
 .dark {
+  /* Dark Values (Ton design actuel) */
   --background: oklch(0.145 0 0);
   --foreground: oklch(0.985 0 0);
   --card: oklch(0.205 0 0);
@@ -132,11 +149,6 @@ body {
   --border: oklch(1 0 0 / 10%);
   --input: oklch(1 0 0 / 15%);
   --ring: oklch(0.556 0 0);
-  --chart-1: oklch(0.488 0.243 264.376);
-  --chart-2: oklch(0.696 0.17 162.48);
-  --chart-3: oklch(0.769 0.188 70.08);
-  --chart-4: oklch(0.627 0.265 303.9);
-  --chart-5: oklch(0.645 0.246 16.439);
   --sidebar: oklch(0.205 0 0);
   --sidebar-foreground: oklch(0.985 0 0);
   --sidebar-primary: oklch(0.488 0.243 264.376);
@@ -151,7 +163,9 @@ body {
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
-    @apply bg-background text-foreground;
+    /* bg-background et text-foreground changent déjà via le fichier CSS */
+    @apply bg-background text-foreground transition-colors duration-300;
   }
 }

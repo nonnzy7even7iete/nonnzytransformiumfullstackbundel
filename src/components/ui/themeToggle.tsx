@@ -1,22 +1,18 @@
-// components/ThemeToggle.tsx
-"use client"; // Indique que ce composant est côté client
+"use client";
 
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
-import { Moon, Sun } from "lucide-react"; // Installation nécessaire
+import { Moon, Sun } from "lucide-react";
 
 export function ThemeToggle() {
   const [mounted, setMounted] = useState(false);
   const { theme, setTheme } = useTheme();
 
-  // useEffect runs only on the client, so now we can safely show the UI
   useEffect(() => {
     setMounted(true);
   }, []);
 
-  if (!mounted) {
-    return null; // ou un skeleton/spinner si vous préférez
-  }
+  if (!mounted) return null;
 
   return (
     <button
@@ -24,19 +20,31 @@ export function ThemeToggle() {
       className="
         relative flex items-center justify-center 
         w-10 h-10 rounded-full 
-        bg-white/10 dark:bg-black/20 
+        bg-glass-dual border border-border-dual /* 🪄 Utilise tes nouvelles classes */
         backdrop-blur-sm
-        text-white transition-all duration-300
+        text-foreground transition-all duration-300
         hover:scale-105 active:scale-95
-        focus:outline-none focus:ring-2 focus:ring-white/30 focus:ring-offset-2 focus:ring-offset-black
+        focus:outline-none focus:ring-2 focus:ring-primary
       "
       aria-label="Toggle theme"
     >
-      {theme === "dark" ? (
-        <Sun className="h-5 w-5 text-yellow-300 dark:text-yellow-400 rotate-0 scale-100 transition-all duration-300" />
-      ) : (
-        <Moon className="h-5 w-5 text-white-200 dark:text-indigo-300 rotate-90 scale-0 absolute transition-all duration-300" />
-      )}
+      {/* Icône Soleil : Visible uniquement en DARK */}
+      <Sun
+        className={`h-5 w-5 text-yellow-400 transition-all duration-300 
+        ${
+          theme === "dark" ? "scale-100 rotate-0" : "scale-0 rotate-90 absolute"
+        }`}
+      />
+
+      {/* Icône Lune : Visible uniquement en LIGHT */}
+      <Moon
+        className={`h-5 w-5 text-indigo-600 transition-all duration-300 
+        ${
+          theme === "light"
+            ? "scale-100 rotate-0"
+            : "scale-0 -rotate-90 absolute"
+        }`}
+      />
     </button>
   );
 }
