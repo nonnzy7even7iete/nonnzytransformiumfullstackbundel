@@ -20,15 +20,16 @@ export function ThemeToggle() {
       className="
         relative flex items-center justify-center 
         w-10 h-10 rounded-full 
-        bg-glass-dual border border-border-dual /* 🪄 Utilise tes nouvelles classes */
+        bg-glass-dual border border-border-dual
         backdrop-blur-sm
         text-foreground transition-all duration-300
-        hover:scale-105 active:scale-95
-        focus:outline-none focus:ring-2 focus:ring-primary
+        hover:scale-110 active:scale-95
+        /* Suppression du contour de focus par défaut */
+        focus:outline-none focus-visible:ring-0
       "
       aria-label="Toggle theme"
     >
-      {/* Icône Soleil : Visible uniquement en DARK */}
+      {/* Icône Soleil : Jaune vif avec une lueur */}
       <Sun
         className={`h-5 w-5 text-yellow-400 transition-all duration-300 
         ${
@@ -36,7 +37,7 @@ export function ThemeToggle() {
         }`}
       />
 
-      {/* Icône Lune : Visible uniquement en LIGHT */}
+      {/* Icône Lune : Indigo profond */}
       <Moon
         className={`h-5 w-5 text-indigo-600 transition-all duration-300 
         ${
