@@ -29,7 +29,7 @@ export default function HomePage() {
       <main
         className="relative flex flex-col md:flex-row items-center justify-center 
   min-h-screen overflow-hidden px-4 md:px-8 pb-10 gap-6 md:gap-0 pt-32 md:pt-40
-  bg-app-gradient" /* ✨ Remplace le gradient fixe par le dual */
+  bg-app-gradient"
       >
         <div className="absolute inset-0 z-0">
           <BackgroundRippleEffect rows={8} cols={27} cellSize={56} />
@@ -41,7 +41,7 @@ w-full md:w-[460px] max-w-[90vw] min-w-[300px]"
         >
           <div
             className="w-full p-10 backdrop-blur-xl rounded-2xl shadow-2xl min-w-[300px]
-            bg-glass-dual border border-border-dual" /* ✨ Remplace bg-black/40 et border-white/10 */
+            bg-glass-dual border border-border-dual"
           >
             <TextHoverEffect
               text="Nonnzytr"
@@ -55,23 +55,26 @@ w-full md:w-[460px] max-w-[90vw] min-w-[300px]"
               }}
             />
 
-            <p className="text-foreground/70 text-base mb-8">
-              Votre aventure commence ici ✨
+            {/* Texte forcé en NOIR pour le bloc de connexion */}
+            <p className="text-black text-base mb-8">
+              Votre aventure commence ici âœ¨
             </p>
 
             <button
               onClick={() => signIn("google", { callbackUrl: "/dashboard" })}
               className="w-full py-3 flex items-center justify-center gap-2 
-bg-foreground text-background font-semibold rounded-xl shadow-md
+bg-white text-black font-semibold rounded-xl shadow-md
 hover:shadow-xl hover:scale-105 active:scale-95 
-transition-all duration-300 mb-6" /* ✨ Utilise foreground/background pour l'inversion auto */
+transition-all duration-300 mb-6"
             >
               <FcGoogle className="text-2xl" />
               Continuer avec Google
             </button>
 
-            <p className="text-foreground/50 text-xs italic">
-              Connexion sécurisée via Google requise pour accéder au Workflow.
+            {/* Texte forcé en NOIR pour le bloc de connexion */}
+            <p className="text-black/50 text-xs italic">
+              Connexion sÃ©curisÃ©e via Google requise pour accÃ©der au
+              Workflow.
             </p>
           </div>
         </div>
@@ -87,7 +90,7 @@ flex justify-center md:justify-start w-full md:w-auto min-w-[300px]"
               <div className="flex items-center justify-center gap-2 text-foreground">
                 <Info className="w-4 h-4 text-blue-400" />
                 <span className="font-semibold">
-                  Data-driven growth : chaque flux, chaque métrique confirme le
+                  Data-driven growth : chaque flux, chaque mÃ©trique confirme le
                   potentiel d'Anyama
                 </span>
               </div>
@@ -95,63 +98,68 @@ flex justify-center md:justify-start w-full md:w-auto min-w-[300px]"
             content={
               <div className="flex flex-col gap-1 text-foreground/80 text-sm overflow-auto max-h-[200px] md:max-h-[250px]">
                 <p>
-                  Les métriques d'attractivité et les flux d'investissement
-                  convergent vers une réalité : le vrai potentiel se mesure dans
-                  ce qui reste à révéler. Anyama dispose d'un avantage
-                  stratégique encore invisible à la majorité des acteurs. La
-                  data ne ment pas — la question, c'est qui l'exploitera en
+                  Les mÃ©triques d'attractivitÃ© et les flux d'investissement
+                  convergent vers une rÃ©alitÃ© : le vrai potentiel se mesure
+                  dans ce qui reste Ã  rÃ©vÃ©ler. Anyama dispose d'un avantage
+                  stratÃ©gique encore invisible Ã  la majoritÃ© des acteurs. La
+                  data ne ment pas â€” la question, c'est qui l'exploitera en
                   premier. :{" "}
                   <span className="bg-gradient-to-r from-green-500 to-blue-300 bg-clip-text text-transparent font-semibold">
                     Vision partager
                   </span>
                 </p>
                 <p>
-                  Les chiffres sont là. Les investisseurs arrivent. La question,
-                  c'est : serez-vous prêts ?
+                  Les chiffres sont lÃ . Les investisseurs arrivent. La
+                  question, c'est : serez-vous prÃªts ?
                 </p>
                 <p>
-                  Votre commune entre dans une zone d'attractivité stratégique:
+                  Votre commune entre dans une zone d'attractivitÃ©
+                  stratÃ©gique:
                   <span className="bg-gradient-to-r from-green-500 to-blue-300 bg-clip-text text-transparent font-semibold">
-                    Sans insights, chaque décision est un pari perdu d'avance.
+                    Sans insights, chaque dÃ©cision est un pari perdu d'avance.
                   </span>
                 </p>
               </div>
             }
             buttonContent={
-              <span className="text-sm font-medium text-background">
-                Comprendre
-              </span>
+              /* Style manuel pour le bouton Comprendre : Gradient Verre vers Noir Pur */
+              <div className="px-6 py-2 rounded-lg bg-gradient-to-br from-white/10 to-[#000000] border border-white/10 shadow-xl transition-transform hover:scale-105 flex items-center justify-center">
+                <span className="text-sm font-bold bg-gradient-to-br from-white/80 to-[#000000] bg-clip-text text-transparent">
+                  Comprendre
+                </span>
+              </div>
             }
             modalContent={
               <div className="flex flex-col gap-2 text-foreground/90 text-sm overflow-auto max-h-[400px] md:max-h-[450px]">
                 <p>
-                  Potentiel latent détecté : chaque flux, chaque indicateur
-                  montre que votre territoire est sous-évalué.
+                  Potentiel latent dÃ©tectÃ© : chaque flux, chaque indicateur
+                  montre que votre territoire est sous-Ã©valuÃ©.
                 </p>
                 <p>
-                  La donnée est le premier moteur de croissance du XXIᵉ siècle
-                  Les économies modernes sont tirées par : la précision des
-                  décisions, la rapidité d'exécution, la capacité à anticiper
-                  les crises plutôt que les subir. Or, tout cela dépend de la
-                  donnée. Un État qui n'investit pas dans la data : avance à
-                  vue, perd du temps, gaspille des ressources, devient dépendant
-                  d'acteurs privés mieux structurés. Un État qui investit dans
-                  la data : gagne en souveraineté, augmente sa productivité
-                  globale, attire davantage d'investissements, devient un moteur
-                  d'innovation.
+                  La donnÃ©e est le premier moteur de croissance du XXIáµ‰
+                  siÃ¨cle Les Ã©conomies modernes sont tirÃ©es par : la
+                  prÃ©cision des dÃ©cisions, la rapiditÃ© d'exÃ©cution, la
+                  capacitÃ© Ã  anticiper les crises plutÃ´t que les subir. Or,
+                  tout cela dÃ©pend de la donnÃ©e. Un Ã‰tat qui n'investit pas
+                  dans la data : avance Ã  vue, perd du temps, gaspille des
+                  ressources, devient dÃ©pendant d'acteurs privÃ©s mieux
+                  structurÃ©s. Un Ã‰tat qui investit dans la data : gagne en
+                  souverainetÃ©, augmente sa productivitÃ© globale, attire
+                  davantage d'investissements, devient un moteur d'innovation.
                 </p>
                 <p>
-                  La donnée réduit les coûts structurels de l'État (et ce de
-                  façon massive) Les administrations gèrent des millions de
-                  microdécisions quotidiennes. Sans data : Décisions
-                  approximatives → dépenses imprécises → surcoûts →
-                  inefficacités → retards → litiges. Avec la data : Décisions
-                  optimisées → réduction des gaspillages → maîtrise des dépenses
-                  publiques → accélération des services. On parle de milliards
-                  potentiels économisés sur : la logistique l'énergie les achats
-                  publics les fraudes et erreurs les allocations la maintenance
-                  des infrastructures Investir dans la data, ce n'est pas une
-                  dépense : c'est un amortisseur de dépenses futures.
+                  La donnÃ©e rÃ©duit les coÃ»ts structurels de l'Ã‰tat (et ce de
+                  faÃ§on massive) Les administrations gÃ¨rent des millions de
+                  microdÃ©cisions quotidiennes. Sans data : DÃ©cisions
+                  approximatives â†’ dÃ©penses imprÃ©cises â†’ surcoÃ»ts â†’
+                  inefficacitÃ©s â†’ retards â†’ litiges. Avec la data :
+                  DÃ©cisions optimisÃ©es â†’ rÃ©duction des gaspillages â†’
+                  maÃ®trise des dÃ©penses publiques â†’ accÃ©lÃ©ration des
+                  services. On parle de milliards potentiels Ã©conomisÃ©s sur :
+                  la logistique l'Ã©nergie les achats publics les fraudes et
+                  erreurs les allocations la maintenance des infrastructures
+                  Investir dans la data, ce n'est pas une dÃ©pense : c'est un
+                  amortisseur de dÃ©penses futures.
                 </p>
               </div>
             }
@@ -164,9 +172,9 @@ flex justify-center md:justify-end w-full md:w-auto min-w-[300px]"
         >
           <SideCard
             imageSrc="/zyy.png"
-            title="Zy recherche un financement orienté workspace & Workflow"
-            description="Exécution de la logique métier et serveur en burn out."
-            location="Anyama, Abidjan, Côte d'Ivoire"
+            title="Zy recherche un financement orientÃ© workspace & Workflow"
+            description="ExÃ©cution de la logique mÃ©tier et serveur en burn out."
+            location="Anyama, Abidjan, CÃ´te d'Ivoire"
           />
         </aside>
       </main>
