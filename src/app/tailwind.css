@@ -32,30 +32,25 @@ body {
   padding: 0;
 }
 
-/* 🔹 CONFIGURATION DU THÈME */
+/* 🔹 CONFIGURATION DU THÈME DYNAMIQUE */
 @theme inline {
-  /* 1. Le fond d'écran principal */
-  --background-image-app-gradient: light-dark(linear-gradient(to bottom right, #f8fafc, #e2e8f0, #cbd5e1),
-      /* Light plus clair */
-      linear-gradient(to bottom right, #18181b, #000000, #09090b)
-      /* Dark plus profond */
-    );
+  /* 1. Fond d'écran principal (App Gradient) */
+  --background-image-app-gradient: light-dark(linear-gradient(to bottom right, #cbd5e1, #f8fafc, #cbd5e1),
+      linear-gradient(to bottom right, #0a0a0a, #000000, #171717));
 
-  /* 2. Le fond des cartes "Glass" - OPTIMISÉ */
-  --color-glass-dual: light-dark(rgba(255, 255, 255, 0.7),
-      /* ☀️ Light : Effet "Givre" blanc pur translucide */
-      rgba(0, 0, 0, 0.6)
-      /* 🌙 Dark : Noir plus dense pour plus de profondeur */
-    );
+  /* 2. Fond des cartes Glassmorphism (bg-glass-dual) */
+  /* Light : Gris Ardoise sombre (65%) pour faire ressortir le texte blanc */
+  /* Dark : Noir pur (60%) pour la profondeur */
+  --color-glass-dual: light-dark(rgba(30, 41, 59, 0.65),
+      rgba(0, 0, 0, 0.6));
 
-  /* 3. La bordure des cartes - OPTIMISÉE */
-  --color-border-dual: light-dark(rgba(255, 255, 255, 0.8),
-      /* Bordure blanche solide en Light */
-      rgba(255, 255, 255, 0.15)
-      /* Bordure fine brillante en Dark */
-    );
+  /* 3. Bordures des cartes (border-border-dual) */
+  /* Light : Liseré noir très fin (15%) pour découper sur fond clair */
+  /* Dark : Liseré blanc discret (10%) pour le reflet premium */
+  --color-border-dual: light-dark(rgba(0, 0, 0, 0.15),
+      rgba(255, 255, 255, 0.1));
 
-  /* --- Variables Shadcn & Radius --- */
+  /* --- Variables Système Shadcn --- */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-border: var(--border);
@@ -75,20 +70,7 @@ body {
   --color-input: var(--input);
   --color-destructive: var(--destructive);
 
-  /* Sidebar & Charts */
-  --color-sidebar: var(--sidebar);
-  --color-sidebar-foreground: var(--sidebar-foreground);
-  --color-sidebar-primary: var(--sidebar-primary);
-  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-  --color-sidebar-accent: var(--sidebar-accent);
-  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-  --color-sidebar-border: var(--sidebar-border);
-  --color-sidebar-ring: var(--sidebar-ring);
-
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
 }
 
 /* 🔹 DEFINITION DES VALEURS OKLCH */
@@ -96,15 +78,14 @@ body {
   --radius: 0.625rem;
   color-scheme: light dark;
 
-  /* --- Light Values --- */
-  --background: oklch(0.98 0 0);
-  --foreground: oklch(0.145 0 0);
-  /* Texte sombre en mode Light pour lisibilité */
+  /* --- Light Theme Configuration --- */
+  --background: oklch(1 0 0);
+  /* Fond de page blanc */
+  --foreground: oklch(1 0 0);
+  /* TEXTE BLANC (Forcé pour lisibilité sur verre fumé) */
 
   --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
+  --card-foreground: oklch(1 0 0);
   --primary: oklch(0.205 0 0);
   --primary-foreground: oklch(0.985 0 0);
   --secondary: oklch(0.97 0 0);
@@ -117,25 +98,17 @@ body {
   --border: oklch(0.922 0 0);
   --input: oklch(0.922 0 0);
   --ring: oklch(0.708 0 0);
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
 }
 
 .dark {
-  /* --- Dark Values (Le plus sombre possible) --- */
+  /* --- Dark Theme Configuration --- */
   --background: oklch(0.1 0 0);
-  /* Noir Zinc-950 */
+  /* Noir profond */
   --foreground: oklch(0.985 0 0);
+  /* Blanc cassé brillant */
+
   --card: oklch(0.145 0 0);
   --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.145 0 0);
-  --popover-foreground: oklch(0.985 0 0);
   --primary: oklch(0.922 0 0);
   --primary-foreground: oklch(0.205 0 0);
   --secondary: oklch(0.269 0 0);
@@ -148,14 +121,6 @@ body {
   --border: oklch(1 0 0 / 10%);
   --input: oklch(1 0 0 / 15%);
   --ring: oklch(0.556 0 0);
-  --sidebar: oklch(0.145 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
 }
 
 @layer base {
@@ -164,6 +129,7 @@ body {
   }
 
   body {
-    @apply bg-background text-foreground transition-colors duration-300;
+    /* Le dégradé principal s'applique ici */
+    @apply bg-background text-foreground transition-colors duration-300 antialiased font-sans;
   }
 }
