@@ -35,19 +35,19 @@ body {
 /* 🔹 CONFIGURATION DU THÈME DYNAMIQUE */
 @theme inline {
   /* 1. Fond d'écran principal */
-  --background-image-app-gradient: light-dark(linear-gradient(to bottom right, #f8fafc, #e2e8f0, #f8fafc),
+  --background-image-app-gradient: light-dark(linear-gradient(to bottom right, #f1f5f9, #ffffff, #e2e8f0),
       linear-gradient(to bottom right, #0a0a0a, #000000, #171717));
 
   /* 2. Fond des cartes Glassmorphism (bg-glass-dual) */
-  /* Light : Blanc pur cristallin (70%) */
-  /* Dark : Noir pur profond (60%) */
-  --color-glass-dual: light-dark(rgba(255, 255, 255, 0.7),
+  /* Light : Gris Zinc "Givre" (80%) - Le meilleur compromis clarté/texte blanc */
+  /* Dark : Ton réglage favori Noir (60%) */
+  --color-glass-dual: light-dark(rgba(82, 82, 91, 0.8),
       rgba(0, 0, 0, 0.6));
 
   /* 3. Bordures des cartes (border-border-dual) */
-  /* Light : Noir ultra-fin (15%) pour découper le blanc sur blanc */
-  /* Dark : Blanc discret (10%) pour le reflet premium */
-  --color-border-dual: light-dark(rgba(0, 0, 0, 0.15),
+  /* Light : Bordure noire fine (20%) pour le relief sur fond blanc */
+  /* Dark : Bordure blanche discrète (10%) pour le reflet */
+  --color-border-dual: light-dark(rgba(0, 0, 0, 0.2),
       rgba(255, 255, 255, 0.1));
 
   /* --- Variables Système Shadcn --- */
@@ -80,8 +80,8 @@ body {
 
   /* --- Light Theme Configuration --- */
   --background: oklch(1 0 0);
-  /* Texte blanc forcé */
   --foreground: oklch(1 0 0);
+  /* TEXTE BLANC PARTOUT */
 
   --card: oklch(1 0 0);
   --card-foreground: oklch(1 0 0);
@@ -100,7 +100,7 @@ body {
 }
 
 .dark {
-  /* --- Dark Theme Configuration --- */
+  /* --- Dark Theme Configuration (TES RÉGLAGES) --- */
   --background: oklch(0.1 0 0);
   --foreground: oklch(0.985 0 0);
 
@@ -129,13 +129,13 @@ body {
     @apply bg-background text-foreground transition-colors duration-300 antialiased;
   }
 
-  /* 💡 LISIBILITÉ DU TEXTE BLANC SUR VERRE BLANC (MODE LIGHT) */
-  /* On applique une ombre portée douce pour décoller le texte du fond blanc */
+  /* 💡 PROTECTION LISIBILITÉ DU TEXTE BLANC EN MODE LIGHT */
+  /* On applique une ombre portée textuelle uniquement en Light pour que le blanc se détache du gris givre */
   :root:not(.dark) body {
-    text-shadow: 0px 1px 2px rgba(0, 0, 0, 0.2);
+    text-shadow: 0px 1px 3px rgba(0, 0, 0, 0.4);
   }
 
-  /* En mode Dark, on retire l'ombre pour garder la pureté du texte blanc sur noir */
+  /* En mode Dark, on retire l'ombre pour garder la pureté que tu aimes */
   .dark body {
     text-shadow: none;
   }
