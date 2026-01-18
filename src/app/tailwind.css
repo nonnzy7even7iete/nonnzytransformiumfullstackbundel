@@ -34,20 +34,20 @@ body {
 
 /* 🔹 CONFIGURATION DU THÈME */
 @theme inline {
-  /* --- Logique Duale --- */
+  /* --- Logique Duale (Switch Automatique) --- */
 
   /* 1. Le fond d'écran principal */
   --background-image-app-gradient: light-dark(linear-gradient(to bottom right, #cbd5e1, #f8fafc, #cbd5e1),
       linear-gradient(to bottom right, #3f3f46, #000000, #18181b));
 
-  /* 2. Le fond des cartes "Glass" (Synchronisé avec ta DataCard bg-black/30) */
+  /* 2. Le fond des cartes "Glass" (Calibré sur SideCard : bg-black/40) */
   --color-glass-dual: light-dark(linear-gradient(225deg, #e2e8f0, #94a3b8),
-      /* Light : Gris clair vers Gris foncé */
-      rgba(0, 0, 0, 0.3)
-      /* Dark : 0.3 pour matcher tes cartes */
+      /* Light : Dégradé Gris */
+      rgba(0, 0, 0, 0.4)
+      /* Dark : Le style SideCard pur */
     );
 
-  /* 3. La bordure des cartes (Synchronisé avec border-white/10) */
+  /* 3. La bordure des cartes (Synchronisé border-white/10) */
   --color-border-dual: light-dark(rgba(255, 255, 255, 0.4),
       rgba(255, 255, 255, 0.1));
 
@@ -95,7 +95,7 @@ body {
   /* --- Light Values --- */
   --background: oklch(1 0 0);
 
-  /* Texte blanc par défaut en mode Light pour tes cartes grises */
+  /* Force le texte en blanc par défaut pour le contraste sur les cartes grises */
   --foreground: oklch(1 0 0);
 
   --card: oklch(1 0 0);
@@ -125,7 +125,7 @@ body {
 }
 
 .dark {
-  /* --- Dark Values (Design original préservé) --- */
+  /* --- Dark Values --- */
   --background: oklch(0.145 0 0);
   --foreground: oklch(0.985 0 0);
   --card: oklch(0.205 0 0);
