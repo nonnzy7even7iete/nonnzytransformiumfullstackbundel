@@ -26,23 +26,13 @@ export default function HomePage() {
     <>
       <Navbar />
 
-      <main
-        className="relative flex flex-col md:flex-row items-center justify-center 
-  min-h-screen overflow-hidden px-4 md:px-8 pb-10 gap-6 md:gap-0 pt-32 md:pt-40
-  bg-app-gradient"
-      >
+      <main className="relative flex flex-col md:flex-row items-center justify-center min-h-screen overflow-hidden px-4 md:px-8 pb-10 gap-6 md:gap-0 pt-32 md:pt-40 bg-app-gradient">
         <div className="absolute inset-0 z-0">
           <BackgroundRippleEffect rows={8} cols={27} cellSize={56} />
         </div>
 
-        <div
-          className="relative z-10 flex flex-col items-center justify-center text-center 
-w-full md:w-[460px] max-w-[90vw] min-w-[300px]"
-        >
-          <div
-            className="w-full p-10 backdrop-blur-xl rounded-2xl shadow-2xl min-w-[300px]
-            bg-glass-dual border border-border-dual"
-          >
+        <div className="relative z-10 flex flex-col items-center justify-center text-center w-full md:w-[460px] max-w-[90vw] min-w-[300px]">
+          <div className="w-full p-10 backdrop-blur-xl rounded-2xl shadow-2xl min-w-[300px] bg-glass-dual border border-border-dual">
             <TextHoverEffect
               text="Nonnzytr"
               duration={0.6}
@@ -55,14 +45,14 @@ w-full md:w-[460px] max-w-[90vw] min-w-[300px]"
               }}
             />
 
-            <p className="text-black dark:text-white text-base mb-8">
+            <p className="text-foreground text-base mb-8">
               Votre aventure commence ici ✨
             </p>
 
             <button
               onClick={() => signIn("google", { callbackUrl: "/dashboard" })}
               className="w-full py-3 flex items-center justify-center gap-2 
-              bg-black text-white dark:bg-white dark:text-black font-semibold rounded-xl shadow-md
+              bg-foreground text-background font-semibold rounded-xl shadow-md
               hover:shadow-xl hover:scale-105 active:scale-95 
               transition-all duration-300 mb-6"
             >
@@ -70,16 +60,13 @@ w-full md:w-[460px] max-w-[90vw] min-w-[300px]"
               Continuer avec Google
             </button>
 
-            <p className="text-black/50 dark:text-white/50 text-xs italic">
+            <p className="text-foreground/50 text-xs italic">
               Connexion sécurisée via Google requise pour accéder au Workflow.
             </p>
           </div>
         </div>
 
-        <aside
-          className="relative z-11 md:absolute md:left-3 md:ml-6 lg:ml-8 
-flex justify-center md:justify-start w-full md:w-auto min-w-[300px]"
-        >
+        <aside className="relative z-11 md:absolute md:left-3 md:ml-6 lg:ml-8 flex justify-center md:justify-start w-full md:w-auto min-w-[300px]">
           <DataCard
             width={300}
             height={270}
@@ -118,16 +105,8 @@ flex justify-center md:justify-start w-full md:w-auto min-w-[300px]"
               </div>
             }
             buttonContent={
-              /* 🪄 Le style factorisé avec tes couleurs Gris/Noir */
-              <div className="w-full py-2 flex items-center justify-center gap-2 
-                bg-gradient-to-r from-gray-400/60 via-transparent to-black 
-                border border-gray-400/40 rounded-xl shadow-xl backdrop-blur-sm
-                transition-all duration-300 hover:from-gray-500 hover:to-black group"
-              >
-                <span className="text-sm font-bold uppercase tracking-tighter
-                  bg-gradient-to-r from-white via-gray-200 to-gray-500 bg-clip-text text-transparent
-                  group-hover:from-white group-hover:to-white transition-all"
-                >
+              <div className="w-full py-2 flex items-center justify-center gap-2 bg-foreground/5 border border-border rounded-xl shadow-xl transition-all hover:bg-foreground/10 group">
+                <span className="text-sm font-bold uppercase tracking-tighter text-foreground group-hover:scale-105 transition-all">
                   Comprendre
                 </span>
               </div>
@@ -143,35 +122,20 @@ flex justify-center md:justify-start w-full md:w-auto min-w-[300px]"
                   Les économies modernes sont tirées par : la précision des
                   décisions, la rapiditée d'exécution, la capacité à anticiper
                   les crises plutôt que les subir. Or, tout cela dépend de la
-                  donnée. Un État qui n'investit pas dans la donnée : avance à
-                  vue, perd du temps, gaspille des ressources, devient dépendant
-                  d'acteurs privés mieux structurés. Un État qui investit dans
-                  la donnée : gagne en souveraineté, augmente sa productivité
-                  globale, attire davantage d'investissements, devient un moteur
-                  d'innovation.
+                  donnée...
                 </p>
                 <p>
                   La donnée réduit les coûts structurels de l'État (et ce de
                   façon massive). Les administrations gèrent des millions de
-                  micro-décisions quotidiennes. Sans data : Décisions
-                  approximatives → dépenses imprécises → surcoûts →
-                  inefficacités → retards → litiges. Avec la data : Décisions
-                  optimisées → réduction des gaspillages → maîtrise des dépenses
-                  publiques → accélération des services. On parle de milliards
-                  potentiels économisés sur : la logistique, l'énergie, les achats
-                  publics, les fraudes et erreurs, les allocations, la maintenance
-                  des infrastructures. Investir dans la donnée n'est pas une
-                  dépense : c'est un amortisseur de dépenses futures.
+                  micro-décisions quotidiennes... Investir dans la donnée n'est
+                  pas une dépense : c'est un amortisseur de dépenses futures.
                 </p>
               </div>
             }
           />
         </aside>
 
-        <aside
-          className="relative z-10 md:absolute md:right-3 md:mr-6 lg:mr-8 
-flex justify-center md:justify-end w-full md:w-auto min-w-[300px]"
-        >
+        <aside className="relative z-10 md:absolute md:right-3 md:mr-6 lg:mr-8 flex justify-center md:justify-end w-full md:w-auto min-w-[300px]">
           <SideCard
             imageSrc="/zyy.png"
             title="Zy recherche un financement orienté workspace & Workflow"

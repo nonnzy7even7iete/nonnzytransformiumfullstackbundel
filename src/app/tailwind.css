@@ -34,76 +34,59 @@ body {
 
 /* 🔹 CONFIGURATION DU THÈME DYNAMIQUE */
 @theme inline {
+  /* Fond d'écran principal */
   --background-image-app-gradient: light-dark(linear-gradient(to bottom right, #f1f5f9, #ffffff, #e2e8f0),
       linear-gradient(to bottom right, #0a0a0a, #000000, #171717));
 
-  /* Force l'impact sur TOUTES les box via les variables standards */
-  --color-card: light-dark(transparent, rgba(0, 0, 0, 0.6));
-  --color-border: light-dark(#000000, rgba(255, 255, 255, 0.1));
+  /* Cartes : Transparent en Light | Glassmorphism Noir 60% en Dark */
+  --color-glass-dual: light-dark(transparent, rgba(0, 0, 0, 0.6));
 
-  /* Tes classes spécifiques si tu veux les garder */
-  --color-glass-dual: var(--color-card);
-  --color-border-dual: var(--color-border);
+  /* Bordures : Noir 1px en Light | Blanc 10% en Dark */
+  --color-border-dual: light-dark(#000000, rgba(255, 255, 255, 0.1));
 
-  /* Mapping des autres variables Shadcn */
+  /* Mapping des variables standards pour impacter tous les composants */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --color-primary: var(--primary);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-secondary: var(--secondary);
-  --color-secondary-foreground: var(--secondary-foreground);
-  --color-accent: var(--accent);
-  --color-accent-foreground: var(--accent-foreground);
-  --color-muted: var(--muted);
-  --color-muted-foreground: var(--muted-foreground);
-  --color-card-foreground: var(--card-foreground);
-  --color-popover: var(--popover);
-  --color-popover-foreground: var(--popover-foreground);
-  --color-ring: var(--ring);
-  --color-input: var(--input);
-  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-card: var(--color-glass-dual);
+  --color-card-foreground: var(--foreground);
 
   --radius-lg: var(--radius);
 }
 
-/* 🔹 DEFINITION DES VALEURS OKLCH */
+/* 🔹 DÉFINITION DES VALEURS OKLCH */
 :root {
   --radius: 0.625rem;
   color-scheme: light dark;
 
-  /* --- Light Theme --- */
+  /* Mode Light : Minimaliste (Texte Noir sur Fond Blanc) */
   --background: oklch(1 0 0);
   --foreground: oklch(0 0 0);
-  /* Texte noir en light pour lisibilité */
+  --border: oklch(0 0 0);
 
-  --card-foreground: oklch(0 0 0);
   --primary: oklch(0.205 0 0);
   --primary-foreground: oklch(0.985 0 0);
   --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
   --muted: oklch(0.97 0 0);
   --muted-foreground: oklch(0.556 0 0);
   --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
   --destructive: oklch(0.577 0.245 27.325);
   --input: oklch(0.89 0 0);
   --ring: oklch(0.708 0 0);
 }
 
 .dark {
-  /* --- Dark Theme --- */
+  /* Mode Dark : TES RÉGLAGES FAVORIS (Glassmorphism) */
   --background: oklch(0.1 0 0);
   --foreground: oklch(0.985 0 0);
+  --border: oklch(1 0 0 / 10%);
 
-  --card-foreground: oklch(0.985 0 0);
   --primary: oklch(0.922 0 0);
   --primary-foreground: oklch(0.205 0 0);
   --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
   --muted: oklch(0.269 0 0);
   --muted-foreground: oklch(0.708 0 0);
   --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
   --destructive: oklch(0.704 0.191 22.216);
   --input: oklch(1 0 0 / 15%);
   --ring: oklch(0.556 0 0);
@@ -111,11 +94,10 @@ body {
 
 @layer base {
   * {
-    /* Cela garantit que toutes les bordures utilisent la variable border dynamique */
-    @apply border-border outline-ring/50;
+    @apply border-border;
   }
 
   body {
-    @apply bg-background text-foreground transition-colors duration-300 antialiased;
+    @apply bg-app-gradient text-foreground transition-colors duration-300 antialiased;
   }
 }
