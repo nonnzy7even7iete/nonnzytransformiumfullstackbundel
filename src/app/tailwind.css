@@ -16,85 +16,62 @@
   box-sizing: border-box;
 }
 
-button,
-span,
-input,
-textarea,
-select {
-  padding: revert;
-}
-
 html,
 body {
   height: 100%;
   width: 100%;
-  margin: 0;
-  padding: 0;
 }
 
 /* 🔹 CONFIGURATION DU THÈME DYNAMIQUE */
 @theme inline {
-  /* Fond d'écran principal */
-  --background-image-app-gradient: light-dark(linear-gradient(to bottom right, #f1f5f9, #ffffff, #e2e8f0),
+  --background-image-app-gradient: light-dark(linear-gradient(to bottom right, #f8fafc, #ffffff, #e2e8f0),
       linear-gradient(to bottom right, #0a0a0a, #000000, #171717));
 
-  /* Cartes : Transparent en Light | Glassmorphism Noir 60% en Dark */
+  /* ☀️ Light : Transparence Totale | 🌙 Dark : Ton Noir 60% */
   --color-glass-dual: light-dark(transparent, rgba(0, 0, 0, 0.6));
 
-  /* Bordures : Noir 1px en Light | Blanc 10% en Dark */
-  --color-border-dual: light-dark(#000000, rgba(255, 255, 255, 0.1));
+  /* ☀️ Light : Gray-300 (#d1d5db) | 🌙 Dark : Blanc 10% */
+  --color-border-dual: light-dark(#d1d5db, rgba(255, 255, 255, 0.1));
 
-  /* Mapping des variables standards pour impacter tous les composants */
+  /* Forcer les variables standards pour impacter DataCard et SideCard */
+  --color-card: var(--color-glass-dual);
+  --color-border: var(--color-border-dual);
+
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --color-border: var(--border);
-  --color-card: var(--color-glass-dual);
-  --color-card-foreground: var(--foreground);
-
-  --radius-lg: var(--radius);
 }
 
-/* 🔹 DÉFINITION DES VALEURS OKLCH */
 :root {
   --radius: 0.625rem;
   color-scheme: light dark;
-
-  /* Mode Light : Minimaliste (Texte Noir sur Fond Blanc) */
   --background: oklch(1 0 0);
   --foreground: oklch(0 0 0);
-  --border: oklch(0 0 0);
-
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --input: oklch(0.89 0 0);
-  --ring: oklch(0.708 0 0);
+  /* Force la bordure par défaut en Gray-300 pour le mode Light */
+  --border: oklch(0.837 0.01 254.12);
+  /* Equivalent Gray-300 */
 }
 
 .dark {
-  /* Mode Dark : TES RÉGLAGES FAVORIS (Glassmorphism) */
   --background: oklch(0.1 0 0);
   --foreground: oklch(0.985 0 0);
   --border: oklch(1 0 0 / 10%);
-
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
 }
 
 @layer base {
   * {
     @apply border-border;
+  }
+
+  /* 💡 FORCE LA TRANSPARENCE EN MODE LIGHT */
+  /* Si tes composants utilisent backdrop-blur, on le désactive en Light */
+  :root:not(.dark) .bg-glass-dual,
+  :root:not(.dark) .backdrop-blur-xl,
+  :root:not(.dark) .backdrop-blur-md {
+    background-color: transparent !important;
+    backdrop-filter: none !important;
+    border-color: #d1d5db !important;
+    /* Gray-300 */
+    border-width: 1px !important;
   }
 
   body {
