@@ -8,7 +8,7 @@
 @tailwind components;
 @tailwind utilities;
 
-/* 🔹 RESET & GLOBAL */
+/* ðŸ”¹ RESET & GLOBAL */
 *,
 *::before,
 *::after {
@@ -32,25 +32,25 @@ body {
   padding: 0;
 }
 
-/* 🔹 CONFIGURATION DU THÈME DYNAMIQUE */
+/* ðŸ”¹ CONFIGURATION DU THÃˆME DYNAMIQUE */
 @theme inline {
-  /* 1. Fond d'écran principal */
+  /* 1. Fond d'Ã©cran principal */
   --background-image-app-gradient: light-dark(linear-gradient(to bottom right, #f1f5f9, #ffffff, #e2e8f0),
       linear-gradient(to bottom right, #0a0a0a, #000000, #171717));
 
   /* 2. Fond des cartes Glassmorphism (bg-glass-dual) */
-  /* Light : Gris Zinc "Givre" (80%) - Le meilleur compromis clarté/texte blanc */
-  /* Dark : Ton réglage favori Noir (60%) */
-  --color-glass-dual: light-dark(rgba(82, 82, 91, 0.8),
+  /* Light : Transparent (Oublie le glassmorphisme comme demandÃ©) */
+  /* Dark : Ton rÃ©glage favori Noir (60%) prÃ©servÃ© */
+  --color-glass-dual: light-dark(transparent,
       rgba(0, 0, 0, 0.6));
 
   /* 3. Bordures des cartes (border-border-dual) */
-  /* Light : Bordure noire fine (20%) pour le relief sur fond blanc */
-  /* Dark : Bordure blanche discrète (10%) pour le reflet */
-  --color-border-dual: light-dark(rgba(0, 0, 0, 0.2),
+  /* Light : Bordure 1px Noir pur */
+  /* Dark : Ton rÃ©glage favori Blanc (10%) prÃ©servÃ© */
+  --color-border-dual: light-dark(#000000,
       rgba(255, 255, 255, 0.1));
 
-  /* --- Variables Système Shadcn --- */
+  /* --- Variables SystÃ¨me Shadcn --- */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-border: var(--border);
@@ -73,18 +73,18 @@ body {
   --radius-lg: var(--radius);
 }
 
-/* 🔹 DEFINITION DES VALEURS OKLCH */
+/* ðŸ”¹ DEFINITION DES VALEURS OKLCH */
 :root {
   --radius: 0.625rem;
   color-scheme: light dark;
 
   /* --- Light Theme Configuration --- */
   --background: oklch(1 0 0);
-  --foreground: oklch(1 0 0);
-  /* TEXTE BLANC PARTOUT */
+  /* Texte Noir en Light pour Ãªtre lisible sur fond blanc sans glassmorphism */
+  --foreground: oklch(0 0 0);
 
   --card: oklch(1 0 0);
-  --card-foreground: oklch(1 0 0);
+  --card-foreground: oklch(0 0 0);
   --primary: oklch(0.205 0 0);
   --primary-foreground: oklch(0.985 0 0);
   --secondary: oklch(0.97 0 0);
@@ -94,13 +94,14 @@ body {
   --accent: oklch(0.97 0 0);
   --accent-foreground: oklch(0.205 0 0);
   --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
+  --border: oklch(0 0 0);
+  /* Bordure Noire en Light */
+  --input: oklch(0.89 0 0);
   --ring: oklch(0.708 0 0);
 }
 
 .dark {
-  /* --- Dark Theme Configuration (TES RÉGLAGES) --- */
+  /* --- Dark Theme Configuration (TES RÃ‰GLAGES PRESERVÃ‰S) --- */
   --background: oklch(0.1 0 0);
   --foreground: oklch(0.985 0 0);
 
@@ -129,13 +130,12 @@ body {
     @apply bg-background text-foreground transition-colors duration-300 antialiased;
   }
 
-  /* 💡 PROTECTION LISIBILITÉ DU TEXTE BLANC EN MODE LIGHT */
-  /* On applique une ombre portée textuelle uniquement en Light pour que le blanc se détache du gris givre */
+  /* Plus besoin de text-shadow en Light car le texte est noir sur fond clair */
   :root:not(.dark) body {
-    text-shadow: 0px 1px 3px rgba(0, 0, 0, 0.4);
+    text-shadow: none;
   }
 
-  /* En mode Dark, on retire l'ombre pour garder la pureté que tu aimes */
+  /* On garde le Dark sans ombre comme tu l'aimes */
   .dark body {
     text-shadow: none;
   }
