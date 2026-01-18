@@ -28,20 +28,20 @@ export default function HomePage() {
 
       <main
         className="relative flex flex-col md:flex-row items-center justify-center 
-        min-h-screen overflow-hidden px-4 md:px-8 pb-10 gap-6 md:gap-0 pt-32 md:pt-40
-        bg-app-gradient" /* 🪄 Utilise le dégradé dual (Gris -> Blanc / Zinc -> Noir) */
+  min-h-screen overflow-hidden px-4 md:px-8 pb-10 gap-6 md:gap-0 pt-32 md:pt-40
+  bg-app-gradient" /* ✨ Remplace le gradient fixe par le dual */
       >
-        {/* Fond dynamique */}
         <div className="absolute inset-0 z-0">
           <BackgroundRippleEffect rows={8} cols={27} cellSize={56} />
         </div>
 
-        {/* Bloc principal centré */}
-        <div className="relative z-10 flex flex-col items-center justify-center text-center w-full md:w-[460px] max-w-[90vw] min-w-[300px]">
-          {/* Bloc de connexion (Glassmorphism) */}
+        <div
+          className="relative z-10 flex flex-col items-center justify-center text-center 
+w-full md:w-[460px] max-w-[90vw] min-w-[300px]"
+        >
           <div
             className="w-full p-10 backdrop-blur-xl rounded-2xl shadow-2xl min-w-[300px]
-            bg-glass-dual border border-border-dual" /* 🪄 Switch auto : Noir/40% ou Blanc/60% */
+            bg-glass-dual border border-border-dual" /* ✨ Remplace bg-black/40 et border-white/10 */
           >
             <TextHoverEffect
               text="Nonnzytr"
@@ -56,17 +56,15 @@ export default function HomePage() {
             />
 
             <p className="text-foreground/70 text-base mb-8">
-              {" "}
-              {/* 🪄 text-white/70 devient adaptatif */}
               Votre aventure commence ici ✨
             </p>
 
             <button
               onClick={() => signIn("google", { callbackUrl: "/dashboard" })}
               className="w-full py-3 flex items-center justify-center gap-2 
-              bg-foreground text-background font-semibold rounded-xl shadow-md
-              hover:shadow-xl hover:scale-105 active:scale-95 
-              transition-all duration-300 mb-6" /* 🪄 S'inverse seul : Fond Blanc/Texte Noir en Dark */
+bg-foreground text-background font-semibold rounded-xl shadow-md
+hover:shadow-xl hover:scale-105 active:scale-95 
+transition-all duration-300 mb-6" /* ✨ Utilise foreground/background pour l'inversion auto */
             >
               <FcGoogle className="text-2xl" />
               Continuer avec Google
@@ -78,23 +76,44 @@ export default function HomePage() {
           </div>
         </div>
 
-        {/* DataCard flottante à gauche */}
-        <aside className="relative z-11 md:absolute md:left-3 md:ml-6 lg:ml-8 flex justify-center md:justify-start w-full md:w-auto min-w-[300px]">
+        <aside
+          className="relative z-11 md:absolute md:left-3 md:ml-6 lg:ml-8 
+flex justify-center md:justify-start w-full md:w-auto min-w-[300px]"
+        >
           <DataCard
             width={300}
             height={270}
             title={
               <div className="flex items-center justify-center gap-2 text-foreground">
                 <Info className="w-4 h-4 text-blue-400" />
-                <span className="font-semibold">Data-driven growth</span>
+                <span className="font-semibold">
+                  Data-driven growth : chaque flux, chaque métrique confirme le
+                  potentiel d'Anyama
+                </span>
               </div>
             }
             content={
               <div className="flex flex-col gap-1 text-foreground/80 text-sm overflow-auto max-h-[200px] md:max-h-[250px]">
-                {/* Contenu textuel adaptatif... */}
                 <p>
-                  Les métriques d'attractivité... Anyama dispose d'un avantage
-                  stratégique.
+                  Les métriques d'attractivité et les flux d'investissement
+                  convergent vers une réalité : le vrai potentiel se mesure dans
+                  ce qui reste à révéler. Anyama dispose d'un avantage
+                  stratégique encore invisible à la majorité des acteurs. La
+                  data ne ment pas — la question, c'est qui l'exploitera en
+                  premier. :{" "}
+                  <span className="bg-gradient-to-r from-green-500 to-blue-300 bg-clip-text text-transparent font-semibold">
+                    Vision partager
+                  </span>
+                </p>
+                <p>
+                  Les chiffres sont là. Les investisseurs arrivent. La question,
+                  c'est : serez-vous prêts ?
+                </p>
+                <p>
+                  Votre commune entre dans une zone d'attractivité stratégique:
+                  <span className="bg-gradient-to-r from-green-500 to-blue-300 bg-clip-text text-transparent font-semibold">
+                    Sans insights, chaque décision est un pari perdu d'avance.
+                  </span>
                 </p>
               </div>
             }
@@ -103,14 +122,49 @@ export default function HomePage() {
                 Comprendre
               </span>
             }
+            modalContent={
+              <div className="flex flex-col gap-2 text-foreground/90 text-sm overflow-auto max-h-[400px] md:max-h-[450px]">
+                <p>
+                  Potentiel latent détecté : chaque flux, chaque indicateur
+                  montre que votre territoire est sous-évalué.
+                </p>
+                <p>
+                  La donnée est le premier moteur de croissance du XXIᵉ siècle
+                  Les économies modernes sont tirées par : la précision des
+                  décisions, la rapidité d'exécution, la capacité à anticiper
+                  les crises plutôt que les subir. Or, tout cela dépend de la
+                  donnée. Un État qui n'investit pas dans la data : avance à
+                  vue, perd du temps, gaspille des ressources, devient dépendant
+                  d'acteurs privés mieux structurés. Un État qui investit dans
+                  la data : gagne en souveraineté, augmente sa productivité
+                  globale, attire davantage d'investissements, devient un moteur
+                  d'innovation.
+                </p>
+                <p>
+                  La donnée réduit les coûts structurels de l'État (et ce de
+                  façon massive) Les administrations gèrent des millions de
+                  microdécisions quotidiennes. Sans data : Décisions
+                  approximatives → dépenses imprécises → surcoûts →
+                  inefficacités → retards → litiges. Avec la data : Décisions
+                  optimisées → réduction des gaspillages → maîtrise des dépenses
+                  publiques → accélération des services. On parle de milliards
+                  potentiels économisés sur : la logistique l'énergie les achats
+                  publics les fraudes et erreurs les allocations la maintenance
+                  des infrastructures Investir dans la data, ce n'est pas une
+                  dépense : c'est un amortisseur de dépenses futures.
+                </p>
+              </div>
+            }
           />
         </aside>
 
-        {/* SideCard collée à droite */}
-        <aside className="relative z-10 md:absolute md:right-3 md:mr-6 lg:mr-8 flex justify-center md:justify-end w-full md:w-auto min-w-[300px]">
+        <aside
+          className="relative z-10 md:absolute md:right-3 md:mr-6 lg:mr-8 
+flex justify-center md:justify-end w-full md:w-auto min-w-[300px]"
+        >
           <SideCard
             imageSrc="/zyy.png"
-            title="Zy recherche un financement"
+            title="Zy recherche un financement orienté workspace & Workflow"
             description="Exécution de la logique métier et serveur en burn out."
             location="Anyama, Abidjan, Côte d'Ivoire"
           />
