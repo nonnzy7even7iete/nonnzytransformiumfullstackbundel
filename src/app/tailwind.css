@@ -27,13 +27,9 @@ body {
   --background-image-app-gradient: light-dark(linear-gradient(to bottom right, #f8fafc, #ffffff, #e2e8f0),
       linear-gradient(to bottom right, #0a0a0a, #000000, #171717));
 
-  /* ☀️ Light : Transparence Totale | 🌙 Dark : Ton Noir 60% */
   --color-glass-dual: light-dark(transparent, rgba(0, 0, 0, 0.6));
-
-  /* ☀️ Light : Gray-300 (#d1d5db) | 🌙 Dark : Blanc 10% */
   --color-border-dual: light-dark(#d1d5db, rgba(255, 255, 255, 0.1));
 
-  /* Forcer les variables standards pour impacter DataCard et SideCard */
   --color-card: var(--color-glass-dual);
   --color-border: var(--color-border-dual);
 
@@ -43,18 +39,14 @@ body {
 
 :root {
   --radius: 0.625rem;
-  /* ⚡️ CRUCIAL : On force le navigateur à comprendre qu'il doit pouvoir switcher */
   color-scheme: light dark;
 
   --background: oklch(1 0 0);
   --foreground: oklch(0 0 0);
-  /* Force la bordure par défaut en Gray-300 pour le mode Light */
   --border: oklch(0.837 0.01 254.12);
-  /* Equivalent Gray-300 */
 }
 
 .dark {
-  /* ⚡️ On renforce l'instruction pour la barre DNS en mode dark */
   color-scheme: dark;
   --background: oklch(0.1 0 0);
   --foreground: oklch(0.985 0 0);
@@ -73,11 +65,22 @@ body {
     background-color: transparent !important;
     backdrop-filter: none !important;
     border-color: #d1d5db !important;
-    /* Gray-300 */
     border-width: 1px !important;
   }
 
   body {
     @apply bg-app-gradient text-foreground transition-colors duration-300 antialiased;
+  }
+
+  /* ⚡️ FEATURE BARRE DNS : Synchronisation du fond HTML ⚡️ */
+  /* Les navigateurs utilisent la couleur de fond du HTML pour peindre la barre DNS */
+  html {
+    background-color: #ffffff;
+    /* Force la barre DNS en blanc par défaut */
+  }
+
+  html.dark {
+    background-color: #000000;
+    /* Force la barre DNS en noir en mode dark */
   }
 }
