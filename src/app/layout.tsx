@@ -1,7 +1,7 @@
 // app/layout.tsx
-import type { Metadata, Viewport } from "next"; // Ajout de Viewport
+import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import "./tailwind.css";
+import "./globals.css";
 import { Providers } from "@/components/Providers";
 
 const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
@@ -9,11 +9,6 @@ const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
 });
-
-// Ajout de la configuration pour la barre du navigateur
-export const viewport: Viewport = {
-  themeColor: "#000000",
-};
 
 export const metadata: Metadata = {
   title: "Nonnzy App",
@@ -26,13 +21,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="fr" className="dark" style={{ colorScheme: "dark" }}>
+    <html lang="fr" suppressHydrationWarning>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <Providers>
-          <main>{children}</main>
-        </Providers>
+        <Providers>{children}</Providers>
       </body>
     </html>
   );
