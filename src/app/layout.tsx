@@ -1,7 +1,7 @@
 // app/layout.tsx
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
+import "./tailwind.css"; // 👈 CHANGE ICI SI TON FICHIER S'APPELLE TAILWIND.CSS
 import { Providers } from "@/components/Providers";
 
 const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
