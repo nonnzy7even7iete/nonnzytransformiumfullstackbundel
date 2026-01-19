@@ -43,7 +43,9 @@ body {
 
 :root {
   --radius: 0.625rem;
+  /* ⚡️ CRUCIAL : On force le navigateur à comprendre qu'il doit pouvoir switcher */
   color-scheme: light dark;
+
   --background: oklch(1 0 0);
   --foreground: oklch(0 0 0);
   /* Force la bordure par défaut en Gray-300 pour le mode Light */
@@ -52,6 +54,8 @@ body {
 }
 
 .dark {
+  /* ⚡️ On renforce l'instruction pour la barre DNS en mode dark */
+  color-scheme: dark;
   --background: oklch(0.1 0 0);
   --foreground: oklch(0.985 0 0);
   --border: oklch(1 0 0 / 10%);
@@ -63,7 +67,6 @@ body {
   }
 
   /* 💡 FORCE LA TRANSPARENCE EN MODE LIGHT */
-  /* Si tes composants utilisent backdrop-blur, on le désactive en Light */
   :root:not(.dark) .bg-glass-dual,
   :root:not(.dark) .backdrop-blur-xl,
   :root:not(.dark) .backdrop-blur-md {
