@@ -1,45 +1,35 @@
-"use client";
+// app/layout.tsx
+import type { Metadata } from "next";
+import { Geist, Geist_Mono } from "next/font/google";
+import "./tailwind.css";
+// ⚠️ Vérifie bien que "export" n'est pas devant l'import ci-dessous
+import { Providers } from "@/components/Providers";
 
-import { ThemeProvider, useTheme } from "next-themes";
-import { SessionProvider } from "next-auth/react";
-import { useEffect } from "react";
+const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
+const geistMono = Geist_Mono({
+  variable: "--font-geist-mono",
+  subsets: ["latin"],
+});
 
-function ThemeWatcher() {
-  const { theme, resolvedTheme } = useTheme();
+export const metadata: Metadata = {
+  title: "Nonnzy App",
+  description: "Application fullstack avec Next.js",
+};
 
-  useEffect(() => {
-    // On récupère le thème actif (même si c'est 'system')
-    const activeTheme = resolvedTheme || theme;
+// ⚠️ AUCUN AUTRE EXPORT NE DOIT ÊTRE PRÉSENT ICI
 
-    // On définit la couleur : Noir pour Dark (#000000), Blanc pour Light (#ffffff)
-    const color = activeTheme === "dark" ? "#000000" : "#ffffff";
-
-    // On cherche si la balise existe déjà, sinon on la crée
-    let metaTag = document.querySelector('meta[name="theme-color"]');
-    if (!metaTag) {
-      metaTag = document.createElement("meta");
-      metaTag.setAttribute("name", "theme-color");
-      document.head.appendChild(metaTag);
-    }
-    metaTag.setAttribute("content", color);
-  }, [theme, resolvedTheme]);
-
-  return null;
-}
-
-export function Providers({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
-    <SessionProvider>
-      <ThemeProvider
-        attribute="class"
-        defaultTheme="dark"
-        enableSystem={true}
-        enableColorScheme={true}
+    <html lang="fr" suppressHydrationWarning>
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <ThemeWatcher />{" "}
-        {/* 👈 Ce composant surveille et change la barre DNS */}
-        {children}
-      </ThemeProvider>
-    </SessionProvider>
+        <Providers>{children}</Providers>
+      </body>
+    </html>
   );
 }
