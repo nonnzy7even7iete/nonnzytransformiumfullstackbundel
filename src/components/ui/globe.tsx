@@ -6,13 +6,10 @@ import ThreeGlobe from "three-globe";
 import { Canvas, extend, ThreeElement } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
 
-// Chemin relatif vers ton dossier src/data
 import countries from "../../data/globe.json";
 
-// Extension de l'élément pour Fiber
 extend({ ThreeGlobe: ThreeGlobe });
 
-// Déclaration globale pour éviter toute erreur JSX
 declare global {
   namespace JSX {
     interface IntrinsicElements {
@@ -108,20 +105,19 @@ export function Globe({ globeConfig, data }: WorldProps) {
       .atmosphereColor(config.atmosphereColor)
       .atmosphereAltitude(config.atmosphereAltitude);
 
-    if (data) {
-      globeRef.current
-        .arcsData(data)
-        .arcStartLat((d: any) => d.startLat)
-        .arcStartLng((d: any) => d.startLng)
-        .arcEndLat((d: any) => d.endLat)
-        .arcEndLng((d: any) => d.endLng)
-        .arcColor((d: any) => d.color)
-        .arcAltitude((d: any) => d.arcAlt)
-        .arcDashLength(config.arcLength)
-        .arcDashInitialGap((d: any) => d.order)
-        .arcDashGap(15)
-        .arcDashAnimateTime(() => config.arcTime);
-    }
+    // On force la mise à jour des arcs
+    globeRef.current
+      .arcsData(data)
+      .arcStartLat((d: any) => d.startLat)
+      .arcStartLng((d: any) => d.startLng)
+      .arcEndLat((d: any) => d.endLat)
+      .arcEndLng((d: any) => d.endLng)
+      .arcColor((d: any) => d.color)
+      .arcAltitude((d: any) => d.arcAlt)
+      .arcDashLength(config.arcLength)
+      .arcDashInitialGap(0)
+      .arcDashGap(15)
+      .arcDashAnimateTime(() => config.arcTime);
   }, [isInitialized, data, config]);
 
   return <group ref={groupRef} />;
@@ -136,9 +132,7 @@ export function World(props: WorldProps) {
       <fog attach="fog" args={["#000000", 400, 2000]} />
       <ambientLight intensity={0.5} />
       <pointLight position={[200, 200, 200]} intensity={0.8} />
-
       <Globe {...props} />
-
       <OrbitControls
         enablePan={false}
         enableZoom={false}
