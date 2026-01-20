@@ -73,7 +73,7 @@ export default function ResumeExecutifPage() {
           <div className="flex items-center gap-2 mb-8 px-4 py-1.5 bg-green-500/10 dark:bg-green-500/5 border border-green-600/20 dark:border-green-500/20 rounded-full backdrop-blur-sm">
             <div className="w-1.5 h-1.5 bg-green-600 dark:bg-green-500 rounded-full animate-pulse shadow-[0_0_10px_rgba(34,197,94,0.5)]" />
             <span className="text-[10px] text-green-700 dark:text-green-500 font-bold tracking-[0.4em] uppercase">
-              Global Networking Hub
+              Ivorycost Data-driven Global Networking Hub
             </span>
           </div>
 
