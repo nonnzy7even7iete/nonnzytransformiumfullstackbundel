@@ -55,24 +55,35 @@ export default function NavbarFront() {
           50% { background-position: 100% 50%; }
           100% { background-position: 0% 50%; }
         }
+        
         .gradient-border {
-          background: linear-gradient(90deg, #ef4444, #22c55e, #3b82f6, #e4d60eff);
-          background-size: 200% 200%;
-          animation: gradientShine 7s ease-in-out infinite;
+          /* Dégradé : Noir -> Rouge (domine) -> Jaune -> Rouge -> Noir */
+          background: linear-gradient(90deg, 
+            #000000 0%, 
+            #ef4444 25%, 
+            #facc15 50%, 
+            #ef4444 75%, 
+            #000000 100%
+          );
+          background-size: 300% 300%;
+          animation: gradientShine 8s ease-in-out infinite;
           height: 1px;
           transition: opacity 1000ms ease-in-out;
         }
+
         :not(.dark) .navbar-scrolled {
           background-color: rgba(255, 255, 255, 0.75) !important;
           backdrop-filter: blur(20px) saturate(180%);
           -webkit-backdrop-filter: blur(20px);
           border-bottom: 1px solid rgba(0, 0, 0, 0.05);
         }
+        
         .dark .navbar-scrolled {
           background-color: rgba(0, 0, 0, 0.6) !important;
           backdrop-filter: blur(16px);
           border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
+
         .nav-logo-box svg {
           height: 100% !important;
           width: auto !important;
@@ -97,7 +108,7 @@ export default function NavbarFront() {
             </Link>
           </div>
 
-          {/* CENTRE : LIENS (Z-INDEX augmenté à 80 pour être au-dessus de tout) */}
+          {/* CENTRE : LIENS */}
           <div className="absolute left-1/2 -translate-x-1/2 flex items-center gap-4 sm:gap-8 z-[80]">
             {navLinks.map((link) => (
               <Link
@@ -130,6 +141,7 @@ export default function NavbarFront() {
           </div>
         </div>
 
+        {/* BORDURE AVEC LES NOUVELLES COULEURS */}
         <div
           className={`gradient-border ${
             showBorder ? "opacity-100" : "opacity-0"
