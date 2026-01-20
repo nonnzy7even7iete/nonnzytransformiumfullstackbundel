@@ -6,6 +6,7 @@ import ThreeGlobe from "three-globe";
 import { Canvas, extend, ThreeElement } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
 
+// Assure-toi que ce chemin est correct
 import countries from "../../data/globe.json";
 
 extend({ ThreeGlobe: ThreeGlobe });
@@ -30,30 +31,8 @@ type Position = {
   color: string;
 };
 
-export type GlobeConfig = {
-  pointSize?: number;
-  globeColor?: string;
-  showAtmosphere?: boolean;
-  atmosphereColor?: string;
-  atmosphereAltitude?: number;
-  emissive?: string;
-  emissiveIntensity?: number;
-  shininess?: number;
-  polygonColor?: string;
-  ambientLight?: string;
-  directionalLeftLight?: string;
-  directionalTopLight?: string;
-  pointLight?: string;
-  arcTime?: number;
-  arcLength?: number;
-  rings?: number;
-  maxRings?: number;
-  autoRotate?: boolean;
-  autoRotateSpeed?: number;
-};
-
 interface WorldProps {
-  globeConfig: GlobeConfig;
+  globeConfig: any;
   data: Position[];
 }
 
@@ -61,21 +40,6 @@ export function Globe({ globeConfig, data }: WorldProps) {
   const globeRef = useRef<ThreeGlobe>(null);
   const groupRef = useRef<THREE.Group>(null);
   const [isInitialized, setIsInitialized] = useState(false);
-
-  const config = {
-    pointSize: 1,
-    atmosphereColor: "#3b82f6",
-    showAtmosphere: true,
-    atmosphereAltitude: 0.1,
-    polygonColor: "rgba(255,255,255,0.15)",
-    globeColor: "#060910",
-    emissive: "#000000",
-    emissiveIntensity: 0.1,
-    shininess: 0.9,
-    arcTime: 2000,
-    arcLength: 0.9,
-    ...globeConfig,
-  };
 
   useEffect(() => {
     if (groupRef.current && !globeRef.current) {
@@ -89,58 +53,76 @@ export function Globe({ globeConfig, data }: WorldProps) {
   useEffect(() => {
     if (!globeRef.current || !isInitialized) return;
 
+    // 1. MATÉRIAU DU GLOBE : On le force en bleu-noir très sombre
     const globeMaterial =
       globeRef.current.globeMaterial() as THREE.MeshPhongMaterial;
-    globeMaterial.color = new THREE.Color(config.globeColor);
-    globeMaterial.emissive = new THREE.Color(config.emissive);
-    globeMaterial.emissiveIntensity = config.emissiveIntensity;
-    globeMaterial.shininess = config.shininess;
+    globeMaterial.color = new THREE.Color("#020617");
+    globeMaterial.emissive = new THREE.Color("#000000");
+    globeMaterial.shininess = 0.5;
 
+    // 2. CONTINENTS : On utilise une résolution plus haute et PAS DE MARGE pour qu'ils soient pleins
     globeRef.current
       .hexPolygonsData(countries.features)
       .hexPolygonResolution(3)
-      .hexPolygonMargin(0.1)
-      .hexPolygonColor(() => config.polygonColor)
-      .showAtmosphere(config.showAtmosphere)
-      .atmosphereColor(config.atmosphereColor)
-      .atmosphereAltitude(config.atmosphereAltitude);
+      .hexPolygonMargin(0) // 0 = Continents pleins et visibles
+      .hexPolygonColor(() => "rgba(34, 197, 94, 0.2)") // Vert transparent mais visible
+      .hexPolygonAltitude(0.005); // Légèrement surélevé pour être sûr qu'on les voit
 
-    // On force la mise à jour des arcs
+    // 3. ATMOSPHÈRE
     globeRef.current
-      .arcsData(data)
-      .arcStartLat((d: any) => d.startLat)
-      .arcStartLng((d: any) => d.startLng)
-      .arcEndLat((d: any) => d.endLat)
-      .arcEndLng((d: any) => d.endLng)
-      .arcColor((d: any) => d.color)
-      .arcAltitude((d: any) => d.arcAlt)
-      .arcDashLength(config.arcLength)
-      .arcDashInitialGap(0)
-      .arcDashGap(15)
-      .arcDashAnimateTime(() => config.arcTime);
-  }, [isInitialized, data, config]);
+      .showAtmosphere(true)
+      .atmosphereColor("#22c55e")
+      .atmosphereAltitude(0.1);
+
+    // 4. ARCS (Fils de lumière)
+    if (data) {
+      globeRef.current
+        .arcsData(data)
+        .arcStartLat((d: any) => d.startLat)
+        .arcStartLng((d: any) => d.startLng)
+        .arcEndLat((d: any) => d.endLat)
+        .arcEndLng((d: any) => d.endLng)
+        .arcColor((d: any) => d.color)
+        .arcAltitude((d: any) => d.arcAlt)
+        .arcStroke(0.5)
+        .arcDashLength(0.4)
+        .arcDashGap(4)
+        .arcDashAnimateTime(2000);
+
+      // Points sur Abidjan et destination
+      globeRef.current
+        .pointsData(
+          data.flatMap((d) => [
+            { lat: d.startLat, lng: d.startLng, color: "#22c55e" },
+            { lat: d.endLat, lng: d.endLng, color: "#ffffff" },
+          ])
+        )
+        .pointColor((d: any) => d.color)
+        .pointRadius(0.8);
+    }
+  }, [isInitialized, data]);
 
   return <group ref={groupRef} />;
 }
 
 export function World(props: WorldProps) {
   return (
-    <Canvas
-      camera={{ fov: 50, near: 180, far: 1800, position: [0, 0, cameraZ] }}
-    >
-      <color attach="background" args={["#000000"]} />
-      <fog attach="fog" args={["#000000", 400, 2000]} />
-      <ambientLight intensity={0.5} />
-      <pointLight position={[200, 200, 200]} intensity={0.8} />
-      <Globe {...props} />
-      <OrbitControls
-        enablePan={false}
-        enableZoom={false}
-        autoRotate={true}
-        autoRotateSpeed={0.5}
-        minPolarAngle={Math.PI / 3.5}
-        maxPolarAngle={Math.PI - Math.PI / 3}
-      />
-    </Canvas>
+    <div style={{ width: "100%", height: "100%", position: "absolute" }}>
+      <Canvas
+        camera={{ fov: 45, near: 10, far: 2000, position: [0, 0, cameraZ] }}
+      >
+        <color attach="background" args={["#000000"]} />
+        <ambientLight intensity={1.5} />{" "}
+        {/* Augmentation de la lumière pour voir les continents */}
+        <pointLight position={[200, 200, 200]} intensity={2} />
+        <Globe {...props} />
+        <OrbitControls
+          enablePan={false}
+          enableZoom={false}
+          autoRotate={true}
+          autoRotateSpeed={0.5}
+        />
+      </Canvas>
+    </div>
   );
 }
