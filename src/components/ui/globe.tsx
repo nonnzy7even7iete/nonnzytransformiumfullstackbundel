@@ -52,28 +52,28 @@ export function Globe({ globeConfig, data }: WorldProps) {
   useEffect(() => {
     if (!globeRef.current || !isInitialized) return;
 
-    // MATÉRIAU : Noir profond
+    // MATÉRIAU : Fond très sombre pour faire ressortir le vert
     const globeMaterial =
       globeRef.current.globeMaterial() as THREE.MeshPhongMaterial;
     globeMaterial.color = new THREE.Color("#05070a");
     globeMaterial.emissive = new THREE.Color("#000000");
 
-    // CONTINENTS : Look "Grille" Tech
+    // CONTINENTS : Look digital discret
     globeRef.current
       .hexPolygonsData(countries.features)
       .hexPolygonResolution(3)
       .hexPolygonMargin(0.12)
-      .hexPolygonColor(() => "rgba(34, 197, 94, 0.15)")
+      .hexPolygonColor(() => "rgba(34, 197, 94, 0.1)")
       .hexPolygonAltitude(0.01);
 
-    // ATMOSPHÈRE : Douce
+    // ATMOSPHÈRE : Vert technologique
     globeRef.current
       .showAtmosphere(true)
       .atmosphereColor("#22c55e")
-      .atmosphereAltitude(0.12);
+      .atmosphereAltitude(0.15);
 
-    // ARCS : LE MOUVEMENT CALME
-    if (data) {
+    // GESTION DES ARCS - EFFET DE DÉPART D'ABIDJAN
+    if (data && data.length > 0) {
       globeRef.current
         .arcsData(data)
         .arcStartLat((d: any) => d.startLat)
@@ -81,35 +81,35 @@ export function Globe({ globeConfig, data }: WorldProps) {
         .arcEndLat((d: any) => d.endLat)
         .arcEndLng((d: any) => d.endLng)
         .arcColor((d: any) => d.color)
-        .arcAltitude((d: any) => d.arcAlt + 0.1) // 👈 Un peu plus de hauteur pour voir la parabole
-        .arcStroke(0.4)
-        .arcDashLength(0.5) // 👈 Longueur de la traînée
-        .arcDashGap(15) // 👈 Très grand gap pour qu'on voie la ligne "partir" et "arriver" sans encombrement
-        .arcDashAnimateTime(6000); // 👈 6 secondes : très lent et majestueux
+        .arcAltitude((d: any) => d.arcAlt)
+        .arcStroke(0.6) // Un peu plus épais pour bien voir le flux
+        .arcDashLength(0.4) // Longueur du segment
+        .arcDashGap(2) // Espace entre les segments
+        .arcDashInitialGap(1) // 👈 FORCE LE DÉPART (La ligne commence "cachée" et sort)
+        .arcDashAnimateTime(globeConfig.arcTime || 6000);
 
-      // POINTS ET PULSATIONS
+      // Points de repère fixes
       globeRef.current
         .pointsData(
           data.flatMap((d) => [
-            { lat: d.startLat, lng: d.startLng, color: "#22c55e", size: 0.9 },
-            { lat: d.endLat, lng: d.endLng, color: "#ffffff", size: 0.6 },
+            { lat: d.startLat, lng: d.startLng, color: "#22c55e", size: 1.2 }, // Abidjan plus gros
+            { lat: d.endLat, lng: d.endLng, color: "#ffffff", size: 0.8 },
           ])
         )
         .pointColor((d: any) => d.color)
         .pointRadius((d: any) => d.size);
 
+      // Onde de choc à Abidjan pour signaler le départ
       globeRef.current
-        .ringsData(
-          data.flatMap((d) => [
-            { lat: d.startLat, lng: d.startLng, color: "#22c55e" },
-          ])
-        )
+        .ringsData([
+          { lat: data[0].startLat, lng: data[0].startLng, color: "#22c55e" },
+        ])
         .ringColor((d: any) => d.color)
-        .ringMaxRadius(2.5)
-        .ringPropagationSpeed(1) // 👈 Onde de choc lente
-        .ringRepeatPeriod(2500);
+        .ringMaxRadius(4)
+        .ringPropagationSpeed(2)
+        .ringRepeatPeriod(1500);
     }
-  }, [isInitialized, data]);
+  }, [isInitialized, data, globeConfig]);
 
   return <group ref={groupRef} />;
 }
@@ -122,17 +122,15 @@ export function World(props: WorldProps) {
       >
         <color attach="background" args={["#000000"]} />
         <ambientLight intensity={1.5} />
-        <directionalLight
-          position={[-100, 200, 100]}
-          intensity={1}
-          color="#22c55e"
-        />
+        <pointLight position={[200, 200, 200]} intensity={1.5} />
+
         <Globe {...props} />
+
         <OrbitControls
           enablePan={false}
           enableZoom={false}
           autoRotate={true}
-          autoRotateSpeed={0.3} // 👈 Rotation du globe ralentie pour ne pas perdre la ligne de vue
+          autoRotateSpeed={0.4}
         />
       </Canvas>
     </div>
