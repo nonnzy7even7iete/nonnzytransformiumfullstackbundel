@@ -39,26 +39,28 @@ export default function NavbarFront() {
         /* Glassmorphism LIGHT : Uniquement quand la classe .dark n'est pas là */
         :not(.dark) .navbar-scrolled {
           background-color: rgba(255, 255, 255, 0.7) !important;
-          backdrop-filter: blur(16px) saturate(180%);
-          -webkit-backdrop-filter: blur(16px);
+          backdrop-filter: blur(20px) saturate(180%);
+          -webkit-backdrop-filter: blur(20px);
           border-bottom: 1px solid rgba(0, 0, 0, 0.08);
         }
 
         /* Glassmorphism DARK : Quand la classe .dark est active */
         .dark .navbar-scrolled {
           background-color: rgba(0, 0, 0, 0.5) !important;
-          backdrop-filter: blur(12px);
-          -webkit-backdrop-filter: blur(12px);
+          backdrop-filter: blur(16px);
+          -webkit-backdrop-filter: blur(16px);
           border-bottom: 1px solid rgba(255, 255, 255, 0.08);
         }
 
-        .logo-container svg {
+        /* Sécurité pour le SVG du logo dans la navbar uniquement */
+        .nav-logo-wrapper svg {
           height: 100% !important;
           width: auto !important;
+          display: block;
         }
       `}</style>
 
-      {/* Boutons contrôles (Z-index max pour rester cliquables) */}
+      {/* Boutons contrôles */}
       <div className="fixed right-3 top-3 z-[100] flex items-center gap-3">
         <ThemeToggle />
         <button
@@ -80,19 +82,20 @@ export default function NavbarFront() {
         `}
       >
         <div className="grid grid-cols-3 h-full items-center px-1 md:px-4 relative">
-          {/* LOGO : Collé à gauche, Scale massif sur mobile */}
-          <div className="flex justify-start">
+          {/* COLONNE 1 : LOGO (ISOLÉ ET SÉCURISÉ) */}
+          <div className="flex justify-start items-center h-full">
             <Link
               href="/"
-              className="relative block h-12 w-28 sm:w-32 ml-[3px] z-[70]"
+              className="nav-logo-wrapper relative block h-14 w-28 sm:w-36 z-[70] overflow-visible"
+              style={{ marginLeft: "3px" }}
             >
-              <div className="absolute inset-0 scale-[1.6] sm:scale-[1.4] md:scale-100 origin-left flex items-center">
+              <div className="absolute inset-0 scale-[1.7] sm:scale-[1.4] md:scale-100 origin-left flex items-center">
                 <TextHoverEffect text="Nonnzytr" />
               </div>
             </Link>
           </div>
 
-          {/* NAVIGATION : Centrée, ne bloque pas les clics latéraux */}
+          {/* COLONNE 2 : NAVIGATION (CENTRÉE) */}
           <div className="flex justify-center items-center gap-4 md:gap-10">
             {navLinks.map((link) => {
               const IconComponent = link.icon;
@@ -113,13 +116,13 @@ export default function NavbarFront() {
             })}
           </div>
 
-          {/* ESPACE DROIT : Pour l'équilibre visuel */}
+          {/* COLONNE 3 : ESPACE DROIT (ÉQUILIBRE) */}
           <div className="flex justify-end pr-10 pointer-events-none" />
         </div>
 
-        {/* Bordure de scroll animée (Optionnel : peux être retiré si trop chargé) */}
+        {/* Bordure de scroll discrète */}
         {isScrolled && (
-          <div className="absolute bottom-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-foreground/10 to-transparent" />
+          <div className="absolute bottom-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-foreground/5 to-transparent" />
         )}
       </nav>
     </>
