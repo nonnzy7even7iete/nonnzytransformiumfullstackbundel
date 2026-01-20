@@ -50,27 +50,30 @@ export default function NavbarFront() {
   return (
     <>
       <style>{`
-        @keyframes gradientShine {
-          0% { background-position: 0% 50%; }
-          50% { background-position: 100% 50%; }
-          100% { background-position: 0% 50%; }
+        @keyframes pulseCenter {
+          0%, 100% { 
+            background-size: 80% 100%;
+          }
+          50% { 
+            background-size: 130% 100%;
+          }
         }
         
         .gradient-border {
-          /* Dégradé avec 3 couches de noir aux extrémités, Orange et Vert au centre */
-          background: linear-gradient(90deg, 
-            #000000 0%, 
-            #000000 4%, 
-            #000000 8%, 
-            #f97316 35%, 
-            #22c55e 65%, 
-            #000000 92%, 
-            #000000 96%, 
+          background-color: #000;
+          /* Radial gradient pour garder le noir fixe aux bords */
+          background-image: radial-gradient(
+            circle at center,
+            #22c55e 0%,    /* Vert au centre */
+            #f97316 40%,   /* Orange */
+            #000000 75%,   /* Noir avant les bords */
             #000000 100%
           );
-          background-size: 300% 300%;
-          animation: gradientShine 8s ease-in-out infinite;
+          background-repeat: no-repeat;
+          background-position: center;
+          animation: pulseCenter 6s ease-in-out infinite;
           height: 1px;
+          width: 100%;
           transition: opacity 1000ms ease-in-out;
         }
 
@@ -100,7 +103,7 @@ export default function NavbarFront() {
         } ${isScrolled ? "navbar-scrolled shadow-sm" : "bg-transparent"}`}
       >
         <div className="flex h-full items-center justify-between px-2 relative">
-          {/* GAUCHE : LOGO (3px du bord) */}
+          {/* GAUCHE : LOGO */}
           <div className="flex-shrink-0 z-[60] pointer-events-auto">
             <Link
               href="/"
@@ -112,7 +115,7 @@ export default function NavbarFront() {
             </Link>
           </div>
 
-          {/* CENTRE : LIENS (Z-INDEX 80 pour cliquabilité garantie) */}
+          {/* CENTRE : LIENS (Z-INDEX 80) */}
           <div className="absolute left-1/2 -translate-x-1/2 flex items-center gap-4 sm:gap-8 z-[80]">
             {navLinks.map((link) => (
               <Link
@@ -145,7 +148,7 @@ export default function NavbarFront() {
           </div>
         </div>
 
-        {/* BORDURE AVEC DÉGRADÉ NOIR-ORANGE-VERT-NOIR */}
+        {/* BORDURE AVEC ANIMATION DE RESPIRATION CENTRALE */}
         <div
           className={`gradient-border ${
             showBorder ? "opacity-100" : "opacity-0"
