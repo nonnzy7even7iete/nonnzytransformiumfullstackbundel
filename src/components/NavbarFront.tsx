@@ -57,12 +57,15 @@ export default function NavbarFront() {
         }
         
         .gradient-border {
-          /* Dégradé : Noir -> Rouge (domine) -> Jaune -> Rouge -> Noir */
+          /* Dégradé avec 3 couches de noir aux extrémités, Orange et Vert au centre */
           background: linear-gradient(90deg, 
             #000000 0%, 
-            #ef4444 25%, 
-            #facc15 50%, 
-            #ef4444 75%, 
+            #000000 4%, 
+            #000000 8%, 
+            #f97316 35%, 
+            #22c55e 65%, 
+            #000000 92%, 
+            #000000 96%, 
             #000000 100%
           );
           background-size: 300% 300%;
@@ -81,6 +84,7 @@ export default function NavbarFront() {
         .dark .navbar-scrolled {
           background-color: rgba(0, 0, 0, 0.6) !important;
           backdrop-filter: blur(16px);
+          -webkit-backdrop-filter: blur(16px);
           border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
 
@@ -96,7 +100,7 @@ export default function NavbarFront() {
         } ${isScrolled ? "navbar-scrolled shadow-sm" : "bg-transparent"}`}
       >
         <div className="flex h-full items-center justify-between px-2 relative">
-          {/* GAUCHE : LOGO */}
+          {/* GAUCHE : LOGO (3px du bord) */}
           <div className="flex-shrink-0 z-[60] pointer-events-auto">
             <Link
               href="/"
@@ -108,7 +112,7 @@ export default function NavbarFront() {
             </Link>
           </div>
 
-          {/* CENTRE : LIENS */}
+          {/* CENTRE : LIENS (Z-INDEX 80 pour cliquabilité garantie) */}
           <div className="absolute left-1/2 -translate-x-1/2 flex items-center gap-4 sm:gap-8 z-[80]">
             {navLinks.map((link) => (
               <Link
@@ -141,7 +145,7 @@ export default function NavbarFront() {
           </div>
         </div>
 
-        {/* BORDURE AVEC LES NOUVELLES COULEURS */}
+        {/* BORDURE AVEC DÉGRADÉ NOIR-ORANGE-VERT-NOIR */}
         <div
           className={`gradient-border ${
             showBorder ? "opacity-100" : "opacity-0"
