@@ -12,7 +12,6 @@ export default function NavbarFront() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
   const [isButtonAnimating, setIsButtonAnimating] = useState(false);
-  const [showBorder, setShowBorder] = useState(false);
   const { data: session } = useSession();
 
   useEffect(() => {
@@ -37,31 +36,38 @@ export default function NavbarFront() {
   return (
     <>
       <style>{`
-        .navbar-glass-light {
-          background: rgba(255, 255, 255, 0.7) !important;
+        /* Glassmorphism LIGHT : Uniquement quand la classe .dark n'est pas là */
+        :not(.dark) .navbar-scrolled {
+          background-color: rgba(255, 255, 255, 0.7) !important;
           backdrop-filter: blur(16px) saturate(180%);
           -webkit-backdrop-filter: blur(16px);
-          border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+          border-bottom: 1px solid rgba(0, 0, 0, 0.08);
         }
-        .navbar-glass-dark {
-          background: rgba(0, 0, 0, 0.5) !important;
-          backdrop-filter: blur(16px);
-          -webkit-backdrop-filter: blur(16px);
+
+        /* Glassmorphism DARK : Quand la classe .dark est active */
+        .dark .navbar-scrolled {
+          background-color: rgba(0, 0, 0, 0.5) !important;
+          backdrop-filter: blur(12px);
+          -webkit-backdrop-filter: blur(12px);
+          border-bottom: 1px solid rgba(255, 255, 255, 0.08);
         }
-        /* Pour s'assurer que le SVG du logo ne dépasse pas */
+
         .logo-container svg {
           height: 100% !important;
           width: auto !important;
         }
       `}</style>
 
-      {/* Boutons en haut à droite */}
+      {/* Boutons contrôles (Z-index max pour rester cliquables) */}
       <div className="fixed right-3 top-3 z-[100] flex items-center gap-3">
         <ThemeToggle />
-        <button onClick={handleToggleClick} className="text-foreground">
+        <button
+          onClick={handleToggleClick}
+          className="p-2 hover:bg-foreground/5 rounded-full transition-colors"
+        >
           <IoAppsOutline
-            className={`w-6 h-6 transition-all ${
-              isButtonAnimating ? "scale-50" : "scale-100"
+            className={`w-6 h-6 text-foreground transition-all duration-300 ${
+              isButtonAnimating ? "scale-50 opacity-0" : "scale-100 opacity-100"
             }`}
           />
         </button>
@@ -70,37 +76,31 @@ export default function NavbarFront() {
       <nav
         className={`fixed top-0 w-full z-50 transition-all duration-500 h-16
         ${isVisible ? "translate-y-0" : "-translate-y-full"}
-        ${
-          isScrolled
-            ? "dark:navbar-glass-dark navbar-glass-light shadow-md"
-            : "bg-transparent"
-        }
+        ${isScrolled ? "navbar-scrolled shadow-sm" : "bg-transparent"}
         `}
       >
-        {/* Layout en 3 colonnes pour éviter les chevauchements de clics */}
-        <div className="grid grid-cols-3 h-full items-center px-1 md:px-4">
-          {/* COLONNE 1 : LOGO */}
-          <div className="flex justify-start items-center">
+        <div className="grid grid-cols-3 h-full items-center px-1 md:px-4 relative">
+          {/* LOGO : Collé à gauche, Scale massif sur mobile */}
+          <div className="flex justify-start">
             <Link
               href="/"
-              className="logo-container relative block h-14 w-32 sm:w-40 ml-[3px] z-[60]"
-              style={{ cursor: "pointer" }}
+              className="relative block h-12 w-28 sm:w-32 ml-[3px] z-[70]"
             >
-              <div className="absolute inset-0 scale-[1.8] sm:scale-[1.5] md:scale-100 origin-left flex items-center">
+              <div className="absolute inset-0 scale-[1.6] sm:scale-[1.4] md:scale-100 origin-left flex items-center">
                 <TextHoverEffect text="Nonnzytr" />
               </div>
             </Link>
           </div>
 
-          {/* COLONNE 2 : LIENS CENTRÉS */}
-          <div className="flex justify-center items-center gap-4 md:gap-8">
+          {/* NAVIGATION : Centrée, ne bloque pas les clics latéraux */}
+          <div className="flex justify-center items-center gap-4 md:gap-10">
             {navLinks.map((link) => {
               const IconComponent = link.icon;
               return (
                 <Link
                   key={link.href}
                   href={link.href}
-                  className="group flex flex-col items-center text-foreground z-[60]"
+                  className="group flex flex-col items-center text-foreground z-[70] transition-transform hover:scale-105"
                 >
                   {IconComponent && (
                     <IconComponent className="w-4 h-4 md:w-5 md:h-5 group-hover:text-green-500" />
@@ -113,18 +113,14 @@ export default function NavbarFront() {
             })}
           </div>
 
-          {/* COLONNE 3 : VIDE (Équilibre) */}
-          <div className="flex justify-end pr-12">
-            {/* Espace réservé pour ne pas gêner les boutons fixés */}
-          </div>
+          {/* ESPACE DROIT : Pour l'équilibre visuel */}
+          <div className="flex justify-end pr-10 pointer-events-none" />
         </div>
 
-        {/* Bordure animée en bas */}
-        <div
-          className={`h-[1px] w-full bg-gradient-to-r from-red-500 via-green-500 to-blue-500 transition-opacity duration-1000 ${
-            isScrolled ? "opacity-100" : "opacity-0"
-          }`}
-        />
+        {/* Bordure de scroll animée (Optionnel : peux être retiré si trop chargé) */}
+        {isScrolled && (
+          <div className="absolute bottom-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-foreground/10 to-transparent" />
+        )}
       </nav>
     </>
   );
