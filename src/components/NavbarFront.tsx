@@ -62,20 +62,20 @@ export default function NavbarFront() {
           height: 1px;
           transition: opacity 1000ms ease-in-out;
         }
-        /* Effet Glassmorphism Light amélioré */
         .navbar-glass-light {
           background: rgba(255, 255, 255, 0.6) !important;
-          backdrop-filter: blur(16px) saturate(180%) webkit-backdrop-filter: blur(16px);
+          backdrop-filter: blur(16px) saturate(180%);
+          -webkit-backdrop-filter: blur(16px);
           border-bottom: 1px solid rgba(0, 0, 0, 0.05);
         }
         .navbar-glass-dark {
           background: rgba(0, 0, 0, 0.4) !important;
           backdrop-filter: blur(16px);
+          -webkit-backdrop-filter: blur(16px);
         }
       `}</style>
 
-      {/* Boutons d'action (Fixés en haut à droite) */}
-      <div className="fixed right-3 top-3 z-50 flex items-center gap-3">
+      <div className="fixed right-3 top-3 z-[60] flex items-center gap-3">
         <ThemeToggle />
         <button
           onClick={handleToggleClick}
@@ -88,7 +88,7 @@ export default function NavbarFront() {
       </div>
 
       <nav
-        className={`fixed top-0 w-full z-40 transition-all duration-500 h-16
+        className={`fixed top-0 w-full z-50 transition-all duration-500 h-16
         ${
           isVisible
             ? "translate-y-0 opacity-100"
@@ -101,19 +101,20 @@ export default function NavbarFront() {
         }
         `}
       >
-        <div className="h-full flex items-center justify-between px-1 md:px-4">
-          {/* LOGO : Collé à gauche et agrandi sur mobile */}
+        <div className="h-full flex items-center justify-between px-1 md:px-4 relative">
+          {/* LOGO : Correction cliquabilité et visibilité */}
           <Link
             href="/"
-            className="flex-shrink-0 ml-[3px] w-28 md:w-36 z-50 overflow-visible"
+            className="relative z-[70] ml-[3px] w-24 sm:w-28 md:w-36 h-full flex items-center overflow-visible"
+            style={{ pointerEvents: "auto" }}
           >
-            <div className="scale-125 md:scale-100 origin-left transition-transform">
+            <div className="scale-[1.4] sm:scale-125 md:scale-100 origin-left transition-transform w-full h-12">
               <TextHoverEffect text="Nonnzytr" />
             </div>
           </Link>
 
-          {/* LIENS : Centrage absolu */}
-          <div className="absolute left-1/2 -translate-x-1/2 flex items-center gap-5 md:gap-10">
+          {/* LIENS : pointer-events-none sur le parent pour laisser cliquer le logo dessous si besoin */}
+          <div className="absolute left-1/2 -translate-x-1/2 flex items-center gap-4 md:gap-10 z-[60] pointer-events-none">
             {navLinks.map((link) => {
               const IconComponent = link.icon;
               const isResume = link.href === "/ResumeExecutif";
@@ -121,13 +122,13 @@ export default function NavbarFront() {
                 <Link
                   key={link.href}
                   href={link.href}
-                  className="group flex flex-col items-center relative text-foreground transition-all duration-300"
+                  className="group flex flex-col items-center relative text-foreground transition-all duration-300 pointer-events-auto"
                 >
                   {!isResume && IconComponent && (
                     <IconComponent className="w-4 h-4 md:w-5 md:h-5 group-hover:text-green-500" />
                   )}
                   <span
-                    className={`mt-0.5 text-[11px] md:text-sm whitespace-nowrap ${
+                    className={`mt-0.5 text-[10px] md:text-sm whitespace-nowrap ${
                       isResume
                         ? "font-bold"
                         : "font-medium group-hover:text-green-500"
@@ -140,8 +141,8 @@ export default function NavbarFront() {
             })}
           </div>
 
-          {/* Équilibre visuel à droite */}
-          <div className="w-20 md:w-36" />
+          {/* Équilibre */}
+          <div className="w-10 md:w-36" />
         </div>
 
         <div
