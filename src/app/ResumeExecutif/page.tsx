@@ -7,30 +7,35 @@ import NavbarFront from "@/components/NavbarFront";
 
 const World = dynamic(
   () => import("@/components/ui/globe").then((m) => m.World),
-  {
-    ssr: false,
-    loading: () => (
-      <div className="h-screen w-full bg-black flex items-center justify-center text-green-500 uppercase tracking-widest text-xs">
-        Initialisation du Hub Abidjan...
-      </div>
-    ),
-  }
+  { ssr: false }
 );
 
 export default function ResumeExecutifPage() {
   const [index, setIndex] = useState(0);
 
-  // Coordonnées précises pour le départ d'Abidjan
+  // Centre exact d'Abidjan pour le départ
   const ABIDJAN = { lat: 5.33, lng: -4.03 };
 
+  // Centres géographiques approximatifs des continents
   const destinations = [
-    { label: "USA", lat: 38.88, lng: -77.03, code: "NODE-DXB-US" },
-    { label: "EUROPE", lat: 48.85, lng: 2.35, code: "NODE-LHR-EU" },
-    { label: "BRÉSIL", lat: -23.55, lng: -46.63, code: "NODE-GRU-LATAM" },
-    { label: "JAPON", lat: 35.67, lng: 139.65, code: "NODE-HND-ASIA" },
+    {
+      label: "AMÉRIQUE DU NORD",
+      lat: 39.82,
+      lng: -98.57,
+      code: "NODE-NA-CENTRAL",
+    },
+    { label: "EUROPE", lat: 50.11, lng: 14.42, code: "NODE-EU-CENTRAL" },
+    { label: "ASIE", lat: 43.67, lng: 87.33, code: "NODE-AS-CENTRAL" },
+    {
+      label: "AMÉRIQUE DU SUD",
+      lat: -14.23,
+      lng: -51.92,
+      code: "NODE-SA-CENTRAL",
+    },
+    { label: "OCÉANIE", lat: -25.27, lng: 133.77, code: "NODE-AU-CENTRAL" },
+    { label: "AFRIQUE (NORD)", lat: 26.0, lng: 15.0, code: "NODE-AF-NORTH" },
   ];
 
-  // On passe à 6 secondes pour laisser le temps au globe de montrer le trajet
   useEffect(() => {
     const timer = setInterval(() => {
       setIndex((prev) => (prev + 1) % destinations.length);
@@ -45,7 +50,7 @@ export default function ResumeExecutifPage() {
       startLng: ABIDJAN.lng,
       endLat: destinations[index].lat,
       endLng: destinations[index].lng,
-      arcAlt: 0.35, // Un peu plus haut pour bien voir la courbe sortir du globe
+      arcAlt: 0.4, // Altitude plus haute pour les longs trajets (Asie/Océanie)
       color: "#22c55e",
     },
   ];
@@ -54,7 +59,6 @@ export default function ResumeExecutifPage() {
     <>
       <NavbarFront />
       <main className="relative min-h-screen bg-[#020408] text-white overflow-hidden flex flex-col items-center justify-center">
-        {/* Le Globe en fond */}
         <div className="absolute inset-0 z-0">
           <World
             data={activeConnection}
@@ -62,60 +66,52 @@ export default function ResumeExecutifPage() {
               globeColor: "#05070a",
               atmosphereColor: "#22c55e",
               polygonColor: "rgba(34, 197, 94, 0.15)",
-              arcTime: 6000, // Synchronisé avec le timer (6s)
-              arcLength: 0.4, // Effet "comète" qui suit la trajectoire
+              arcTime: 6000,
+              arcLength: 0.9,
             }}
           />
         </div>
 
-        {/* HUD UI - Design Business Tech */}
-        <div className="relative z-10 flex flex-col items-center pointer-events-none w-full max-w-4xl px-6">
-          {/* Status Badge */}
-          <div className="flex items-center gap-2 mb-8 px-4 py-1.5 bg-green-500/5 border border-green-500/20 rounded-full backdrop-blur-md">
+        {/* Interface HUD */}
+        <div className="relative z-10 flex flex-col items-center pointer-events-none w-full max-w-5xl px-6">
+          <div className="flex items-center gap-2 mb-8 px-4 py-1.5 bg-green-500/5 border border-green-500/20 rounded-full">
             <div className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse shadow-[0_0_10px_#22c55e]" />
             <span className="text-[10px] text-green-500 font-bold tracking-[0.4em] uppercase">
-              Ivory Coast Data-Driven Hub
+              Global Networking Hub
             </span>
           </div>
 
-          {/* Main Display */}
           <div className="flex flex-col items-center gap-2 text-center">
             <span className="text-sm font-mono opacity-30 tracking-[0.5em] uppercase mb-2">
-              Origin: Abidjan_Core
+              Source: CÔTE D'IVOIRE
             </span>
 
             <AnimatePresence mode="wait">
               <motion.div
                 key={destinations[index].label}
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: 20 }}
-                transition={{ duration: 0.8, ease: "circOut" }}
+                initial={{ opacity: 0, scale: 0.95, filter: "blur(10px)" }}
+                animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
+                exit={{ opacity: 0, scale: 1.05, filter: "blur(10px)" }}
+                transition={{ duration: 1, ease: "easeInOut" }}
                 className="flex flex-col items-center"
               >
-                <h1 className="text-6xl md:text-9xl font-black tracking-tighter text-white">
+                <h1 className="text-5xl md:text-8xl font-black tracking-tighter text-white uppercase italic">
                   {destinations[index].label}
                 </h1>
 
-                <motion.div
-                  initial={{ width: 0 }}
-                  animate={{ width: "100%" }}
-                  transition={{ duration: 5.5, ease: "linear" }}
-                  className="h-[1px] bg-green-500/50 mt-4"
-                />
+                <div className="w-full h-[2px] bg-gradient-to-r from-transparent via-green-500 to-transparent mt-6 opacity-50" />
               </motion.div>
             </AnimatePresence>
           </div>
 
-          {/* Footer Stats */}
-          <div className="absolute bottom-[-150px] flex flex-col items-center">
+          <div className="mt-10">
             <motion.p
               key={destinations[index].code}
               initial={{ opacity: 0 }}
-              animate={{ opacity: 0.4 }}
-              className="font-mono text-[10px] tracking-[0.8em] text-green-200 uppercase"
+              animate={{ opacity: 0.5 }}
+              className="font-mono text-[11px] tracking-[0.6em] text-green-400"
             >
-              {destinations[index].code} // Pinging... OK
+              SIGNAL STRENGTH: OPTIMAL // {destinations[index].code}
             </motion.p>
           </div>
         </div>
