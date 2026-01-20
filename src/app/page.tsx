@@ -9,7 +9,7 @@ import { BackgroundRippleEffect } from "@/components/ui/BackgroundRippleEffect";
 import { TextHoverEffect } from "@/components/ui/TextHoverEffect";
 import SideCard from "@/components/SideCard";
 import DataCard from "@/components/DataCard";
-import { Info, ShieldCheck, Zap } from "lucide-react";
+import { Info } from "lucide-react";
 import Navbar from "@/components/NavbarFront";
 
 export default function HomePage() {
@@ -26,117 +26,121 @@ export default function HomePage() {
     <>
       <Navbar />
 
-      <main className="relative flex flex-col md:flex-row items-center justify-center min-h-screen overflow-hidden px-4 md:px-8 pb-10 gap-6 md:gap-0 pt-32 md:pt-40 bg-[#020408]">
-        {/* Background Effet : On garde le Ripple mais avec une opacité réduite pour le look tech */}
-        <div className="absolute inset-0 z-0 opacity-20 pointer-events-none">
+      <main className="relative flex flex-col md:flex-row items-center justify-center min-h-screen overflow-hidden px-4 md:px-8 pb-10 gap-6 md:gap-0 pt-32 md:pt-40 bg-app-gradient">
+        <div className="absolute inset-0 z-0">
           <BackgroundRippleEffect rows={8} cols={27} cellSize={56} />
         </div>
 
-        {/* Glow central pour rappeler l'atmosphère du globe */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-green-500/10 blur-[120px] rounded-full z-0" />
-
-        {/* Carte Centrale de Connexion */}
-        <div className="relative z-10 flex flex-col items-center justify-center text-center w-full md:w-[460px] max-w-[90vw]">
-          <div className="w-full p-10 backdrop-blur-2xl rounded-3xl shadow-2xl bg-black/40 border border-white/10">
-            <div className="flex justify-center mb-2">
-              <div className="px-3 py-1 rounded-full bg-green-500/10 border border-green-500/20 flex items-center gap-2">
-                <Zap className="w-3 h-3 text-green-500" />
-                <span className="text-[10px] text-green-500 font-bold tracking-widest uppercase">
-                  Système Actif
-                </span>
-              </div>
-            </div>
-
+        <div className="relative z-10 flex flex-col items-center justify-center text-center w-full md:w-[460px] max-w-[90vw] min-w-[300px]">
+          <div className="w-full p-10 backdrop-blur-xl rounded-2xl shadow-2xl min-w-[300px] bg-glass-dual border border-border-dual">
             <TextHoverEffect
-              text="Nonnzy"
+              text="Nonnzytr"
               duration={0.6}
               style={{
-                width: "100%",
-                height: "120px",
-                fontSize: "120px",
+                width: "min(100%, 1000px)",
+                minWidth: "300px",
+                height: "min(20vw, 400px)",
+                minHeight: "300px",
+                fontSize: "clamp(28rem, 28vw, 68rem)",
               }}
             />
 
-            <p className="text-white/60 text-sm mb-10 tracking-wide">
-              L'infrastructure de données nouvelle génération pour l'Afrique de
-              l'Ouest.
+            <p className="text-foreground text-base mb-8">
+              Votre aventure commence ici ✨
             </p>
 
             <button
               onClick={() => signIn("google", { callbackUrl: "/dashboard" })}
-              className="w-full py-4 flex items-center justify-center gap-3 
-              bg-white text-black font-bold rounded-xl shadow-[0_0_20px_rgba(255,255,255,0.1)]
-              hover:shadow-[0_0_30px_rgba(255,255,255,0.2)] hover:scale-[1.02] active:scale-95 
-              transition-all duration-300 mb-8"
+              className="w-full py-3 flex items-center justify-center gap-2 
+              bg-foreground text-background font-semibold rounded-xl shadow-md
+              hover:shadow-xl hover:scale-105 active:scale-95 
+              transition-all duration-300 mb-6"
             >
               <FcGoogle className="text-2xl" />
-              Initialiser le Workflow
+              Continuer avec Google
             </button>
 
-            <div className="flex items-center justify-center gap-2 text-white/30 text-[10px] uppercase tracking-[0.2em]">
-              <ShieldCheck className="w-3 h-3" />
-              Authentification Sécurisée via Google Node
-            </div>
+            <p className="text-foreground/50 text-xs italic">
+              Connexion sécurisée via Google requise pour accéder au Workflow.
+            </p>
           </div>
         </div>
 
-        {/* Aside Gauche : Insights Data */}
-        <aside className="relative z-20 md:absolute md:left-8 flex justify-center w-full md:w-auto">
+        <aside className="relative z-11 md:absolute md:left-3 md:ml-6 lg:ml-8 flex justify-center md:justify-start w-full md:w-auto min-w-[300px]">
           <DataCard
-            width={320}
-            height={300}
+            width={300}
+            height={270}
             title={
-              <div className="flex items-center gap-2 text-white">
-                <Info className="w-4 h-4 text-green-400" />
-                <span className="font-bold text-xs uppercase tracking-wider">
-                  Potentiel : Anyama
+              <div className="flex items-center justify-center gap-2 text-foreground">
+                <Info className="w-4 h-4 text-blue-400" />
+                <span className="font-semibold">
+                  Data-driven growth : chaque flux, chaque métrique confirme le
+                  potentiel d'Anyama
                 </span>
               </div>
             }
             content={
-              <div className="space-y-4 text-white/70 text-xs leading-relaxed">
+              <div className="flex flex-col gap-1 text-foreground/80 text-sm overflow-auto max-h-[200px] md:max-h-[250px]">
                 <p>
-                  Les flux d'investissement convergent : Anyama devient le
-                  nouveau
-                  <span className="text-green-400 font-bold ml-1">
-                    Hub Stratégique
+                  Les métriques d'attractivité et les flux d'investissement
+                  convergent vers une réalité : le vrai potentiel se mesure dans
+                  ce qui reste à révéler. Anyama dispose d'un avantage
+                  stratégique encore invisible à la majorité des acteurs. La
+                  data ne ment pas — la question, c'est qui l'exploitera en
+                  premier. :{" "}
+                  <span className="bg-gradient-to-r from-green-500 to-blue-300 bg-clip-text text-transparent font-semibold">
+                    Vision partagée
                   </span>
-                  . La data révèle un avantage invisible aux yeux des acteurs
-                  classiques.
                 </p>
-                <div className="p-3 bg-white/5 rounded-lg border border-white/10 italic">
-                  "Dans l'économie moderne, la donnée n'est pas une info, c'est
-                  un actif financier."
-                </div>
+                <p>
+                  Les chiffres sont là. Les investisseurs arrivent. La question,
+                  c'est : serez-vous prêts ?
+                </p>
+                <p>
+                  Votre commune entre dans une zone d'attractivité stratégique :
+                  <span className="bg-gradient-to-r from-green-500 to-blue-300 bg-clip-text text-transparent font-semibold">
+                    Sans insights, chaque décision est un pari perdu d'avance.
+                  </span>
+                </p>
               </div>
             }
             buttonContent={
-              <div className="w-full py-2 bg-green-500/10 border border-green-500/20 rounded-lg text-green-400 text-[10px] font-bold uppercase tracking-widest hover:bg-green-500/20 transition-all text-center">
-                Analyser les Flux
+              <div className="w-full py-2 flex items-center justify-center gap-2 bg-foreground/5 border border-border rounded-xl shadow-xl transition-all hover:bg-foreground/10 group">
+                <span className="text-sm font-bold uppercase tracking-tighter text-foreground group-hover:scale-105 transition-all">
+                  Comprendre
+                </span>
               </div>
             }
             modalContent={
-              <div className="text-white/80 space-y-4">
-                <h4 className="text-green-500 font-bold uppercase tracking-widest text-xs">
-                  Rapport Stratégique
-                </h4>
+              <div className="flex flex-col gap-2 text-foreground/90 text-sm overflow-auto max-h-[400px] md:max-h-[450px]">
                 <p>
-                  La réduction des coûts structurels via l'IA et la précision
-                  des données est estimée à 40% pour les administrations locales
-                  d'ici 2026.
+                  Potentiel latent détecté : chaque flux, chaque indicateur
+                  montre que votre territoire est sous-évalué.
+                </p>
+                <p>
+                  La donnée est le premier moteur de croissance du XXIᵉ siècle.
+                  Les économies modernes sont tirées par : la précision des
+                  décisions, la rapiditée d'exécution, la capacité à anticiper
+                  les crises plutôt que les subir. Or, tout cela dépend de la
+                  donnée...
+                </p>
+                <p>
+                  La donnée réduit les coûts structurels de l'État (et ce de
+                  façon massive). Les administrations gèrent des millions de
+                  micro-décisions quotidiennes... Investir dans la donnée n'est
+                  pas une dépense : c'est un amortisseur de dépenses futures.
                 </p>
               </div>
             }
           />
         </aside>
 
-        {/* Aside Droit : Statut Zy */}
-        <aside className="relative z-20 md:absolute md:right-8 flex justify-center w-full md:w-auto">
+        <aside className="relative z-10 md:absolute md:right-3 md:mr-6 lg:mr-8 flex justify-center md:justify-end w-full md:w-auto min-w-[300px]">
           <SideCard
             imageSrc="/zyy.png"
-            title="Zy Node : Financement Workspace"
-            description="Optimisation des pipelines de données et exécution des contrats intelligents en Côte d'Ivoire."
-            location="Anyama Node, Abidjan"
+            title="Zy recherche un financement orienté workspace & Workflow"
+            description="Exécution de la logique métier et serveur en burn out."
+            location="Anyama, Abidjan, Côte d'Ivoire"
           />
         </aside>
       </main>
