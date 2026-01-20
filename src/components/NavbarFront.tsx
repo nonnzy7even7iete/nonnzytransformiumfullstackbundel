@@ -75,7 +75,7 @@ export default function NavbarFront() {
         }
       `}</style>
 
-      {/* Groupe de boutons en haut à droite */}
+      {/* Boutons de contrôle (Theme & Toggle) */}
       <div className="fixed right-3 top-3 z-50 flex items-center gap-3">
         <ThemeToggle />
         <button
@@ -84,22 +84,25 @@ export default function NavbarFront() {
             isButtonAnimating ? "opacity-0 scale-50" : "opacity-100 scale-100"
           }`}
         >
-          {/* Correction couleur icône pour visibilité sur fond transparent */}
           <IoAppsOutline className="w-6 h-6 text-foreground hover:scale-110" />
         </button>
       </div>
 
       <nav
-        className={`fixed top-0 w-full z-40 transition-all duration-1000
+        className={`fixed top-0 w-full z-40 transition-all duration-700
         ${
           isVisible
-            ? "opacity-100 pointer-events-auto"
-            : "opacity-0 pointer-events-none"
+            ? "opacity-100 translate-y-0"
+            : "opacity-0 -translate-y-full pointer-events-none"
         }
-        /* FORCE TRANSPARENCE : Suppression des bg-black
-           On garde le backdrop-blur uniquement au scroll pour la lisibilité
-        */
-        bg-transparent ${isScrolled ? "backdrop-blur-md" : ""}
+        
+        /* GESTION DU FLOU ET DU FOND AU SCROLL */
+        ${
+          isScrolled
+            ? "backdrop-blur-md bg-white/40 dark:bg-black/20"
+            : "bg-transparent"
+        }
+        
         ${
           showBorder
             ? "navbar-glow border-b border-foreground/10"
@@ -107,14 +110,16 @@ export default function NavbarFront() {
         }
         h-16`}
       >
-        <div className="h-full flex items-center justify-between px-4 md:px-6">
-          <Link href="/" className="flex-shrink-0 w-20">
-            <div className="scale-100 origin-left hover:opacity-80 transition-opacity duration-300">
+        <div className="h-full flex items-center justify-between px-4 md:px-6 relative">
+          {/* LOGO : Largeur fixe sur mobile pour éviter l'empiètement */}
+          <Link href="/" className="flex-shrink-0 w-16 md:w-24 z-50">
+            <div className="scale-75 md:scale-100 origin-left hover:opacity-80 transition-opacity duration-300">
               <TextHoverEffect text="Nonnzytr" />
             </div>
           </Link>
 
-          <div className="absolute left-1/2 -translate-x-1/2 flex justify-center gap-8 md:gap-12">
+          {/* LIENS : Centrage absolu */}
+          <div className="absolute left-1/2 -translate-x-1/2 flex justify-center gap-4 md:gap-12">
             {navLinks.map((link) => {
               const IconComponent = link.icon;
               const isResumeExecutif = link.href === "/ResumeExecutif";
@@ -124,38 +129,38 @@ export default function NavbarFront() {
                   href={link.href}
                   className={`group flex flex-col items-center relative text-foreground transition-all duration-300 whitespace-nowrap ${
                     isResumeExecutif
-                      ? "hover:scale-x-110 font-semibold"
-                      : "hover:-translate-y-1 hover:scale-105"
+                      ? "hover:scale-x-105 font-semibold"
+                      : "hover:-translate-y-1"
                   }`}
                 >
                   {!isResumeExecutif && IconComponent && (
                     <IconComponent className="w-4 h-4 md:w-5 md:h-5 transition-colors group-hover:text-green-500" />
                   )}
                   <span
-                    className={`mt-1 text-xs md:text-sm transition-colors ${
+                    className={`mt-1 text-[10px] md:text-sm transition-colors ${
                       isResumeExecutif
-                        ? "font-semibold text-foreground"
-                        : "font-light text-foreground group-hover:text-green-500"
+                        ? "font-bold text-foreground"
+                        : "font-medium text-foreground group-hover:text-green-500"
                     }`}
                   >
                     {link.label}
                   </span>
-                  <span
-                    className={`absolute inset-x-0 inset-y-1/2 -translate-y-1/2 rounded-xl opacity-0 
-                    group-hover:opacity-100 transition-all duration-300 
-                    ${
-                      isResumeExecutif
-                        ? ""
-                        : "bg-green-500/10 backdrop-blur-md p-4 -z-10"
-                    }`}
-                  />
+                  {!isResumeExecutif && (
+                    <span
+                      className="absolute inset-x-0 inset-y-1/2 -translate-y-1/2 rounded-xl opacity-0 
+                     group-hover:opacity-100 transition-all duration-300 bg-green-500/10 backdrop-blur-md p-4 -z-10"
+                    />
+                  )}
                 </Link>
               );
             })}
           </div>
-          <div className="flex-shrink-0 w-20" />
+
+          {/* Spacer pour équilibrer le Flexbox */}
+          <div className="flex-shrink-0 w-16 md:w-24 invisible md:block" />
         </div>
 
+        {/* Barre de progression/bordure animée */}
         <div
           className={`gradient-border ${
             showBorder ? "opacity-100" : "opacity-0"
