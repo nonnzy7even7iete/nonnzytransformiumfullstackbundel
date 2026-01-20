@@ -16,7 +16,6 @@ export default function ResumeExecutifPage() {
   // Centre exact d'Abidjan pour le départ
   const ABIDJAN = { lat: 5.33, lng: -4.03 };
 
-  // Centres géographiques approximatifs des continents
   const destinations = [
     {
       label: "AMÉRIQUE DU NORD",
@@ -50,7 +49,7 @@ export default function ResumeExecutifPage() {
       startLng: ABIDJAN.lng,
       endLat: destinations[index].lat,
       endLng: destinations[index].lng,
-      arcAlt: 0.4, // Altitude plus haute pour les longs trajets (Asie/Océanie)
+      arcAlt: 0.4,
       color: "#22c55e",
     },
   ];
@@ -58,31 +57,28 @@ export default function ResumeExecutifPage() {
   return (
     <>
       <NavbarFront />
-      <main className="relative min-h-screen bg-[#020408] text-white overflow-hidden flex flex-col items-center justify-center">
+      {/* Modification de bg-app : support Dark/Light */}
+      <main className="relative min-h-screen bg-white dark:bg-[#020408] transition-colors duration-500 text-slate-900 dark:text-white overflow-hidden flex flex-col items-center justify-center">
         <div className="absolute inset-0 z-0">
           <World
             data={activeConnection}
-            globeConfig={{
-              globeColor: "#05070a",
-              atmosphereColor: "#22c55e",
-              polygonColor: "rgba(34, 197, 94, 0.15)",
-              arcTime: 6000,
-              arcLength: 0.9,
-            }}
+            // La configuration du globe est maintenant gérée en interne par le composant réactif
+            globeConfig={{}}
           />
         </div>
 
-        {/* Interface HUD */}
+        {/* Interface HUD - Adaptative */}
         <div className="relative z-10 flex flex-col items-center pointer-events-none w-full max-w-5xl px-6">
-          <div className="flex items-center gap-2 mb-8 px-4 py-1.5 bg-green-500/5 border border-green-500/20 rounded-full">
-            <div className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse shadow-[0_0_10px_#22c55e]" />
-            <span className="text-[10px] text-green-500 font-bold tracking-[0.4em] uppercase">
+          {/* Badge adaptatif */}
+          <div className="flex items-center gap-2 mb-8 px-4 py-1.5 bg-green-500/10 dark:bg-green-500/5 border border-green-600/20 dark:border-green-500/20 rounded-full backdrop-blur-sm">
+            <div className="w-1.5 h-1.5 bg-green-600 dark:bg-green-500 rounded-full animate-pulse shadow-[0_0_10px_rgba(34,197,94,0.5)]" />
+            <span className="text-[10px] text-green-700 dark:text-green-500 font-bold tracking-[0.4em] uppercase">
               Global Networking Hub
             </span>
           </div>
 
           <div className="flex flex-col items-center gap-2 text-center">
-            <span className="text-sm font-mono opacity-30 tracking-[0.5em] uppercase mb-2">
+            <span className="text-sm font-mono opacity-40 dark:opacity-30 tracking-[0.5em] uppercase mb-2 text-slate-600 dark:text-slate-400">
               Source: CÔTE D'IVOIRE
             </span>
 
@@ -95,11 +91,12 @@ export default function ResumeExecutifPage() {
                 transition={{ duration: 1, ease: "easeInOut" }}
                 className="flex flex-col items-center"
               >
-                <h1 className="text-5xl md:text-8xl font-black tracking-tighter text-white uppercase italic">
+                <h1 className="text-5xl md:text-8xl font-black tracking-tighter text-slate-900 dark:text-white uppercase italic">
                   {destinations[index].label}
                 </h1>
 
-                <div className="w-full h-[2px] bg-gradient-to-r from-transparent via-green-500 to-transparent mt-6 opacity-50" />
+                {/* Dégradé adaptatif */}
+                <div className="w-full h-[2px] bg-gradient-to-r from-transparent via-green-600 dark:via-green-500 to-transparent mt-6 opacity-30 dark:opacity-50" />
               </motion.div>
             </AnimatePresence>
           </div>
@@ -108,8 +105,8 @@ export default function ResumeExecutifPage() {
             <motion.p
               key={destinations[index].code}
               initial={{ opacity: 0 }}
-              animate={{ opacity: 0.5 }}
-              className="font-mono text-[11px] tracking-[0.6em] text-green-400"
+              animate={{ opacity: 0.6 }}
+              className="font-mono text-[11px] tracking-[0.6em] text-green-700 dark:text-green-400"
             >
               SIGNAL STRENGTH: OPTIMAL // {destinations[index].code}
             </motion.p>

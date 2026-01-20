@@ -5,8 +5,8 @@ import * as THREE from "three";
 import ThreeGlobe from "three-globe";
 import { Canvas, extend, ThreeElement } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
+import { useTheme } from "next-themes"; // Optionnel : si tu utilises next-themes
 
-// Assure-toi que le chemin vers ton JSON est correct
 import countries from "../../data/globe.json";
 
 extend({ ThreeGlobe: ThreeGlobe });
@@ -32,14 +32,25 @@ type Position = {
 };
 
 interface WorldProps {
-  globeConfig: any;
+  globeConfig?: any;
   data: Position[];
 }
 
-export function Globe({ globeConfig, data }: WorldProps) {
+export function Globe({ data }: WorldProps) {
   const globeRef = useRef<ThreeGlobe>(null);
   const groupRef = useRef<THREE.Group>(null);
+  const { resolvedTheme } = useTheme(); // Détecte le mode sombre/clair
   const [isInitialized, setIsInitialized] = useState(false);
+
+  // Définition des couleurs dynamiques selon le thème
+  const isDark = resolvedTheme === "dark";
+  const colors = {
+    globe: isDark ? "#05070a" : "#f8fafc",
+    land: isDark ? "rgba(34, 197, 94, 0.15)" : "rgba(34, 197, 94, 0.3)",
+    atmosphere: isDark ? "#22c55e" : "#16a34a",
+    point: isDark ? "#ffffff" : "#0f172a",
+    arc: "#22c55e", // Le vert reste l'identité de Nonnzy
+  };
 
   useEffect(() => {
     if (groupRef.current && !globeRef.current) {
@@ -53,28 +64,28 @@ export function Globe({ globeConfig, data }: WorldProps) {
   useEffect(() => {
     if (!globeRef.current || !isInitialized) return;
 
-    // 1. APPARENCE DU GLOBE (Look Business Tech)
+    // 1. MISE À JOUR DYNAMIQUE DES MATÉRIAUX
     const globeMaterial =
       globeRef.current.globeMaterial() as THREE.MeshPhongMaterial;
-    globeMaterial.color = new THREE.Color("#05070a");
-    globeMaterial.emissive = new THREE.Color("#000000");
-    globeMaterial.shininess = 0.8;
+    globeMaterial.color = new THREE.Color(colors.globe);
+    globeMaterial.emissive = new THREE.Color(isDark ? "#000000" : "#ffffff");
+    globeMaterial.emissiveIntensity = isDark ? 0.1 : 0.05;
 
-    // 2. CONTINENTS (Style Grille Hexagonale)
+    // 2. CONTINENTS RÉACTIFS
     globeRef.current
       .hexPolygonsData(countries.features)
       .hexPolygonResolution(3)
       .hexPolygonMargin(0.12)
-      .hexPolygonColor(() => "rgba(34, 197, 94, 0.12)")
+      .hexPolygonColor(() => colors.land)
       .hexPolygonAltitude(0.01);
 
-    // 3. ATMOSPHÈRE
+    // 3. ATMOSPHÈRE RÉACTIVE
     globeRef.current
       .showAtmosphere(true)
-      .atmosphereColor("#22c55e")
-      .atmosphereAltitude(0.15);
+      .atmosphereColor(colors.atmosphere)
+      .atmosphereAltitude(isDark ? 0.15 : 0.08);
 
-    // 4. ARCS (Effet Ruban de Fibre Optique longue durée)
+    // 4. ARCS (Fils de données)
     if (data && data.length > 0) {
       globeRef.current
         .arcsData(data)
@@ -82,56 +93,56 @@ export function Globe({ globeConfig, data }: WorldProps) {
         .arcStartLng((d: any) => d.startLng)
         .arcEndLat((d: any) => d.endLat)
         .arcEndLng((d: any) => d.endLng)
-        .arcColor((d: any) => d.color)
+        .arcColor((d: any) => d.color || colors.arc)
         .arcAltitude((d: any) => d.arcAlt)
         .arcStroke(0.6)
-        .arcDashLength(0.95) // 👈 Ligne très longue (quasi tout le trajet)
-        .arcDashGap(2) // 👈 Gap réduit pour éviter que ça disparaisse trop vite
-        .arcDashInitialGap(1) // 👈 Force l'animation à pousser depuis Abidjan
-        .arcDashAnimateTime(6000); // 6 secondes pour un mouvement fluide
+        .arcDashLength(0.95)
+        .arcDashGap(2)
+        .arcDashInitialGap(1)
+        .arcDashAnimateTime(6000);
 
       // 5. POINTS (Nodes de connexion)
       globeRef.current
         .pointsData(
           data.flatMap((d) => [
-            { lat: d.startLat, lng: d.startLng, color: "#22c55e", size: 1.2 }, // Abidjan (Hub)
-            { lat: d.endLat, lng: d.endLng, color: "#ffffff", size: 1.0 }, // Destination (Cible)
+            { lat: d.startLat, lng: d.startLng, color: colors.arc, size: 1.2 },
+            { lat: d.endLat, lng: d.endLng, color: colors.point, size: 1.0 },
           ])
         )
         .pointColor((d: any) => d.color)
-        .pointAltitude(0.01)
         .pointRadius((d: any) => d.size);
 
-      // 6. RINGS (Onde de choc de départ d'Abidjan)
+      // 6. RINGS (Onde de choc)
       globeRef.current
         .ringsData([
-          { lat: data[0].startLat, lng: data[0].startLng, color: "#22c55e" },
+          { lat: data[0].startLat, lng: data[0].startLng, color: colors.arc },
         ])
         .ringColor((d: any) => d.color)
         .ringMaxRadius(4)
-        .ringPropagationSpeed(1.5)
         .ringRepeatPeriod(2000);
     }
-  }, [isInitialized, data]);
+  }, [isInitialized, data, resolvedTheme]); // Se relance quand le thème change
 
   return <group ref={groupRef} />;
 }
 
 export function World(props: WorldProps) {
+  const { resolvedTheme } = useTheme();
+  const bgColor = resolvedTheme === "dark" ? "#000000" : "#ffffff";
+
   return (
-    <div style={{ width: "100%", height: "100%", position: "absolute" }}>
+    <div className="absolute inset-0 w-full h-full">
       <Canvas
         camera={{ fov: 45, near: 10, far: 2000, position: [0, 0, cameraZ] }}
       >
-        <color attach="background" args={["#000000"]} />
+        <color attach="background" args={[bgColor]} />
 
-        <ambientLight intensity={1.2} />
+        <ambientLight intensity={resolvedTheme === "dark" ? 1.2 : 2.0} />
         <directionalLight
           position={[-100, 200, 100]}
           intensity={1}
-          color="#22c55e"
+          color={resolvedTheme === "dark" ? "#22c55e" : "#16a34a"}
         />
-        <pointLight position={[200, 200, 200]} intensity={1.5} />
 
         <Globe {...props} />
 
@@ -139,9 +150,7 @@ export function World(props: WorldProps) {
           enablePan={false}
           enableZoom={false}
           autoRotate={true}
-          autoRotateSpeed={0.3} // Rotation lente pour bien suivre les lignes
-          minPolarAngle={Math.PI / 3.5}
-          maxPolarAngle={Math.PI - Math.PI / 3}
+          autoRotateSpeed={0.3}
         />
       </Canvas>
     </div>
