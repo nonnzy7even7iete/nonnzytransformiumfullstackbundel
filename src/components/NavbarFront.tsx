@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { LayoutDashboard } from "lucide-react";
 import { IoAppsOutline } from "react-icons/io5";
+import { TextHoverEffect } from "./ui/TextHoverEffect";
 import { ThemeToggle } from "@/components/ui/themeToggle";
 
 export default function NavbarFront() {
@@ -14,7 +15,6 @@ export default function NavbarFront() {
   const [showBorder, setShowBorder] = useState(false);
   const { data: session } = useSession();
 
-  // Logique de la bordure animée cyclique
   useEffect(() => {
     const cycle = () => {
       setShowBorder(false);
@@ -41,9 +41,9 @@ export default function NavbarFront() {
   };
 
   const navLinks = [
-    { href: "/ResumeExecutif", label: "Resume executif" },
+    { href: "/ResumeExecutif", label: "Resume" }, // Label raccourci sur mobile
     ...(session
-      ? [{ href: "/dashboard", label: "Dashboard", icon: LayoutDashboard }]
+      ? [{ href: "/dashboard", label: "Dash", icon: LayoutDashboard }]
       : []),
   ];
 
@@ -62,19 +62,19 @@ export default function NavbarFront() {
           height: 1px;
           transition: opacity 1000ms ease-in-out;
         }
-        /* Glassmorphism LIGHT */
         :not(.dark) .navbar-scrolled {
           background-color: rgba(255, 255, 255, 0.75) !important;
           backdrop-filter: blur(20px) saturate(180%);
           -webkit-backdrop-filter: blur(20px);
-          border-bottom: 1px solid rgba(0, 0, 0, 0.05);
         }
-        /* Glassmorphism DARK */
         .dark .navbar-scrolled {
           background-color: rgba(0, 0, 0, 0.6) !important;
           backdrop-filter: blur(16px);
-          -webkit-backdrop-filter: blur(16px);
-          border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .nav-logo-wrapper svg {
+          height: 100% !important;
+          width: auto !important;
+          display: block;
         }
       `}</style>
 
@@ -83,40 +83,44 @@ export default function NavbarFront() {
           isVisible ? "translate-y-0" : "-translate-y-full"
         } ${isScrolled ? "navbar-scrolled shadow-sm" : "bg-transparent"}`}
       >
-        <div className="flex h-full items-center justify-between px-4 md:px-8">
-          {/* GAUCHE : Vide (pour garder les liens centrés) */}
-          <div className="w-20 md:w-32 hidden sm:block" />
-
-          {/* CENTRE : LIENS DE NAVIGATION */}
-          <div className="flex items-center gap-6 md:gap-12">
-            {navLinks.map((link) => {
-              const IconComponent = link.icon;
-              return (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className="group flex flex-col items-center text-foreground transition-transform hover:scale-105"
-                >
-                  {IconComponent && (
-                    <IconComponent className="w-4 h-4 mb-1 group-hover:text-green-500" />
-                  )}
-                  <span className="text-xs md:text-sm font-bold whitespace-nowrap group-hover:text-green-500 uppercase tracking-wider">
-                    {link.label}
-                  </span>
-                </Link>
-              );
-            })}
+        <div className="grid grid-cols-3 h-full items-center px-2">
+          {/* COLONNE 1 : LOGO (Plus petit sur mobile très étroit) */}
+          <div className="flex justify-start items-center overflow-visible">
+            <Link
+              href="/"
+              className="nav-logo-wrapper relative block h-12 w-20 sm:w-32 z-[70]"
+              style={{ marginLeft: "3px" }}
+            >
+              <div className="absolute inset-0 scale-[1.3] xs:scale-[1.5] md:scale-100 origin-left flex items-center">
+                <TextHoverEffect text="Nonnzytr" />
+              </div>
+            </Link>
           </div>
 
-          {/* DROITE : BOUTONS DE CONTRÔLE */}
-          <div className="flex items-center gap-3">
+          {/* COLONNE 2 : LIENS (Centrés) */}
+          <div className="flex justify-center items-center gap-3 md:gap-10">
+            {navLinks.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                className="group flex flex-col items-center text-foreground z-[70]"
+              >
+                <span className="text-[10px] md:text-sm font-bold whitespace-nowrap group-hover:text-green-500">
+                  {link.label}
+                </span>
+              </Link>
+            ))}
+          </div>
+
+          {/* COLONNE 3 : BOUTONS (Intégrés ici au lieu de fixed) */}
+          <div className="flex justify-end items-center gap-2 pr-1">
             <ThemeToggle />
             <button
               onClick={handleToggleClick}
-              className="p-2 hover:bg-foreground/10 rounded-full transition-colors"
+              className="p-1.5 hover:bg-foreground/5 rounded-full z-[70]"
             >
               <IoAppsOutline
-                className={`w-6 h-6 text-foreground transition-all duration-300 ${
+                className={`w-5 h-5 text-foreground transition-all ${
                   isButtonAnimating
                     ? "scale-50 opacity-0"
                     : "scale-100 opacity-100"
@@ -126,7 +130,6 @@ export default function NavbarFront() {
           </div>
         </div>
 
-        {/* Bordure animée cyclique */}
         <div
           className={`gradient-border ${
             showBorder ? "opacity-100" : "opacity-0"
