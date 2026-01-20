@@ -41,10 +41,8 @@ export default function NavbarFront() {
   };
 
   const navLinks = [
-    { href: "/ResumeExecutif", label: "Resume executif" }, // Label raccourci sur mobile
-    ...(session
-      ? [{ href: "/dashboard", label: "Dash", icon: LayoutDashboard }]
-      : []),
+    { href: "/ResumeExecutif", label: "Resume" },
+    ...(session ? [{ href: "/dashboard", label: "Dash", icon: LayoutDashboard }] : []),
   ];
 
   return (
@@ -66,75 +64,54 @@ export default function NavbarFront() {
           background-color: rgba(255, 255, 255, 0.75) !important;
           backdrop-filter: blur(20px) saturate(180%);
           -webkit-backdrop-filter: blur(20px);
+          border-bottom: 1px solid rgba(0, 0, 0, 0.05);
         }
         .dark .navbar-scrolled {
           background-color: rgba(0, 0, 0, 0.6) !important;
           backdrop-filter: blur(16px);
+          border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
-        .nav-logo-wrapper svg {
+        /* Pour forcer le SVG à rester dans sa boîte */
+        .nav-logo-box svg {
           height: 100% !important;
           width: auto !important;
-          display: block;
         }
       `}</style>
 
-      <nav
-        className={`fixed top-0 w-full z-50 transition-all duration-500 h-16 ${
-          isVisible ? "translate-y-0" : "-translate-y-full"
-        } ${isScrolled ? "navbar-scrolled shadow-sm" : "bg-transparent"}`}
-      >
-        <div className="grid grid-cols-3 h-full items-center px-2">
-          {/* COLONNE 1 : LOGO (Plus petit sur mobile très étroit) */}
-          <div className="flex justify-start items-center overflow-visible">
-            <Link
-              href="/"
-              className="nav-logo-wrapper relative block h-12 w-20 sm:w-32 z-[70]"
-              style={{ marginLeft: "3px" }}
-            >
-              <div className="absolute inset-0 scale-[1.3] xs:scale-[1.5] md:scale-100 origin-left flex items-center">
-                <TextHoverEffect text="Nonnzytr" />
-              </div>
+      <nav className={`fixed top-0 w-full z-50 transition-all duration-500 h-16 ${isVisible ? "translate-y-0" : "-translate-y-full"} ${isScrolled ? "navbar-scrolled shadow-sm" : "bg-transparent"}`}>
+        <div className="flex h-full items-center justify-between px-2 relative">
+          
+          {/* GAUCHE : LOGO rapproché à 3px */}
+          <div className="flex-shrink-0 z-[70]">
+            <Link href="/" className="nav-logo-box block h-12 w-24 sm:w-32 ml-[3px] overflow-visible relative">
+               <div className="absolute inset-0 scale-[1.3] sm:scale-[1.1] md:scale-100 origin-left flex items-center">
+                  <TextHoverEffect text="Nonnzytr" />
+               </div>
             </Link>
           </div>
 
-          {/* COLONNE 2 : LIENS (Centrés) */}
-          <div className="flex justify-center items-center gap-3 md:gap-10">
+          {/* CENTRE : LIENS (Absolus pour un vrai centrage) */}
+          <div className="absolute left-1/2 -translate-x-1/2 flex items-center gap-4 sm:gap-8 z-[60]">
             {navLinks.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className="group flex flex-col items-center text-foreground z-[70]"
-              >
-                <span className="text-[10px] md:text-sm font-bold whitespace-nowrap group-hover:text-green-500">
+              <Link key={link.href} href={link.href} className="group flex flex-col items-center text-foreground transition-transform hover:scale-105">
+                <span className="text-[10px] sm:text-xs md:text-sm font-bold uppercase tracking-tighter sm:tracking-normal group-hover:text-green-500">
                   {link.label}
                 </span>
               </Link>
             ))}
           </div>
 
-          {/* COLONNE 3 : BOUTONS (Intégrés ici au lieu de fixed) */}
-          <div className="flex justify-end items-center gap-2 pr-1">
+          {/* DROITE : BOUTONS */}
+          <div className="flex items-center gap-1 sm:gap-3 z-[70] pr-1">
             <ThemeToggle />
-            <button
-              onClick={handleToggleClick}
-              className="p-1.5 hover:bg-foreground/5 rounded-full z-[70]"
-            >
-              <IoAppsOutline
-                className={`w-5 h-5 text-foreground transition-all ${
-                  isButtonAnimating
-                    ? "scale-50 opacity-0"
-                    : "scale-100 opacity-100"
-                }`}
-              />
+            <button onClick={handleToggleClick} className="p-1.5 hover:bg-foreground/10 rounded-full transition-colors">
+              <IoAppsOutline className={`w-5 h-5 sm:w-6 sm:h-6 text-foreground transition-all duration-300 ${isButtonAnimating ? "scale-50 opacity-0" : "scale-100 opacity-100"}`} />
             </button>
           </div>
         </div>
 
-        <div
-          className={`gradient-border ${
-            showBorder ? "opacity-100" : "opacity-0"
-          }`}
-        />
+        {/* Bordure animée cyclique */}
+        <div className={`gradient-border ${showBorder ? "opacity-100" : "opacity-0"}`} />
       </nav>
     </>
   );
