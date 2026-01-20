@@ -22,22 +22,21 @@ export default function SideCard({
     <div
       className={cn(
         "flex flex-col rounded-2xl shadow-lg p-[30px] overflow-hidden text-center transition-all duration-300",
-        /* Glassmorphism Adaptatif : Noir en sombre, Blanc quasi-opaque en Light */
-        "bg-white/90 dark:bg-black/40 backdrop-blur-2xl border border-gray-200 dark:border-white/10",
+        /* Isolation totale pour le mode Light : Fond quasi opaque */
+        "bg-white dark:bg-black/40 backdrop-blur-2xl border border-gray-200 dark:border-white/10",
         "w-[90vw] md:w-[300px]",
         className
       )}
     >
-      {/* Conteneur de l'image avec 1px de padding */}
-      <div className="relative w-full h-[200px] p-[1px] bg-white/20 dark:bg-white/10 rounded-xl overflow-hidden border border-white/5">
-        <div className="relative w-full h-full overflow-hidden rounded-[10px]">
-          {/* rounded-[10px] pour épouser la courbe du parent qui est en rounded-xl */}
+      {/* LE CONTENEUR IMAGE : On force le padding de 1px avec un fond contrasté */}
+      <div className="relative w-full h-[200px] p-[1px] bg-gray-300 dark:bg-white/20 rounded-xl overflow-hidden">
+        <div className="relative w-full h-full overflow-hidden rounded-[calc(0.75rem-1px)]">
           <Image src={imageSrc} alt={title} fill className="object-cover" />
         </div>
       </div>
 
       <div className="mt-4 flex flex-col gap-2 items-center">
-        {/* Texte adaptatif : Noir en Light, Blanc en Dark */}
+        {/* Correction des couleurs pour la lisibilité Light Mode */}
         <h2 className="text-lg font-bold text-gray-900 dark:text-white leading-tight">
           {title}
         </h2>
@@ -46,9 +45,7 @@ export default function SideCard({
         </p>
 
         {location && (
-          <p className="text-gray-400 dark:text-gray-400 text-xs italic mt-1">
-            {location}
-          </p>
+          <p className="text-gray-400 text-xs italic mt-1">{location}</p>
         )}
       </div>
     </div>
