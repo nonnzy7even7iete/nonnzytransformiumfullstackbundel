@@ -41,7 +41,7 @@ export default function NavbarFront() {
   };
 
   const navLinks = [
-    { href: "/ResumeExecutif", label: "Resume" }, // Label raccourci sur mobile
+    { href: "/ResumeExecutif", label: "Resume executif" }, // Label raccourci sur mobile
     ...(session
       ? [{ href: "/dashboard", label: "Dash", icon: LayoutDashboard }]
       : []),
