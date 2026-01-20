@@ -6,7 +6,6 @@ import ThreeGlobe from "three-globe";
 import { Canvas, extend, ThreeElement } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
 
-// Chemin vers ton fichier de données
 import countries from "../../data/globe.json";
 
 extend({ ThreeGlobe: ThreeGlobe });
@@ -63,19 +62,18 @@ export function Globe({ globeConfig, data }: WorldProps) {
   const groupRef = useRef<THREE.Group>(null);
   const [isInitialized, setIsInitialized] = useState(false);
 
-  // Configuration par défaut optimisée pour le look "Data-Viz"
   const config = {
     pointSize: 1,
-    atmosphereColor: "#166534", // Vert émeraude sombre
+    atmosphereColor: "#3b82f6",
     showAtmosphere: true,
-    atmosphereAltitude: 0.15,
-    polygonColor: "rgba(34, 197, 94, 0.08)",
-    globeColor: "#05070a",
+    atmosphereAltitude: 0.1,
+    polygonColor: "rgba(255,255,255,0.15)",
+    globeColor: "#060910",
     emissive: "#000000",
     emissiveIntensity: 0.1,
     shininess: 0.9,
     arcTime: 2000,
-    arcLength: 0.4,
+    arcLength: 0.9,
     ...globeConfig,
   };
 
@@ -91,7 +89,6 @@ export function Globe({ globeConfig, data }: WorldProps) {
   useEffect(() => {
     if (!globeRef.current || !isInitialized) return;
 
-    // 1. Matériau du Globe (Finition mate et profonde)
     const globeMaterial =
       globeRef.current.globeMaterial() as THREE.MeshPhongMaterial;
     globeMaterial.color = new THREE.Color(config.globeColor);
@@ -99,17 +96,16 @@ export function Globe({ globeConfig, data }: WorldProps) {
     globeMaterial.emissiveIntensity = config.emissiveIntensity;
     globeMaterial.shininess = config.shininess;
 
-    // 2. Pays (Hexagones précis)
     globeRef.current
       .hexPolygonsData(countries.features)
       .hexPolygonResolution(3)
-      .hexPolygonMargin(0.12)
+      .hexPolygonMargin(0.1)
       .hexPolygonColor(() => config.polygonColor)
       .showAtmosphere(config.showAtmosphere)
       .atmosphereColor(config.atmosphereColor)
       .atmosphereAltitude(config.atmosphereAltitude);
 
-    // 3. Arcs de données (Effet Fibre Optique)
+    // On force la mise à jour des arcs
     globeRef.current
       .arcsData(data)
       .arcStartLat((d: any) => d.startLat)
@@ -118,23 +114,10 @@ export function Globe({ globeConfig, data }: WorldProps) {
       .arcEndLng((d: any) => d.endLng)
       .arcColor((d: any) => d.color)
       .arcAltitude((d: any) => d.arcAlt)
-      .arcStroke(() => 0.4) // Ligne très fine et élégante
       .arcDashLength(config.arcLength)
       .arcDashInitialGap(0)
-      .arcDashGap(4)
+      .arcDashGap(15)
       .arcDashAnimateTime(() => config.arcTime);
-
-    // 4. Points d'ancrage (Pour marquer Abidjan et la destination)
-    const pointsData = data.flatMap((d) => [
-      { lat: d.startLat, lng: d.startLng, color: d.color, size: 0.6 },
-      { lat: d.endLat, lng: d.endLng, color: d.color, size: 0.6 },
-    ]);
-
-    globeRef.current
-      .pointsData(pointsData)
-      .pointColor((d: any) => d.color)
-      .pointAltitude(0.01)
-      .pointRadius((d: any) => d.size);
   }, [isInitialized, data, config]);
 
   return <group ref={groupRef} />;
@@ -147,23 +130,14 @@ export function World(props: WorldProps) {
     >
       <color attach="background" args={["#000000"]} />
       <fog attach="fog" args={["#000000", 400, 2000]} />
-
-      {/* Éclairage pour faire ressortir la courbure du globe */}
       <ambientLight intensity={0.5} />
-      <directionalLight
-        position={[400, 100, 400]}
-        intensity={1.2}
-        color="#166534"
-      />
-      <pointLight position={[-200, 500, 200]} intensity={0.8} />
-
+      <pointLight position={[200, 200, 200]} intensity={0.8} />
       <Globe {...props} />
-
       <OrbitControls
         enablePan={false}
         enableZoom={false}
         autoRotate={true}
-        autoRotateSpeed={0.6}
+        autoRotateSpeed={0.5}
         minPolarAngle={Math.PI / 3.5}
         maxPolarAngle={Math.PI - Math.PI / 3}
       />
