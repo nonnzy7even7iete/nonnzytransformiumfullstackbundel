@@ -122,7 +122,7 @@ export default function HomePage() {
                   Les économies modernes sont tirées par : la précision des
                   décisions, la rapiditée d'exécution, la capacité à anticiper
                   les crises plutôt que les subir. Or, tout cela dépend de la
-                  donnée...
+                  donnée
                 </p>
                 <p>
                   La donnée réduit les coûts structurels de l'État (et ce de
