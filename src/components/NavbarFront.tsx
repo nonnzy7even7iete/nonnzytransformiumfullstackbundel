@@ -16,19 +16,6 @@ export default function NavbarFront() {
   const { data: session } = useSession();
 
   useEffect(() => {
-    const cycle = () => {
-      setShowBorder(false);
-      setTimeout(() => {
-        setShowBorder(true);
-        setTimeout(() => setShowBorder(false), 5000);
-      }, 7000);
-    };
-    cycle();
-    const interval = setInterval(cycle, 12000);
-    return () => clearInterval(interval);
-  }, []);
-
-  useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 10);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
@@ -50,90 +37,75 @@ export default function NavbarFront() {
   return (
     <>
       <style>{`
-        @keyframes gradientShine {
-          0% { background-position: 0% 50%; }
-          50% { background-position: 100% 50%; }
-          100% { background-position: 0% 50%; }
-        }
-        .gradient-border {
-          background: linear-gradient(90deg, #ef4444, #22c55e, #3b82f6, #e4d60eff);
-          background-size: 200% 200%;
-          animation: gradientShine 7s ease-in-out infinite;
-          height: 1px;
-          transition: opacity 1000ms ease-in-out;
-        }
         .navbar-glass-light {
-          background: rgba(255, 255, 255, 0.6) !important;
+          background: rgba(255, 255, 255, 0.7) !important;
           backdrop-filter: blur(16px) saturate(180%);
           -webkit-backdrop-filter: blur(16px);
           border-bottom: 1px solid rgba(0, 0, 0, 0.05);
         }
         .navbar-glass-dark {
-          background: rgba(0, 0, 0, 0.4) !important;
+          background: rgba(0, 0, 0, 0.5) !important;
           backdrop-filter: blur(16px);
           -webkit-backdrop-filter: blur(16px);
         }
+        /* Pour s'assurer que le SVG du logo ne dépasse pas */
+        .logo-container svg {
+          height: 100% !important;
+          width: auto !important;
+        }
       `}</style>
 
-      <div className="fixed right-3 top-3 z-[60] flex items-center gap-3">
+      {/* Boutons en haut à droite */}
+      <div className="fixed right-3 top-3 z-[100] flex items-center gap-3">
         <ThemeToggle />
-        <button
-          onClick={handleToggleClick}
-          className={`transition-all duration-500 ${
-            isButtonAnimating ? "opacity-0 scale-50" : "opacity-100 scale-100"
-          }`}
-        >
-          <IoAppsOutline className="w-6 h-6 text-foreground hover:scale-110" />
+        <button onClick={handleToggleClick} className="text-foreground">
+          <IoAppsOutline
+            className={`w-6 h-6 transition-all ${
+              isButtonAnimating ? "scale-50" : "scale-100"
+            }`}
+          />
         </button>
       </div>
 
       <nav
         className={`fixed top-0 w-full z-50 transition-all duration-500 h-16
-        ${
-          isVisible
-            ? "translate-y-0 opacity-100"
-            : "-translate-y-full opacity-0"
-        }
+        ${isVisible ? "translate-y-0" : "-translate-y-full"}
         ${
           isScrolled
-            ? "dark:navbar-glass-dark navbar-glass-light shadow-sm"
+            ? "dark:navbar-glass-dark navbar-glass-light shadow-md"
             : "bg-transparent"
         }
         `}
       >
-        <div className="h-full flex items-center justify-between px-1 md:px-4 relative">
-          {/* LOGO : Correction cliquabilité et visibilité */}
-          <Link
-            href="/"
-            className="relative z-[70] ml-[3px] w-24 sm:w-28 md:w-36 h-full flex items-center overflow-visible"
-            style={{ pointerEvents: "auto" }}
-          >
-            <div className="scale-[1.4] sm:scale-125 md:scale-100 origin-left transition-transform w-full h-12">
-              <TextHoverEffect text="Nonnzytr" />
-            </div>
-          </Link>
+        {/* Layout en 3 colonnes pour éviter les chevauchements de clics */}
+        <div className="grid grid-cols-3 h-full items-center px-1 md:px-4">
+          {/* COLONNE 1 : LOGO */}
+          <div className="flex justify-start items-center">
+            <Link
+              href="/"
+              className="logo-container relative block h-14 w-32 sm:w-40 ml-[3px] z-[60]"
+              style={{ cursor: "pointer" }}
+            >
+              <div className="absolute inset-0 scale-[1.8] sm:scale-[1.5] md:scale-100 origin-left flex items-center">
+                <TextHoverEffect text="Nonnzytr" />
+              </div>
+            </Link>
+          </div>
 
-          {/* LIENS : pointer-events-none sur le parent pour laisser cliquer le logo dessous si besoin */}
-          <div className="absolute left-1/2 -translate-x-1/2 flex items-center gap-4 md:gap-10 z-[60] pointer-events-none">
+          {/* COLONNE 2 : LIENS CENTRÉS */}
+          <div className="flex justify-center items-center gap-4 md:gap-8">
             {navLinks.map((link) => {
               const IconComponent = link.icon;
-              const isResume = link.href === "/ResumeExecutif";
               return (
                 <Link
                   key={link.href}
                   href={link.href}
-                  className="group flex flex-col items-center relative text-foreground transition-all duration-300 pointer-events-auto"
+                  className="group flex flex-col items-center text-foreground z-[60]"
                 >
-                  {!isResume && IconComponent && (
+                  {IconComponent && (
                     <IconComponent className="w-4 h-4 md:w-5 md:h-5 group-hover:text-green-500" />
                   )}
-                  <span
-                    className={`mt-0.5 text-[10px] md:text-sm whitespace-nowrap ${
-                      isResume
-                        ? "font-bold"
-                        : "font-medium group-hover:text-green-500"
-                    }`}
-                  >
+                  <span className="text-[10px] md:text-sm font-bold whitespace-nowrap group-hover:text-green-500">
                     {link.label}
                   </span>
                 </Link>
@@ -141,13 +113,16 @@ export default function NavbarFront() {
             })}
           </div>
 
-          {/* Équilibre */}
-          <div className="w-10 md:w-36" />
+          {/* COLONNE 3 : VIDE (Équilibre) */}
+          <div className="flex justify-end pr-12">
+            {/* Espace réservé pour ne pas gêner les boutons fixés */}
+          </div>
         </div>
 
+        {/* Bordure animée en bas */}
         <div
-          className={`gradient-border ${
-            showBorder ? "opacity-100" : "opacity-0"
+          className={`h-[1px] w-full bg-gradient-to-r from-red-500 via-green-500 to-blue-500 transition-opacity duration-1000 ${
+            isScrolled ? "opacity-100" : "opacity-0"
           }`}
         />
       </nav>
