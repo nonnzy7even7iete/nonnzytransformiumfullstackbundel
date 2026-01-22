@@ -3,19 +3,12 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
-import { LayoutDashboard, Server, Brain, Zap } from "lucide-react";
+import { LayoutDashboard, Server, Zap, FileText } from "lucide-react";
 import { IoAppsOutline } from "react-icons/io5";
 import { TextHoverEffect } from "./ui/TextHoverEffect";
 import { ThemeToggle } from "@/components/ui/themeToggle";
 
-// On utilise les composants de base pour la structure
-import {
-  Menubar,
-  MenubarContent,
-  MenubarItem,
-  MenubarMenu,
-  MenubarTrigger,
-} from "@/components/ui/menubar";
+import { Menubar, MenubarMenu, MenubarTrigger } from "@/components/ui/menubar";
 
 export default function NavbarFront() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -24,7 +17,6 @@ export default function NavbarFront() {
   const [showBorder, setShowBorder] = useState(false);
   const { data: session } = useSession();
 
-  // Gestion de la bordure animée
   useEffect(() => {
     const cycle = () => {
       setShowBorder(false);
@@ -38,7 +30,6 @@ export default function NavbarFront() {
     return () => clearInterval(interval);
   }, []);
 
-  // Gestion du flou au scroll
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 10);
     window.addEventListener("scroll", handleScroll);
@@ -87,46 +78,59 @@ export default function NavbarFront() {
         <div className="flex h-full items-center justify-between px-4 relative">
           {/* GAUCHE : LOGO */}
           <div className="flex-shrink-0 z-[60]">
-            <Link href="/" className="block h-12 w-24 sm:w-32 relative">
+            <Link
+              href="/"
+              className="block h-12 w-24 sm:w-32 ml-[3px] relative"
+            >
               <div className="absolute inset-0 scale-[1.1] md:scale-100 origin-left flex items-center">
                 <TextHoverEffect text="Nonnzytr" />
               </div>
             </Link>
           </div>
 
-          {/* CENTRE : TES 3 ITEMS (Logique de navigation) */}
+          {/* CENTRE : NAVIGATION PRINCIPALE */}
           <div className="absolute left-1/2 -translate-x-1/2 z-[80]">
-            <Menubar className="bg-transparent border-none shadow-none gap-4">
-              {/* ITEM 1 : LOGIQUE MÉTIER & SERVEUR */}
+            <Menubar className="bg-transparent border-none shadow-none gap-2 sm:gap-4">
+              {/* 1. RÉSUMÉ EXÉCUTIF */}
+              <MenubarMenu>
+                <Link href="/ResumeExecutif">
+                  <MenubarTrigger className="font-bold uppercase tracking-tight text-[9px] sm:text-xs cursor-pointer hover:scale-105 transition-all flex items-center gap-1 sm:gap-2">
+                    <FileText className="w-3 h-3 text-blue-400" />
+                    <span>Résumé</span>
+                  </MenubarTrigger>
+                </Link>
+              </MenubarMenu>
+
+              {/* 2. LOGIQUE MÉTIER & SERVEUR */}
               <MenubarMenu>
                 <Link href="/logique-metier-serveur">
-                  <MenubarTrigger className="font-bold uppercase tracking-tight text-[10px] sm:text-xs cursor-pointer hover:scale-105 transition-all flex gap-2">
+                  <MenubarTrigger className="font-bold uppercase tracking-tight text-[9px] sm:text-xs cursor-pointer hover:scale-105 transition-all flex items-center gap-1 sm:gap-2">
                     <Server className="w-3 h-3 text-orange-500" />
-                    <span className="hidden sm:inline">
+                    <span className="hidden md:inline">
                       Logique Métier & Serveur
                     </span>
-                    <span className="sm:hidden">Logic & Srv</span>
+                    <span className="md:hidden">Logic & Srv</span>
                   </MenubarTrigger>
                 </Link>
               </MenubarMenu>
 
-              {/* ITEM 2 : ZYMANTRA */}
+              {/* 3. ZYMANTRA */}
               <MenubarMenu>
                 <Link href="/zymantra">
-                  <MenubarTrigger className="font-bold uppercase tracking-tight text-[10px] sm:text-xs cursor-pointer hover:scale-105 transition-all flex gap-2">
+                  <MenubarTrigger className="font-bold uppercase tracking-tight text-[9px] sm:text-xs cursor-pointer hover:scale-105 transition-all flex items-center gap-1 sm:gap-2">
                     <Zap className="w-3 h-3 text-yellow-400" />
-                    Zymantra
+                    <span>Zymantra</span>
                   </MenubarTrigger>
                 </Link>
               </MenubarMenu>
 
-              {/* ITEM 3 : DASHBOARD (Si connecté) */}
+              {/* DASHBOARD (Conditionnel) */}
               {session && (
                 <MenubarMenu>
                   <Link href="/dashboard">
-                    <MenubarTrigger className="font-bold uppercase tracking-tight text-[10px] sm:text-xs cursor-pointer hover:scale-105 transition-all flex gap-2">
-                      <LayoutDashboard className="w-3 h-3 text-blue-400" />
-                      Dashboard
+                    <MenubarTrigger className="font-bold uppercase tracking-tight text-[9px] sm:text-xs cursor-pointer hover:scale-105 transition-all flex items-center gap-1 sm:gap-2">
+                      <LayoutDashboard className="w-3 h-3 text-green-500" />
+                      <span className="hidden sm:inline">Dashboard</span>
                     </MenubarTrigger>
                   </Link>
                 </MenubarMenu>
@@ -134,23 +138,25 @@ export default function NavbarFront() {
             </Menubar>
           </div>
 
-          {/* DROITE : THEME & APPS */}
-          <div className="flex items-center gap-2 z-[60]">
+          {/* DROITE : BOUTONS ACTIONS */}
+          <div className="flex items-center gap-1 sm:gap-3 z-[60]">
             <ThemeToggle />
             <button
               onClick={handleToggleClick}
               className="p-1.5 hover:bg-foreground/10 rounded-full transition-colors"
             >
               <IoAppsOutline
-                className={`w-5 h-5 text-foreground transition-all ${
-                  isButtonAnimating ? "scale-0" : "scale-100"
+                className={`w-5 h-5 text-foreground transition-all duration-300 ${
+                  isButtonAnimating
+                    ? "scale-50 opacity-0"
+                    : "scale-100 opacity-100"
                 }`}
               />
             </button>
           </div>
         </div>
 
-        {/* BORDURE ANIMÉE */}
+        {/* TA BORDURE ANIMÉE */}
         <div
           className={`gradient-border ${
             showBorder ? "opacity-100" : "opacity-0"
