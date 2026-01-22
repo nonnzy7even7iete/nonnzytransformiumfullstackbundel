@@ -19,20 +19,17 @@ export function MobileMenu({ links, session }: MobileMenuProps) {
   return (
     <>
       <style>{`
-        .mobile-smoke-item {
-          transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
-          border: 1px solid var(--color-border-dual);
-          background: transparent;
+        .menu-item-vercel {
+          transition: all 0.2s ease;
           color: var(--foreground);
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
         }
 
-        .mobile-smoke-item:active, .mobile-smoke-item:hover {
-          border-color: light-dark(rgba(0,0,0,0.3), rgba(255,255,255,0.4)) !important;
-          background: radial-gradient(circle at center, 
-            light-dark(rgba(0, 0, 0, 0.05), rgba(255, 255, 255, 0.1)) 0%, 
-            transparent 100%
-          ) !important;
-          backdrop-filter: blur(10px);
+        /* Effet de survol minimaliste (gris trÃ¨s lÃ©ger) */
+        .menu-item-vercel:hover {
+          background: light-dark(rgba(0, 0, 0, 0.03), rgba(255, 255, 255, 0.04));
         }
 
         .no-focus-all {
@@ -41,64 +38,76 @@ export function MobileMenu({ links, session }: MobileMenuProps) {
           -webkit-tap-highlight-color: transparent !important;
         }
 
-        /* Suppression de l'icÃ´ne X par dÃ©faut de Shadcn */
-        [data-state] > svg { display: none !important; }
+        /* Masquage icÃ´ne Shadcn par dÃ©faut */
+        [data-radix-collection-item] > svg { display: none !important; }
       `}</style>
 
       <Sheet>
-        {/* BURGER INITIAL */}
-        <SheetTrigger className="group flex flex-col items-end gap-[6px] p-2 bg-transparent border-none no-focus-all">
-          <div className="h-[1.2px] w-6 bg-foreground transition-all duration-300 group-hover:w-4" />
-          <div className="h-[1.2px] w-4 bg-foreground transition-all duration-300 group-hover:w-6" />
+        {/* BURGER MINIMALISTE */}
+        <SheetTrigger className="group flex flex-col items-end gap-[5px] p-2 bg-transparent border-none no-focus-all">
+          <div className="h-[1px] w-5 bg-foreground/80 transition-all duration-300 group-hover:w-3" />
+          <div className="h-[1px] w-3 bg-foreground/80 transition-all duration-300 group-hover:w-5" />
         </SheetTrigger>
 
         <SheetContent
           side="right"
-          className="bg-glass-dual border-l border-border-dual backdrop-blur-3xl w-[75%] sm:w-[320px] p-0 no-focus-all flex flex-col"
+          className="bg-glass-dual border-l border-border-dual backdrop-blur-3xl w-[85%] sm:w-[320px] p-0 no-focus-all flex flex-col shadow-2xl"
         >
-          {/* BOUTON FERMETURE : CERCLE, BORDURE 1PX, TRAIT CENTRAL */}
-          <SheetClose className="absolute right-4 top-4 no-focus-all group flex items-center justify-center w-8 h-8 rounded-full border border-border-dual transition-all hover:border-foreground/40 active:scale-95">
-            <div className="h-[1px] w-3 bg-foreground/60 group-hover:bg-foreground transition-colors" />
+          {/* BOUTON FERMETURE CERCLE 1PX (InspirÃ© du design cockpit) */}
+          <SheetClose className="absolute right-4 top-4 no-focus-all group flex items-center justify-center w-7 h-7 rounded-full border border-border-dual transition-all hover:bg-foreground/[0.03] active:scale-90">
+            <div className="h-[1px] w-3 bg-foreground/40 group-hover:bg-foreground transition-colors" />
           </SheetClose>
 
-          <SheetHeader className="p-[7px] border-b border-border-dual/30 mt-12">
-            <SheetTitle className="text-foreground/30 text-[8px] font-bold uppercase tracking-[0.4em] text-center">
-              System
-            </SheetTitle>
-          </SheetHeader>
+          {/* SECTION IDENTITÃ‰ (Top de ta capture) */}
+          <div className="p-6 pt-12 border-b border-border-dual/40">
+            <p className="text-[11px] font-bold tracking-tight text-foreground truncate">
+              {session?.user?.name || "nonnzytransformium-4464"}
+            </p>
+            <p className="text-[10px] text-foreground/50 truncate font-medium mt-0.5">
+              {session?.user?.email || "nonnzytransformium@gmail.com"}
+            </p>
+          </div>
 
-          {/* CONTENU PADDING 7PX */}
-          <div className="flex flex-col items-center justify-center gap-2 p-[7px] flex-grow">
+          {/* SECTION NAVIGATION (Padding 7px comme demandÃ©) */}
+          <div className="flex flex-col gap-0.5 p-[7px] flex-grow mt-2">
             {links.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
-                className="mobile-smoke-item w-full py-2 rounded-[var(--radius)] text-[9px] font-bold uppercase tracking-[0.2em] text-center no-focus-all no-underline"
+                className="menu-item-vercel px-3 py-2.5 rounded-[6px] text-[11px] font-medium no-focus-all no-underline"
               >
                 {link.label}
+                <span className="opacity-20 text-[9px]">â†—</span>
               </Link>
             ))}
-
-            {session && (
-              <Link
-                href="/dashboard"
-                className="mobile-smoke-item w-full py-2 rounded-[var(--radius)] text-[9px] font-bold uppercase tracking-[0.2em] text-green-600 dark:text-green-400 border-green-500/10 text-center no-focus-all"
-              >
-                Data Driven
-              </Link>
-            )}
           </div>
 
-          {/* SIGNATURE BASSE */}
-          <div className="p-[7px] w-full text-center pb-6">
-            <div className="flex flex-col gap-0.5">
-              <p className="text-[7px] uppercase tracking-[0.5em] text-foreground/40 font-black">
-                Ivory Coast
-              </p>
-              <p className="text-[6px] uppercase tracking-[0.2em] text-foreground/20 italic">
-                Data Driven
-              </p>
+          {/* SECTION SIGNATURE & ACTION (Bas de ta capture) */}
+          <div className="mt-auto border-t border-border-dual/40 p-[7px] bg-foreground/[0.01]">
+            <div className="flex items-center justify-between px-3 py-4 mb-2">
+              <div className="flex flex-col">
+                <span className="text-[8px] uppercase tracking-[0.3em] font-black text-foreground/40">
+                  Ivory Coast
+                </span>
+                <span className="text-[7px] uppercase tracking-[0.1em] text-foreground/20 italic">
+                  Data Driven
+                </span>
+              </div>
+              <div className="h-6 w-[1px] bg-border-dual/50 mx-2" />
+              <Link
+                href="/dashboard"
+                className="text-[9px] font-bold text-green-600 dark:text-green-400 uppercase tracking-tighter"
+              >
+                Pro Status
+              </Link>
             </div>
+
+            <Link
+              href="/upgrade"
+              className="block w-full py-2.5 bg-foreground text-background text-center rounded-[6px] text-[10px] font-bold hover:opacity-90 transition-all no-focus-all active:scale-[0.98]"
+            >
+              Upgrade to Pro
+            </Link>
           </div>
         </SheetContent>
       </Sheet>
