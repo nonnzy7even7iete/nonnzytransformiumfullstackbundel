@@ -12,12 +12,14 @@ export function MobileMenu({ links, session }: any) {
   return (
     <Sheet>
       <style>{`
-        /* ANIMATION RA'AD (TONNERRE SUR L'EAU) */
+        /* ANIMATION RA'AD (TONNERRE SUR L'EAU) - VERSION LENTE AVEC TIMEOUT */
         @keyframes raad-shine {
-          0% { background-position: -200% center; opacity: 0.8; }
-          15% { opacity: 1; } /* Pic d'intensité comme un éclair */
-          30% { background-position: 200% center; opacity: 0.8; }
-          100% { background-position: 200% center; opacity: 0.8; }
+          0% { background-position: -200% center; opacity: 0.6; }
+          /* L'éclair passe entre 0% et 30% du temps total de l'animation */
+          10% { opacity: 1; } 
+          25% { background-position: 200% center; opacity: 0.6; }
+          /* Entre 30% et 100%, le texte reste "calme" (Temps mort de 7s environ) */
+          30%, 100% { background-position: 200% center; opacity: 0.6; }
         }
 
         .raad-effect {
@@ -25,16 +27,19 @@ export function MobileMenu({ links, session }: any) {
             90deg, 
             transparent 0%, 
             rgba(255, 255, 255, 0) 40%, 
-            light-dark(rgba(0, 0, 0, 0.8), rgba(255, 255, 255, 0.9)) 50%, 
+            light-dark(rgba(0, 0, 0, 0.9), rgba(255, 255, 255, 1)) 50%, 
             rgba(255, 255, 255, 0) 60%, 
             transparent 100%
           );
           background-size: 200% auto;
           background-clip: text;
           -webkit-background-clip: text;
-          color: light-dark(rgba(0, 0, 0, 0.3), rgba(255, 255, 255, 0.2));
-          animation: raad-shine 4s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+          /* Couleur de base du texte au repos */
+          color: light-dark(rgba(0, 0, 0, 0.25), rgba(255, 255, 255, 0.15));
+          /* Animation de 10s au total (3s d'effet + 7s de calme) */
+          animation: raad-shine 10s cubic-bezier(0.4, 0, 0.2, 1) infinite;
           display: inline-block;
+          transition: color 0.5s ease;
         }
 
         .absolute.right-4.top-4.rounded-sm.opacity-70 { display: none !important; }
@@ -82,11 +87,10 @@ export function MobileMenu({ links, session }: any) {
           ))}
         </nav>
 
-        {/* FOOTER AVEC EFFET RA'AD */}
+        {/* FOOTER AVEC EFFET RA'AD TEMPORISÉ */}
         <div className="mt-auto border-t border-border/50 bg-black/[0.01] dark:bg-white/[0.01] p-6 space-y-5">
           <div className="flex items-center justify-between">
             <div className="space-y-0.5">
-              {/* TEXTE IVORY COAST AVEC L'EFFET SHINE */}
               <p className="raad-effect text-[10px] font-black uppercase tracking-[0.3em]">
                 Ivory Coast
               </p>
@@ -95,7 +99,7 @@ export function MobileMenu({ links, session }: any) {
               </p>
             </div>
             <div className="px-3 py-1 rounded-full bg-green-500/10 border border-green-500/20">
-              <span className="text-[9px] font-bold text-green-600 dark:text-green-500 uppercase tracking-tighter">
+              <span className="text-[9px] font-bold text-green-600 dark:text-green-400 uppercase tracking-tighter">
                 Pro
               </span>
             </div>
