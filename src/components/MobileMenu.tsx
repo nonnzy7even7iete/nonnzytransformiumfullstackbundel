@@ -7,7 +7,9 @@ import {
   SheetTrigger,
   SheetTitle,
   SheetHeader,
+  SheetClose,
 } from "@/components/ui/sheet";
+import { X } from "lucide-react"; // On garde l'import pour la logique mais on va le styliser en trait
 
 interface MobileMenuProps {
   links: { href: string; label: string }[];
@@ -18,7 +20,6 @@ export function MobileMenu({ links, session }: MobileMenuProps) {
   return (
     <>
       <style>{`
-        /* Effet fumée avec Noir Pur et Gris Profond */
         .mobile-smoke-item {
           transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
           border: 1px solid var(--color-border-dual);
@@ -40,10 +41,13 @@ export function MobileMenu({ links, session }: MobileMenuProps) {
           box-shadow: none !important;
           -webkit-tap-highlight-color: transparent !important;
         }
+
+        /* Masquer la croix par dÃ©faut de Shadcn pour mettre notre trait */
+        [data-radix-collection-item] > svg { display: none !important; }
       `}</style>
 
       <Sheet>
-        {/* BURGER : Minimaliste et propre */}
+        {/* BURGER 2 TRAITS */}
         <SheetTrigger className="group flex flex-col items-end gap-[6px] p-2 bg-transparent border-none no-focus-all">
           <div className="h-[1.2px] w-6 bg-foreground/80 transition-all duration-300 group-hover:w-4" />
           <div className="h-[1.2px] w-4 bg-foreground/80 transition-all duration-300 group-hover:w-6" />
@@ -51,22 +55,26 @@ export function MobileMenu({ links, session }: MobileMenuProps) {
 
         <SheetContent
           side="right"
-          className="bg-glass-dual border-l border-border-dual backdrop-blur-3xl w-[80%] sm:w-[350px] p-0 no-focus-all flex flex-col"
+          className="bg-glass-dual border-l border-border-dual backdrop-blur-3xl w-[75%] sm:w-[320px] p-0 no-focus-all flex flex-col"
         >
-          {/* Header avec padding drastiquement réduit */}
-          <SheetHeader className="p-4 border-b border-border-dual/50">
-            <SheetTitle className="text-foreground/40 text-[9px] font-medium uppercase tracking-[0.3em] text-center">
-              System Menu
+          {/* BOUTON FERMETURE : UN SEUL TRAIT HORIZONTAL */}
+          <SheetClose className="absolute right-6 top-6 no-focus-all group">
+            <div className="h-[1.2px] w-6 bg-foreground/40 group-hover:bg-foreground transition-colors" />
+          </SheetClose>
+
+          <SheetHeader className="p-[7px] border-b border-border-dual/30">
+            <SheetTitle className="text-foreground/30 text-[8px] font-bold uppercase tracking-[0.4em] text-center">
+              System
             </SheetTitle>
           </SheetHeader>
 
-          {/* Conteneur Items : Padding réduit pour compacité */}
-          <div className="flex flex-col items-center justify-center gap-2 px-6 py-4 flex-grow">
+          {/* CONTENU : PADDING 7PX */}
+          <div className="flex flex-col items-center justify-center gap-2 p-[7px] flex-grow">
             {links.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
-                className="mobile-smoke-item w-full py-2.5 rounded-[var(--radius)] text-[10px] font-bold uppercase tracking-[0.2em] text-foreground text-center no-focus-all no-underline"
+                className="mobile-smoke-item w-full py-2 rounded-[var(--radius)] text-[9px] font-bold uppercase tracking-[0.2em] text-foreground text-center no-focus-all no-underline"
               >
                 {link.label}
               </Link>
@@ -75,21 +83,20 @@ export function MobileMenu({ links, session }: MobileMenuProps) {
             {session && (
               <Link
                 href="/dashboard"
-                className="mobile-smoke-item w-full py-2.5 rounded-[var(--radius)] text-[10px] font-bold uppercase tracking-[0.2em] text-green-500/80 border-green-500/10 text-center no-focus-all"
+                className="mobile-smoke-item w-full py-2 rounded-[var(--radius)] text-[9px] font-bold uppercase tracking-[0.2em] text-green-500/70 border-green-500/10 text-center no-focus-all"
               >
-                Data Dashboard
+                Data Driven
               </Link>
             )}
           </div>
 
-          {/* Signature : Ivory Coast | Data Driven */}
-          <div className="p-6 w-full text-center">
-            <div className="h-[1px] w-6 bg-border-dual mx-auto mb-3" />
-            <div className="flex flex-col gap-1">
-              <p className="text-[8px] uppercase tracking-[0.4em] text-foreground/30 font-bold">
+          {/* SIGNATURE BASSE */}
+          <div className="p-[7px] w-full text-center pb-6">
+            <div className="flex flex-col gap-0.5">
+              <p className="text-[7px] uppercase tracking-[0.5em] text-foreground/40 font-black">
                 Ivory Coast
               </p>
-              <p className="text-[7px] uppercase tracking-[0.2em] text-foreground/20 italic">
+              <p className="text-[6px] uppercase tracking-[0.2em] text-foreground/20 italic">
                 Data Driven
               </p>
             </div>
