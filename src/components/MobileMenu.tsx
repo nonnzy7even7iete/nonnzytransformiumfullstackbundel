@@ -1,159 +1,96 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import Link from "next/link";
-import { useSession } from "next-auth/react";
-import { TextHoverEffect } from "./ui/TextHoverEffect";
-import { ThemeToggle } from "@/components/ui/themeToggle";
-import { Menubar, MenubarMenu, MenubarTrigger } from "@/components/ui/menubar";
-import { MobileMenu } from "./MobileMenu";
+import {
+  Sheet,
+  SheetContent,
+  SheetTrigger,
+  SheetTitle,
+  SheetHeader,
+} from "@/components/ui/sheet";
 
-export default function NavbarFront() {
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [isVisible, setIsVisible] = useState(true);
-  const [lastScrollY, setLastScrollY] = useState(0);
-  const [showBorder, setShowBorder] = useState(false);
-  const { data: session } = useSession();
+interface MobileMenuProps {
+  links: { href: string; label: string }[];
+  session: any;
+}
 
-  // Logique de disparition de la navbar au scroll (Real-time)
-  useEffect(() => {
-    const handleScroll = () => {
-      const currentScrollY = window.scrollY;
-
-      // Navbar floue si on a scrollé un peu
-      setIsScrolled(currentScrollY > 10);
-
-      // Cache la navbar si on descend, la montre si on remonte
-      if (currentScrollY > lastScrollY && currentScrollY > 100) {
-        setIsVisible(false);
-      } else {
-        setIsVisible(true);
-      }
-      setLastScrollY(currentScrollY);
-    };
-
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, [lastScrollY]);
-
-  // Cycle de la bordure animée
-  useEffect(() => {
-    const cycle = () => {
-      setShowBorder(false);
-      setTimeout(() => {
-        setShowBorder(true);
-        setTimeout(() => setShowBorder(false), 5000);
-      }, 7000);
-    };
-    cycle();
-    const interval = setInterval(cycle, 12000);
-    return () => clearInterval(interval);
-  }, []);
-
-  const navLinks = [
-    { href: "/ResumeExecutif", label: "Résumé Exécutif" },
-    { href: "/logique-metier-serveur", label: "Logique Métier & Serveur" },
-    { href: "/zymantra", label: "Zymantra" },
-  ];
-
+export function MobileMenu({ links, session }: MobileMenuProps) {
   return (
     <>
       <style>{`
-        /* LOGIQUE BORDER EN SURBRILLANCE & FUMÉE */
-        .smoke-hover {
+        /* Effet fumée spécifique au menu mobile */
+        .mobile-smoke-item {
+          transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+          border: 1px solid var(--color-border-dual);
           position: relative;
-          transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
-          border: 1px solid var(--color-border-dual) !important;
         }
 
-        .smoke-hover:hover {
-          /* Surbrillance forcée */
-          border-color: rgba(255, 255, 255, 0.5) !important;
+        .mobile-smoke-item:active, .mobile-smoke-item:hover {
+          border-color: rgba(255, 255, 255, 0.4) !important;
           background: radial-gradient(circle at center, 
             rgba(0, 0, 0, 0.6) 0%, 
-            rgba(20, 20, 20, 0.4) 45%, 
-            rgba(40, 40, 40, 0.1) 80%, 
+            rgba(30, 30, 30, 0.4) 50%, 
             transparent 100%
           ) !important;
-          backdrop-filter: blur(15px) saturate(160%);
-          transform: translateY(-1.5px);
-          box-shadow: 0 8px 20px -5px rgba(0, 0, 0, 0.5);
+          backdrop-filter: blur(10px);
+          transform: scale(0.98);
         }
 
-        .gradient-border {
-          background-image: radial-gradient(circle at center, #22c55e 0%, #f97316 40%, #000000 75%, #000000 100%);
-          background-repeat: no-repeat;
-          background-position: center;
-          background-size: 80% 100%;
-          height: 1px; width: 100%;
-          transition: opacity 1000ms ease-in-out;
+        /* Anti-focus bleu/gris sur mobile */
+        .no-tap-highlight {
+          -webkit-tap-highlight-color: transparent;
         }
-
-        *:focus { outline: none !important; ring: 0 !important; }
       `}</style>
 
-      <nav
-        className={`fixed top-0 w-full z-50 transition-all duration-500 h-16 flex items-center ${
-          isVisible ? "translate-y-0" : "-translate-y-full"
-        } ${
-          isScrolled
-            ? "bg-glass-dual backdrop-blur-xl border-b border-border-dual"
-            : "bg-transparent"
-        }
-        has-[.menubar-root:hover]:scale-[1.01]`}
-      >
-        <div className="flex w-full h-full items-center px-6 relative">
-          {/* GAUCHE : LOGO */}
-          <div className="flex items-center w-48 h-full z-[60]">
-            <Link
-              href="/"
-              className="block w-full h-full relative flex items-center overflow-visible"
-            >
-              <TextHoverEffect text="Nonnzytr" />
-            </Link>
+      <Sheet>
+        {/* BOUTON BURGER 2 BARRES (Visible uniquement via MD:HIDDEN dans le parent) */}
+        <SheetTrigger className="group flex flex-col items-end gap-[6px] p-2 bg-transparent border-none outline-none focus:ring-0 no-tap-highlight">
+          <div className="h-[1.5px] w-6 bg-foreground transition-all duration-300 group-hover:w-4" />
+          <div className="h-[1.5px] w-4 bg-foreground transition-all duration-300 group-hover:w-6" />
+        </SheetTrigger>
+
+        <SheetContent
+          side="right"
+          className="bg-glass-dual border-l border-border-dual backdrop-blur-3xl w-[85%] sm:w-[400px] p-0 overflow-hidden"
+        >
+          <SheetHeader className="p-6 border-b border-border-dual">
+            <SheetTitle className="text-foreground text-[10px] font-bold uppercase tracking-[0.2em] text-left">
+              Navigation
+            </SheetTitle>
+          </SheetHeader>
+
+          <div className="flex flex-col gap-3 p-6">
+            {links.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                className="mobile-smoke-item p-4 rounded-[var(--radius)] text-[11px] font-bold uppercase tracking-widest text-foreground no-underline"
+              >
+                {link.label}
+              </Link>
+            ))}
+
+            {/* Séparateur subtil si session existe */}
+            {session && <div className="h-[1px] w-full bg-border-dual my-2" />}
+
+            {session && (
+              <Link
+                href="/dashboard"
+                className="mobile-smoke-item p-4 rounded-[var(--radius)] text-[11px] font-bold uppercase tracking-widest text-green-500/90 border-green-500/20"
+              >
+                Tableau de Bord
+              </Link>
+            )}
           </div>
 
-          {/* CENTRE : DESKTOP MENU */}
-          <div className="flex-1 hidden md:flex justify-center items-center z-[80]">
-            <Menubar className="menubar-root h-auto bg-glass-dual border border-border-dual rounded-[var(--radius)] p-1 gap-2 shadow-2xl">
-              {navLinks.map((link) => (
-                <MenubarMenu key={link.href}>
-                  <Link href={link.href} className="no-underline">
-                    <MenubarTrigger className="smoke-hover cursor-pointer rounded-[calc(var(--radius)-4px)] px-4 py-2 text-[10px] font-bold uppercase tracking-widest transition-all">
-                      {link.label}
-                    </MenubarTrigger>
-                  </Link>
-                </MenubarMenu>
-              ))}
-              {session && (
-                <MenubarMenu>
-                  <Link href="/dashboard" className="no-underline">
-                    <MenubarTrigger className="smoke-hover cursor-pointer rounded-[calc(var(--radius)-4px)] px-4 py-2 text-[10px] font-bold uppercase tracking-widest text-green-500/80 hover:text-green-400">
-                      Dashboard
-                    </MenubarTrigger>
-                  </Link>
-                </MenubarMenu>
-              )}
-            </Menubar>
+          {/* Footer du menu mobile */}
+          <div className="absolute bottom-8 left-6 right-6">
+            <p className="text-[9px] uppercase tracking-widest text-foreground/30 font-medium">
+              Nonnzytr © 2026
+            </p>
           </div>
-
-          {/* DROITE : TOOLS & BURGER (Visible uniquement Mobile/Tablette) */}
-          <div className="w-48 flex justify-end items-center gap-4 z-[60]">
-            <ThemeToggle />
-
-            <div className="md:hidden">
-              <MobileMenu links={navLinks} session={session} />
-            </div>
-          </div>
-        </div>
-
-        {/* BORDURE ANIMÉE */}
-        <div
-          className={`absolute bottom-0 gradient-border ${
-            showBorder ? "opacity-100" : "opacity-0"
-          }`}
-        />
-      </nav>
+        </SheetContent>
+      </Sheet>
     </>
   );
 }
