@@ -3,23 +3,18 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
-import { LayoutDashboard, Info, FileText, Share2, Monitor } from "lucide-react";
+import { LayoutDashboard, Server, Brain, Zap } from "lucide-react";
 import { IoAppsOutline } from "react-icons/io5";
 import { TextHoverEffect } from "./ui/TextHoverEffect";
 import { ThemeToggle } from "@/components/ui/themeToggle";
 
-// Import des composants shadcn que nous avons stylisés en "Glass"
+// On utilise les composants de base pour la structure
 import {
   Menubar,
   MenubarContent,
   MenubarItem,
   MenubarMenu,
-  MenubarSeparator,
-  MenubarShortcut,
   MenubarTrigger,
-  MenubarSub,
-  MenubarSubContent,
-  MenubarSubTrigger,
 } from "@/components/ui/menubar";
 
 export default function NavbarFront() {
@@ -29,6 +24,7 @@ export default function NavbarFront() {
   const [showBorder, setShowBorder] = useState(false);
   const { data: session } = useSession();
 
+  // Gestion de la bordure animée
   useEffect(() => {
     const cycle = () => {
       setShowBorder(false);
@@ -42,6 +38,7 @@ export default function NavbarFront() {
     return () => clearInterval(interval);
   }, []);
 
+  // Gestion du flou au scroll
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 10);
     window.addEventListener("scroll", handleScroll);
@@ -87,96 +84,73 @@ export default function NavbarFront() {
           isVisible ? "translate-y-0" : "-translate-y-full"
         } ${isScrolled ? "navbar-scrolled shadow-sm" : "bg-transparent"}`}
       >
-        <div className="flex h-full items-center justify-between px-2 relative">
+        <div className="flex h-full items-center justify-between px-4 relative">
           {/* GAUCHE : LOGO */}
           <div className="flex-shrink-0 z-[60]">
-            <Link
-              href="/"
-              className="block h-12 w-24 sm:w-32 ml-[3px] relative"
-            >
-              <div className="absolute inset-0 scale-[1.3] sm:scale-[1.1] md:scale-100 origin-left flex items-center">
+            <Link href="/" className="block h-12 w-24 sm:w-32 relative">
+              <div className="absolute inset-0 scale-[1.1] md:scale-100 origin-left flex items-center">
                 <TextHoverEffect text="Nonnzytr" />
               </div>
             </Link>
           </div>
 
-          {/* CENTRE : MENUBAR SHADCN (Logique conservée et étendue) */}
+          {/* CENTRE : TES 3 ITEMS (Logique de navigation) */}
           <div className="absolute left-1/2 -translate-x-1/2 z-[80]">
-            <Menubar className="bg-transparent border-none shadow-none gap-2">
-              {/* Menu Résumé */}
+            <Menubar className="bg-transparent border-none shadow-none gap-4">
+              {/* ITEM 1 : LOGIQUE MÉTIER & SERVEUR */}
               <MenubarMenu>
-                <MenubarTrigger className="font-bold uppercase tracking-tight text-[11px] sm:text-xs cursor-pointer hover:scale-105 transition-transform">
-                  Resume
-                </MenubarTrigger>
-                <MenubarContent>
-                  <Link href="/ResumeExecutif">
-                    <MenubarItem className="cursor-pointer">
-                      <FileText className="mr-2 h-4 w-4" /> Exécutif
-                    </MenubarItem>
-                  </Link>
-                  <MenubarSeparator />
-                  <MenubarSub>
-                    <MenubarSubTrigger>Partager</MenubarSubTrigger>
-                    <MenubarSubContent>
-                      <MenubarItem>
-                        <Share2 className="mr-2 h-4 w-4" /> Email Link
-                      </MenubarItem>
-                      <MenubarItem>Copy Link</MenubarItem>
-                    </MenubarSubContent>
-                  </MenubarSub>
-                </MenubarContent>
+                <Link href="/logique-metier-serveur">
+                  <MenubarTrigger className="font-bold uppercase tracking-tight text-[10px] sm:text-xs cursor-pointer hover:scale-105 transition-all flex gap-2">
+                    <Server className="w-3 h-3 text-orange-500" />
+                    <span className="hidden sm:inline">
+                      Logique Métier & Serveur
+                    </span>
+                    <span className="sm:hidden">Logic & Srv</span>
+                  </MenubarTrigger>
+                </Link>
               </MenubarMenu>
 
-              {/* Menu Dashboard (Conditionnel) */}
+              {/* ITEM 2 : ZYMANTRA */}
+              <MenubarMenu>
+                <Link href="/zymantra">
+                  <MenubarTrigger className="font-bold uppercase tracking-tight text-[10px] sm:text-xs cursor-pointer hover:scale-105 transition-all flex gap-2">
+                    <Zap className="w-3 h-3 text-yellow-400" />
+                    Zymantra
+                  </MenubarTrigger>
+                </Link>
+              </MenubarMenu>
+
+              {/* ITEM 3 : DASHBOARD (Si connecté) */}
               {session && (
                 <MenubarMenu>
-                  <MenubarTrigger className="font-bold uppercase tracking-tight text-[11px] sm:text-xs cursor-pointer hover:scale-105 transition-transform">
-                    Workspace
-                  </MenubarTrigger>
-                  <MenubarContent>
-                    <Link href="/dashboard">
-                      <MenubarItem className="cursor-pointer">
-                        <LayoutDashboard className="mr-2 h-4 w-4" /> Dashboard
-                      </MenubarItem>
-                    </Link>
-                    <MenubarItem>
-                      <Monitor className="mr-2 h-4 w-4" /> Workflow
-                    </MenubarItem>
-                  </MenubarContent>
+                  <Link href="/dashboard">
+                    <MenubarTrigger className="font-bold uppercase tracking-tight text-[10px] sm:text-xs cursor-pointer hover:scale-105 transition-all flex gap-2">
+                      <LayoutDashboard className="w-3 h-3 text-blue-400" />
+                      Dashboard
+                    </MenubarTrigger>
+                  </Link>
                 </MenubarMenu>
               )}
-
-              <MenubarMenu>
-                <MenubarTrigger className="font-bold uppercase tracking-tight text-[11px] sm:text-xs cursor-pointer">
-                  <Info className="h-4 w-4" />
-                </MenubarTrigger>
-                <MenubarContent>
-                  <MenubarItem disabled>Version 1.0.4</MenubarItem>
-                  <MenubarItem>Support</MenubarItem>
-                </MenubarContent>
-              </MenubarMenu>
             </Menubar>
           </div>
 
-          {/* DROITE : BOUTONS */}
-          <div className="flex items-center gap-1 sm:gap-3 z-[60] pr-1">
+          {/* DROITE : THEME & APPS */}
+          <div className="flex items-center gap-2 z-[60]">
             <ThemeToggle />
             <button
               onClick={handleToggleClick}
               className="p-1.5 hover:bg-foreground/10 rounded-full transition-colors"
             >
               <IoAppsOutline
-                className={`w-5 h-5 sm:w-6 sm:h-6 text-foreground transition-all duration-300 ${
-                  isButtonAnimating
-                    ? "scale-50 opacity-0"
-                    : "scale-100 opacity-100"
+                className={`w-5 h-5 text-foreground transition-all ${
+                  isButtonAnimating ? "scale-0" : "scale-100"
                 }`}
               />
             </button>
           </div>
         </div>
 
-        {/* TA BORDURE ANIMÉE CONSERVÉE */}
+        {/* BORDURE ANIMÉE */}
         <div
           className={`gradient-border ${
             showBorder ? "opacity-100" : "opacity-0"
