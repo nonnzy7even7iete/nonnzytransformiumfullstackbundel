@@ -26,7 +26,6 @@ export function MobileMenu({ links, session }: MobileMenuProps) {
         }
 
         .mobile-smoke-item:active, .mobile-smoke-item:hover {
-          /* Surbrillance de la bordure */
           border-color: light-dark(rgba(0,0,0,0.3), rgba(255,255,255,0.4)) !important;
           background: radial-gradient(circle at center, 
             rgba(0, 0, 0, 0.5) 0%, 
@@ -36,7 +35,6 @@ export function MobileMenu({ links, session }: MobileMenuProps) {
           backdrop-filter: blur(10px);
         }
 
-        /* Suppression stricte des focus et highlights */
         .no-focus-all {
           outline: none !important;
           box-shadow: none !important;
@@ -45,7 +43,7 @@ export function MobileMenu({ links, session }: MobileMenuProps) {
       `}</style>
 
       <Sheet>
-        {/* BOUTON BURGER : Pur, sans border, sans focus */}
+        {/* BURGER : Minimaliste et propre */}
         <SheetTrigger className="group flex flex-col items-end gap-[6px] p-2 bg-transparent border-none no-focus-all">
           <div className="h-[1.2px] w-6 bg-foreground/80 transition-all duration-300 group-hover:w-4" />
           <div className="h-[1.2px] w-4 bg-foreground/80 transition-all duration-300 group-hover:w-6" />
@@ -53,21 +51,22 @@ export function MobileMenu({ links, session }: MobileMenuProps) {
 
         <SheetContent
           side="right"
-          className="bg-glass-dual border-l border-border-dual backdrop-blur-3xl w-[85%] sm:w-[380px] p-0 no-focus-all"
+          className="bg-glass-dual border-l border-border-dual backdrop-blur-3xl w-[80%] sm:w-[350px] p-0 no-focus-all flex flex-col"
         >
-          <SheetHeader className="p-8 border-b border-border-dual/50">
-            <SheetTitle className="text-foreground/50 text-[10px] font-medium uppercase tracking-[0.3em] text-center">
-              Menu
+          {/* Header avec padding drastiquement réduit */}
+          <SheetHeader className="p-4 border-b border-border-dual/50">
+            <SheetTitle className="text-foreground/40 text-[9px] font-medium uppercase tracking-[0.3em] text-center">
+              System Menu
             </SheetTitle>
           </SheetHeader>
 
-          {/* CONTENEUR DES ITEMS : Centrage depuis "les entrailles" */}
-          <div className="flex flex-col items-center justify-center gap-4 p-8 h-full">
+          {/* Conteneur Items : Padding réduit pour compacité */}
+          <div className="flex flex-col items-center justify-center gap-2 px-6 py-4 flex-grow">
             {links.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
-                className="mobile-smoke-item w-full py-4 rounded-[var(--radius)] text-[10px] font-bold uppercase tracking-[0.2em] text-foreground text-center no-focus-all no-underline"
+                className="mobile-smoke-item w-full py-2.5 rounded-[var(--radius)] text-[10px] font-bold uppercase tracking-[0.2em] text-foreground text-center no-focus-all no-underline"
               >
                 {link.label}
               </Link>
@@ -76,18 +75,24 @@ export function MobileMenu({ links, session }: MobileMenuProps) {
             {session && (
               <Link
                 href="/dashboard"
-                className="mobile-smoke-item w-full py-4 rounded-[var(--radius)] text-[10px] font-bold uppercase tracking-[0.2em] text-green-500/80 border-green-500/10 text-center no-focus-all"
+                className="mobile-smoke-item w-full py-2.5 rounded-[var(--radius)] text-[10px] font-bold uppercase tracking-[0.2em] text-green-500/80 border-green-500/10 text-center no-focus-all"
               >
-                Tableau de Bord
+                Data Dashboard
               </Link>
             )}
           </div>
 
-          <div className="absolute bottom-10 w-full text-center px-8">
-            <div className="h-[1px] w-8 bg-border-dual mx-auto mb-4" />
-            <p className="text-[8px] uppercase tracking-[0.4em] text-foreground/20">
-              Nonnzytr System
-            </p>
+          {/* Signature : Ivory Coast | Data Driven */}
+          <div className="p-6 w-full text-center">
+            <div className="h-[1px] w-6 bg-border-dual mx-auto mb-3" />
+            <div className="flex flex-col gap-1">
+              <p className="text-[8px] uppercase tracking-[0.4em] text-foreground/30 font-bold">
+                Ivory Coast
+              </p>
+              <p className="text-[7px] uppercase tracking-[0.2em] text-foreground/20 italic">
+                Data Driven
+              </p>
+            </div>
           </div>
         </SheetContent>
       </Sheet>
