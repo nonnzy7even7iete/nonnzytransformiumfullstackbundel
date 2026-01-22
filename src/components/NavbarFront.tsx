@@ -6,17 +6,29 @@ import { useSession } from "next-auth/react";
 import { TextHoverEffect } from "./ui/TextHoverEffect";
 import { ThemeToggle } from "@/components/ui/themeToggle";
 import { Menubar, MenubarMenu, MenubarTrigger } from "@/components/ui/menubar";
-import {
-  Sheet,
-  SheetContent,
-  SheetTrigger,
-  SheetTitle,
-} from "@/components/ui/sheet";
+// Import du nouveau composant que tu as créé
+import { MobileMenu } from "./MobileMenu";
 
 export default function NavbarFront() {
   const [isScrolled, setIsScrolled] = useState(false);
+  const [showBorder, setShowBorder] = useState(false);
   const { data: session } = useSession();
 
+  // Logique de la bordure animée (Vercel Style)
+  useEffect(() => {
+    const cycle = () => {
+      setShowBorder(false);
+      setTimeout(() => {
+        setShowBorder(true);
+        setTimeout(() => setShowBorder(false), 5000);
+      }, 7000);
+    };
+    cycle();
+    const interval = setInterval(cycle, 12000);
+    return () => clearInterval(interval);
+  }, []);
+
+  // Logique du scroll pour le Glassmorphism
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 10);
     window.addEventListener("scroll", handleScroll);
@@ -32,36 +44,35 @@ export default function NavbarFront() {
   return (
     <>
       <style>{`
-        /* EFFET FUMÉE : Noir pur -> Gris foncé */
+        /* EFFET FUMÉE & SUBBRILLANCE */
         .smoke-hover {
           position: relative;
           transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
-          /* Bordure par défaut basée sur ton CSS */
           border: 1px solid var(--color-border-dual) !important;
         }
-
         .smoke-hover:hover {
-          /* Subbrillance de la bordure au survol */
           border-color: rgba(255, 255, 255, 0.4) !important;
           background: radial-gradient(circle at center, 
-            rgba(0, 0, 0, 0.5) 0%,      /* Noir pur */
-            rgba(20, 20, 20, 0.3) 40%,   /* Gris très foncé */
-            rgba(50, 50, 50, 0.1) 80%,   /* Transition fumée */
+            rgba(0, 0, 0, 0.5) 0%, 
+            rgba(20, 20, 20, 0.3) 40%, 
+            rgba(50, 50, 50, 0.1) 80%, 
             transparent 100%
           ) !important;
           backdrop-filter: blur(12px) saturate(160%);
           transform: translateY(-1px);
-          box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
         }
         
-        /* Burger minimaliste 2 barres */
-        .burger-line {
-          height: 1.5px;
-          background-color: var(--foreground);
-          transition: all 0.3s ease;
-        }
-
+        /* Anti-focus global */
         *:focus { outline: none !important; ring: 0 !important; }
+
+        .gradient-border {
+          background-image: radial-gradient(circle at center, #22c55e 0%, #f97316 40%, #000000 75%, #000000 100%);
+          background-repeat: no-repeat;
+          background-position: center;
+          background-size: 80% 100%;
+          height: 1px; width: 100%;
+          transition: opacity 1000ms ease-in-out;
+        }
       `}</style>
 
       <nav
@@ -72,7 +83,7 @@ export default function NavbarFront() {
         } has-[.menubar-root:hover]:scale-[1.01]`}
       >
         <div className="flex w-full h-full items-center px-6 relative">
-          {/* GAUCHE : LOGO BIEN ALIGNÉ */}
+          {/* GAUCHE : LOGO */}
           <div className="flex items-center w-48 h-full z-[60]">
             <Link
               href="/"
@@ -82,13 +93,13 @@ export default function NavbarFront() {
             </Link>
           </div>
 
-          {/* CENTRE : NAVIGATION EN SUBBRILLANCE */}
-          <div className="flex-1 flex justify-center items-center z-[80] hidden md:flex">
-            <Menubar className="menubar-root h-auto bg-glass-dual border border-border-dual rounded-[var(--radius)] p-1 gap-2 shadow-2xl transition-all duration-500">
+          {/* CENTRE : DESKTOP MENU (Caché sur mobile) */}
+          <div className="flex-1 hidden md:flex justify-center items-center z-[80]">
+            <Menubar className="menubar-root h-auto bg-glass-dual border border-border-dual rounded-[var(--radius)] p-1 gap-2 shadow-2xl">
               {navLinks.map((link) => (
                 <MenubarMenu key={link.href}>
                   <Link href={link.href} className="no-underline">
-                    <MenubarTrigger className="smoke-hover cursor-pointer rounded-[calc(var(--radius)-4px)] px-4 py-2 text-[10px] font-bold uppercase tracking-widest data-[state=open]:bg-transparent focus:bg-transparent">
+                    <MenubarTrigger className="smoke-hover cursor-pointer rounded-[calc(var(--radius)-4px)] px-4 py-2 text-[10px] font-bold uppercase tracking-widest transition-all">
                       {link.label}
                     </MenubarTrigger>
                   </Link>
@@ -106,35 +117,23 @@ export default function NavbarFront() {
             </Menubar>
           </div>
 
-          {/* DROITE : TOOLS */}
+          {/* DROITE : TOOLS & MOBILE MENU */}
           <div className="w-48 flex justify-end items-center gap-4 z-[60]">
             <ThemeToggle />
 
-            <Sheet>
-              <SheetTrigger className="group flex flex-col gap-[6px] p-2 bg-transparent border-none outline-none">
-                <div className="burger-line w-6 group-hover:w-4" />
-                <div className="burger-line w-4 group-hover:w-6" />
-              </SheetTrigger>
-
-              <SheetContent className="bg-glass-dual border-l border-border-dual backdrop-blur-3xl">
-                <SheetTitle className="text-foreground border-b border-border-dual pb-4 mb-6 uppercase tracking-widest text-xs">
-                  Menu Principal
-                </SheetTitle>
-                <div className="flex flex-col gap-3">
-                  {navLinks.map((link) => (
-                    <Link
-                      key={link.href}
-                      href={link.href}
-                      className="smoke-hover p-4 rounded-xl border border-border-dual text-[10px] font-bold uppercase tracking-widest"
-                    >
-                      {link.label}
-                    </Link>
-                  ))}
-                </div>
-              </SheetContent>
-            </Sheet>
+            {/* Affichage du menu mobile uniquement sur petit écran */}
+            <div className="md:hidden">
+              <MobileMenu links={navLinks} session={session} />
+            </div>
           </div>
         </div>
+
+        {/* BORDURE INFÉRIEURE ANIMÉE */}
+        <div
+          className={`absolute bottom-0 gradient-border ${
+            showBorder ? "opacity-100" : "opacity-0"
+          }`}
+        />
       </nav>
     </>
   );
