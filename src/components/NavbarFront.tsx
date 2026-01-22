@@ -16,7 +16,6 @@ export default function NavbarFront() {
   const [showBorder, setShowBorder] = useState(false);
   const { data: session } = useSession();
 
-  // Logique de bordure animée conservée
   useEffect(() => {
     const cycle = () => {
       setShowBorder(false);
@@ -30,7 +29,6 @@ export default function NavbarFront() {
     return () => clearInterval(interval);
   }, []);
 
-  // Logique de scroll conservée
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 10);
     window.addEventListener("scroll", handleScroll);
@@ -60,22 +58,19 @@ export default function NavbarFront() {
           transition: opacity 1000ms ease-in-out;
         }
         
-        /* Application de ta logique Light/Dark stricte */
-        .navbar-container {
-          transition: all 500ms ease;
-        }
-
         .navbar-scrolled {
           background-color: var(--color-glass-dual) !important;
-          backdrop-filter: blur(16px);
           border-bottom: 1px solid var(--color-border-dual);
         }
       `}</style>
 
       <nav
-        className={`fixed top-0 w-full z-50 transition-all duration-500 h-16 navbar-container ${
+        className={`fixed top-0 w-full z-50 transition-all duration-700 h-16 ${
           isVisible ? "translate-y-0" : "-translate-y-full"
-        } ${isScrolled ? "navbar-scrolled shadow-sm" : "bg-transparent"}`}
+        } ${isScrolled ? "navbar-scrolled shadow-sm" : "bg-transparent"}
+        /* EFFET DEMANDÉ : Flou et Scale si la Menubar centrale est survolée */
+        has-[.menubar-root:hover]:backdrop-blur-3xl has-[.menubar-root:hover]:scale-[1.02]
+        `}
       >
         <div className="flex h-full items-center justify-between px-4 relative">
           {/* GAUCHE : LOGO */}
@@ -87,41 +82,37 @@ export default function NavbarFront() {
             </Link>
           </div>
 
-          {/* CENTRE : ITEMS DANS UN MÊME BOX AVEC BORDURES INDIVIDUELLES */}
+          {/* CENTRE : ITEMS DANS UNE BOX (L'élément déclencheur) */}
           <div className="absolute left-1/2 -translate-x-1/2 z-[80]">
-            <Menubar className="h-auto bg-glass-dual border border-border-dual rounded-[var(--radius)] p-1.5 flex gap-1.5 shadow-2xl backdrop-blur-xl">
-              {/* ITEM 1 : RÉSUMÉ EXÉCUTIF */}
+            <Menubar className="menubar-root h-auto bg-glass-dual border border-border-dual rounded-[var(--radius)] p-1.5 flex gap-1.5 shadow-2xl transition-all duration-500 hover:border-foreground/30">
               <MenubarMenu>
                 <Link href="/ResumeExecutif">
-                  <MenubarTrigger className="cursor-pointer border border-border-dual rounded-[calc(var(--radius)-4px)] px-3 py-1.5 text-[10px] sm:text-xs font-bold uppercase tracking-tight hover:bg-foreground/5 transition-all">
+                  <MenubarTrigger className="cursor-pointer border border-border-dual rounded-[calc(var(--radius)-4px)] px-3 py-1.5 text-[10px] sm:text-xs font-bold uppercase tracking-tight hover:bg-foreground hover:text-background transition-all duration-300">
                     Résumé Exécutif
                   </MenubarTrigger>
                 </Link>
               </MenubarMenu>
 
-              {/* ITEM 2 : LOGIQUE MÉTIER & SERVEUR */}
               <MenubarMenu>
                 <Link href="/logique-metier-serveur">
-                  <MenubarTrigger className="cursor-pointer border border-border-dual rounded-[calc(var(--radius)-4px)] px-3 py-1.5 text-[10px] sm:text-xs font-bold uppercase tracking-tight hover:bg-foreground/5 transition-all">
+                  <MenubarTrigger className="cursor-pointer border border-border-dual rounded-[calc(var(--radius)-4px)] px-3 py-1.5 text-[10px] sm:text-xs font-bold uppercase tracking-tight hover:bg-foreground hover:text-background transition-all duration-300">
                     Logique Métier & Serveur
                   </MenubarTrigger>
                 </Link>
               </MenubarMenu>
 
-              {/* ITEM 3 : ZYMANTRA */}
               <MenubarMenu>
                 <Link href="/zymantra">
-                  <MenubarTrigger className="cursor-pointer border border-border-dual rounded-[calc(var(--radius)-4px)] px-3 py-1.5 text-[10px] sm:text-xs font-bold uppercase tracking-tight hover:bg-foreground/5 transition-all">
+                  <MenubarTrigger className="cursor-pointer border border-border-dual rounded-[calc(var(--radius)-4px)] px-3 py-1.5 text-[10px] sm:text-xs font-bold uppercase tracking-tight hover:bg-foreground hover:text-background transition-all duration-300">
                     Zymantra
                   </MenubarTrigger>
                 </Link>
               </MenubarMenu>
 
-              {/* ITEM OPTIONNEL : DASHBOARD */}
               {session && (
                 <MenubarMenu>
                   <Link href="/dashboard">
-                    <MenubarTrigger className="cursor-pointer border border-border-dual rounded-[calc(var(--radius)-4px)] px-3 py-1.5 text-[10px] sm:text-xs font-bold uppercase tracking-tight hover:bg-foreground/5 transition-all text-green-500/80">
+                    <MenubarTrigger className="cursor-pointer border border-border-dual rounded-[calc(var(--radius)-4px)] px-3 py-1.5 text-[10px] sm:text-xs font-bold uppercase tracking-tight hover:bg-foreground hover:text-background transition-all duration-300">
                       Dashboard
                     </MenubarTrigger>
                   </Link>
@@ -146,7 +137,6 @@ export default function NavbarFront() {
           </div>
         </div>
 
-        {/* BORDURE ANIMÉE */}
         <div
           className={`gradient-border ${
             showBorder ? "opacity-100" : "opacity-0"
