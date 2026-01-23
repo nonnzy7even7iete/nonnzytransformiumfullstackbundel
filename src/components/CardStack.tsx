@@ -20,14 +20,30 @@ export const CardStack = ({
   offset?: number;
   scaleFactor?: number;
 }) => {
-  const CARD_OFFSET = offset || 10;
+  // Ajustement automatique de l'offset pour mobile (plus serré sur petit écran)
+  const [cardOffset, setCardOffset] = useState(offset || 10);
   const SCALE_FACTOR = scaleFactor || 0.06;
   const [cards, setCards] = useState<Card[]>(items);
 
   useEffect(() => {
+    // Gestion de l'offset responsive côté client
+    const handleResize = () => {
+      if (window.innerWidth < 768) {
+        setCardOffset(6); // Plus compact sur mobile
+      } else {
+        setCardOffset(offset || 10);
+      }
+    };
+
+    handleResize();
+    window.addEventListener("resize", handleResize);
     startFlipping();
-    return () => clearInterval(interval);
-  }, []);
+
+    return () => {
+      clearInterval(interval);
+      window.removeEventListener("resize", handleResize);
+    };
+  }, [offset]);
 
   const startFlipping = () => {
     interval = setInterval(() => {
@@ -40,30 +56,31 @@ export const CardStack = ({
   };
 
   return (
-    <div className="relative h-60 w-full md:h-60 md:w-96">
+    /* Conteneur parent : w-full sur mobile pour utiliser toute la largeur disponible */
+    <div className="relative h-56 w-[min(90vw,350px)] md:h-60 md:w-96 mx-auto">
       {cards.map((card, index) => {
         return (
           <motion.div
             key={card.id}
-            className="absolute h-60 w-full md:h-60 md:w-96 rounded-3xl p-8 shadow-xl border border-black/[0.05] dark:border-white/[0.1] bg-white dark:bg-black flex flex-col justify-between"
+            className="absolute h-56 w-full md:h-60 rounded-3xl p-6 md:p-8 shadow-xl border border-black/[0.05] dark:border-white/[0.1] bg-white dark:bg-black flex flex-col justify-between"
             style={{ transformOrigin: "top center" }}
             animate={{
-              top: index * -CARD_OFFSET,
+              top: index * -cardOffset,
               scale: 1 - index * SCALE_FACTOR,
               zIndex: cards.length - index,
             }}
           >
-            {/* CONTENU DE LA CARTE */}
-            <div className="font-normal text-[14px] text-foreground/70 leading-relaxed">
+            {/* CONTENU : Taille de texte ajustée */}
+            <div className="font-normal text-[12px] md:text-[14px] text-foreground/70 leading-relaxed overflow-hidden">
               {card.content}
             </div>
 
-            {/* FOOTER DE LA CARTE (Design Vercel-ish) */}
-            <div className="flex flex-col gap-1">
-              <p className="text-foreground font-bold text-[13px] tracking-tight uppercase">
+            {/* FOOTER : Responsive spacing */}
+            <div className="flex flex-col gap-0.5 md:gap-1">
+              <p className="text-foreground font-bold text-[12px] md:text-[13px] tracking-tight uppercase">
                 {card.name}
               </p>
-              <p className="text-foreground/30 font-semibold text-[10px] uppercase tracking-widest italic">
+              <p className="text-foreground/30 font-semibold text-[9px] md:text-[10px] uppercase tracking-widest italic">
                 {card.designation}
               </p>
             </div>

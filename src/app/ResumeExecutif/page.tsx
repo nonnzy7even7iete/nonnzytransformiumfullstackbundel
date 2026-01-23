@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import dynamic from "next/dynamic";
 import { motion, AnimatePresence } from "framer-motion";
 import NavbarFront from "@/components/NavbarFront";
-import { CardStack } from "@/components/CardStack"; // Import du composant Aceternity
+import { CardStack } from "@/components/CardStack";
 
 const World = dynamic(
   () => import("@/components/ui/globe").then((m) => m.World),
@@ -13,7 +13,6 @@ const World = dynamic(
 
 export default function ResumeExecutifPage() {
   const [index, setIndex] = useState(0);
-
   const ABIDJAN = { lat: 5.33, lng: -4.03 };
 
   const destinations = [
@@ -35,7 +34,6 @@ export default function ResumeExecutifPage() {
     { label: "AFRIQUE (NORD)", lat: 26.0, lng: 15.0, code: "NODE-AF-NORTH" },
   ];
 
-  // DONNÉES POUR LE CARD STACK (Logs en temps réel fictifs)
   const LOG_CARDS = [
     {
       id: 0,
@@ -44,11 +42,8 @@ export default function ResumeExecutifPage() {
       content: (
         <p>
           Routing data packets from{" "}
-          <span className="font-bold text-green-500 underline decoration-dotted">
-            Abidjan Hub
-          </span>{" "}
-          to Global Nodes. Latency: <span className="text-green-500">24ms</span>
-          .
+          <span className="text-green-500 font-bold">Abidjan Hub</span> to
+          Global Nodes.
         </p>
       ),
     },
@@ -58,8 +53,8 @@ export default function ResumeExecutifPage() {
       designation: "Shield: 100%",
       content: (
         <p>
-          End-to-end encryption active. No anomalies detected in the{" "}
-          <span className="text-blue-500">Ivory Coast</span> gateway.
+          End-to-end encryption active in the{" "}
+          <span className="text-blue-500 font-bold">Ivory Coast</span> gateway.
         </p>
       ),
     },
@@ -69,7 +64,7 @@ export default function ResumeExecutifPage() {
       designation: "Region: AF-WEST",
       content: (
         <p>
-          Auto-scaling active. 14 virtual instances synchronized across{" "}
+          14 virtual instances synchronized across{" "}
           <span className="italic">6 continents</span>.
         </p>
       ),
@@ -96,68 +91,78 @@ export default function ResumeExecutifPage() {
   ];
 
   return (
-    <>
+    <div className="flex flex-col min-h-screen bg-white dark:bg-[#020408]">
       <NavbarFront />
-      <main className="relative min-h-screen bg-white dark:bg-[#020408] transition-colors duration-500 text-slate-900 dark:text-white overflow-hidden flex flex-col items-center justify-center">
-        {/* GLOBE (Background) */}
-        <div className="absolute inset-0 z-0 opacity-80 dark:opacity-100">
+
+      {/* SECTION 1 : LE GLOBE (Full Screen Hero) */}
+      <section className="relative h-screen w-full overflow-hidden flex flex-col items-center justify-center">
+        <div className="absolute inset-0 z-0">
           <World data={activeConnection} globeConfig={{}} />
         </div>
 
-        {/* Interface HUD */}
-        <div className="relative z-10 flex flex-col items-center pointer-events-none w-full max-w-7xl px-6">
-          {/* Badge Ivory Coast */}
-          <div className="flex items-center gap-2 mb-8 px-4 py-1.5 bg-green-500/10 dark:bg-green-500/5 border border-green-600/20 dark:border-green-500/20 rounded-full backdrop-blur-md">
-            <div className="w-1.5 h-1.5 bg-green-600 dark:bg-green-500 rounded-full animate-pulse shadow-[0_0_10px_rgba(34,197,94,0.5)]" />
-            <span className="text-[10px] text-green-700 dark:text-green-500 font-black tracking-[0.4em] uppercase">
-              Ivory Coast Data-driven Global Hub
+        {/* HUD INTERFACE */}
+        <div className="relative z-10 flex flex-col items-center pointer-events-none px-6 text-center">
+          <div className="mb-6 px-4 py-1.5 bg-green-500/10 border border-green-500/20 rounded-full backdrop-blur-sm">
+            <span className="text-[10px] text-green-600 dark:text-green-500 font-black tracking-[0.4em] uppercase">
+              Global Networking Hub
             </span>
           </div>
 
-          {/* Titre Dynamique */}
-          <div className="flex flex-col items-center gap-2 text-center mb-12">
-            <span className="text-xs font-mono opacity-40 tracking-[0.6em] uppercase mb-4">
-              Syncing: Node-Source // ABIDJAN
-            </span>
-
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={destinations[index].label}
-                initial={{ opacity: 0, y: 20, filter: "blur(10px)" }}
-                animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-                exit={{ opacity: 0, y: -20, filter: "blur(10px)" }}
-                transition={{ duration: 0.8, ease: "circOut" }}
-                className="flex flex-col items-center"
-              >
-                <h1 className="text-6xl md:text-9xl font-black tracking-tighter uppercase italic leading-none">
-                  {destinations[index].label}
-                </h1>
-                <div className="w-48 h-[1px] bg-gradient-to-r from-transparent via-green-500 to-transparent mt-8 opacity-50" />
-              </motion.div>
-            </AnimatePresence>
-          </div>
-
-          {/* SECTION CARD STACK (Placée ici pour l'équilibre visuel) */}
-          <div className="pointer-events-auto mt-4 mb-10">
-            <CardStack items={LOG_CARDS} offset={15} scaleFactor={0.08} />
-          </div>
-
-          {/* Signal Status */}
-          <div className="mt-4">
-            <motion.p
-              key={destinations[index].code}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 0.6 }}
-              className="font-mono text-[10px] tracking-[0.7em] text-green-700 dark:text-green-400 uppercase font-bold"
+          <AnimatePresence mode="wait">
+            <motion.h1
+              key={destinations[index].label}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              className="text-6xl md:text-9xl font-black tracking-tighter uppercase italic dark:text-white text-slate-900"
             >
-              Signal Strength: 100% // {destinations[index].code}
-            </motion.p>
-          </div>
+              {destinations[index].label}
+            </motion.h1>
+          </AnimatePresence>
+
+          <p className="mt-4 font-mono text-[10px] tracking-[0.5em] text-green-600 opacity-60 uppercase">
+            {destinations[index].code}
+          </p>
         </div>
 
-        {/* Overlay de vignettage pour focus sur le centre */}
-        <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_center,transparent_0%,white_90%)] dark:bg-[radial-gradient(circle_at_center,transparent_0%,#020408_95%)] opacity-40" />
-      </main>
-    </>
+        {/* Ombre de transition vers la section suivante */}
+        <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-white dark:from-[#020408] to-transparent z-20" />
+      </section>
+
+      {/* SECTION 2 : CARD STACK (En bas de page) */}
+      <section className="relative z-30 w-full py-24 px-6 flex flex-col items-center bg-white dark:bg-[#020408] border-t border-border/10">
+        <div className="max-w-4xl w-full flex flex-col md:flex-row items-center justify-between gap-16">
+          {/* Texte de Gauche - Data Info */}
+          <div className="flex flex-col space-y-4 text-center md:text-left">
+            <h2 className="text-2xl font-bold tracking-tight uppercase">
+              Real-time Node Logs
+            </h2>
+            <p className="text-sm text-foreground/40 max-w-xs font-medium leading-relaxed">
+              Monitoring global data flow and infrastructure health across the
+              Ivory Coast backbone.
+            </p>
+            <div className="flex items-center justify-center md:justify-start gap-2 text-green-500 font-mono text-[10px] tracking-widest uppercase">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+              </span>
+              System Live
+            </div>
+          </div>
+
+          {/* Le Stack de Cartes */}
+          <div className="flex justify-center items-center h-80">
+            <CardStack items={LOG_CARDS} />
+          </div>
+        </div>
+      </section>
+
+      {/* FOOTER ESPACEMENT */}
+      <footer className="py-10 border-t border-border/5 border-dashed text-center">
+        <p className="text-[9px] uppercase tracking-[0.5em] opacity-20">
+          Ivory Coast Digital Architecture © 2026
+        </p>
+      </footer>
+    </div>
   );
 }
