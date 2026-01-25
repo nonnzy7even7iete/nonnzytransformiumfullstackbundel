@@ -2,17 +2,27 @@
 
 import { cn } from "@/lib/utils";
 
+interface NoiseBackgroundProps {
+  children?: React.ReactNode;
+  className?: string; // Style du contenu interne (padding, etc.)
+  containerClassName?: string; // Style du cadre (radius, shadow)
+  gradientColors?: string[]; // Couleurs de la ligne [Start, Middle, End]
+  duration?: number; // Durée d'une rotation en secondes
+  animating?: boolean; // Possibilité de mettre l'animation en pause
+}
+
 export const NoiseBackground = ({
   children,
   className,
   containerClassName,
-  gradientColors = ["#009E60", "#FFFFFF", "#FF8200"],
-}: any) => {
+  gradientColors = ["#009E60", "#FFFFFF", "#FF8200"], // Couleurs CI par défaut
+  duration = 8, // Vitesse par défaut (ultra lente)
+  animating = true,
+}: NoiseBackgroundProps) => {
   return (
     <div
       className={cn(
         "relative p-[2px] overflow-hidden group",
-        // On laisse le radius être géré par l'appelant via containerClassName
         containerClassName
       )}
     >
@@ -32,7 +42,8 @@ export const NoiseBackground = ({
             ${gradientColors[1]} 90%, 
             ${gradientColors[2]} 100%
           );
-          animation: rotate-snake 8s linear infinite;
+          animation: rotate-snake ${duration}s linear infinite;
+          animation-play-state: ${animating ? "running" : "paused"};
           will-change: transform;
         }
         .content-shield {
@@ -40,21 +51,20 @@ export const NoiseBackground = ({
           z-index: 10;
           width: 100%;
           height: 100%;
-          border-radius: inherit; /* Fusion parfaite avec le parent */
+          border-radius: inherit;
           background: white;
           transition: background 0.5s ease;
         }
         .dark .content-shield {
-          background: #020408; /* Noir profond */
+          background: #020408;
         }
       `}</style>
 
-      {/* La ligne de lumière "Snake" */}
+      {/* La ligne (Snake) */}
       <div className="snake-trace" />
 
-      {/* Le bouclier interne qui cache le centre du gradient */}
+      {/* Le bouclier (Shield) */}
       <div className="content-shield">
-        {/* Texture Noise subtile */}
         <div className="pointer-events-none absolute inset-0 z-20 opacity-[0.03] mix-blend-overlay">
           <div className="absolute inset-0 bg-[url('https://assets.aceternity.com/noise.webp')] bg-repeat" />
         </div>

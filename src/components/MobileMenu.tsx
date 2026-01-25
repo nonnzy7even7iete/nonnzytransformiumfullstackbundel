@@ -70,11 +70,10 @@ export default function MobileMenu({ links, session }: MobileMenuProps) {
           animation: raad-shine-linear 12s cubic-bezier(0.4, 0, 0.2, 1) infinite;
         }
 
-        /* Suppression propre du X de Shadcn */
         .absolute.right-4.top-4.rounded-sm.opacity-70 { display: none !important; }
       `}</style>
 
-      {/* TRIGGER : BURGER MINIMALISTE */}
+      {/* TRIGGER : BURGER */}
       <SheetTrigger className="group flex flex-col items-end gap-[6px] p-2 outline-none border-none bg-transparent cursor-pointer">
         <div className="h-[1.5px] w-6 bg-foreground transition-all duration-300 group-hover:w-4" />
         <div className="h-[1.5px] w-4 bg-foreground transition-all duration-300 group-hover:w-6" />
@@ -84,14 +83,12 @@ export default function MobileMenu({ links, session }: MobileMenuProps) {
         side="right"
         className="vercel-font flex flex-col p-0 w-[85%] sm:w-[350px] !bg-white dark:!bg-[#020408] border-l border-border/10 outline-none shadow-2xl transition-colors duration-500"
       >
-        {/* CLOSE BUTTON AREA */}
         <div className="flex justify-end p-6">
           <SheetClose className="group outline-none border-none bg-transparent cursor-pointer">
             <div className="h-[1.5px] w-8 bg-foreground/20 group-hover:bg-foreground transition-colors rounded-full" />
           </SheetClose>
         </div>
 
-        {/* PROFILE AREA */}
         <div className="px-8 pb-8 space-y-1">
           <h2 className="text-[18px] font-black italic tracking-tighter text-foreground uppercase">
             {session?.user?.name || "Global Node"}
@@ -103,7 +100,6 @@ export default function MobileMenu({ links, session }: MobileMenuProps) {
 
         <div className="h-[1px] w-full bg-border/5" />
 
-        {/* NAVIGATION LINKS */}
         <nav className="flex-grow p-[14px] glass-nav-container gap-1">
           {links.map((link) => (
             <Link
@@ -119,7 +115,7 @@ export default function MobileMenu({ links, session }: MobileMenuProps) {
           ))}
         </nav>
 
-        {/* FOOTER SECTION WITH NOISE COMPONENT */}
+        {/* FOOTER : GESTION DES PROPS DYNAMIQUE */}
         <div className="mt-auto border-t border-border/5 bg-black/[0.01] dark:bg-white/[0.01] p-6 space-y-6">
           <div className="flex items-center justify-between px-2">
             <div className="space-y-0.5">
@@ -139,10 +135,12 @@ export default function MobileMenu({ links, session }: MobileMenuProps) {
             </div>
           </div>
 
-          {/* SENSORISME : UPGRADE TO PRO SANS CASSURE */}
+          {/* APPEL DU COMPOSANT AVEC MANIPULATION DES PROPS */}
           <NoiseBackground
+            duration={10} // Lenteur sensorielle (8-12s est le sweet spot)
+            gradientColors={["#009E60", "#FFFFFF", "#FF8200"]} // Couleurs CI
             containerClassName="rounded-2xl shadow-2xl"
-            className="p-0" // Reset padding interne pour laisser Link gérer l'espace
+            className="p-0"
           >
             <Link
               href="/upgrade"
