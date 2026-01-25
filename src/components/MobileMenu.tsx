@@ -115,19 +115,22 @@ export default function MobileMenu({ links, session }: MobileMenuProps) {
           ))}
         </nav>
 
-        {/* FOOTER : GESTION DES PROPS DYNAMIQUE */}
-        <div className="mt-auto border-t border-border/5 bg-black/[0.01] dark:bg-white/[0.01] p-6 space-y-6">
+        {/* FOOTER : POLISSAGE DES ESPACEMENTS */}
+        <div className="mt-auto border-t border-border/5 bg-black/[0.01] dark:bg-white/[0.01] p-6 pt-8 space-y-10">
+          {/* SECTION INFOS : RESPIRATION ACCRUE */}
           <div className="flex items-center justify-between px-2">
-            <div className="space-y-0.5">
-              <p className="raad-effect-pro text-[10px] font-black uppercase tracking-[0.3em]">
+            <div className="space-y-2">
+              {" "}
+              {/* Respiration entre titre et sous-titre */}
+              <p className="raad-effect-pro text-[11px] font-black uppercase tracking-[0.4em]">
                 Ivory Coast
               </p>
-              <p className="text-[7px] uppercase tracking-[0.2em] text-foreground/20 italic font-bold">
+              <p className="text-[8px] uppercase tracking-[0.2em] text-foreground/20 italic font-bold leading-none">
                 Data Hub Terminal
               </p>
             </div>
 
-            <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-green-500/5 border border-green-500/10">
+            <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-green-500/5 border border-green-500/10">
               <span className="h-1.5 w-1.5 rounded-full bg-green-500 animate-pulse" />
               <span className="text-[9px] font-bold text-green-600 dark:text-green-500 uppercase tracking-widest">
                 Active
@@ -135,10 +138,10 @@ export default function MobileMenu({ links, session }: MobileMenuProps) {
             </div>
           </div>
 
-          {/* APPEL DU COMPOSANT AVEC MANIPULATION DES PROPS */}
+          {/* ESPACE DE SÉPARATION VOLONTAIRE (Space-y-10 sur le parent gère la distance avec le Noise) */}
           <NoiseBackground
-            duration={10} // Lenteur sensorielle (8-12s est le sweet spot)
-            gradientColors={["#009E60", "#FFFFFF", "#FF8200"]} // Couleurs CI
+            duration={12}
+            gradientColors={["#009E60", "#FFFFFF", "#FF8200"]}
             containerClassName="rounded-2xl shadow-2xl"
             className="p-0"
           >
