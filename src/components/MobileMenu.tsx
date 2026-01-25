@@ -91,7 +91,7 @@ export default function MobileMenu({ links, session }: MobileMenuProps) {
 
         <div className="px-8 pb-8 space-y-1">
           <h2 className="text-[18px] font-black italic tracking-tighter text-foreground uppercase">
-            {session?.user?.name || "Global Node"}
+            {session?.user?.name || "Nonnzytr "}
           </h2>
           <p className="text-[12px] text-foreground/30 font-mono font-medium truncate">
             {session?.user?.email || "secure.connection@ivorycoast.io"}
