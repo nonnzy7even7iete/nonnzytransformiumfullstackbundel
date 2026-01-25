@@ -1,33 +1,29 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { motion } from "framer-motion";
-import { useEffect, useState } from "react";
 
 export const NoiseBackground = ({
   children,
   className,
   containerClassName,
-  // Les couleurs nationales pour la ligne de lumière
   gradientColors = ["#009E60", "#FFFFFF", "#FF8200"],
 }: any) => {
-  // On utilise une animation CSS infinie pour la performance et la fluidité totale
   return (
     <div
       className={cn(
-        "relative p-[2px] overflow-hidden rounded-[2.5rem]", // Épaisseur de la ligne (2px)
-        "bg-slate-100 dark:bg-zinc-900/50", // Un fond très neutre pour la base du border
+        "relative p-[2px] overflow-hidden group",
+        // On laisse le radius être géré par l'appelant via containerClassName
         containerClassName
       )}
     >
       <style>{`
-        @keyframes rotate-light {
+        @keyframes rotate-snake {
           0% { transform: rotate(0deg); }
           100% { transform: rotate(360deg); }
         }
-        .light-trace {
+        .snake-trace {
           position: absolute;
-          inset: -100%; /* Largeur immense pour couvrir tous les angles */
+          inset: -150%; 
           background: conic-gradient(
             from 0deg,
             transparent 0%,
@@ -36,36 +32,36 @@ export const NoiseBackground = ({
             ${gradientColors[1]} 90%, 
             ${gradientColors[2]} 100%
           );
-          animation: rotate-light 8s linear infinite;
+          animation: rotate-snake 8s linear infinite;
           will-change: transform;
         }
-        /* Correction spécifique pour le mode Light pour éviter la cassure blanche */
-        .inner-content {
+        .content-shield {
           position: relative;
           z-index: 10;
           width: 100%;
           height: 100%;
-          border-radius: calc(2.5rem - 2px);
-          background: white; /* Blanc Pur en Light */
+          border-radius: inherit; /* Fusion parfaite avec le parent */
+          background: white;
+          transition: background 0.5s ease;
         }
-        :target .inner-content, 
-        .dark .inner-content {
-          background: #020408; /* Noir Pur en Dark */
+        .dark .content-shield {
+          background: #020408; /* Noir profond */
         }
       `}</style>
 
-      {/* 1. LA LIGNE QUI SE DÉPLACE (L'ACTIVITÉ) */}
-      <div className="light-trace" />
+      {/* La ligne de lumière "Snake" */}
+      <div className="snake-trace" />
 
-      {/* 2. LE CENTRE OPAQUE (LE SENSORISME) */}
-      <div className="inner-content">
-        {/* 3. TEXTURE DE BRUIT (Subtile sur le centre) */}
-        <div className="pointer-events-none absolute inset-0 z-20 overflow-hidden opacity-[0.03] mix-blend-overlay border-none">
+      {/* Le bouclier interne qui cache le centre du gradient */}
+      <div className="content-shield">
+        {/* Texture Noise subtile */}
+        <div className="pointer-events-none absolute inset-0 z-20 opacity-[0.03] mix-blend-overlay">
           <div className="absolute inset-0 bg-[url('https://assets.aceternity.com/noise.webp')] bg-repeat" />
         </div>
 
-        {/* 4. CONTENU */}
-        <div className={cn("relative z-30 p-1", className)}>{children}</div>
+        <div className={cn("relative z-30 h-full w-full", className)}>
+          {children}
+        </div>
       </div>
     </div>
   );
