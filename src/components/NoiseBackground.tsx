@@ -7,55 +7,27 @@ import {
   useMotionTemplate,
   useMotionValue,
   useSpring,
-  useTransform,
-  MotionValue,
 } from "framer-motion";
 import { useEffect, useRef } from "react";
-
-function GradientLayer({
-  springX,
-  springY,
-  gradientColor,
-  opacity,
-  multiplier,
-}: {
-  springX: MotionValue<number>;
-  springY: MotionValue<number>;
-  gradientColor: string;
-  opacity: number;
-  multiplier: number;
-}) {
-  const x = useTransform(springX, (val) => val * multiplier);
-  const y = useTransform(springY, (val) => val * multiplier);
-  // Augmentation du rayon du gradient pour qu'il touche mieux les bords
-  const background = useMotionTemplate`radial-gradient(circle at ${x}px ${y}px, ${gradientColor} 0%, transparent 65%)`;
-
-  return (
-    <motion.div className="absolute inset-0" style={{ opacity, background }} />
-  );
-}
 
 export const NoiseBackground = ({
   children,
   className,
   containerClassName,
-  gradientColors = [
-    "rgba(0, 158, 96, 0.6)", // Vert Émeraude plus saturé
-    "rgba(255, 255, 255, 0.5)", // Blanc plus présent
-    "rgba(255, 130, 0, 0.5)", // Orange Solaire plus chaud
-  ],
-  noiseIntensity = 0.2, // Un peu plus de grain pour le côté hardware
-  speed = 0.06, // Légère accélération pour sentir le mouvement
+  // Couleurs vives pour le halo (Vert CI, Blanc, Orange CI)
+  gradientColors = ["#009E60", "#FFFFFF", "#FF8200"],
+  noiseIntensity = 0.05,
+  speed = 0.015, // Ultra lent pour le sensorisme
   animating = true,
 }: any) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const x = useMotionValue(0);
   const y = useMotionValue(0);
 
-  const springX = useSpring(x, { stiffness: 40, damping: 25 });
-  const springY = useSpring(y, { stiffness: 40, damping: 25 });
+  // Springs ultra-smooth pour supprimer toute saccade
+  const springX = useSpring(x, { stiffness: 20, damping: 40 });
+  const springY = useSpring(y, { stiffness: 20, damping: 40 });
 
-  // Logique de mouvement auto-généré
   const velocityRef = useRef({ x: speed, y: speed });
   const lastDirectionChangeRef = useRef(0);
 
@@ -70,7 +42,8 @@ export const NoiseBackground = ({
     if (!animating || !containerRef.current) return;
     const rect = containerRef.current.getBoundingClientRect();
 
-    if (time - lastDirectionChangeRef.current > 2500) {
+    // Changement de direction très rare (toutes les 5 à 8 secondes)
+    if (time - lastDirectionChangeRef.current > 5000 + Math.random() * 3000) {
       const angle = Math.random() * Math.PI * 2;
       velocityRef.current = {
         x: Math.cos(angle) * speed,
@@ -82,6 +55,7 @@ export const NoiseBackground = ({
     let newX = x.get() + velocityRef.current.x * 16;
     let newY = y.get() + velocityRef.current.y * 16;
 
+    // Rebond fluide sur les bords
     if (newX < 0 || newX > rect.width) velocityRef.current.x *= -1;
     if (newY < 0 || newY > rect.height) velocityRef.current.y *= -1;
 
@@ -89,60 +63,42 @@ export const NoiseBackground = ({
     y.set(newY);
   });
 
-  // Animation spécifique pour la bordure (Glow Border)
-  const borderBackground = useMotionTemplate`radial-gradient(600px circle at ${springX}px ${springY}px, rgba(0, 158, 96, 0.4), transparent 40%)`;
+  // Logique du halo de bordure : un dégradé conique/radial qui suit le point invisible
+  const borderMask = useMotionTemplate`radial-gradient(400px circle at ${springX}px ${springY}px, ${gradientColors[0]}, ${gradientColors[1]}, ${gradientColors[2]}, transparent 80%)`;
 
   return (
     <div
       ref={containerRef}
       className={cn(
-        // Fond adaptatif : Blanc cassé en light mode / Noir profond en dark mode
-        "relative overflow-hidden rounded-[2rem] p-[1.5px] transition-colors duration-500",
-        "bg-slate-200/50 dark:bg-slate-950/80",
+        "relative overflow-hidden rounded-[2rem] p-[2px] transition-colors duration-1000",
+        // La bordure réagit de la même manière dans les deux modes
+        "bg-slate-200 dark:bg-slate-800",
         containerClassName
       )}
     >
-      {/* COUCHE DE BORDURE ANIMÉE (Le Glow qui tourne) */}
+      {/* 1. LE HALO DE BORDURE (LUMIÈRE VIVE) */}
       <motion.div
-        className="absolute inset-0 z-0 opacity-100"
-        style={{ background: borderBackground }}
+        className="absolute inset-0 z-0 will-change-transform"
+        style={{ background: borderMask }}
       />
 
-      {/* CONTENEUR INTERNE (Masque la bordure pour ne laisser qu'un filet) */}
-      <div className="absolute inset-[1px] rounded-[calc(2rem-1px)] bg-white/90 dark:bg-black/90 z-0" />
+      {/* 2. LE CENTRE OPAQUE (PROTECTION DU CONTENU) */}
+      <div
+        className={cn(
+          "absolute inset-[2px] rounded-[calc(2rem-2px)] z-10 transition-colors duration-1000",
+          "bg-white dark:bg-[#020408]" // Zéro transparence ici
+        )}
+      />
 
-      {/* CALQUES DE COULEURS */}
-      <div className="absolute inset-0 z-10 opacity-60 dark:opacity-40">
-        <GradientLayer
-          springX={springX}
-          springY={springY}
-          gradientColor={gradientColors[0]}
-          opacity={0.5}
-          multiplier={1}
-        />
-        <GradientLayer
-          springX={springX}
-          springY={springY}
-          gradientColor={gradientColors[1]}
-          opacity={0.3}
-          multiplier={0.7}
-        />
-        <GradientLayer
-          springX={springX}
-          springY={springY}
-          gradientColor={gradientColors[2]}
-          opacity={0.4}
-          multiplier={1.2}
-        />
+      {/* 3. TEXTURE DE BRUIT (SUBTILE MAIS PRÉSENTE) */}
+      <div className="pointer-events-none absolute inset-0 z-20 overflow-hidden opacity-[0.04] mix-blend-overlay">
+        <div className="absolute inset-0 bg-[url('https://assets.aceternity.com/noise.webp')] bg-repeat shadow-inner" />
       </div>
 
-      {/* TEXTURE DE BRUIT (Adaptée au mode) */}
-      <div className="pointer-events-none absolute inset-0 z-20 overflow-hidden opacity-[0.12] dark:opacity-[0.08] mix-blend-overlay">
-        <div className="absolute inset-0 bg-[url('https://assets.aceternity.com/noise.webp')] bg-repeat" />
+      {/* 4. CONTENU */}
+      <div className={cn("relative z-30 w-full h-full", className)}>
+        {children}
       </div>
-
-      {/* CONTENU */}
-      <div className={cn("relative z-30", className)}>{children}</div>
     </div>
   );
 };
