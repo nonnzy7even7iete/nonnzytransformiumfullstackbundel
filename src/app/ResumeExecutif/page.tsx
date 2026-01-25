@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import dynamic from "next/dynamic";
 import { motion, AnimatePresence } from "framer-motion";
 import NavbarFront from "@/components/NavbarFront";
-import { CardStack } from "@/components/Cardstack";
+import { CardStack } from "@/components/CardStack";
 
 // ==========================================================
 // 1. IMPORT DYNAMIQUE DU GLOBE
