@@ -1,80 +1,71 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import {
-  motion,
-  useAnimationFrame,
-  useMotionTemplate,
-  useMotionValue,
-  useSpring,
-} from "framer-motion";
-import { useEffect, useRef } from "react";
+import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
 
 export const NoiseBackground = ({
   children,
   className,
   containerClassName,
+  // Les couleurs nationales pour la ligne de lumière
   gradientColors = ["#009E60", "#FFFFFF", "#FF8200"],
-  speed = 0.5, // Contrôle la vitesse de l'orbite
-  animating = true,
 }: any) => {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const x = useMotionValue(0);
-  const y = useMotionValue(0);
-
-  // Springs ultra-doux pour l'effet "aimant" Google
-  const springX = useSpring(x, { stiffness: 30, damping: 30 });
-  const springY = useSpring(y, { stiffness: 30, damping: 30 });
-
-  useAnimationFrame((time) => {
-    if (!animating || !containerRef.current) return;
-    const rect = containerRef.current.getBoundingClientRect();
-
-    // Logique d'orbite elliptique (Lissajous curve) pour un mouvement organique
-    // Cela crée un mouvement fluide qui ne semble jamais se répéter
-    const t = time * 0.0005 * speed;
-    const newX = (Math.cos(t * 0.7) * 0.5 + 0.5) * rect.width;
-    const newY = (Math.sin(t * 1.1) * 0.5 + 0.5) * rect.height;
-
-    x.set(newX);
-    y.set(newY);
-  });
-
-  // Le secret du "Google Glow" : Un rayon très large (600px) qui rend la bordure vivante
-  const borderMask = useMotionTemplate`radial-gradient(600px circle at ${springX}px ${springY}px, ${gradientColors[0]} 0%, ${gradientColors[1]} 30%, ${gradientColors[2]} 60%, transparent 100%)`;
-
+  // On utilise une animation CSS infinie pour la performance et la fluidité totale
   return (
     <div
-      ref={containerRef}
       className={cn(
-        "relative overflow-hidden rounded-[2.5rem] p-[2px] transition-all duration-1000 shadow-sm",
-        "bg-transparent",
+        "relative p-[2px] overflow-hidden rounded-[2.5rem]", // Épaisseur de la ligne (2px)
+        "bg-slate-100 dark:bg-zinc-900/50", // Un fond très neutre pour la base du border
         containerClassName
       )}
     >
-      {/* 1. LE HALO DYNAMIQUE (L'EFFET GOOGLE) */}
-      <motion.div
-        className="absolute inset-0 z-0 will-change-transform scale-[1.2]"
-        style={{ background: borderMask }}
-      />
+      <style>{`
+        @keyframes rotate-light {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
+        }
+        .light-trace {
+          position: absolute;
+          inset: -100%; /* Largeur immense pour couvrir tous les angles */
+          background: conic-gradient(
+            from 0deg,
+            transparent 0%,
+            transparent 70%, 
+            ${gradientColors[0]} 80%, 
+            ${gradientColors[1]} 90%, 
+            ${gradientColors[2]} 100%
+          );
+          animation: rotate-light 8s linear infinite;
+          will-change: transform;
+        }
+        /* Correction spécifique pour le mode Light pour éviter la cassure blanche */
+        .inner-content {
+          position: relative;
+          z-index: 10;
+          width: 100%;
+          height: 100%;
+          border-radius: calc(2.5rem - 2px);
+          background: white; /* Blanc Pur en Light */
+        }
+        :target .inner-content, 
+        .dark .inner-content {
+          background: #020408; /* Noir Pur en Dark */
+        }
+      `}</style>
 
-      {/* 2. LE CENTRE OPAQUE SCÉLLÉ (ZÉRO CASSURE) */}
-      <div
-        className={cn(
-          "absolute inset-[2px] rounded-[calc(2.5rem-2px)] z-10 transition-colors duration-1000",
-          "bg-white dark:bg-[#020408]",
-          "ring-[0.5px] ring-white/10 dark:ring-white/5"
-        )}
-      />
+      {/* 1. LA LIGNE QUI SE DÉPLACE (L'ACTIVITÉ) */}
+      <div className="light-trace" />
 
-      {/* 3. TEXTURE SENSORIELLE (BRUIT TRÈS FIN) */}
-      <div className="pointer-events-none absolute inset-0 z-20 overflow-hidden opacity-[0.03] mix-blend-overlay">
-        <div className="absolute inset-0 bg-[url('https://assets.aceternity.com/noise.webp')] bg-repeat" />
-      </div>
+      {/* 2. LE CENTRE OPAQUE (LE SENSORISME) */}
+      <div className="inner-content">
+        {/* 3. TEXTURE DE BRUIT (Subtile sur le centre) */}
+        <div className="pointer-events-none absolute inset-0 z-20 overflow-hidden opacity-[0.03] mix-blend-overlay border-none">
+          <div className="absolute inset-0 bg-[url('https://assets.aceternity.com/noise.webp')] bg-repeat" />
+        </div>
 
-      {/* 4. CONTENU */}
-      <div className={cn("relative z-30 w-full h-full", className)}>
-        {children}
+        {/* 4. CONTENU */}
+        <div className={cn("relative z-30 p-1", className)}>{children}</div>
       </div>
     </div>
   );
