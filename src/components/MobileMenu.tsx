@@ -4,8 +4,8 @@ import React, { useState, useEffect } from "react";
 import dynamic from "next/dynamic";
 import { motion, AnimatePresence } from "framer-motion";
 import NavbarFront from "@/components/NavbarFront";
-import { CardStack } from "@/components/ui/card-stack";
-import { NoiseBackground } from "@/components/ui/noise-background"; // Ton nouveau composant
+import { CardStack } from "@/components/CardStack";
+import { NoiseBackground } from "@/components/NoiseBackground"; // Ton nouveau composant
 
 const World = dynamic(
   () => import("@/components/ui/globe").then((m) => m.World),
