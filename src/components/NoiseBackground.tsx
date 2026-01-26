@@ -15,7 +15,7 @@ export const NoiseBackground = ({
   children,
   className,
   containerClassName,
-  gradientColors = ["#009E60", "#009E60", "#FF8200"],
+  gradientColors = ["#009E60", "#009E60", "#FF8200", "#FF8200"],
   duration = 10,
   animating = true,
 }: NoiseBackgroundProps) => {
