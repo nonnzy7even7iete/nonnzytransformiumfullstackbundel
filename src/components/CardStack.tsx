@@ -59,13 +59,16 @@ export const CardStack = ({
         return (
           <motion.div
             key={card.id}
-            className="absolute h-56 w-full md:h-60 rounded-3xl p-6 md:p-8 shadow-2xl border border-white/20 flex flex-col justify-between overflow-hidden"
+            className="absolute h-56 w-full md:h-60 rounded-3xl p-6 md:p-8 shadow-2xl border border-white/[0.12] flex flex-col justify-between overflow-hidden"
             style={{
               transformOrigin: "top center",
-              /* Glassmorphism & Radial Gradient */
-              background: `radial-gradient(circle at 20% 20%, #22c55e40 0%, #f9731630 100%)`,
-              backdropFilter: "blur(12px)",
-              WebkitBackdropFilter: "blur(12px)",
+              /* Mix de Noir à 77% (C4 en hex) et dégradé radial */
+              background: `
+                radial-gradient(circle at 20% 20%, #22c55e30 0%, #f9731620 50%, transparent 100%),
+                linear-gradient(135deg, #000000C4 0%, #000000C4 100%)
+              `,
+              backdropFilter: "blur(16px)",
+              WebkitBackdropFilter: "blur(16px)",
             }}
             animate={{
               top: index * -cardOffset,
@@ -73,18 +76,18 @@ export const CardStack = ({
               zIndex: cards.length - index,
             }}
           >
-            {/* Overlay subtile pour renforcer l'effet de profondeur */}
-            <div className="absolute inset-0 bg-white/5 dark:bg-black/5 pointer-events-none" />
+            {/* Grain/Bruit optionnel pour le style verre */}
+            <div className="absolute inset-0 opacity-[0.03] pointer-events-none bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
 
-            <div className="relative z-10 font-normal text-[12px] md:text-[14px] text-foreground/90 leading-relaxed overflow-hidden">
+            <div className="relative z-10 font-normal text-[12px] md:text-[14px] text-white/90 leading-relaxed overflow-hidden">
               {card.content}
             </div>
 
             <div className="relative z-10 flex flex-col gap-0.5 md:gap-1">
-              <p className="text-foreground font-bold text-[12px] md:text-[13px] tracking-tight uppercase">
+              <p className="text-white font-bold text-[12px] md:text-[13px] tracking-tight uppercase">
                 {card.name}
               </p>
-              <p className="text-foreground/50 font-semibold text-[9px] md:text-[10px] uppercase tracking-widest italic">
+              <p className="text-white/40 font-semibold text-[9px] md:text-[10px] uppercase tracking-widest italic">
                 {card.designation}
               </p>
             </div>
