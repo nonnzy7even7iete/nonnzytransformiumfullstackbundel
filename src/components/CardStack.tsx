@@ -59,16 +59,16 @@ export const CardStack = ({
         return (
           <motion.div
             key={card.id}
-            className="absolute h-56 w-full md:h-60 rounded-3xl p-6 md:p-8 shadow-2xl border border-white/[0.12] flex flex-col justify-between overflow-hidden"
+            className="absolute h-56 w-full md:h-60 rounded-3xl p-6 md:p-8 shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-white/10 flex flex-col justify-between overflow-hidden"
             style={{
               transformOrigin: "top center",
-              /* Mix de Noir à 77% (C4 en hex) et dégradé radial */
+              /* Background composite : Noir à 90% + dégradé radial d'angle */
               background: `
-                radial-gradient(circle at 20% 20%, #22c55e30 0%, #f9731620 50%, transparent 100%),
-                linear-gradient(135deg, #000000C4 0%, #000000C4 100%)
+                radial-gradient(circle at 15% 15%, #22c55e25 0%, #f9731615 30%, transparent 70%),
+                #000000E6
               `,
-              backdropFilter: "blur(16px)",
-              WebkitBackdropFilter: "blur(16px)",
+              backdropFilter: "blur(20px)",
+              WebkitBackdropFilter: "blur(20px)",
             }}
             animate={{
               top: index * -cardOffset,
@@ -76,10 +76,10 @@ export const CardStack = ({
               zIndex: cards.length - index,
             }}
           >
-            {/* Grain/Bruit optionnel pour le style verre */}
-            <div className="absolute inset-0 opacity-[0.03] pointer-events-none bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
+            {/* Lueur de bordure pour l'angle actif */}
+            <div className="absolute top-0 left-0 w-32 h-32 bg-green-500/10 blur-[50px] pointer-events-none" />
 
-            <div className="relative z-10 font-normal text-[12px] md:text-[14px] text-white/90 leading-relaxed overflow-hidden">
+            <div className="relative z-10 font-medium text-[12px] md:text-[14px] text-white/80 leading-relaxed">
               {card.content}
             </div>
 
