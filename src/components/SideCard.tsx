@@ -18,26 +18,20 @@ export default function SideCard({
   location,
   className,
 }: SideCardProps) {
-  // --- CONFIGURATION EXPERT ---
-  const topPadding = "4px"; // Change ici pour la distance image <-> bord haut de la card
-  const textGap = "2px"; // L'espace entre l'image et le début du texte
-
   return (
     <div
       className={cn(
-        "flex flex-col rounded-2xl shadow-2xl overflow-hidden text-center transition-all duration-300",
+        "flex flex-col rounded-2xl shadow-lg overflow-hidden text-center transition-all duration-300",
         "bg-white dark:bg-black/40 backdrop-blur-2xl border border-gray-200 dark:border-white/10",
         "w-[90vw] md:w-[300px]",
-        "px-4 pb-6", // On garde du padding latéral et bas, mais on gère le haut manuellement
         className
       )}
-      style={{ paddingTop: topPadding }}
     >
-      {/* LE CONTENEUR IMAGE 
-          On réduit la hauteur à 180px pour un look plus élancé
+      {/* LE CONTENEUR IMAGE (L'Enfant Direct)
+          - p-[2px] pb-0 : Applique 2px à gauche, droite et haut uniquement.
       */}
-      <div className="relative w-full h-[180px] bg-neutral-200 dark:bg-white/10 rounded-xl overflow-hidden">
-        <div className="absolute inset-0 overflow-hidden">
+      <div className="relative w-full h-[200px] p-[2px] pb-0">
+        <div className="relative w-full h-full overflow-hidden rounded-t-[calc(1rem-2px)] rounded-b-md bg-neutral-200 dark:bg-white/5">
           <Image
             src={imageSrc}
             alt={title}
@@ -48,24 +42,19 @@ export default function SideCard({
         </div>
       </div>
 
-      {/* ZONE TEXTE SERRÉE
-          mt-[2px] : On colle le texte à l'image selon ton souhait
+      {/* ZONE TEXTE : DÉCOLLÉE
+          - py-6 : On redonne de l'air pour que le texte soit bien détaché de l'image.
       */}
-      <div
-        className="flex flex-col items-center"
-        style={{ marginTop: textGap }}
-      >
-        <h2 className="text-base font-black text-gray-900 dark:text-white leading-tight uppercase tracking-tighter">
+      <div className="flex flex-col gap-2 items-center py-6 px-4">
+        <h2 className="text-lg font-bold text-gray-900 dark:text-white leading-tight">
           {title}
         </h2>
-        <p className="text-gray-600 dark:text-white/60 text-[11px] leading-relaxed px-2">
+        <p className="text-gray-600 dark:text-white/70 text-sm">
           {description}
         </p>
 
         {location && (
-          <p className="text-gray-400/50 text-[9px] uppercase tracking-widest mt-1 font-bold">
-            {location}
-          </p>
+          <p className="text-gray-400 text-xs italic mt-1">{location}</p>
         )}
       </div>
     </div>
