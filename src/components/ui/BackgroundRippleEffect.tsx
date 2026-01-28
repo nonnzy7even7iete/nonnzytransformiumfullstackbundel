@@ -1,7 +1,6 @@
 "use client";
 import React, { useMemo, useState } from "react";
 
-// --- TYPES ---
 type DivGridProps = {
   rows: number;
   cols: number;
@@ -10,54 +9,50 @@ type DivGridProps = {
   onCellClick?: (row: number, col: number) => void;
 };
 
-// --- COMPOSANT DES HALOS TECH RÉPARTIS ---
+// --- COMPOSANT TORCHE LIGHTS (ASYMÉTRIQUE) ---
 const SideTechLights = () => {
   return (
     <div className="absolute inset-0 h-full w-full overflow-hidden pointer-events-none">
-      {/* 1. Halo Gauche (Haut) */}
-      <div 
-        className="absolute left-[-5%] top-0 w-[35%] h-[40%] opacity-20 dark:opacity-30"
+      {/* 1. TORCHE : Left Top - Faisceau descendant vers la droite */}
+      <div
+        className="absolute left-[-5%] top-[-5%] w-[50%] h-[40%] opacity-20 dark:opacity-30"
         style={{
-          background: 'radial-gradient(circle at center, rgba(0, 255, 136, 0.25) 0%, transparent 70%)',
-          filter: 'blur(80px)',
-        }}
-      />
-      
-      {/* 2. Halo CENTRAL (Milieu de page) */}
-      <div 
-        className="absolute left-1/2 top-1/3 -translate-x-1/2 w-[45%] h-[25%] opacity-15 dark:opacity-20"
-        style={{
-          background: 'radial-gradient(ellipse at center, rgba(0, 255, 136, 0.15) 0%, transparent 80%)',
-          filter: 'blur(100px)',
+          background:
+            "radial-gradient(circle at 0% 0%, rgba(0, 255, 136, 0.4) 0%, transparent 75%)",
+          transform: "rotate(5deg)",
+          filter: "blur(60px)",
         }}
       />
 
-      {/* 3. Halo Droite (Milieu/Bas) */}
-      <div 
-        className="absolute right-[-5%] top-[50%] w-[40%] h-[40%] opacity-20 dark:opacity-25"
+      {/* 2. TORCHE : Right Center (Un peu plus bas que le premier) */}
+      <div
+        className="absolute right-[-10%] top-[35%] w-[50%] h-[45%] opacity-15 dark:opacity-25"
         style={{
-          background: 'radial-gradient(circle at center, rgba(0, 255, 136, 0.2) 0%, transparent 70%)',
-          filter: 'blur(90px)',
+          background:
+            "radial-gradient(circle at 100% 50%, rgba(0, 255, 136, 0.3) 0%, transparent 80%)",
+          transform: "rotate(-10deg)",
+          filter: "blur(90px)",
         }}
       />
 
-      {/* 4. Halo Bas Gauche */}
-      <div 
-        className="absolute left-[5%] bottom-0 w-[30%] h-[30%] opacity-10 dark:opacity-15"
+      {/* 3. TORCHE : Left Bottom - Faisceau remontant */}
+      <div
+        className="absolute left-[-5%] bottom-[-5%] w-[45%] h-[40%] opacity-15 dark:opacity-20"
         style={{
-          background: 'radial-gradient(circle at center, rgba(0, 200, 100, 0.15) 0%, transparent 70%)',
-          filter: 'blur(70px)',
+          background:
+            "radial-gradient(circle at 0% 100%, rgba(0, 200, 100, 0.25) 0%, transparent 75%)",
+          transform: "rotate(-5deg)",
+          filter: "blur(80px)",
         }}
       />
 
-      {/* Lignes Tech Verticales de structure */}
-      <div className="absolute right-4 top-0 h-full w-[1px] bg-gradient-to-b from-emerald-500/20 via-transparent to-emerald-500/10 opacity-30" />
-      <div className="absolute left-4 top-0 h-full w-[1px] bg-gradient-to-b from-emerald-500/10 via-transparent to-emerald-500/20 opacity-30" />
+      {/* Lignes Tech Ultra-fines (Scaling visual) */}
+      <div className="absolute right-[10%] top-0 h-full w-[1px] bg-gradient-to-b from-transparent via-emerald-500/10 to-transparent opacity-20" />
+      <div className="absolute left-[15%] top-0 h-full w-[1px] bg-gradient-to-b from-transparent via-emerald-500/5 to-transparent opacity-20" />
     </div>
   );
 };
 
-// --- COMPOSANT PRINCIPAL ---
 export const BackgroundRippleEffect = ({
   rows = 16,
   cols = 54,
@@ -74,10 +69,10 @@ export const BackgroundRippleEffect = ({
   const [rippleKey, setRippleKey] = useState(0);
 
   return (
-    // "top-0" et "inset-0" garantissent le ZÉRO MARGIN TOP
-    <div className="absolute inset-0 top-0 h-full w-full overflow-hidden bg-transparent">
+    // Pas de margin, pas de padding. Start at 0,0.
+    <div className="absolute inset-0 top-0 left-0 h-full w-full overflow-hidden bg-transparent">
       <SideTechLights />
-      
+
       <div className="relative z-10 w-full h-full">
         <DivGrid
           key={`ripple-${rippleKey}`}
@@ -95,7 +90,6 @@ export const BackgroundRippleEffect = ({
   );
 };
 
-// --- GRILLE INTERACTIVE ---
 const DivGrid = ({
   rows,
   cols,
@@ -110,11 +104,9 @@ const DivGrid = ({
 
   const gridStyle: React.CSSProperties = {
     display: "grid",
-    // Répartition 1fr pour remplir toute la largeur (Scaling)
     gridTemplateColumns: `repeat(${cols}, 1fr)`,
     gridTemplateRows: `repeat(${rows}, ${cellSize}px)`,
     width: "100%",
-    height: "100%",
   };
 
   return (
@@ -132,8 +124,8 @@ const DivGrid = ({
           <div
             key={`cell-${idx}`}
             className={`
-              cell transition-all duration-150
-              opacity-25 hover:opacity-70
+              cell transition-all duration-150 rounded-sm
+              opacity-20 hover:opacity-60
               bg-neutral-950/[0.02] border-neutral-950/[0.04]
               dark:bg-white/[0.02] dark:border-white/[0.06]
               border-[0.5px]
