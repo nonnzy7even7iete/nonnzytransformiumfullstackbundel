@@ -19,7 +19,6 @@ export const NoiseBackground = ({
   duration = 10,
   animating = true,
 }: NoiseBackgroundProps) => {
-  // On génère le CSS dynamiquement en fonction des props
   const dynamicStyles = `
     @keyframes rotate-snake {
       0% { transform: rotate(0deg); }
@@ -46,27 +45,44 @@ export const NoiseBackground = ({
       width: 100%;
       height: 100%;
       border-radius: inherit;
-      background: white;
-      transition: background 0.5s ease;
+      /* SCRIM OVERLAY LOGIC */
+      background: linear-gradient(
+        135deg, 
+        rgba(0, 30, 15, 0.95) 0%, 
+        rgba(2, 4, 8, 1) 100%
+      );
     }
-    .dark .content-shield { background: #020408; }
+    /* Mode Clair : On garde un aspect givré vert mais très sombre */
+    .dark .content-shield { 
+      background: radial-gradient(
+        circle at 0% 0%, 
+        rgba(0, 158, 96, 0.15) 0%, 
+        rgba(2, 4, 8, 1) 80%
+      ); 
+    }
   `;
 
   return (
     <div
       className={cn(
-        "relative p-[2px] overflow-hidden group",
+        "relative p-[2px] overflow-hidden group rounded-2xl",
         containerClassName
       )}
     >
       <style>{dynamicStyles}</style>
 
+      {/* L'animation de bordure "Snake" */}
       <div className="snake-trace" />
 
       <div className="content-shield">
-        <div className="pointer-events-none absolute inset-0 z-20 opacity-[0.03] mix-blend-overlay">
+        {/* TEXTURE DE BRUIT (Expert Texture) */}
+        <div className="pointer-events-none absolute inset-0 z-20 opacity-[0.05] mix-blend-soft-light">
           <div className="absolute inset-0 bg-[url('https://assets.aceternity.com/noise.webp')] bg-repeat" />
         </div>
+
+        {/* OVERLAY DE VIGNETTAGE (Le Scrim final) */}
+        <div className="absolute inset-0 z-25 bg-gradient-to-b from-transparent via-transparent to-black/60 pointer-events-none" />
+
         <div className={cn("relative z-30 h-full w-full", className)}>
           {children}
         </div>
