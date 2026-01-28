@@ -6,7 +6,7 @@ import { useSession } from "next-auth/react";
 import { TextHoverEffect } from "./ui/TextHoverEffect";
 import { ThemeToggle } from "@/components/ui/themeToggle";
 import { Menubar, MenubarMenu, MenubarTrigger } from "@/components/ui/menubar";
-import MobileMenu from "@/components/MobileMenu"; // Ajout du / et vérification de l'export
+import MobileMenu from "@/components/MobileMenu";
 
 export default function NavbarFront() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -18,7 +18,9 @@ export default function NavbarFront() {
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
-      setIsScrolled(currentScrollY > 10);
+      setIsScrolled(currentScrollY > 20);
+
+      // Gestion de la visibilité au scroll (Hide on scroll down)
       if (currentScrollY > lastScrollY && currentScrollY > 100) {
         setIsVisible(false);
       } else {
@@ -52,63 +54,53 @@ export default function NavbarFront() {
   return (
     <>
       <style>{`
-        /* SUBBRILLANCE & FUMÉE NOIRE/GRISE */
         .smoke-hover {
           position: relative;
-          transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
-          border: 1px solid var(--color-border-dual) !important;
-          background: transparent;
+          transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+          border: 1px solid transparent !important;
         }
 
         .smoke-hover:hover {
-          /* Effet de filet de lumière (Surbrillance) */
-          border-color: light-dark(rgba(0,0,0,0.4), rgba(255,255,255,0.5)) !important;
-          background: radial-gradient(circle at center, 
-            rgba(0, 0, 0, 0.6) 0%, 
-            rgba(25, 25, 25, 0.4) 45%, 
-            rgba(50, 50, 50, 0.1) 80%, 
-            transparent 100%
-          ) !important;
-          backdrop-filter: blur(15px) saturate(160%);
-          transform: translateY(-1.5px);
+          border-color: rgba(34, 197, 94, 0.4) !important; /* Rappel du vert Aurora */
+          background: rgba(255, 255, 255, 0.03) !important;
+          backdrop-filter: blur(10px);
+          transform: translateY(-1px);
         }
 
         .gradient-border {
-          background-image: radial-gradient(circle at center, #22c55e 0%, #f97316 40%, #000000 75%, #000000 100%);
-          background-size: 80% 100%;
-          height: 1px; width: 100%;
-          transition: opacity 1000ms ease-in-out;
+          background: linear-gradient(90deg, transparent, #22c55e, #f97316, transparent);
+          height: 1px; 
+          width: 100%;
+          transition: opacity 1.5s ease-in-out;
         }
 
-        *:focus { outline: none !important; ring: 0 !important; }
+        *:focus { outline: none !important; }
       `}</style>
 
       <nav
-        className={`fixed top-0 w-full z-50 transition-all duration-500 h-16 flex items-center ${
+        className={`fixed top-0 w-full z-50 transition-all duration-700 h-20 flex items-center ${
           isVisible ? "translate-y-0" : "-translate-y-full"
         } ${
           isScrolled
-            ? "bg-glass-dual backdrop-blur-xl border-b border-border-dual"
-            : "bg-transparent"
-        }
-        has-[.menubar-root:hover]:scale-[1.01]`}
+            ? "bg-black/60 backdrop-blur-xl border-b border-white/10 shadow-2xl"
+            : "bg-black border-b border-transparent"
+        }`}
       >
-        <div className="flex w-full h-full items-center px-6 relative">
+        <div className="flex w-full h-full items-center px-8 relative">
+          {/* LOGO */}
           <div className="flex items-center w-48 h-full z-[60]">
-            <Link
-              href="/"
-              className="block w-full h-full relative flex items-center"
-            >
+            <Link href="/" className="block w-full h-full flex items-center">
               <TextHoverEffect text="Nonnzytr" />
             </Link>
           </div>
 
+          {/* MENU CENTRAL */}
           <div className="flex-1 hidden md:flex justify-center items-center z-[80]">
-            <Menubar className="menubar-root h-auto bg-glass-dual border border-border-dual rounded-[var(--radius)] p-1 gap-2 shadow-2xl">
+            <Menubar className="h-12 bg-black/40 border border-white/10 rounded-full px-2 gap-1 backdrop-blur-md">
               {navLinks.map((link) => (
                 <MenubarMenu key={link.href}>
                   <Link href={link.href} className="no-underline">
-                    <MenubarTrigger className="smoke-hover cursor-pointer rounded-[calc(var(--radius)-4px)] px-4 py-2 text-[10px] font-bold uppercase tracking-widest transition-all">
+                    <MenubarTrigger className="smoke-hover cursor-pointer rounded-full px-5 py-2 text-[10px] font-black uppercase tracking-[0.2em] text-white/70 hover:text-white transition-all">
                       {link.label}
                     </MenubarTrigger>
                   </Link>
@@ -117,16 +109,16 @@ export default function NavbarFront() {
             </Menubar>
           </div>
 
-          <div className="w-48 flex justify-end items-center gap-4 z-[60]">
+          {/* ACTIONS DROITE */}
+          <div className="w-48 flex justify-end items-center gap-6 z-[60]">
             <ThemeToggle />
-
-            {/* BOUTON BURGER : Caché sur desktop, visible sur mobile/tablette */}
-            <div className="md:hidden flex items-center">
+            <div className="md:hidden">
               <MobileMenu links={navLinks} session={session} />
             </div>
           </div>
         </div>
 
+        {/* LIGNE DE SCINTILLEMENT SOUS LA NAV */}
         <div
           className={`absolute bottom-0 gradient-border ${
             showBorder ? "opacity-100" : "opacity-0"
