@@ -9,52 +9,44 @@ type DivGridProps = {
   onCellClick?: (row: number, col: number) => void;
 };
 
-// --- COMPOSANT TORCHE LIGHTS (ASYMÉTRIQUE) ---
 const SideTechLights = () => {
   return (
     <div className="absolute inset-0 h-full w-full overflow-hidden pointer-events-none">
-      {/* 1. TORCHE : Left Top - Faisceau descendant vers la droite */}
+      {/* 1. SOURCE PRINCIPALE (Comme sur ton screen à gauche) */}
       <div
-        className="absolute left-[-5%] top-[-5%] w-[50%] h-[40%] opacity-20 dark:opacity-30"
+        className="absolute left-[-10%] top-[-5%] w-[60%] h-[60%] opacity-30 dark:opacity-40"
         style={{
           background:
-            "radial-gradient(circle at 0% 0%, rgba(0, 255, 136, 0.4) 0%, transparent 75%)",
-          transform: "rotate(5deg)",
-          filter: "blur(60px)",
+            "radial-gradient(circle at 20% 20%, rgba(34, 197, 94, 0.4) 0%, transparent 70%)",
+          filter: "blur(120px)",
         }}
       />
 
-      {/* 2. TORCHE : Right Center (Un peu plus bas que le premier) */}
+      {/* 2. DIFFUSION MILIEU DROITE (Équilibre du texte) */}
       <div
-        className="absolute right-[-10%] top-[35%] w-[50%] h-[45%] opacity-15 dark:opacity-25"
+        className="absolute right-[-5%] top-[25%] w-[50%] h-[50%] opacity-20 dark:opacity-25"
         style={{
           background:
-            "radial-gradient(circle at 100% 50%, rgba(0, 255, 136, 0.3) 0%, transparent 80%)",
-          transform: "rotate(-10deg)",
-          filter: "blur(90px)",
+            "radial-gradient(circle at 80% 40%, rgba(34, 197, 94, 0.25) 0%, transparent 75%)",
+          filter: "blur(140px)",
         }}
       />
 
-      {/* 3. TORCHE : Left Bottom - Faisceau remontant */}
+      {/* 3. LUEUR BAS GAUCHE (Continuité) */}
       <div
-        className="absolute left-[-5%] bottom-[-5%] w-[45%] h-[40%] opacity-15 dark:opacity-20"
+        className="absolute left-[5%] bottom-[-10%] w-[40%] h-[40%] opacity-15 dark:opacity-20"
         style={{
           background:
-            "radial-gradient(circle at 0% 100%, rgba(0, 200, 100, 0.25) 0%, transparent 75%)",
-          transform: "rotate(-5deg)",
-          filter: "blur(80px)",
+            "radial-gradient(circle at center, rgba(34, 197, 94, 0.2) 0%, transparent 80%)",
+          filter: "blur(100px)",
         }}
       />
-
-      {/* Lignes Tech Ultra-fines (Scaling visual) */}
-      <div className="absolute right-[10%] top-0 h-full w-[1px] bg-gradient-to-b from-transparent via-emerald-500/10 to-transparent opacity-20" />
-      <div className="absolute left-[15%] top-0 h-full w-[1px] bg-gradient-to-b from-transparent via-emerald-500/5 to-transparent opacity-20" />
     </div>
   );
 };
 
 export const BackgroundRippleEffect = ({
-  rows = 16,
+  rows = 20, // Un peu plus de lignes pour plus de finesse
   cols = 54,
   cellSize = 28,
 }: {
@@ -69,11 +61,11 @@ export const BackgroundRippleEffect = ({
   const [rippleKey, setRippleKey] = useState(0);
 
   return (
-    // Pas de margin, pas de padding. Start at 0,0.
     <div className="absolute inset-0 top-0 left-0 h-full w-full overflow-hidden bg-transparent">
       <SideTechLights />
 
-      <div className="relative z-10 w-full h-full">
+      {/* Le flou de fond pour l'effet "Vitre" du screenshot */}
+      <div className="relative z-10 w-full h-full backdrop-blur-[1px]">
         <DivGrid
           key={`ripple-${rippleKey}`}
           rows={rows}
@@ -102,15 +94,15 @@ const DivGrid = ({
     [rows, cols]
   );
 
-  const gridStyle: React.CSSProperties = {
-    display: "grid",
-    gridTemplateColumns: `repeat(${cols}, 1fr)`,
-    gridTemplateRows: `repeat(${rows}, ${cellSize}px)`,
-    width: "100%",
-  };
-
   return (
-    <div style={gridStyle}>
+    <div
+      style={{
+        display: "grid",
+        gridTemplateColumns: `repeat(${cols}, 1fr)`,
+        gridTemplateRows: `repeat(${rows}, ${cellSize}px)`,
+        width: "100%",
+      }}
+    >
       {cells.map((idx) => {
         const row = Math.floor(idx / cols);
         const col = idx % cols;
@@ -124,11 +116,10 @@ const DivGrid = ({
           <div
             key={`cell-${idx}`}
             className={`
-              cell transition-all duration-150 rounded-sm
-              opacity-20 hover:opacity-60
-              bg-neutral-950/[0.02] border-neutral-950/[0.04]
-              dark:bg-white/[0.02] dark:border-white/[0.06]
-              border-[0.5px]
+              cell transition-all duration-300
+              bg-neutral-950/[0.01] border-neutral-950/[0.03]
+              dark:bg-white/[0.01] dark:border-white/[0.04]
+              border-[0.5px] hover:bg-emerald-500/10
             `}
             style={{
               height: cellSize,
