@@ -18,9 +18,8 @@ export default function NavbarFront() {
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
-      setIsScrolled(currentScrollY > 20);
+      setIsScrolled(currentScrollY > 10);
 
-      // Gestion de la visibilité au scroll (Hide on scroll down)
       if (currentScrollY > lastScrollY && currentScrollY > 100) {
         setIsVisible(false);
       } else {
@@ -54,53 +53,52 @@ export default function NavbarFront() {
   return (
     <>
       <style>{`
-        .smoke-hover {
-          position: relative;
-          transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
-          border: 1px solid transparent !important;
+        .glass-item {
+          transition: all 0.3s ease;
+          background: rgba(255, 255, 255, 0.03);
+          border: 1px solid rgba(255, 255, 255, 0.05) !important;
         }
 
-        .smoke-hover:hover {
-          border-color: rgba(34, 197, 94, 0.4) !important; /* Rappel du vert Aurora */
-          background: rgba(255, 255, 255, 0.03) !important;
-          backdrop-filter: blur(10px);
+        .glass-item:hover {
+          background: rgba(255, 255, 255, 0.08) !important;
+          border-color: rgba(34, 197, 94, 0.3) !important;
           transform: translateY(-1px);
         }
 
-        .gradient-border {
-          background: linear-gradient(90deg, transparent, #22c55e, #f97316, transparent);
+        .gradient-border-line {
+          background: linear-gradient(90deg, transparent, rgba(34, 197, 94, 0.5), rgba(249, 115, 22, 0.5), transparent);
           height: 1px; 
           width: 100%;
-          transition: opacity 1.5s ease-in-out;
         }
-
-        *:focus { outline: none !important; }
       `}</style>
 
       <nav
-        className={`fixed top-0 w-full z-50 transition-all duration-700 h-20 flex items-center ${
+        className={`fixed top-0 w-full z-50 transition-all duration-500 h-20 flex items-center ${
           isVisible ? "translate-y-0" : "-translate-y-full"
         } ${
+          /* EFFET DEMANDÉ : 
+             Noir transparent + Énormément de Blur 
+          */
           isScrolled
-            ? "bg-black/60 backdrop-blur-xl border-b border-white/10 shadow-2xl"
-            : "bg-black border-b border-transparent"
+            ? "bg-black/40 backdrop-blur-[40px] border-b border-white/5 shadow-[0_8px_32px_0_rgba(0,0,0,0.8)]"
+            : "bg-black/20 backdrop-blur-[20px] border-b border-transparent"
         }`}
       >
-        <div className="flex w-full h-full items-center px-8 relative">
-          {/* LOGO */}
-          <div className="flex items-center w-48 h-full z-[60]">
+        <div className="flex w-full h-full items-center px-10 relative">
+          {/* LOGO AREA */}
+          <div className="flex items-center w-56 h-full z-[60]">
             <Link href="/" className="block w-full h-full flex items-center">
               <TextHoverEffect text="Nonnzytr" />
             </Link>
           </div>
 
-          {/* MENU CENTRAL */}
+          {/* NAV CENTER : L'élément flottant expert */}
           <div className="flex-1 hidden md:flex justify-center items-center z-[80]">
-            <Menubar className="h-12 bg-black/40 border border-white/10 rounded-full px-2 gap-1 backdrop-blur-md">
+            <Menubar className="h-11 bg-black/20 border border-white/10 rounded-xl px-1.5 gap-1.5 backdrop-blur-2xl">
               {navLinks.map((link) => (
                 <MenubarMenu key={link.href}>
                   <Link href={link.href} className="no-underline">
-                    <MenubarTrigger className="smoke-hover cursor-pointer rounded-full px-5 py-2 text-[10px] font-black uppercase tracking-[0.2em] text-white/70 hover:text-white transition-all">
+                    <MenubarTrigger className="glass-item cursor-pointer rounded-lg px-5 py-2 text-[10px] font-bold uppercase tracking-[0.25em] text-white/60 hover:text-white transition-all">
                       {link.label}
                     </MenubarTrigger>
                   </Link>
@@ -109,8 +107,8 @@ export default function NavbarFront() {
             </Menubar>
           </div>
 
-          {/* ACTIONS DROITE */}
-          <div className="w-48 flex justify-end items-center gap-6 z-[60]">
+          {/* RIGHT ACTIONS */}
+          <div className="w-56 flex justify-end items-center gap-6 z-[60]">
             <ThemeToggle />
             <div className="md:hidden">
               <MobileMenu links={navLinks} session={session} />
@@ -118,9 +116,9 @@ export default function NavbarFront() {
           </div>
         </div>
 
-        {/* LIGNE DE SCINTILLEMENT SOUS LA NAV */}
+        {/* BORDER DYNAMIQUE */}
         <div
-          className={`absolute bottom-0 gradient-border ${
+          className={`absolute bottom-0 gradient-border-line transition-opacity duration-1000 ${
             showBorder ? "opacity-100" : "opacity-0"
           }`}
         />
