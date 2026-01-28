@@ -3,66 +3,70 @@ import React from "react";
 
 export const MasterAuroraBackground = () => {
   return (
-    // "inset-0 top-0" : Occupation totale sans aucune marge
     <div className="absolute inset-0 top-0 left-0 h-full w-full overflow-hidden bg-transparent pointer-events-none">
-      {/* 1. L'AURA PRIMAIRE (Top Left - La Torche) */}
+      {/* 1. TEXTURE DE GRAIN (Le secret des experts)
+          Crée une légère granulation pour un aspect organique et premium 
+      */}
       <div
-        className="absolute -left-[15%] -top-[20%] w-[80%] h-[80%] opacity-50 dark:opacity-60 mix-blend-screen"
+        className="absolute inset-0 opacity-[0.03] dark:opacity-[0.05] z-50 pointer-events-none brightness-100 contrast-150"
         style={{
-          background:
-            "radial-gradient(circle at 30% 30%, rgba(34, 197, 94, 0.5) 0%, rgba(16, 185, 129, 0) 70%)",
-          filter: "blur(120px)",
-          animation: "aurora-float 15s infinite alternate ease-in-out",
+          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`,
         }}
-      />
+      ></div>
 
-      {/* 2. LE FAISCEAU SECONDAIRE (Right Center - Équilibre) */}
+      {/* 2. FAISCEAU TOP-LEFT (Émeraude & Menthe) */}
       <div
-        className="absolute -right-[10%] top-[20%] w-[70%] h-[70%] opacity-30 dark:opacity-40 mix-blend-overlay"
+        className="absolute -left-[10%] -top-[10%] w-[70%] h-[80%] opacity-40 mix-blend-screen"
         style={{
           background:
-            "radial-gradient(circle at 70% 50%, rgba(0, 255, 136, 0.3) 0%, transparent 75%)",
-          filter: "blur(140px)",
-          animation: "aurora-float-reverse 18s infinite alternate ease-in-out",
-        }}
-      />
-
-      {/* 3. L'ACCENT PROFOND (Left Bottom - Texture) */}
-      <div
-        className="absolute left-[5%] -bottom-[15%] w-[60%] h-[60%] opacity-20 dark:opacity-30"
-        style={{
-          background:
-            "radial-gradient(circle at center, rgba(5, 150, 105, 0.4) 0%, transparent 80%)",
+            "radial-gradient(circle at 20% 20%, rgba(16, 185, 129, 0.4) 0%, rgba(52, 211, 153, 0.1) 40%, transparent 70%)",
           filter: "blur(110px)",
+          animation: "aurora-expert 20s infinite alternate ease-in-out",
         }}
       />
 
-      {/* 4. LE "GLOW" DE SURFACE (Optionnel : Unifie le tout) */}
-      <div className="absolute inset-0 w-full h-full bg-neutral-950/[0.02] dark:bg-white/[0.01]" />
+      {/* 3. FAISCEAU RIGHT-CENTER (Bleu Pétrole & Vert) */}
+      <div
+        className="absolute -right-[15%] top-[15%] w-[80%] h-[70%] opacity-20 mix-blend-overlay"
+        style={{
+          background:
+            "radial-gradient(circle at 80% 40%, rgba(20, 184, 166, 0.3) 0%, rgba(13, 148, 136, 0) 60%)",
+          filter: "blur(140px)",
+          animation: "aurora-expert-reverse 25s infinite alternate ease-in-out",
+        }}
+      />
+
+      {/* 4. LUEUR DE PROFONDEUR (Dark Green) */}
+      <div
+        className="absolute left-[5%] bottom-[-10%] w-[60%] h-[50%] opacity-20"
+        style={{
+          background:
+            "radial-gradient(circle at center, rgba(6, 78, 59, 0.5) 0%, transparent 80%)",
+          filter: "blur(100px)",
+        }}
+      />
 
       <style jsx>{`
-        @keyframes aurora-float {
+        @keyframes aurora-expert {
           0% {
-            transform: translate(0, 0) rotate(0deg) scale(1);
+            transform: translate(0, 0) scale(1) rotate(0deg);
           }
           50% {
-            transform: translate(5%, 5%) rotate(2deg) scale(1.05);
+            transform: translate(3%, 5%) scale(1.05) rotate(1deg);
           }
           100% {
-            transform: translate(-2%, 8%) rotate(-1deg) scale(1);
+            transform: translate(-2%, 2%) scale(1) rotate(-1deg);
           }
         }
-        @keyframes aurora-float-reverse {
+        @keyframes aurora-expert-reverse {
           0% {
-            transform: translate(0, 0) rotate(0deg) scale(1.1);
+            transform: translate(0, 0) scale(1.1);
           }
           100% {
-            transform: translate(-8%, -5%) rotate(-3deg) scale(1);
+            transform: translate(-5%, -5%) scale(1);
           }
         }
       `}</style>
     </div>
   );
 };
-
-export default MasterAuroraBackground;

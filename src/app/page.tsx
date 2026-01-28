@@ -47,7 +47,7 @@ export default function HomePage() {
             />
 
             <p className="text-foreground text-base mb-8">
-              Votre aventure commence ici ✨
+              Votre aventure commence ici
             </p>
 
             <button
