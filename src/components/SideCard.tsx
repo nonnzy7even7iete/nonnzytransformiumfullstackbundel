@@ -27,17 +27,15 @@ export default function SideCard({
         className
       )}
     >
-      {/* LE CONTENEUR IMAGE (PARENT) :
-          - pt-[2px] : On applique les 2px de padding uniquement en haut.
-          - bg-gray-300/white/20 : Sert de liseré visuel.
-          - rounded-xl : L'arrondi extérieur.
+      {/* CONTENEUR PARENT DE L'IMAGE 
+          - On met un fond contrasté (noir ou blanc brillant) pour que les 2px se voient.
       */}
-      <div className="relative w-full h-[200px] pt-[2px] bg-gray-300 dark:bg-white/10 rounded-xl overflow-hidden">
-        {/* L'IMAGE (ENFANT) :
-            - rounded-[calc(0.75rem-2px)] : On soustrait les 2px du radius parent 
-              pour une courbe parfaitement parallèle.
+      <div className="relative w-full h-[200px] bg-neutral-200 dark:bg-white/15 rounded-xl overflow-hidden">
+        {/* L'IMAGE AVEC LE PADDING DE 2px EN HAUT
+            - absolute inset-0 + top-[2px] : force l'image à descendre de 2px.
+            - On ne met pas de padding sur les côtés pour qu'elle reste collée à gauche et à droite.
         */}
-        <div className="relative w-full h-full overflow-hidden rounded-[calc(0.75rem-2px)]">
+        <div className="absolute inset-x-0 bottom-0 top-[2px] overflow-hidden rounded-b-[calc(0.75rem-1px)]">
           <Image
             src={imageSrc}
             alt={title}
