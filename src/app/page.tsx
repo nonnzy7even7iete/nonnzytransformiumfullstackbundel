@@ -5,7 +5,7 @@ import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { FcGoogle } from "react-icons/fc";
 import Loader from "@/components/Loader";
-import { BackgroundAuroraGrid } from "@/components/ui/BackgroundAuroraGrid";
+import { MasterAuroraBackground } from "@/components/ui/MasterAuroraBackground";
 import { TextHoverEffect } from "@/components/ui/TextHoverEffect";
 import SideCard from "@/components/SideCard";
 import DataCard from "@/components/DataCard";
@@ -27,8 +27,9 @@ export default function HomePage() {
       <Navbar />
 
       <main className="relative flex flex-col md:flex-row items-center justify-center min-h-screen overflow-hidden px-4 md:px-8 pb-10 gap-6 md:gap-0 pt-32 md:pt-40 bg-app-gradient">
+        {/* Intégration de l'Aurora sans les props de grille pour la pureté visuelle */}
         <div className="absolute inset-0 z-0">
-          <BackgroundAuroraGrid rows={8} cols={27} cellSize={56} />
+          <MasterAuroraBackground />
         </div>
 
         <div className="relative z-10 flex flex-col items-center justify-center text-center w-full md:w-[460px] max-w-[90vw] min-w-[300px]">
