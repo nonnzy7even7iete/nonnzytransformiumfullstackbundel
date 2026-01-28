@@ -104,7 +104,7 @@ export default function NavbarFront() {
               h-12 
               bg-black/5 dark:bg-black/40 
               border border-black/10 dark:border-white/10 
-              rounded-[16px] 
+              rounded-[7px] 
               p-[6px] 
               gap-2 
               backdrop-blur-3xl"
