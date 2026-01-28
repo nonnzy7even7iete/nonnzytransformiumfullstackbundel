@@ -1,53 +1,65 @@
 "use client";
 import React, { useMemo, useState } from "react";
 
-// ==========================================
-// [AJOUT SCALING] NOUVEAU COMPOSANT : Les Halos Tech
-// Ce composant gère uniquement les lumières d'arrière-plan.
-// Il est statique pour l'instant, mais prêt à être animé plus tard.
-// ==========================================
+// [AJOUT SCALING] Styles d'animation injectés pour ne pas dépendre d'un fichier CSS externe
+const animationStyles = `
+  @keyframes float-halo {
+    0%, 100% { transform: translate(0, 0) rotate(-15deg) scale(1); }
+    50% { transform: translate(5%, 10%) rotate(-10deg) scale(1.1); }
+  }
+  @keyframes float-halo-reverse {
+    0%, 100% { transform: translate(0, 0) rotate(10deg) scale(1.1); }
+    50% { transform: translate(-5%, -10%) rotate(15deg) scale(1); }
+  }
+`;
+
 const TechHaloBackground = () => {
   return (
-    <div className="absolute inset-0 overflow-hidden pointer-events-none select-none bg-black">
-      {/* Halo Rectangulaire 1 (Haut Gauche) */}
-      <div
-        className="absolute top-[10%] left-[15%] w-[300px] h-[200px] opacity-40 rounded-xl"
-        style={{
-          background:
-            "radial-gradient(circle at center, rgba(0, 255, 136, 0.4) 0%, rgba(0, 0, 0, 0) 70%)",
-          boxShadow: "0 0 80px 30px rgba(0, 255, 136, 0.2)",
-          filter: "blur(40px)",
-          transform: "rotate(-15deg)", // Un peu incliné pour le style "tech"
-        }}
-      />
+    <>
+      <style>{animationStyles}</style>
+      {/* [SCALING] h-full ici assure que si le parent grandit (nouvelles sections), 
+        le fond suit la taille totale. 
+      */}
+      <div className="absolute inset-0 h-full w-full overflow-hidden pointer-events-none select-none">
+        {/* Halo 1 : Mouvement 7s */}
+        <div
+          className="absolute top-[10%] left-[10%] w-[40vw] h-[300px] opacity-30 dark:opacity-40 rounded-full"
+          style={{
+            background:
+              "radial-gradient(circle at center, rgba(0, 255, 136, 0.4) 0%, rgba(0, 0, 0, 0) 70%)",
+            boxShadow: "0 0 80px 30px rgba(0, 255, 136, 0.15)",
+            filter: "blur(60px)",
+            animation: "float-halo 7s infinite ease-in-out",
+          }}
+        />
 
-      {/* Halo Rectangulaire 2 (Bas Droite) */}
-      <div
-        className="absolute bottom-[20%] right-[10%] w-[400px] h-[250px] opacity-30 rounded-xl"
-        style={{
-          background:
-            "radial-gradient(circle at center, rgba(0, 200, 100, 0.3) 0%, rgba(0, 0, 0, 0) 70%)",
-          boxShadow: "0 0 100px 40px rgba(0, 200, 100, 0.15)",
-          filter: "blur(50px)",
-          transform: "rotate(10deg)",
-        }}
-      />
-      {/* Halo Rectangulaire 3 (Centre subtil) */}
-      <div
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[100px] opacity-20 rounded-full"
-        style={{
-          background: "rgba(0, 255, 136, 0.1)",
-          boxShadow: "0 0 120px 20px rgba(0, 255, 136, 0.1)",
-          filter: "blur(60px)",
-        }}
-      />
-    </div>
+        {/* Halo 2 : Mouvement 7s Déphasé */}
+        <div
+          className="absolute bottom-[15%] right-[5%] w-[50vw] h-[400px] opacity-20 dark:opacity-30 rounded-full"
+          style={{
+            background:
+              "radial-gradient(circle at center, rgba(0, 200, 100, 0.3) 0%, rgba(0, 0, 0, 0) 70%)",
+            boxShadow: "0 0 100px 40px rgba(0, 200, 100, 0.1)",
+            filter: "blur(80px)",
+            animation: "float-halo-reverse 7s infinite ease-in-out",
+            animationDelay: "1s",
+          }}
+        />
+
+        {/* Halo 3 : Expansion centrale */}
+        <div
+          className="absolute top-[40%] left-[20%] w-[60vw] h-[200px] opacity-10 dark:opacity-20"
+          style={{
+            background: "rgba(0, 255, 136, 0.15)",
+            filter: "blur(100px)",
+            animation: "float-halo 10s infinite linear",
+          }}
+        />
+      </div>
+    </>
   );
 };
 
-// ==========================================
-// COMPOSANT PRINCIPAL EXISTANT (Modifié additivement)
-// ==========================================
 export const BackgroundRippleEffect = ({
   rows = 16,
   cols = 54,
@@ -64,28 +76,23 @@ export const BackgroundRippleEffect = ({
   const [rippleKey, setRippleKey] = useState(0);
 
   return (
-    <div className="absolute inset-0 h-full w-full overflow-hidden relative">
-      {/*
-        [AJOUT SCALING] Insertion de la couche de fond.
-        Elle est placée AVANT la grille dans le DOM, donc elle sera DERRIÈRE visuellement.
-      */}
+    /* [SCALING] "min-h-full" permet au composant de s'étirer si du contenu 
+       est ajouté dynamiquement dans l'app. 
+    */
+    <div className="absolute inset-0 min-h-full w-full overflow-hidden">
       <TechHaloBackground />
 
-      {/*
-         [AJOUT SCALING] Ajout d'un z-index-10 pour s'assurer que la grille
-         est bien au-dessus des halos pour appliquer le filtre.
+      {/* On garde le z-10 et on s'assure que la grille est centrée 
+         mais laisse passer le flou.
       */}
-      <div className="relative z-10 h-full w-full flex items-center justify-center">
+      <div className="relative z-10 w-full h-full flex items-center justify-center">
         <DivGrid
           key={`ripple-${rippleKey}`}
           rows={rows}
           cols={cols}
           cellSize={cellSize}
-          // [AJOUT SCALING] J'ai très légèrement augmenté l'opacité du fill
-          // pour que l'effet de verre dépoli soit plus perceptible.
-          // Anciennement: 0.03 -> Nouveau: 0.05
-          fillColor="rgba(255,255,255,0.05)"
-          borderColor="rgba(255,255,255,0.08)"
+          fillColor="transparent" // On laisse le thème gérer via Tailwind
+          borderColor="transparent"
           clickedCell={clickedCell}
           onCellClick={(row, col) => {
             setClickedCell({ row, col });
@@ -111,8 +118,6 @@ const DivGrid = ({
   rows,
   cols,
   cellSize,
-  fillColor,
-  borderColor,
   clickedCell,
   onCellClick = () => {},
 }: DivGridProps) => {
@@ -125,19 +130,16 @@ const DivGrid = ({
     display: "grid",
     gridTemplateColumns: `repeat(${cols}, ${cellSize}px)`,
     gridTemplateRows: `repeat(${rows}, ${cellSize}px)`,
-    // [AJOUT SCALING] Suppression de width/height fixes et margin:auto ici
-    // pour laisser le conteneur parent gérer le centrage via flexbox.
-    // C'est plus robuste pour le scaling.
-    // width: cols * cellSize,
-    // height: rows * cellSize,
-    // margin: "auto",
   };
 
   return (
-    // [AJOUT SCALING] Ajout de `backdrop-blur` sur le conteneur global de la grille
-    // Cela crée l'effet de "flou global" derrière toute la grille.
-    // On peut aussi le mettre sur les cellules individuelles pour un effet différent.
-    <div className="relative backdrop-blur-[8px]" style={gridStyle}>
+    /* [POLISH] Le backdrop-blur permet de voir les halos verts bouger 
+       "derrière" la vitre givrée.
+    */
+    <div
+      className="relative backdrop-blur-[100px] md:backdrop-blur-[120px]"
+      style={gridStyle}
+    >
       {cells.map((idx) => {
         const row = Math.floor(idx / cols);
         const col = idx % cols;
@@ -150,15 +152,17 @@ const DivGrid = ({
         return (
           <div
             key={idx}
-            // [AJOUT SCALING] Ajout de `backdrop-blur-[1px]` sur chaque cellule.
-            // C'est très subtil, mais cela "casse" légèrement la netteté des halos derrière chaque case.
-            // Combiné au flou du parent, ça donne de la profondeur.
-            className={`cell transition-all duration-150 opacity-20 hover:opacity-60 rounded-sm backdrop-blur-[1px]`}
+            /* [ZÉRO RÉGRESSION] On garde tes classes de base 
+               + Adaptabilité Light/Dark 
+            */
+            className={`cell transition-all duration-150 
+              opacity-20 hover:opacity-70 rounded-sm
+              bg-neutral-900/[0.03] dark:bg-white/[0.03]
+              border-[0.5px] border-neutral-900/5 dark:border-white/10
+            `}
             style={{
               width: cellSize,
               height: cellSize,
-              backgroundColor: fillColor,
-              border: `0.5px solid ${borderColor}`,
               transitionDelay: `${delay}ms`,
               transitionDuration: `${duration}ms`,
             }}
