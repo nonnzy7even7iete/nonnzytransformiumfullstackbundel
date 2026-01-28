@@ -58,7 +58,7 @@ export default function NavbarFront() {
           /* Bordure constante mais subtile */
           border: 1px solid light-dark(rgba(0,0,0,0.1), rgba(255,255,255,0.08)) !important;
           /* LA PROPORTION : Parent(16px) - Padding(6px) = 10px */
-          border-radius: 10px !important;
+          border-radius: 7px !important;
           background: light-dark(rgba(0,0,0,0.02), rgba(255,255,255,0.02));
         }
 
