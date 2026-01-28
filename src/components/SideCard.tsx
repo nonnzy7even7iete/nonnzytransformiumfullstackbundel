@@ -27,19 +27,20 @@ export default function SideCard({
         className
       )}
     >
-      {/* CONTENEUR PARENT DE L'IMAGE 
-          - On met un fond contrasté (noir ou blanc brillant) pour que les 2px se voient.
+      {/* LE CADRE (CADILLAC EFFECT) 
+          On force une hauteur fixe et un fond brillant pour voir le liseré 
       */}
-      <div className="relative w-full h-[200px] bg-neutral-200 dark:bg-white/15 rounded-xl overflow-hidden">
-        {/* L'IMAGE AVEC LE PADDING DE 2px EN HAUT
-            - absolute inset-0 + top-[2px] : force l'image à descendre de 2px.
-            - On ne met pas de padding sur les côtés pour qu'elle reste collée à gauche et à droite.
+      <div className="relative w-full h-[200px] bg-neutral-300 dark:bg-emerald-500/20 rounded-xl overflow-hidden">
+        {/* L'IMAGE DÉCALÉE 
+            On utilise 'absolute' avec un top de 2px pour CRÉER le vide visuel.
+            On ajoute une bordure interne pour marquer la séparation.
         */}
-        <div className="absolute inset-x-0 bottom-0 top-[2px] overflow-hidden rounded-b-[calc(0.75rem-1px)]">
+        <div className="absolute inset-0 top-[2px] right-0 left-0 bottom-0 overflow-hidden rounded-b-lg border-t border-white/5">
           <Image
             src={imageSrc}
             alt={title}
             fill
+            sizes="(max-width: 768px) 100vw, 300px"
             className="object-cover"
             priority
           />
@@ -53,7 +54,6 @@ export default function SideCard({
         <p className="text-gray-600 dark:text-white/70 text-sm">
           {description}
         </p>
-
         {location && (
           <p className="text-gray-400 text-xs italic mt-1">{location}</p>
         )}
