@@ -8,7 +8,7 @@ import Loader from "@/components/frontendkit/Loader";
 import { MasterAuroraBackground } from "@/components/ui/MasterAuroraBackground";
 import { TextHoverEffect } from "@/components/ui/TextHoverEffect";
 import SideCard from "@/components/frontendkit/SideCard";
-import DataCard from "@/components/DataCard";
+import DataCard from "@/components/frontendkit/DataCard";
 import { Info } from "lucide-react";
 import Navbar from "@/components/frontendkit/NavbarFront";
 

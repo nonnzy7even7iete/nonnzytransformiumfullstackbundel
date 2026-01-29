@@ -8,7 +8,7 @@ import {
   SheetTrigger,
   SheetClose,
 } from "@/components/ui/sheet";
-import { NoiseBackground } from "@/components/NoiseBackground";
+import { NoiseBackground } from "@/components/frontendkit/NoiseBackground";
 
 export default function MobileMenu({ links, session }: any) {
   return (
