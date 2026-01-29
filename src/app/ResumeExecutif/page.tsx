@@ -4,7 +4,7 @@ import React, { useState, useEffect, useMemo } from "react";
 import dynamic from "next/dynamic";
 import { motion, AnimatePresence } from "framer-motion";
 import NavbarFront from "@/components/frontendkit/NavbarFront";
-import CardStack from "@/components/frontendkit/CardStack"; // Import corrigé sans {}
+import { CardStack } from "@/components/frontendkit/CardStack"; // Import corrigé sans {}
 import { ScrollToTop } from "@/components/frontendkit/ScrollToTop";
 
 // Import dynamique du Globe
