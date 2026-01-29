@@ -6,10 +6,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import NavbarFront from "@/components/NavbarFront";
 import { CardStack } from "@/components/CardStack";
 
-// ==========================================================
-// 1. IMPORT DYNAMIQUE OPTIMISÉ
-// On définit un placeholder noir pour éviter le "saut" visuel
-// ==========================================================
 const World = dynamic(
   () => import("@/components/ui/globe").then((m) => m.World),
   {
@@ -68,7 +64,6 @@ export default function ResumeExecutifPage() {
   const [index, setIndex] = useState(0);
   const ABIDJAN = { lat: 5.33, lng: -4.03 };
 
-  // Mémoisation des destinations pour éviter des re-calculs inutiles
   const destinations = useMemo(
     () => [
       {
@@ -95,8 +90,39 @@ export default function ResumeExecutifPage() {
     <div className="flex flex-col min-h-screen bg-white dark:bg-[#020408]">
       <NavbarFront />
 
-      <section className="relative h-screen w-full overflow-hidden flex flex-col items-center justify-center">
-        {/* LE GLOBE : On passe les datas de manière stable */}
+      {/* ------------------------------------------------------
+          SECTION 1 : LES LOGS & CARD STACK (DÉSORMAIS EN HAUT)
+          Priorité à l'UX et à l'information directe
+      ------------------------------------------------------- */}
+      <section className="relative z-30 w-full min-h-[80vh] pt-32 pb-20 px-6 flex items-center justify-center border-b border-border/10">
+        <div className="max-w-5xl w-full grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+          {/* BLOC DE GAUCHE : TEXTES DESCRIPTIFS */}
+          <div className="space-y-6">
+            <h2 className="text-3xl md:text-5xl font-black tracking-tighter uppercase italic leading-none">
+              {PAGE_CONTENT.logs.title}
+            </h2>
+            <p className="text-foreground/60 dark:text-white/40 text-sm md:text-base leading-relaxed max-w-sm">
+              {PAGE_CONTENT.logs.description}
+            </p>
+            <div className="flex items-center gap-2 text-green-600 font-mono text-[10px] tracking-widest uppercase font-bold">
+              <span className="h-1.5 w-1.5 rounded-full bg-green-500 animate-pulse" />
+              {PAGE_CONTENT.logs.status}
+            </div>
+          </div>
+
+          {/* BLOC DE DROITE : LA PILE DE CARTES */}
+          <div className="flex justify-center md:justify-end min-h-[350px]">
+            <CardStack items={LOG_CARDS_DATA} offset={10} scaleFactor={0.06} />
+          </div>
+        </div>
+      </section>
+
+      {/* ------------------------------------------------------
+          SECTION 2 : LE GLOBE & HUD (DÉSORMAIS EN BAS)
+          L'ambiance visuelle vient clore la page
+      ------------------------------------------------------- */}
+      <section className="relative h-screen w-full overflow-hidden flex flex-col items-center justify-center bg-slate-50 dark:bg-transparent">
+        {/* LE GLOBE EN ARRIÈRE-PLAN */}
         <div className="absolute inset-0 z-0">
           <World
             data={[
@@ -113,7 +139,7 @@ export default function ResumeExecutifPage() {
           />
         </div>
 
-        {/* HUD : Le texte doit être prêt IMMÉDIATEMENT */}
+        {/* HUD (AFFICHAGE TÊTE HAUTE) - SUPERPOSÉ SUR LE GLOBE */}
         <div className="relative z-10 flex flex-col items-center pointer-events-none px-6 text-center">
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
@@ -151,29 +177,8 @@ export default function ResumeExecutifPage() {
           </p>
         </div>
 
-        {/* Gradient de transition amélioré */}
-        <div className="absolute bottom-0 left-0 w-full h-48 bg-gradient-to-t from-white dark:from-[#020408] via-white/50 dark:via-[#020408]/50 to-transparent z-20 pointer-events-none" />
-      </section>
-
-      <section className="relative z-30 w-full py-24 px-6 flex justify-center border-t border-border/10 bg-white dark:bg-[#020408]">
-        <div className="max-w-5xl w-full grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-          <div className="space-y-6">
-            <h2 className="text-3xl md:text-4xl font-black tracking-tighter uppercase italic">
-              {PAGE_CONTENT.logs.title}
-            </h2>
-            <p className="text-foreground/60 dark:text-white/40 text-sm md:text-base leading-relaxed max-w-sm">
-              {PAGE_CONTENT.logs.description}
-            </p>
-            <div className="flex items-center gap-2 text-green-600 font-mono text-[10px] tracking-widest uppercase font-bold">
-              <span className="h-1.5 w-1.5 rounded-full bg-green-500 animate-pulse" />
-              {PAGE_CONTENT.logs.status}
-            </div>
-          </div>
-
-          <div className="flex justify-center md:justify-end min-h-[350px]">
-            <CardStack items={LOG_CARDS_DATA} offset={10} scaleFactor={0.06} />
-          </div>
-        </div>
+        {/* Gradient pour lisser la jonction avec le footer */}
+        <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-white dark:from-[#020408] to-transparent z-20 pointer-events-none" />
       </section>
 
       <footer className="py-12 border-t border-border/5 text-center opacity-20">
