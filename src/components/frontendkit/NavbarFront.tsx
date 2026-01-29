@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
-import { TextHoverEffect } from "./ui/TextHoverEffect";
+import { TextHoverEffect } from "../ui/TextHoverEffect";
 import { ThemeToggle } from "@/components/ui/themeToggle";
 import { Menubar, MenubarMenu, MenubarTrigger } from "@/components/ui/menubar";
 import MobileMenu from "@/components/MobileMenu";

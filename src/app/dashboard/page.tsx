@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import PotentialCard from "@/components/PotentialCard";
-import Loader from "@/components/Loader";
+import Loader from "@/components/frontendkit/Loader";
 
 export default function DashboardPage() {
   const { data: session, status } = useSession();
