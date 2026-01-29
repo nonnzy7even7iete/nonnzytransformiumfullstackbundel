@@ -6,7 +6,7 @@ import { useSession } from "next-auth/react";
 import { TextHoverEffect } from "../ui/TextHoverEffect";
 import { ThemeToggle } from "@/components/ui/themeToggle";
 import { Menubar, MenubarMenu, MenubarTrigger } from "@/components/ui/menubar";
-import MobileMenu from "@/components/MobileMenu";
+import MobileMenu from "@/components/frontendkit/MobileMenu";
 
 export default function NavbarFront() {
   const [isScrolled, setIsScrolled] = useState(false);
