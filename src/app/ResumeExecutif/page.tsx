@@ -3,13 +3,18 @@
 import React, { useState, useEffect, useMemo } from "react";
 import dynamic from "next/dynamic";
 import { motion, AnimatePresence } from "framer-motion";
+import { cn } from "@/lib/utils"; // Vérifie bien que ce fichier existe dans ton dossier lib
 import NavbarFront from "@/components/NavbarFront";
 import { CardStack } from "@/components/CardStack";
 
-// ==========================================================
-// 1. IMPORT DYNAMIQUE OPTIMISÉ
-// On définit un placeholder noir pour éviter le "saut" visuel
-// ==========================================================
+// Typage des destinations pour éviter les erreurs d'index
+interface Destination {
+  label: string;
+  lat: number;
+  lng: number;
+  code: string;
+}
+
 const World = dynamic(
   () => import("@/components/ui/globe").then((m) => m.World),
   {
@@ -27,7 +32,7 @@ const PAGE_CONTENT = {
   logs: {
     title: "Real-time Node Logs",
     description:
-      "Monitoring global data flow and infrastructure health across the Ivory Coast backbone. High-speed fiber optic synchronization active.",
+      "Monitoring global data flow and infrastructure health across the Ivory Coast backbone.",
     status: "System Live & Encrypted",
   },
 };
@@ -40,8 +45,7 @@ const LOG_CARDS_DATA = [
     content: (
       <p>
         Routing data packets from{" "}
-        <span className="font-bold text-green-500">Abidjan Hub</span> to Global
-        Nodes.
+        <span className="font-bold text-green-500">Abidjan Hub</span>.
       </p>
     ),
   },
@@ -49,18 +53,7 @@ const LOG_CARDS_DATA = [
     id: 1,
     name: "Security Protocol",
     designation: "Shield: 100%",
-    content: (
-      <p>
-        End-to-end encryption active in the{" "}
-        <span className="text-blue-500 font-bold">Ivory Coast</span> gateway.
-      </p>
-    ),
-  },
-  {
-    id: 2,
-    name: "Cloud Infra",
-    designation: "Region: AF-WEST",
-    content: <p>Nodes synchronized via 10Gbps fiber backbone.</p>,
+    content: <p>End-to-end encryption active in the gateway.</p>,
   },
 ];
 
@@ -68,8 +61,7 @@ export default function ResumeExecutifPage() {
   const [index, setIndex] = useState(0);
   const ABIDJAN = { lat: 5.33, lng: -4.03 };
 
-  // Mémoisation des destinations pour éviter des re-calculs inutiles
-  const destinations = useMemo(
+  const destinations: Destination[] = useMemo(
     () => [
       {
         label: "AMÉRIQUE DU NORD",
@@ -85,7 +77,7 @@ export default function ResumeExecutifPage() {
 
   useEffect(() => {
     const timer = setInterval(
-      () => setIndex((prev) => (prev + 1) % destinations.length),
+      () => setIndex((p) => (p + 1) % destinations.length),
       6000
     );
     return () => clearInterval(timer);
@@ -95,8 +87,52 @@ export default function ResumeExecutifPage() {
     <div className="flex flex-col min-h-screen bg-white dark:bg-[#020408]">
       <NavbarFront />
 
-      <section className="relative h-screen w-full overflow-hidden flex flex-col items-center justify-center">
-        {/* LE GLOBE : On passe les datas de manière stable */}
+      {/* SECTION CARDSTACK : PRIORITAIRE */}
+      <section className="relative z-30 pt-32 pb-12 px-6 flex flex-col items-center">
+        <div className="max-w-6xl w-full grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+          <div className="flex flex-col items-start text-left space-y-8">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="flex items-center gap-3 px-4 py-2 bg-green-500/10 border border-green-600/20 rounded-full"
+            >
+              <span className="relative flex h-2 w-2">
+                <span className="absolute inline-flex h-full w-full rounded-full bg-green-500 opacity-75 animate-ping" />
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500" />
+              </span>
+              <span className="text-[10px] text-green-600 font-black tracking-[0.3em] uppercase">
+                {PAGE_CONTENT.hero.badge}
+              </span>
+            </motion.div>
+
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={destinations[index].label}
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: 20 }}
+                className="space-y-2"
+              >
+                <span className="text-xs font-mono opacity-40 tracking-[0.4em] uppercase">
+                  ACTIVE CONNECTION TO
+                </span>
+                <h1 className="text-5xl md:text-7xl font-black tracking-tighter uppercase italic dark:text-white text-slate-900">
+                  {destinations[index].label}
+                </h1>
+              </motion.div>
+            </AnimatePresence>
+          </div>
+
+          <div className="flex justify-center lg:justify-end items-center h-[400px]">
+            <CardStack items={LOG_CARDS_DATA} offset={12} scaleFactor={0.07} />
+          </div>
+        </div>
+      </section>
+
+      {/* SECTION GLOBE : ATMOSPHÈRE */}
+      <section className="relative h-[60vh] w-full overflow-hidden">
+        <div className="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-white dark:from-[#020408] to-transparent z-10" />
+
         <div className="absolute inset-0 z-0">
           <World
             data={[
@@ -113,66 +149,10 @@ export default function ResumeExecutifPage() {
           />
         </div>
 
-        {/* HUD : Le texte doit être prêt IMMÉDIATEMENT */}
-        <div className="relative z-10 flex flex-col items-center pointer-events-none px-6 text-center">
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.5 }}
-            className="flex items-center gap-3 mb-8 px-4 py-2 bg-green-500/10 border border-green-600/20 rounded-full backdrop-blur-sm"
-          >
-            <div className="relative flex h-2 w-2">
-              <div className="absolute inline-flex h-full w-full rounded-full bg-green-500 opacity-75 animate-ping" />
-              <div className="relative inline-flex rounded-full h-2 w-2 bg-green-600 dark:bg-green-500" />
-            </div>
-            <span className="text-[10px] text-green-700 dark:text-green-500 font-black tracking-[0.4em] uppercase">
-              {PAGE_CONTENT.hero.badge}
-            </span>
-          </motion.div>
-
-          <span className="text-sm font-mono opacity-40 tracking-[0.5em] uppercase mb-2">
-            {PAGE_CONTENT.hero.source}
-          </span>
-
-          <AnimatePresence mode="wait">
-            <motion.h1
-              key={destinations[index].label}
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: 20 }}
-              className="text-5xl md:text-8xl font-black tracking-tighter uppercase italic dark:text-white text-slate-900"
-            >
-              {destinations[index].label}
-            </motion.h1>
-          </AnimatePresence>
-
-          <p className="mt-10 font-mono text-[11px] tracking-[0.6em] text-green-600 uppercase font-bold opacity-60">
+        <div className="absolute bottom-12 w-full flex justify-center z-10 pointer-events-none">
+          <p className="font-mono text-[10px] tracking-[0.5em] text-green-600 uppercase font-bold opacity-60">
             {PAGE_CONTENT.hero.signal} // {destinations[index].code}
           </p>
-        </div>
-
-        {/* Gradient de transition amélioré */}
-        <div className="absolute bottom-0 left-0 w-full h-48 bg-gradient-to-t from-white dark:from-[#020408] via-white/50 dark:via-[#020408]/50 to-transparent z-20 pointer-events-none" />
-      </section>
-
-      <section className="relative z-30 w-full py-24 px-6 flex justify-center border-t border-border/10 bg-white dark:bg-[#020408]">
-        <div className="max-w-5xl w-full grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-          <div className="space-y-6">
-            <h2 className="text-3xl md:text-4xl font-black tracking-tighter uppercase italic">
-              {PAGE_CONTENT.logs.title}
-            </h2>
-            <p className="text-foreground/60 dark:text-white/40 text-sm md:text-base leading-relaxed max-w-sm">
-              {PAGE_CONTENT.logs.description}
-            </p>
-            <div className="flex items-center gap-2 text-green-600 font-mono text-[10px] tracking-widest uppercase font-bold">
-              <span className="h-1.5 w-1.5 rounded-full bg-green-500 animate-pulse" />
-              {PAGE_CONTENT.logs.status}
-            </div>
-          </div>
-
-          <div className="flex justify-center md:justify-end min-h-[350px]">
-            <CardStack items={LOG_CARDS_DATA} offset={10} scaleFactor={0.06} />
-          </div>
         </div>
       </section>
 
