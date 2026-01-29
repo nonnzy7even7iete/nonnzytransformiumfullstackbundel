@@ -1,33 +1,143 @@
 "use client";
-import React, { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { IoIosArrowUp } from "react-icons/io";
 
-export const ScrollToTop = () => {
-  const [isVisible, setIsVisible] = useState(false);
+import React, { useState, useEffect, useMemo } from "react";
+import dynamic from "next/dynamic";
+import { motion, AnimatePresence } from "framer-motion";
+import NavbarFront from "@/components/frontendkit/NavbarFront";
+import { CardStack } from "@/components/frontendkit/CardStack";
+import { ScrollToTop } from "@/components/frontendkit/ScrollToTop"; // Importation
+
+const World = dynamic(
+  () => import("@/components/ui/globe").then((m) => m.World),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="absolute inset-0 bg-white dark:bg-[#020408]" />
+    ),
+  }
+);
+
+// ... tes LOG_CARDS_DATA inchangées
+
+export default function ResumeExecutifPage() {
+  const [mounted, setMounted] = useState(false);
+  const [index, setIndex] = useState(0);
+  const [isGlobeReady, setIsGlobeReady] = useState(false);
+  const ABIDJAN = { lat: 5.33, lng: -4.03 };
+
+  const destinations = useMemo(
+    () => [
+      {
+        label: "AMÉRIQUE DU NORD",
+        lat: 39.82,
+        lng: -98.57,
+        code: "NODE-NA-CENTRAL",
+      },
+      { label: "EUROPE", lat: 50.11, lng: 14.42, code: "NODE-EU-CENTRAL" },
+      { label: "ASIE", lat: 43.67, lng: 87.33, code: "NODE-AS-CENTRAL" },
+    ],
+    []
+  );
 
   useEffect(() => {
-    const toggleVisibility = () => {
-      // On affiche la flèche après 400px de scroll
-      setIsVisible(window.scrollY > 400);
+    setMounted(true);
+    const timer = setInterval(
+      () => setIndex((p) => (p + 1) % destinations.length),
+      6000
+    );
+    const readyTimer = setTimeout(() => setIsGlobeReady(true), 1000);
+    return () => {
+      clearInterval(timer);
+      clearTimeout(readyTimer);
     };
-    window.addEventListener("scroll", toggleVisibility);
-    return () => window.removeEventListener("scroll", toggleVisibility);
-  }, []);
+  }, [destinations.length]);
+
+  if (!mounted)
+    return <div className="min-h-screen bg-white dark:bg-[#020408]" />;
 
   return (
-    <AnimatePresence>
-      {isVisible && (
-        <motion.button
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: 20 }}
-          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-          className="fixed bottom-10 right-10 z-[100] p-4 rounded-full bg-green-500 text-white shadow-lg hover:scale-110 active:scale-95 transition-all"
+    // Suppression de overflow-hidden ici pour permettre le scroll global
+    <div className="flex flex-col min-h-screen bg-white dark:bg-[#020408] selection:bg-green-500/30">
+      <NavbarFront />
+
+      {/* SECTION 1 */}
+      <section className="relative z-30 w-full min-h-[80vh] pt-32 pb-20 px-6 flex items-center justify-center border-b border-black/[0.03] dark:border-white/[0.03]">
+        <div className="max-w-5xl w-full grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+          <div className="space-y-6">
+            <h2 className="text-3xl md:text-5xl font-black tracking-tighter uppercase italic leading-none">
+              Real-time Node Logs
+            </h2>
+            <p className="text-foreground/60 dark:text-white/40 text-sm md:text-base leading-relaxed max-w-sm">
+              Monitoring global data flow and infrastructure health across the
+              Ivory Coast backbone.
+            </p>
+            <div className="flex items-center gap-2 text-green-600 font-mono text-[10px] tracking-widest uppercase font-bold">
+              <span className="h-1.5 w-1.5 rounded-full bg-green-500 animate-pulse" />
+              System Live & Encrypted
+            </div>
+          </div>
+          <div className="flex justify-center md:justify-end min-h-[350px]">
+            <CardStack items={LOG_CARDS_DATA} offset={10} scaleFactor={0.06} />
+          </div>
+        </div>
+      </section>
+
+      {/* SECTION 2 : GLOBE */}
+      {/* Changement : suppression de h-screen forcé pour éviter le blocage sur certains navigateurs */}
+      <section className="relative h-[100vh] w-full flex flex-col items-center justify-center overflow-hidden">
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: isGlobeReady ? 1 : 0 }}
+          transition={{ duration: 1 }}
+          className="absolute inset-0 z-0 pointer-events-none" // pointer-events-none est vital ici !
         >
-          <IoIosArrowUp size={24} />
-        </motion.button>
-      )}
-    </AnimatePresence>
+          <World
+            data={[
+              {
+                order: 1,
+                startLat: ABIDJAN.lat,
+                startLng: ABIDJAN.lng,
+                endLat: destinations[index].lat,
+                endLng: destinations[index].lng,
+                arcAlt: 0.4,
+                color: "#22c55e",
+              },
+            ]}
+          />
+        </motion.div>
+
+        <div className="relative z-10 flex flex-col items-center pointer-events-none px-6 text-center">
+          <span className="text-xs font-mono opacity-30 tracking-[0.4em] uppercase mb-4 dark:text-white">
+            Global Infrastructure Sync
+          </span>
+          <AnimatePresence mode="wait">
+            <motion.h1
+              key={destinations[index].label}
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -15 }}
+              className="text-5xl md:text-8xl font-black tracking-tighter uppercase italic dark:text-white text-slate-900"
+            >
+              {destinations[index].label}
+            </motion.h1>
+          </AnimatePresence>
+          <div className="mt-8 px-4 py-1 border border-green-500/20 rounded-full bg-green-500/5">
+            <p className="font-mono text-[10px] tracking-[0.4em] text-green-600 uppercase font-bold">
+              {destinations[index].code}
+            </p>
+          </div>
+        </div>
+        <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-white dark:from-[#020408] to-transparent z-[5] pointer-events-none" />
+      </section>
+
+      <footer className="py-20 border-t border-border/5 text-center opacity-20">
+        <p className="text-[9px] uppercase tracking-[0.5em]">
+          Ivory Coast Digital Architecture © 2026
+        </p>
+      </footer>
+
+      {/* COMPOSANT FLÈCHE EN BAS À DROITE */}
+      <ScrollToTop />
+    </div>
   );
-};
+}
