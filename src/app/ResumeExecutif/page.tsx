@@ -4,9 +4,10 @@ import React, { useState, useEffect, useMemo } from "react";
 import dynamic from "next/dynamic";
 import { motion, AnimatePresence } from "framer-motion";
 import NavbarFront from "@/components/frontendkit/NavbarFront";
-import { CardStack } from "@/components/frontendkit/CardStack";
-import { ScrollToTop } from "@/components/frontendkit/ScrollToTop"; // Importation
+import CardStack from "@/components/frontendkit/CardStack"; // Import corrigé sans {}
+import { ScrollToTop } from "@/components/frontendkit/ScrollToTop";
 
+// Import dynamique du Globe
 const World = dynamic(
   () => import("@/components/ui/globe").then((m) => m.World),
   {
@@ -17,7 +18,38 @@ const World = dynamic(
   }
 );
 
-// ... tes LOG_CARDS_DATA inchangées
+// RESTAURATION DE LA VARIABLE MANQUANTE
+const LOG_CARDS_DATA = [
+  {
+    id: 0,
+    name: "Network Engine",
+    designation: "Status: Active",
+    content: (
+      <p>
+        Routing data packets from{" "}
+        <span className="font-bold text-green-500">Abidjan Hub</span> to Global
+        Nodes.
+      </p>
+    ),
+  },
+  {
+    id: 1,
+    name: "Security Protocol",
+    designation: "Shield: 100%",
+    content: (
+      <p>
+        End-to-end encryption active in the{" "}
+        <span className="text-blue-500 font-bold">Ivory Coast</span> gateway.
+      </p>
+    ),
+  },
+  {
+    id: 2,
+    name: "Cloud Infra",
+    designation: "Region: AF-WEST",
+    content: <p>Nodes synchronized via 10Gbps fiber backbone.</p>,
+  },
+];
 
 export default function ResumeExecutifPage() {
   const [mounted, setMounted] = useState(false);
@@ -56,11 +88,10 @@ export default function ResumeExecutifPage() {
     return <div className="min-h-screen bg-white dark:bg-[#020408]" />;
 
   return (
-    // Suppression de overflow-hidden ici pour permettre le scroll global
     <div className="flex flex-col min-h-screen bg-white dark:bg-[#020408] selection:bg-green-500/30">
       <NavbarFront />
 
-      {/* SECTION 1 */}
+      {/* SECTION 1 : CONTENT (LOGS & CARDS) */}
       <section className="relative z-30 w-full min-h-[80vh] pt-32 pb-20 px-6 flex items-center justify-center border-b border-black/[0.03] dark:border-white/[0.03]">
         <div className="max-w-5xl w-full grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
           <div className="space-y-6">
@@ -76,20 +107,21 @@ export default function ResumeExecutifPage() {
               System Live & Encrypted
             </div>
           </div>
+
           <div className="flex justify-center md:justify-end min-h-[350px]">
             <CardStack items={LOG_CARDS_DATA} offset={10} scaleFactor={0.06} />
           </div>
         </div>
       </section>
 
-      {/* SECTION 2 : GLOBE */}
-      {/* Changement : suppression de h-screen forcé pour éviter le blocage sur certains navigateurs */}
-      <section className="relative h-[100vh] w-full flex flex-col items-center justify-center overflow-hidden">
+      {/* SECTION 2 : GLOBE (ATMOSPHÈRE) */}
+      <section className="relative h-screen w-full overflow-hidden flex flex-col items-center justify-center">
+        {/* LOGIQUE RECTIFIÉE : pointer-events-none pour libérer le scroll */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: isGlobeReady ? 1 : 0 }}
           transition={{ duration: 1 }}
-          className="absolute inset-0 z-0 pointer-events-none" // pointer-events-none est vital ici !
+          className="absolute inset-0 z-0 pointer-events-none"
         >
           <World
             data={[
@@ -106,6 +138,7 @@ export default function ResumeExecutifPage() {
           />
         </motion.div>
 
+        {/* HUD UI */}
         <div className="relative z-10 flex flex-col items-center pointer-events-none px-6 text-center">
           <span className="text-xs font-mono opacity-30 tracking-[0.4em] uppercase mb-4 dark:text-white">
             Global Infrastructure Sync
@@ -127,16 +160,17 @@ export default function ResumeExecutifPage() {
             </p>
           </div>
         </div>
+
         <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-white dark:from-[#020408] to-transparent z-[5] pointer-events-none" />
       </section>
 
-      <footer className="py-20 border-t border-border/5 text-center opacity-20">
+      <footer className="py-12 border-t border-border/5 text-center opacity-20">
         <p className="text-[9px] uppercase tracking-[0.5em]">
           Ivory Coast Digital Architecture © 2026
         </p>
       </footer>
 
-      {/* COMPOSANT FLÈCHE EN BAS À DROITE */}
+      {/* AJOUT DE LA FLÈCHE DE RETOUR EN HAUT */}
       <ScrollToTop />
     </div>
   );
