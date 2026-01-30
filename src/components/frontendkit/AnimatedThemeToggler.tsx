@@ -2,6 +2,7 @@
 
 import { Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
+import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useState } from "react";
 
 export const AnimatedThemeToggler = () => {
@@ -10,63 +11,48 @@ export const AnimatedThemeToggler = () => {
 
   useEffect(() => setMounted(true), []);
 
-  const toggleTheme = (event: React.MouseEvent) => {
-    // Vérifie si le navigateur supporte l'API View Transition
-    if (!document.startViewTransition) {
-      setTheme(theme === "dark" ? "light" : "dark");
-      return;
-    }
-
-    const x = event.clientX;
-    const y = event.clientY;
-    const endRadius = Math.hypot(
-      Math.max(x, innerWidth - x),
-      Math.max(y, innerHeight - y)
-    );
-
-    const transition = document.startViewTransition(() => {
-      setTheme(theme === "dark" ? "light" : "dark");
-    });
-
-    transition.ready.then(() => {
-      const clipPath = [
-        `circle(0px at ${x}px ${y}px)`,
-        `circle(${endRadius}px at ${x}px ${y}px)`,
-      ];
-      document.documentElement.animate(
-        {
-          clipPath: theme === "dark" ? [...clipPath].reverse() : clipPath,
-        },
-        {
-          duration: 500,
-          easing: "ease-in-out",
-          pseudoElement:
-            theme === "dark"
-              ? "::view-transition-old(root)"
-              : "::view-transition-new(root)",
-        }
-      );
-    });
-  };
-
   if (!mounted) return <div className="w-10 h-10" />;
 
   return (
-    <button
-      onClick={toggleTheme}
-      className="
-        relative flex items-center justify-center 
-        w-10 h-10 rounded-full 
-        bg-glass-dual border border-border-dual
-        backdrop-blur-sm transition-transform active:scale-90
-        z-[100]
-      "
-    >
-      {theme === "dark" ? (
-        <Moon className="h-5 w-5 text-blue-400" />
-      ) : (
-        <Sun className="h-5 w-5 text-yellow-400" />
-      )}
-    </button>
+    <div className="relative group">
+      {/* Effet de halo lumineux derrière le bouton */}
+      <div className="absolute -inset-1 bg-gradient-to-r from-emerald-500 to-blue-500 rounded-full blur opacity-0 group-hover:opacity-20 transition duration-500"></div>
+
+      <button
+        onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+        className="
+          relative flex items-center justify-center 
+          w-10 h-10 rounded-full 
+          bg-glass-dual border border-border-dual
+          backdrop-blur-md
+          hover:border-emerald-500/50 transition-all duration-300
+          overflow-hidden
+        "
+      >
+        <AnimatePresence mode="wait">
+          {theme === "dark" ? (
+            <motion.div
+              key="moon"
+              initial={{ y: 10, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ y: -10, opacity: 0 }}
+              transition={{ duration: 0.2 }}
+            >
+              <Moon className="h-5 w-5 text-blue-400 drop-shadow-[0_0_8px_rgba(96,165,250,0.5)]" />
+            </motion.div>
+          ) : (
+            <motion.div
+              key="sun"
+              initial={{ scale: 0.5, opacity: 0, rotate: -90 }}
+              animate={{ scale: 1, opacity: 1, rotate: 0 }}
+              exit={{ scale: 0.5, opacity: 0, rotate: 90 }}
+              transition={{ duration: 0.2 }}
+            >
+              <Sun className="h-5 w-5 text-yellow-500 drop-shadow-[0_0_8px_rgba(234,179,8,0.5)]" />
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </button>
+    </div>
   );
 };
