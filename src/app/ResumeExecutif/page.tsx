@@ -6,7 +6,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import NavbarFront from "@/components/frontendkit/NavbarFront";
 import { CardStack } from "@/components/frontendkit/CardStack";
 import { ScrollToTop } from "@/components/frontendkit/ScrollToTop";
-import { WarpBackground } from "@/components/frontendkit/WarpBackground"; // Nouvel import
+import { WarpBackground } from "@/components/frontendkit/WarpBackground";
 
 // Import dynamique du Globe
 const World = dynamic(
@@ -19,7 +19,6 @@ const World = dynamic(
   }
 );
 
-// RESTAURATION DE LA VARIABLE MANQUANTE
 const LOG_CARDS_DATA = [
   {
     id: 0,
@@ -92,8 +91,33 @@ export default function ResumeExecutifPage() {
     <div className="flex flex-col min-h-screen bg-white dark:bg-[#020408] selection:bg-green-500/30">
       <NavbarFront />
 
-      {/* SECTION 1 : CONTENT (LOGS & CARDS) AVEC WARP BACKGROUND */}
-      <section className="relative z-30 w-full min-h-[80vh] pt-32 pb-20 px-6 flex items-center justify-center border-b border-black/[0.03] dark:border-white/[0.03]">
+      {/* --- NOUVELLE SECTION HERO : WARP BACKGROUND --- */}
+      <section className="relative w-full h-[70vh] flex items-center justify-center overflow-hidden border-b border-black/5 dark:border-white/5">
+        <WarpBackground
+          className="w-full h-full"
+          gridColor="rgba(34, 197, 94, 0.2)"
+        >
+          <div className="relative z-10 flex flex-col items-center text-center px-6">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              className="space-y-4"
+            >
+              <h1 className="text-4xl md:text-7xl font-black tracking-[0.15em] uppercase italic text-slate-900 dark:text-white">
+                Warp <span className="text-green-500">Protocol</span>
+              </h1>
+              <div className="h-1 w-24 bg-green-500 mx-auto rounded-full" />
+              <p className="text-sm md:text-lg font-mono text-slate-500 dark:text-zinc-400 max-w-xl uppercase tracking-widest">
+                Transversal Data Hub • Ivory Coast Gateway • v2.0.26
+              </p>
+            </motion.div>
+          </div>
+        </WarpBackground>
+      </section>
+
+      {/* SECTION 1 : CONTENT (LOGS & CARDS) */}
+      <section className="relative z-30 w-full min-h-[80vh] py-20 px-6 flex items-center justify-center border-b border-black/[0.03] dark:border-white/[0.03]">
         <div className="max-w-5xl w-full grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
           <div className="space-y-6">
             <h2 className="text-3xl md:text-5xl font-black tracking-tighter uppercase italic leading-none">
@@ -109,23 +133,13 @@ export default function ResumeExecutifPage() {
             </div>
           </div>
 
-          {/* WarpBackground enveloppe ici le CardStack pour l'effet de grille perspective */}
-          <div className="flex justify-center md:justify-end min-h-[450px]">
-            <WarpBackground
-              className="w-full h-full flex items-center justify-center"
-              gridColor="rgba(34, 197, 94, 0.15)"
-            >
-              <CardStack
-                items={LOG_CARDS_DATA}
-                offset={10}
-                scaleFactor={0.06}
-              />
-            </WarpBackground>
+          <div className="flex justify-center md:justify-end min-h-[350px]">
+            <CardStack items={LOG_CARDS_DATA} offset={10} scaleFactor={0.06} />
           </div>
         </div>
       </section>
 
-      {/* SECTION 2 : GLOBE (ATMOSPHÈRE) */}
+      {/* SECTION 2 : GLOBE */}
       <section className="relative h-screen w-full overflow-hidden flex flex-col items-center justify-center">
         <motion.div
           initial={{ opacity: 0 }}
@@ -148,7 +162,6 @@ export default function ResumeExecutifPage() {
           />
         </motion.div>
 
-        {/* HUD UI */}
         <div className="relative z-10 flex flex-col items-center pointer-events-none px-6 text-center">
           <span className="text-xs font-mono opacity-30 tracking-[0.4em] uppercase mb-4 dark:text-white">
             Global Infrastructure Sync
