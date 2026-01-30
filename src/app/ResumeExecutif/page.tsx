@@ -5,15 +5,49 @@ import dynamic from "next/dynamic";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronRight, Brain } from "lucide-react";
 
-// Components
+// Tes imports existants
 import NavbarFront from "@/components/frontendkit/NavbarFront";
 import { CardStack } from "@/components/frontendkit/CardStack";
 import { ScrollToTop } from "@/components/frontendkit/ScrollToTop";
 import { WarpBackground } from "@/components/frontendkit/WarpBackground";
 import { WordRotate } from "@/components/frontendkit/word-rotate";
-import { AnimatedGradientText } from "@/components/frontendkit/animated-gradient-text";
 import { cn } from "@/lib/utils";
 
+// --- 1. LE COMPOSANT BOUTON (Défini ici pour éviter les erreurs d'import) ---
+const TechLogicButton = ({ text }: { text: string }) => (
+  <div className="group relative flex items-center justify-center rounded-[2px] border-2 border-green-500/40 bg-black/60 px-10 py-5 transition-all duration-300 hover:border-green-500 hover:shadow-[0_0_20px_rgba(34,197,94,0.2)] overflow-hidden cursor-pointer">
+    {/* Effet Scanner Laser */}
+    <div className="absolute inset-0 pointer-events-none overflow-hidden">
+      <div className="absolute left-0 w-full h-[2px] bg-green-500/40 shadow-[0_0_10px_#22c55e] animate-scan" />
+    </div>
+
+    <Brain className="size-7 mr-4 text-green-500 drop-shadow-[0_0_8px_rgba(34,197,94,0.5)]" />
+    <hr className="mx-4 h-8 w-px bg-green-500/20" />
+
+    <span className="font-oswald font-black uppercase tracking-tighter text-2xl md:text-5xl text-green-500 leading-none">
+      {text}
+    </span>
+
+    <ChevronRight className="ml-4 size-6 text-green-500/50 transition-transform group-hover:translate-x-1" />
+
+    <style jsx>{`
+      @keyframes scan-animation {
+        0% {
+          top: -10%;
+        }
+        100% {
+          top: 110%;
+        }
+      }
+      .animate-scan {
+        position: absolute;
+        animation: scan-animation 4s linear infinite;
+      }
+    `}</style>
+  </div>
+);
+
+// --- 2. CONFIGURATION ---
 const UI_THEME = {
   techBold: "font-oswald font-black uppercase tracking-tighter leading-none",
   machineLabel:
@@ -36,6 +70,26 @@ const HERO_CONTENT = {
   footerHighlight: "LOGIQUE MESURABLE",
 };
 
+const LOG_CARDS_DATA = [
+  {
+    id: 0,
+    name: "Network Engine",
+    designation: "Status: Active",
+    content: (
+      <p className="text-sm">
+        Routing packets from{" "}
+        <span className="font-bold text-green-500">Abidjan Hub</span>.
+      </p>
+    ),
+  },
+  {
+    id: 1,
+    name: "Security Protocol",
+    designation: "Shield: 100%",
+    content: <p className="text-sm font-mono">End-to-end encryption active.</p>,
+  },
+];
+
 const World = dynamic(
   () => import("@/components/ui/globe").then((m) => m.World),
   {
@@ -46,10 +100,12 @@ const World = dynamic(
   }
 );
 
+// --- 3. PAGE PRINCIPALE ---
 export default function ResumeExecutifPage() {
   const [mounted, setMounted] = useState(false);
   const [index, setIndex] = useState(0);
   const ABIDJAN = { lat: 5.33, lng: -4.03 };
+
   const destinations = useMemo(
     () => [
       { label: "AMÉRIQUE DU NORD", lat: 39.82, lng: -98.57 },
@@ -71,14 +127,14 @@ export default function ResumeExecutifPage() {
   if (!mounted) return null;
 
   return (
-    <div className="flex flex-col min-h-screen bg-white dark:bg-[#020408] selection:bg-green-500/30 font-sans">
+    <div className="flex flex-col min-h-screen bg-white dark:bg-[#020408] selection:bg-green-500/30">
       <NavbarFront />
 
-      {/* --- HERO SECTION --- */}
+      {/* HERO SECTION */}
       <section className="relative w-full min-h-[95vh] flex flex-col items-center pt-32 pb-20 overflow-hidden border-b border-black/5 dark:border-white/5">
         <WarpBackground
           className="w-full h-full"
-          gridColor="rgba(34, 197, 94, 0.15)"
+          gridColor="rgba(34, 197, 94, 0.12)"
         >
           <div className="relative z-10 flex flex-col items-center text-center px-6 max-w-5xl mx-auto w-full">
             <motion.div
@@ -110,7 +166,7 @@ export default function ResumeExecutifPage() {
                 <div className="h-24 flex items-center justify-center">
                   <WordRotate
                     className={cn(
-                      "text-4xl md:text-7xl bg-gradient-to-r from-[#f97316] to-[#22c55e] bg-clip-text text-transparent",
+                      "text-4xl md:text-7xl text-green-500",
                       UI_THEME.techBold
                     )}
                     words={HERO_CONTENT.rotatingWords}
@@ -118,57 +174,40 @@ export default function ResumeExecutifPage() {
                 </div>
               </div>
 
-              {/* BADGE LOGIQUE OPTIMISÉ */}
               <div className="pt-10 flex flex-col items-center gap-6">
                 <p className={cn("text-xl opacity-60", UI_THEME.techBold)}>
                   {HERO_CONTENT.footerPrefix}
                 </p>
-
-                <div className="group relative flex items-center justify-center rounded-full px-8 py-4 bg-white/5 backdrop-blur-md border border-white/10 shadow-2xl overflow-hidden">
-                  <span
-                    className="absolute inset-0 block h-full w-full p-[2px]"
-                    style={{
-                      background:
-                        "linear-gradient(90deg, #f97316 0%, #22c55e 50%, #f97316 100%)",
-                      backgroundSize: "200% 100%",
-                      WebkitMask:
-                        "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
-                      WebkitMaskComposite: "destination-out",
-                      maskComposite: "subtract",
-                      animation: "logic-gradient 3s linear infinite",
-                    }}
-                  />
-
-                  <Brain className="size-7 mr-3 text-green-500 drop-shadow-[0_0_10px_rgba(34,197,94,0.6)]" />
-                  <hr className="mx-3 h-6 w-px bg-white/20" />
-
-                  <AnimatedGradientText
-                    className={cn("text-2xl md:text-4xl", UI_THEME.techBold)}
-                  >
-                    {HERO_CONTENT.footerHighlight}
-                  </AnimatedGradientText>
-
-                  <ChevronRight className="ml-3 size-6 text-neutral-500 transition-transform group-hover:translate-x-1" />
-                </div>
+                {/* Utilisation du composant défini en haut */}
+                <TechLogicButton text={HERO_CONTENT.footerHighlight} />
               </div>
             </motion.div>
           </div>
         </WarpBackground>
-
-        <style jsx global>{`
-          @keyframes logic-gradient {
-            0% {
-              background-position: 0% 50%;
-            }
-            100% {
-              background-position: 200% 50%;
-            }
-          }
-        `}</style>
       </section>
 
-      {/* --- GLOBE SECTION --- */}
-      <section className="relative h-[70vh] w-full overflow-hidden">
+      {/* LOGS SECTION */}
+      <section className="relative z-30 w-full py-24 px-6 flex items-center justify-center">
+        <div className="max-w-6xl w-full grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
+          <div className="space-y-8">
+            <div className="space-y-2">
+              <span className={UI_THEME.machineLabel}>System Analysis</span>
+              <h2 className={cn("text-4xl md:text-6xl", UI_THEME.techBold)}>
+                Real-time <br /> Node Logs
+              </h2>
+            </div>
+            <p className={cn("text-lg max-w-sm", UI_THEME.narrative)}>
+              Flux de surveillance synchronisé.
+            </p>
+          </div>
+          <div className="flex justify-center md:justify-end min-h-[400px]">
+            <CardStack items={LOG_CARDS_DATA} offset={10} scaleFactor={0.06} />
+          </div>
+        </div>
+      </section>
+
+      {/* GLOBE SECTION */}
+      <section className="relative h-[80vh] w-full overflow-hidden flex flex-col items-center justify-center">
         <div className="absolute inset-0 z-0">
           <World
             data={[
@@ -184,9 +223,9 @@ export default function ResumeExecutifPage() {
             ]}
           />
         </div>
-        <div className="relative z-10 h-full flex items-center justify-center pointer-events-none">
+        <div className="relative z-10 text-center pointer-events-none px-6">
           <AnimatePresence mode="wait">
-            <motion.h2
+            <motion.h1
               key={destinations[index].label}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -194,14 +233,15 @@ export default function ResumeExecutifPage() {
               className={cn("text-5xl md:text-8xl", UI_THEME.techBold)}
             >
               {destinations[index].label}
-            </motion.h2>
+            </motion.h1>
           </AnimatePresence>
         </div>
       </section>
 
-      <footer className="py-12 text-center opacity-40">
+      <footer className="py-12 text-center opacity-40 border-t border-white/5">
         <p className={UI_THEME.machineLabel}>IVORY COAST ARCHITECTURE © 2026</p>
       </footer>
+
       <ScrollToTop />
     </div>
   );
