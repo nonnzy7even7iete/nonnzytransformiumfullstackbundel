@@ -4,8 +4,9 @@ import React, { useState, useEffect, useMemo } from "react";
 import dynamic from "next/dynamic";
 import { motion, AnimatePresence } from "framer-motion";
 import NavbarFront from "@/components/frontendkit/NavbarFront";
-import { CardStack } from "@/components/frontendkit/CardStack"; // Import corrigé sans {}
+import { CardStack } from "@/components/frontendkit/CardStack";
 import { ScrollToTop } from "@/components/frontendkit/ScrollToTop";
+import { WarpBackground } from "@/components/frontendkit/WarpBackground"; // Nouvel import
 
 // Import dynamique du Globe
 const World = dynamic(
@@ -91,7 +92,7 @@ export default function ResumeExecutifPage() {
     <div className="flex flex-col min-h-screen bg-white dark:bg-[#020408] selection:bg-green-500/30">
       <NavbarFront />
 
-      {/* SECTION 1 : CONTENT (LOGS & CARDS) */}
+      {/* SECTION 1 : CONTENT (LOGS & CARDS) AVEC WARP BACKGROUND */}
       <section className="relative z-30 w-full min-h-[80vh] pt-32 pb-20 px-6 flex items-center justify-center border-b border-black/[0.03] dark:border-white/[0.03]">
         <div className="max-w-5xl w-full grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
           <div className="space-y-6">
@@ -108,15 +109,24 @@ export default function ResumeExecutifPage() {
             </div>
           </div>
 
-          <div className="flex justify-center md:justify-end min-h-[350px]">
-            <CardStack items={LOG_CARDS_DATA} offset={10} scaleFactor={0.06} />
+          {/* WarpBackground enveloppe ici le CardStack pour l'effet de grille perspective */}
+          <div className="flex justify-center md:justify-end min-h-[450px]">
+            <WarpBackground
+              className="w-full h-full flex items-center justify-center"
+              gridColor="rgba(34, 197, 94, 0.15)"
+            >
+              <CardStack
+                items={LOG_CARDS_DATA}
+                offset={10}
+                scaleFactor={0.06}
+              />
+            </WarpBackground>
           </div>
         </div>
       </section>
 
       {/* SECTION 2 : GLOBE (ATMOSPHÈRE) */}
       <section className="relative h-screen w-full overflow-hidden flex flex-col items-center justify-center">
-        {/* LOGIQUE RECTIFIÉE : pointer-events-none pour libérer le scroll */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: isGlobeReady ? 1 : 0 }}
@@ -170,7 +180,6 @@ export default function ResumeExecutifPage() {
         </p>
       </footer>
 
-      {/* AJOUT DE LA FLÈCHE DE RETOUR EN HAUT */}
       <ScrollToTop />
     </div>
   );
