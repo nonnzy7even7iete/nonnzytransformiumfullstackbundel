@@ -4,7 +4,8 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { TextHoverEffect } from "../ui/TextHoverEffect";
-import { ThemeToggle } from "@/components/ui/themeToggle";
+/* MODIFICATION : Import du nouveau Toggler Glassmorphism */
+import { AnimatedThemeToggler } from "@/components/frontendkit/AnimatedThemeToggler";
 import { Menubar, MenubarMenu, MenubarTrigger } from "@/components/ui/menubar";
 import MobileMenu from "@/components/frontendkit/MobileMenu";
 
@@ -52,12 +53,9 @@ export default function NavbarFront() {
   return (
     <>
       <style>{`
-        /* L'ITEM : BORDURE VISIBLE ET PROPORTIONNELLE */
         .expert-item-border {
           transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
-          /* Bordure constante mais subtile */
           border: 1px solid light-dark(rgba(0,0,0,0.1), rgba(255,255,255,0.08)) !important;
-          /* LA PROPORTION : Parent(16px) - Padding(6px) = 10px */
           border-radius: 7px !important;
           background: light-dark(rgba(0,0,0,0.02), rgba(255,255,255,0.02));
         }
@@ -97,7 +95,6 @@ export default function NavbarFront() {
             </Link>
           </div>
 
-          {/* CONTENEUR PARENT : ROUNDED 16PX */}
           <div className="flex-1 hidden md:flex justify-center items-center z-[80]">
             <Menubar
               className="
@@ -122,7 +119,9 @@ export default function NavbarFront() {
           </div>
 
           <div className="w-56 flex justify-end items-center gap-6 z-[60]">
-            <ThemeToggle />
+            {/* REMPLACEMENT ICI : Nouveau Toggler avec animations Magic UI */}
+            <AnimatedThemeToggler />
+
             <div className="md:hidden text-black dark:text-white">
               <MobileMenu links={navLinks} session={session} />
             </div>
