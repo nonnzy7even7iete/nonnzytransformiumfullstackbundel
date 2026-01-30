@@ -27,7 +27,7 @@ const LOG_CARDS_DATA = [
     content: (
       <p>
         Routing data packets from{" "}
-        <span className="text-2xl md:text-4xl font-extrabold italic tracking-tight bg-gradient-to-r from-[#f97316] to-[#22c55e] bg-clip-text text-transparent">
+        <span className="font-bold bg-gradient-to-r from-[#f97316] to-[#22c55e] bg-clip-text text-transparent">
           Abidjan Hub
         </span>{" "}
         to Global Nodes.
