@@ -8,7 +8,7 @@ import { CardStack } from "@/components/frontendkit/CardStack";
 import { ScrollToTop } from "@/components/frontendkit/ScrollToTop";
 import { WarpBackground } from "@/components/frontendkit/WarpBackground";
 // IMPORT DU NOUVEAU COMPOSANT
-import { WordRotate } from "@/components/magicui/word-rotate";
+import { WordRotate } from "@/components/frontendkit/word-rotate";
 
 // ... (Garder le reste de tes imports et LOG_CARDS_DATA identiques)
 
