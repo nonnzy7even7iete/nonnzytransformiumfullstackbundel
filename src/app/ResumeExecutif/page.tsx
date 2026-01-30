@@ -111,64 +111,66 @@ export default function ResumeExecutifPage() {
     <div className="flex flex-col min-h-screen bg-white dark:bg-[#020408] selection:bg-green-500/30">
       <NavbarFront />
 
-      {/* --- HERO SECTION ISOLÉE --- */}
+      {/* --- HERO SECTION --- */}
       <section className="relative w-full min-h-[90vh] flex flex-col items-center pt-32 pb-20 overflow-hidden border-b border-black/5 dark:border-white/5">
-        <div className="absolute inset-0 z-0">
-          <WarpBackground
-            className="w-full h-full"
-            gridColor="rgba(34, 197, 94, 0.15)"
-          />
-        </div>
-
-        <div className="relative z-10 flex flex-col items-center text-center px-6 max-w-5xl w-full">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="w-full space-y-10"
-          >
-            <div className="space-y-4">
-              <h1 className="text-4xl md:text-7xl font-black tracking-tight uppercase italic text-slate-900 dark:text-white leading-[0.9]">
-                {HERO_CONTENT.title}{" "}
-                <span className="text-green-500">
-                  {HERO_CONTENT.titleSuffix}
-                </span>
-              </h1>
-              <p className="text-[10px] md:text-xs font-mono text-slate-500 uppercase tracking-[0.5em] opacity-80">
-                {HERO_CONTENT.subtitle}
-              </p>
-            </div>
-
-            <div className="flex flex-col items-center py-6">
-              <p className="text-base md:text-xl text-slate-600 dark:text-zinc-400 mb-2">
-                {HERO_CONTENT.intro}
-              </p>
-              <div className="h-16 md:h-20 flex items-center justify-center w-full">
-                <WordRotate
-                  className="text-xl md:text-3xl font-bold bg-gradient-to-r from-[#f97316] to-[#22c55e] bg-clip-text text-transparent italic tracking-tight"
-                  duration={3500}
-                  words={HERO_CONTENT.rotatingWords}
-                />
-              </div>
-            </div>
-
+        {/* CORRECTION : WarpBackground enveloppe désormais son contenu */}
+        <WarpBackground
+          className="w-full h-full"
+          gridColor="rgba(34, 197, 94, 0.15)"
+        >
+          <div className="relative z-10 flex flex-col items-center text-center px-6 max-w-5xl w-full mx-auto">
             <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 1.2 }}
-              className="inline-block"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              className="w-full space-y-10"
             >
-              <div className="px-8 py-4 rounded-2xl bg-slate-50 dark:bg-white/5 border border-black/5 dark:border-white/10 backdrop-blur-sm">
-                <p className="text-lg md:text-2xl font-bold uppercase tracking-tighter text-slate-900 dark:text-white">
-                  {HERO_CONTENT.conclusionPrefix}{" "}
+              {/* Header Title */}
+              <div className="space-y-4">
+                <h1 className="text-4xl md:text-7xl font-black tracking-tight uppercase italic text-slate-900 dark:text-white leading-[0.9]">
+                  {HERO_CONTENT.title}{" "}
                   <span className="text-green-500">
-                    {HERO_CONTENT.conclusionHighlight}
+                    {HERO_CONTENT.titleSuffix}
                   </span>
+                </h1>
+                <p className="text-[10px] md:text-xs font-mono text-slate-500 uppercase tracking-[0.5em] opacity-80">
+                  {HERO_CONTENT.subtitle}
                 </p>
               </div>
+
+              {/* Rotating Logic Block */}
+              <div className="flex flex-col items-center py-6">
+                <p className="text-base md:text-xl text-slate-600 dark:text-zinc-400 mb-2">
+                  {HERO_CONTENT.intro}
+                </p>
+                <div className="h-16 md:h-20 flex items-center justify-center w-full">
+                  <WordRotate
+                    className="text-xl md:text-3xl font-bold bg-gradient-to-r from-[#f97316] to-[#22c55e] bg-clip-text text-transparent italic tracking-tight"
+                    duration={3500}
+                    words={HERO_CONTENT.rotatingWords}
+                  />
+                </div>
+              </div>
+
+              {/* Final Call to Action / Conclusion */}
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 1.2 }}
+                className="inline-block"
+              >
+                <div className="px-8 py-4 rounded-2xl bg-slate-50 dark:bg-white/5 border border-black/5 dark:border-white/10 backdrop-blur-sm">
+                  <p className="text-lg md:text-2xl font-bold uppercase tracking-tighter text-slate-900 dark:text-white">
+                    {HERO_CONTENT.conclusionPrefix}{" "}
+                    <span className="text-green-500">
+                      {HERO_CONTENT.conclusionHighlight}
+                    </span>
+                  </p>
+                </div>
+              </motion.div>
             </motion.div>
-          </motion.div>
-        </div>
+          </div>
+        </WarpBackground>
       </section>
 
       {/* --- SECTION 1 : LOGS --- */}
