@@ -45,6 +45,8 @@ export function WordRotate({
       <AnimatePresence mode="wait">
         <motion.span
           key={words[index]}
+          // Ici, on s'assure que les classes passées via props (comme dark:text-white)
+          // sont appliquées à chaque nouveau mot monté
           className={cn(className, "col-start-1 row-start-1")}
           {...framerProps}
         >
@@ -52,7 +54,7 @@ export function WordRotate({
         </motion.span>
       </AnimatePresence>
 
-      {/* Hidden ghost to prevent layout shifts */}
+      {/* Ghost element pour maintenir la structure CSS même pendant le changement de thème */}
       <span
         className={cn(
           className,
