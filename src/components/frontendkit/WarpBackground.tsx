@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 
 export const WarpBackground = ({
@@ -15,58 +16,54 @@ export const WarpBackground = ({
   return (
     <div
       className={cn(
-        "relative w-full flex items-center justify-center overflow-hidden bg-[#020408] py-20",
+        "relative flex items-center justify-center overflow-hidden bg-[#020408]",
         className
       )}
     >
-      {/* Container SVG pour les lignes de perspective */}
-      <div className="absolute inset-0 z-0 pointer-events-none">
-        <svg className="h-full w-full opacity-50" preserveAspectRatio="none">
-          <defs>
-            <radialGradient id="warp-gradient" cx="50%" cy="50%" r="50%">
-              <stop offset="0%" stopColor="transparent" />
-              <stop offset="100%" stopColor="#020408" />
-            </radialGradient>
-          </defs>
+      {/* L'effet de Tunnel Warp */}
+      <div className="absolute inset-0 z-0">
+        <div
+          className="absolute inset-0"
+          style={{
+            perspective: "150px", // Perspective forcée pour l'effet tunnel
+            perspectiveOrigin: "50% 50%",
+          }}
+        >
+          <motion.div
+            initial={{ rotateX: 0, translateZ: 0 }}
+            animate={{
+              translateZ: ["0px", "40px"], // On avance vers l'utilisateur
+            }}
+            transition={{
+              duration: 2,
+              repeat: Infinity,
+              ease: "linear",
+            }}
+            className="absolute inset-[-100%] h-[300%] w-[300%] origin-center"
+            style={{
+              backgroundImage: `
+                linear-gradient(to right, ${gridColor} 1px, transparent 1px),
+                linear-gradient(to bottom, ${gridColor} 1px, transparent 1px)
+              `,
+              backgroundSize: "60px 60px",
+              transformStyle: "preserve-3d",
+              rotateX: "75deg",
+              /* Effet de lueur et de flou sur les bords pour la vitesse */
+              maskImage:
+                "radial-gradient(circle at center, black 30%, transparent 80%)",
+            }}
+          />
+        </div>
 
-          {/* Lignes horizontales de profondeur */}
-          {[...Array(10)].map((_, i) => (
-            <rect
-              key={`h-${i}`}
-              x="0"
-              y={`${10 * i}%`}
-              width="100%"
-              height="1"
-              fill={gridColor}
-              className="animate-pulse"
-              style={{ animationDelay: `${i * 0.1}s` }}
-            />
-          ))}
-
-          {/* Lignes de perspective convergentes */}
-          {[...Array(20)].map((_, i) => (
-            <line
-              key={`v-${i}`}
-              x1={`${5 * i}%`}
-              y1="0"
-              x2="50%"
-              y2="50%"
-              stroke={gridColor}
-              strokeWidth="0.5"
-            />
-          ))}
-
-          <rect width="100%" height="100%" fill="url(#warp-gradient)" />
-        </svg>
-
-        {/* Faisceaux lumineux (Beams) de l'image */}
-        <div className="absolute top-1/4 left-0 w-32 h-1 bg-green-500 blur-sm rotate-12 animate-pulse opacity-50" />
-        <div className="absolute bottom-1/4 right-0 w-48 h-1 bg-emerald-400 blur-md -rotate-12 animate-bounce opacity-30" />
-        <div className="absolute top-1/2 right-1/4 w-16 h-1 bg-blue-500 blur-sm rotate-45 animate-pulse" />
+        {/* Overlay de profondeur (sombre au centre, lueur sur les bords) */}
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#020408] z-[1]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,#020408_70%)] z-[1]" />
       </div>
 
-      {/* Ton contenu (Card) */}
-      <div className="relative z-10">{children}</div>
+      {/* Ton contenu qui "flotte" au centre du tunnel */}
+      <div className="relative z-10 w-full flex flex-col items-center">
+        {children}
+      </div>
     </div>
   );
 };
