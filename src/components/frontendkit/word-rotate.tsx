@@ -13,13 +13,13 @@ interface WordRotateProps {
 }
 
 export function WordRotate({
-  words,
+  words = [],
   duration = 3000,
   framerProps = {
     initial: { opacity: 0, y: 10 },
     animate: { opacity: 1, y: 0 },
     exit: { opacity: 0, y: -10 },
-    transition: { duration: 0.3, ease: "easeInOut" },
+    transition: { duration: 0.35, ease: "easeInOut" },
   },
   className,
   containerClassName,
@@ -27,6 +27,8 @@ export function WordRotate({
   const [index, setIndex] = useState(0);
 
   useEffect(() => {
+    if (!words || words.length <= 1) return;
+
     const interval = setInterval(() => {
       setIndex((prevIndex) => (prevIndex + 1) % words.length);
     }, duration);
@@ -34,9 +36,12 @@ export function WordRotate({
     return () => clearInterval(interval);
   }, [words, duration]);
 
+  if (!words || words.length === 0) return null;
+
   return (
-    // On utilise grid pour superposer les éléments et garder l'espace
-    <div className={cn("inline-grid text-left", containerClassName)}>
+    <div
+      className={cn("inline-grid text-left items-center", containerClassName)}
+    >
       <AnimatePresence mode="wait">
         <motion.span
           key={words[index]}
@@ -47,14 +52,14 @@ export function WordRotate({
         </motion.span>
       </AnimatePresence>
 
-      {/* Élément invisible pour "réserver" l'espace le plus large et éviter le saut de layout */}
+      {/* Hidden ghost to prevent layout shifts */}
       <span
         className={cn(
           className,
           "invisible col-start-1 row-start-1 pointer-events-none"
         )}
       >
-        {words.reduce((a, b) => (a.length > b.length ? a : b))}
+        {words.reduce((a, b) => (a.length > b.length ? a : b), "")}
       </span>
     </div>
   );
