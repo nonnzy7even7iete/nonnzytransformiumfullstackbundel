@@ -8,20 +8,30 @@ import { CardStack } from "@/components/frontendkit/CardStack";
 import { ScrollToTop } from "@/components/frontendkit/ScrollToTop";
 import { WarpBackground } from "@/components/frontendkit/WarpBackground";
 import { WordRotate } from "@/components/frontendkit/word-rotate";
+import { cn } from "@/lib/utils";
 
-// --- CONFIGURATION DES TEXTES (PROPS) ---
+// --- CONFIGURATION TECHNIQUE (PROPS & THEME) ---
+const UI_THEME = {
+  // Look technique : Oswald, Gras, Majuscules, Tracking serré
+  techBold: "font-[Oswald] font-black uppercase tracking-tighter",
+  // Look machine : Mono, Petites majuscules espacées
+  machineLabel: "font-mono uppercase tracking-[0.4em] text-[10px] opacity-70",
+  // Look narratif : Normal, élégant
+  narrative: "text-slate-500 dark:text-zinc-400 font-medium tracking-tight",
+};
+
 const HERO_CONTENT = {
+  label: "Decision Resilience Protocol // v2.0.26",
   title: "NONNZYTR",
   titleSuffix: "OPERATE",
-  subtitle: "Decision Resilience Protocol // 2026",
   intro: "Là où la décision devient instable,",
   rotatingWords: [
-    "lorsque les signaux sont contradictoires.",
-    "lorsque les données sont incomplètes.",
-    "lorsque l'intuition devient dangereuse.",
+    "SIGNAUX CONTRADICTOIRES",
+    "DONNÉES INCOMPLÈTES",
+    "INTUITION DANGEREUSE",
   ],
-  conclusionPrefix: "Zy introduis une",
-  conclusionHighlight: "logique mesurable.",
+  footerPrefix: "Zy introduis une",
+  footerHighlight: "LOGIQUE MESURABLE",
 };
 
 const World = dynamic(
@@ -40,8 +50,8 @@ const LOG_CARDS_DATA = [
     name: "Network Engine",
     designation: "Status: Active",
     content: (
-      <p>
-        Routing data packets from{" "}
+      <p className="text-sm">
+        Routing packets from{" "}
         <span className="font-bold bg-gradient-to-r from-[#f97316] to-[#22c55e] bg-clip-text text-transparent">
           Abidjan Hub
         </span>{" "}
@@ -54,7 +64,7 @@ const LOG_CARDS_DATA = [
     name: "Security Protocol",
     designation: "Shield: 100%",
     content: (
-      <p>
+      <p className="text-sm">
         End-to-end encryption active in the{" "}
         <span className="font-bold bg-gradient-to-r from-[#f97316] to-[#22c55e] bg-clip-text text-transparent">
           Ivory Coast
@@ -67,7 +77,11 @@ const LOG_CARDS_DATA = [
     id: 2,
     name: "Cloud Infra",
     designation: "Region: AF-WEST",
-    content: <p>Nodes synchronized via 10Gbps fiber backbone.</p>,
+    content: (
+      <p className="text-sm font-mono">
+        Nodes synchronized via 10Gbps fiber backbone.
+      </p>
+    ),
   },
 ];
 
@@ -111,9 +125,8 @@ export default function ResumeExecutifPage() {
     <div className="flex flex-col min-h-screen bg-white dark:bg-[#020408] selection:bg-green-500/30">
       <NavbarFront />
 
-      {/* --- HERO SECTION --- */}
+      {/* --- SECTION HERO : REFACTORED & STYLED --- */}
       <section className="relative w-full min-h-[90vh] flex flex-col items-center pt-32 pb-20 overflow-hidden border-b border-black/5 dark:border-white/5">
-        {/* CORRECTION : WarpBackground enveloppe désormais son contenu */}
         <WarpBackground
           className="w-full h-full"
           gridColor="rgba(34, 197, 94, 0.15)"
@@ -123,50 +136,62 @@ export default function ResumeExecutifPage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
-              className="w-full space-y-10"
+              className="w-full space-y-16"
             >
-              {/* Header Title */}
-              <div className="space-y-4">
-                <h1 className="text-4xl md:text-7xl font-black tracking-tight uppercase italic text-slate-900 dark:text-white leading-[0.9]">
+              {/* HEADER BLOCK */}
+              <div className="space-y-6">
+                <span className={UI_THEME.machineLabel}>
+                  {HERO_CONTENT.label}
+                </span>
+                <h1
+                  className={cn(
+                    "text-6xl md:text-9xl leading-[0.8]",
+                    UI_THEME.techBold
+                  )}
+                >
                   {HERO_CONTENT.title}{" "}
                   <span className="text-green-500">
                     {HERO_CONTENT.titleSuffix}
                   </span>
                 </h1>
-                <p className="text-[10px] md:text-xs font-mono text-slate-500 uppercase tracking-[0.5em] opacity-80">
-                  {HERO_CONTENT.subtitle}
-                </p>
               </div>
 
-              {/* Rotating Logic Block */}
-              <div className="flex flex-col items-center py-6">
-                <p className="text-base md:text-xl text-slate-600 dark:text-zinc-400 mb-2">
+              {/* LOGIC WORD ROTATE BLOCK */}
+              <div className="flex flex-col items-center gap-4">
+                <p className={cn("text-lg md:text-xl", UI_THEME.narrative)}>
                   {HERO_CONTENT.intro}
                 </p>
-                <div className="h-16 md:h-20 flex items-center justify-center w-full">
+                <div className="h-24 flex items-center justify-center w-full">
                   <WordRotate
-                    className="text-xl md:text-3xl font-bold bg-gradient-to-r from-[#f97316] to-[#22c55e] bg-clip-text text-transparent italic tracking-tight"
-                    duration={3500}
+                    className={cn(
+                      "text-3xl md:text-6xl bg-gradient-to-r from-[#f97316] to-[#22c55e] bg-clip-text text-transparent",
+                      UI_THEME.techBold
+                    )}
+                    duration={3000}
                     words={HERO_CONTENT.rotatingWords}
                   />
                 </div>
               </div>
 
-              {/* Final Call to Action / Conclusion */}
+              {/* FOOTER CTA BLOCK */}
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 1.2 }}
-                className="inline-block"
+                className="pt-10 flex flex-col items-center gap-4"
               >
-                <div className="px-8 py-4 rounded-2xl bg-slate-50 dark:bg-white/5 border border-black/5 dark:border-white/10 backdrop-blur-sm">
-                  <p className="text-lg md:text-2xl font-bold uppercase tracking-tighter text-slate-900 dark:text-white">
-                    {HERO_CONTENT.conclusionPrefix}{" "}
-                    <span className="text-green-500">
-                      {HERO_CONTENT.conclusionHighlight}
-                    </span>
-                  </p>
-                </div>
+                <div className="h-[1px] w-12 bg-slate-300 dark:bg-white/20" />
+                <p
+                  className={cn(
+                    "text-2xl md:text-4xl text-slate-900 dark:text-white",
+                    UI_THEME.techBold
+                  )}
+                >
+                  {HERO_CONTENT.footerPrefix}{" "}
+                  <span className="text-green-500 border-b-4 border-green-500/30">
+                    {HERO_CONTENT.footerHighlight}
+                  </span>
+                </p>
               </motion.div>
             </motion.div>
           </div>
@@ -176,12 +201,26 @@ export default function ResumeExecutifPage() {
       {/* --- SECTION 1 : LOGS --- */}
       <section className="relative z-30 w-full py-24 px-6 flex items-center justify-center bg-white dark:bg-[#020408]">
         <div className="max-w-6xl w-full grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
-          <div className="space-y-6">
-            <h2 className="text-3xl md:text-5xl font-black tracking-tighter uppercase italic leading-tight">
-              Real-time Node Logs
-            </h2>
-            <div className="h-1 w-12 bg-green-500" />
-            <p className="text-slate-500 dark:text-white/40 text-base md:text-lg leading-relaxed max-w-sm">
+          <div className="space-y-8">
+            <div className="space-y-2">
+              <span className={UI_THEME.machineLabel}>
+                Infrastructure Monitoring
+              </span>
+              <h2
+                className={cn(
+                  "text-4xl md:text-6xl leading-tight",
+                  UI_THEME.techBold
+                )}
+              >
+                Real-time <br /> Node Logs
+              </h2>
+            </div>
+            <p
+              className={cn(
+                "text-base md:text-lg max-w-sm",
+                UI_THEME.narrative
+              )}
+            >
               Monitoring global data flow across the Ivory Coast backbone.
             </p>
           </div>
@@ -220,7 +259,10 @@ export default function ResumeExecutifPage() {
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -15 }}
-              className="text-4xl md:text-7xl font-black tracking-tighter uppercase italic dark:text-white text-slate-900"
+              className={cn(
+                "text-4xl md:text-8xl text-slate-900 dark:text-white",
+                UI_THEME.techBold
+              )}
             >
               {destinations[index].label}
             </motion.h1>
@@ -229,7 +271,7 @@ export default function ResumeExecutifPage() {
       </section>
 
       <footer className="py-12 border-t border-black/5 dark:border-white/5 text-center opacity-30">
-        <p className="text-[10px] uppercase tracking-[0.4em]">
+        <p className={UI_THEME.machineLabel}>
           Ivory Coast Digital Architecture © 2026
         </p>
       </footer>
