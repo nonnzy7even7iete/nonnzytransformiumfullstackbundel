@@ -14,51 +14,58 @@ interface WordRotateProps {
 
 export function WordRotate({
   words = [],
-  duration = 3000,
+  duration = 8000,
   framerProps = {
-    initial: { opacity: 0, y: 10 },
+    initial: { opacity: 0, y: 15 },
     animate: { opacity: 1, y: 0 },
-    exit: { opacity: 0, y: -10 },
-    transition: { duration: 0.35, ease: "easeInOut" },
+    exit: { opacity: 0, y: -15 },
+    transition: { duration: 0.5, ease: "easeOut" },
   },
   className,
   containerClassName,
 }: WordRotateProps) {
   const [index, setIndex] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
 
   useEffect(() => {
-    if (!words || words.length <= 1) return;
+    if (!words || words.length <= 1 || isPaused) return;
 
     const interval = setInterval(() => {
       setIndex((prevIndex) => (prevIndex + 1) % words.length);
     }, duration);
 
     return () => clearInterval(interval);
-  }, [words, duration]);
+  }, [words, duration, isPaused]);
 
   if (!words || words.length === 0) return null;
 
   return (
     <div
-      className={cn("inline-grid text-left items-center", containerClassName)}
+      className={cn(
+        "relative flex items-center justify-center text-center w-full min-h-[4rem]",
+        containerClassName
+      )}
+      onMouseEnter={() => setIsPaused(true)}
+      onMouseLeave={() => setIsPaused(false)}
     >
       <AnimatePresence mode="wait">
         <motion.span
           key={words[index]}
-          // Ici, on s'assure que les classes passées via props (comme dark:text-white)
-          // sont appliquées à chaque nouveau mot monté
-          className={cn(className, "col-start-1 row-start-1")}
+          className={cn(
+            className,
+            "absolute inset-0 flex items-center justify-center text-center px-4"
+          )}
           {...framerProps}
         >
           {words[index]}
         </motion.span>
       </AnimatePresence>
 
-      {/* Ghost element pour maintenir la structure CSS même pendant le changement de thème */}
+      {/* Ghost element : invisible mais garde l'espace pour la plus longue phrase */}
       <span
         className={cn(
           className,
-          "invisible col-start-1 row-start-1 pointer-events-none"
+          "invisible pointer-events-none px-4 opacity-0"
         )}
       >
         {words.reduce((a, b) => (a.length > b.length ? a : b), "")}
