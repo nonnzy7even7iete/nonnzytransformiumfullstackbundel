@@ -14,16 +14,16 @@ import { cn } from "@/lib/utils";
 
 const UI_THEME = {
   techBold: "font-oswald font-semibold tracking-[0.02em] leading-[1.1]",
-  // Gradient spécifique : Orange vers Vert (en degrés)
+  // Gradient UNIQUE pour l'action
   orangeGreenGradient:
     "bg-[linear-gradient(135deg,#f97316_0%,#22c55e_100%)] bg-clip-text text-transparent",
-  // Gradient Gris Acier (Clair vers Foncé)
+  // Gradient Gris Acier optimisé (plus de blanc en haut pour la brillance)
   steelGradient:
-    "bg-gradient-to-b from-zinc-100 to-zinc-500 bg-clip-text text-transparent dark:from-white dark:to-zinc-500",
+    "bg-gradient-to-b from-white via-zinc-200 to-zinc-500 bg-clip-text text-transparent",
   machineLabel:
-    "font-mono-tech uppercase tracking-[0.25em] text-[10px] text-zinc-500 dark:text-zinc-400",
+    "font-mono-tech uppercase tracking-[0.25em] text-[10px] text-zinc-500",
   narrative:
-    "font-sans uppercase tracking-widest text-zinc-500 dark:text-zinc-400 font-normal text-xs md:text-sm",
+    "font-sans uppercase tracking-widest text-zinc-400 font-normal text-xs md:text-sm",
 };
 
 const LOG_CARDS_DATA = [
@@ -89,8 +89,8 @@ export default function ResumeExecutifPage() {
       {/* --- SECTION 1 : ACCUEIL --- */}
       <section className="relative w-full min-h-[85vh] flex flex-col items-center justify-center pt-24 overflow-hidden border-b border-white/5 bg-[#050505]">
         <WarpBackground
-          className="w-full h-full opacity-80"
-          gridColor="rgba(249, 115, 22, 0.1)"
+          className="w-full h-full opacity-60"
+          gridColor="rgba(34, 197, 94, 0.1)"
         >
           <div className="relative z-10 flex flex-col items-center text-center px-6 max-w-5xl mx-auto w-full">
             <motion.div
@@ -148,12 +148,11 @@ export default function ResumeExecutifPage() {
           <div className="space-y-8">
             <span className={UI_THEME.machineLabel}>Nœud d'infrastructure</span>
             <h2 className={cn("text-3xl md:text-5xl", UI_THEME.techBold)}>
-              <span className={UI_THEME.steelGradient}>Analyse des</span>{" "}
-              <span className={UI_THEME.orangeGreenGradient}>Flux</span>
+              <span className={UI_THEME.steelGradient}>Analyse des Flux</span>
             </h2>
             <p
               className={cn(
-                "max-w-md border-l border-orange-500/30 pl-6 py-2",
+                "max-w-md border-l border-zinc-700 pl-6 py-2",
                 UI_THEME.narrative
               )}
             >
@@ -167,7 +166,7 @@ export default function ResumeExecutifPage() {
         </div>
       </section>
 
-      {/* --- SECTION 3 : RÉSEAU MONDIAL --- */}
+      {/* --- SECTION 3 : RÉSEAU --- */}
       <section className="relative h-[80vh] w-full overflow-hidden bg-[#050505]">
         <div className="absolute inset-0 z-0">
           <World
@@ -179,13 +178,13 @@ export default function ResumeExecutifPage() {
                 endLat: destinations[index].lat,
                 endLng: destinations[index].lng,
                 arcAlt: 0.3,
-                color: "#f97316",
+                color: "#22c55e",
               },
             ]}
             globeConfig={{
               pointSize: 4,
               globeColor: "#18181b",
-              atmosphereColor: "#f97316",
+              atmosphereColor: "#22c55e",
               autoRotate: true,
               autoRotateSpeed: 0.6,
             }}
