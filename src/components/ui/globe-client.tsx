@@ -49,12 +49,14 @@ export default function GlobeClient({ data }: { data: any[] }) {
 
     globe
       .hexPolygonsData(geoData.features)
+      .hexPolygonResolution(3)
+      .hexPolygonMargin(0.15)
       .hexPolygonColor(() =>
-        isDark ? "rgba(34, 197, 94, 0.2)" : "rgba(16, 185, 129, 0.2)"
+        isDark ? "rgba(34, 197, 94, 0.2)" : "rgba(0, 0, 0, 0.1)"
       )
       .showAtmosphere(true)
       .atmosphereColor(isDark ? "#22c55e" : "#10b981")
-      .atmosphereAltitude(0.2)
+      .atmosphereAltitude(isDark ? 0.2 : 0.08) // Réduction radicale de la brume
       .ringsData(ringsData)
       .ringColor((d: any) => d.color)
       .arcsData(data)
@@ -63,18 +65,17 @@ export default function GlobeClient({ data }: { data: any[] }) {
 
     const mat = globe.globeMaterial() as THREE.MeshPhongMaterial;
     mat.color = new THREE.Color(isDark ? "#050505" : "#ffffff");
-    mat.shininess = isDark ? 0 : 25;
+    mat.shininess = isDark ? 0 : 40;
   }, [geoData, data, ringsData, isDark]);
 
   return (
     <Canvas
       camera={{ position: [0, 0, 320], fov: 45 }}
-      gl={{ antialias: true, alpha: true }}
+      gl={{ antialias: true, alpha: true, toneMapping: THREE.NoToneMapping }}
       onCreated={({ gl }) => gl.setClearColor(0x000000, 0)}
-      style={{ background: "transparent" }}
     >
-      <ambientLight intensity={isDark ? 0.7 : 2.5} />
-      <pointLight position={[300, 300, 300]} intensity={isDark ? 0.5 : 2} />
+      <ambientLight intensity={isDark ? 0.6 : 1.2} />
+      <pointLight position={[400, 400, 400]} intensity={isDark ? 0.8 : 2.5} />
       <primitive object={globeRef.current} />
       <OrbitControls enableZoom={false} autoRotate autoRotateSpeed={0.5} />
     </Canvas>

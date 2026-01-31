@@ -22,16 +22,10 @@ const UI_THEME = {
     "font-sans uppercase tracking-[0.15em] text-zinc-500 dark:text-zinc-400 text-[10px] leading-relaxed",
 };
 
+// Import dynamique sécurisé
 const World = dynamic(
   () => import("@/components/ui/globe").then((m) => m.World),
-  {
-    ssr: false,
-    loading: () => (
-      <div className="h-full w-full flex items-center justify-center font-mono text-[10px] text-emerald-500 animate-pulse uppercase tracking-[0.3em]">
-        INIT_SYSTEM...
-      </div>
-    ),
-  }
+  { ssr: false }
 );
 
 export default function ResumeExecutifPage() {
@@ -39,7 +33,6 @@ export default function ResumeExecutifPage() {
   const [index, setIndex] = useState(0);
   const ABIDJAN = { lat: 5.33, lng: -4.03 };
 
-  // Destinations incluant la Centrafrique
   const destinations = useMemo(
     () => [
       { label: "SÉNÉGAL", lat: 14.49, lng: -14.45, color: "#10b981" },
@@ -53,12 +46,11 @@ export default function ResumeExecutifPage() {
     []
   );
 
-  // CardStack avec 4 cartes
   const flowCards = [
     {
       id: 1,
       name: "FLUX ALPHA",
-      designation: "STABLE",
+      designation: "LIVE",
       content: "Analyse des signaux entrants en temps réel via Node_01.",
     },
     {
@@ -95,54 +87,56 @@ export default function ResumeExecutifPage() {
   const currentDest = destinations[index];
 
   return (
-    <div className="min-h-screen bg-white dark:bg-[#050505] text-zinc-950 dark:text-zinc-50 transition-colors duration-700 selection:bg-emerald-500/30">
+    <div className="min-h-screen bg-white dark:bg-[#050505] text-zinc-950 dark:text-zinc-50 transition-colors duration-700">
       <NavbarFront />
 
       {/* SECTION 1 : HERO ÉPURÉE */}
       <section className="relative h-[80vh] flex flex-col items-center justify-center border-b border-zinc-100 dark:border-white/5 overflow-hidden">
+        <div className="absolute inset-0 opacity-40 bg-[radial-gradient(circle_at_center,transparent_0%,white_100%)] dark:bg-[radial-gradient(circle_at_center,transparent_0%,#050505_100%)] z-[1]" />
         <WarpBackground
           className="opacity-60"
-          gridColor="rgba(16, 185, 129, 0.08)"
+          gridColor="rgba(0, 0, 0, 0.05)"
+        />
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="relative z-10 text-center px-6"
         >
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="relative z-10 text-center px-6"
+          <div className="mb-10">
+            <LogicBadge text="Node_01 // Stable" />
+          </div>
+          <h1
+            className={cn(
+              "text-6xl md:text-8xl tracking-tighter",
+              UI_THEME.techBold
+            )}
           >
-            <div className="mb-10 opacity-80 scale-90">
-              <LogicBadge text="Node_01 // Operational" />
-            </div>
-            <h1
-              className={cn(
-                "text-3xl md:text-4xl tracking-tighter",
-                UI_THEME.techBold
-              )}
-            >
-              <span className="text-black dark:text-white">Nonnzytr</span>
-              <br />
-              <span className="opacity-40 font-light italic uppercase tracking-widest">
-                Global Networking Data
-              </span>
-            </h1>
-            <div className="mt-16 space-y-4 max-w-xs mx-auto">
-              <div className="h-[1px] w-12 bg-emerald-500/50 mx-auto" />
-              <p className={UI_THEME.narrative}>
-                SYSTÈME DE RÉSILIENCE DÉCISIONNELLE
-              </p>
-              <WordRotate
-                className="text-sm font-mono text-emerald-600 dark:text-emerald-400 font-medium tracking-[0.2em]"
-                words={[
-                  "FLUX ANALYTIQUES",
-                  "DONNÉES SÉCURISÉES",
-                  "VÉLOCITÉ MAXIMALE",
-                ]}
-              />
-            </div>
-          </motion.div>
-        </WarpBackground>
+            <span className="text-zinc-900 dark:text-white uppercase">
+              Nonnzytr
+            </span>
+            <br />
+            <span className="text-zinc-400 font-light italic text-4xl md:text-5xl tracking-widest">
+              OPERATIONS
+            </span>
+          </h1>
+          <div className="mt-16 space-y-4">
+            <p className={UI_THEME.narrative}>
+              SYSTÈME DE RÉSILIENCE DÉCISIONNELLE
+            </p>
+            <WordRotate
+              className="text-sm font-mono text-emerald-600 dark:text-emerald-400 tracking-[0.2em]"
+              words={[
+                "FLUX ANALYTIQUES",
+                "DONNÉES SÉCURISÉES",
+                "VÉLOCITÉ MAXIMALE",
+              ]}
+            />
+          </div>
+        </motion.div>
       </section>
 
-      {/* SECTION 2 : ANALYSE AVEC 4 CARTES */}
+      {/* SECTION 2 : ANALYSE (4 CARTES) */}
       <section className="relative z-20 py-32 px-6 bg-zinc-50/50 dark:bg-[#070707] border-b border-zinc-100 dark:border-white/5">
         <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-20 items-center">
           <div className="space-y-6">
@@ -156,17 +150,16 @@ export default function ResumeExecutifPage() {
               Analyse des Flux
             </h2>
             <p className={cn("max-w-sm opacity-70", UI_THEME.narrative)}>
-              Interconnexion sécurisée des nœuds mondiaux. Synchronisation
-              multicouche des données stratégiques.
+              Interconnexion sécurisée des nœuds mondiaux.
             </p>
           </div>
-          <div className="flex justify-center h-[300px] items-center">
+          <div className="flex justify-center h-[350px] items-center">
             <CardStack items={flowCards} offset={12} scaleFactor={0.06} />
           </div>
         </div>
       </section>
 
-      {/* SECTION 3 : GLOBE DYNAMIQUE ET SPÉCIFICATIONS */}
+      {/* SECTION 3 : GLOBE ET SIGNAL INTERNATIONAL */}
       <section className="relative h-[90vh] w-full bg-white dark:bg-[#050505] overflow-hidden">
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808008_1px,transparent_1px),linear-gradient(to_bottom,#80808008_1px,transparent_1px)] bg-[size:80px_80px] pointer-events-none" />
 
@@ -184,7 +177,6 @@ export default function ResumeExecutifPage() {
           />
         </div>
 
-        {/* HUD UI DYNAMIQUE AVEC TON MESSAGE SPÉCIFIQUE */}
         <div className="absolute inset-0 flex flex-col items-center justify-center z-20 pointer-events-none">
           <AnimatePresence mode="wait">
             <motion.div
@@ -194,10 +186,10 @@ export default function ResumeExecutifPage() {
               exit={{ opacity: 0, y: -15 }}
               className="text-center px-4"
             >
-              <span className={UI_THEME.machineLabel}>Remote_Node // Live</span>
+              <span className={UI_THEME.machineLabel}>Remote_Node</span>
               <h2
                 className={cn(
-                  "text-6xl md:text-[10rem] mt-2 transition-all",
+                  "text-6xl md:text-[10rem] mt-2",
                   UI_THEME.techBold,
                   UI_THEME.steelGradient
                 )}
@@ -206,30 +198,20 @@ export default function ResumeExecutifPage() {
               </h2>
 
               <div className="mt-8 flex flex-col items-center gap-4">
-                <div className="flex items-center gap-3 bg-white/40 dark:bg-white/5 backdrop-blur-md px-5 py-2 border border-zinc-200/50 dark:border-white/10 rounded-full">
+                <div className="flex items-center gap-3 bg-white/50 dark:bg-white/5 backdrop-blur-md px-5 py-2 border border-zinc-200 dark:border-white/10 rounded-full">
                   <span className="h-2 w-2 rounded-full bg-emerald-500 animate-ping" />
-                  <span className="font-mono text-[9px] tracking-[0.3em] uppercase text-emerald-600 dark:text-emerald-400 font-bold">
+                  <span className="font-mono text-[9px] tracking-[0.3em] uppercase text-emerald-600 font-bold">
                     Signal Actif
                   </span>
                 </div>
 
-                {/* TON MESSAGE SPÉCIFIQUE ÉPURÉ */}
-                <motion.p
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  className="max-w-md font-mono text-[9px] leading-loose tracking-[0.15em] text-zinc-400 uppercase text-center"
-                >
+                <p className="max-w-md font-mono text-[9px] leading-loose tracking-[0.15em] text-zinc-400 uppercase">
                   Signal de prédisposition à la coopération internationale{" "}
-                  <br className="hidden md:block" />
-                  en provenance d'Abidjan
-                </motion.p>
+                  <br /> en provenance d'Abidjan
+                </p>
               </div>
             </motion.div>
           </AnimatePresence>
-        </div>
-
-        <div className="absolute bottom-10 right-10 z-20 font-mono text-[8px] text-zinc-400/60 hidden md:block uppercase tracking-[0.3em]">
-          COORDS: {currentDest.lat}N / {currentDest.lng}E
         </div>
       </section>
 
