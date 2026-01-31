@@ -85,10 +85,10 @@ export default function ResumeExecutifPage() {
   const currentDest = destinations[index];
 
   return (
-    <div className="min-h-screen bg-white dark:bg-[#050505] text-zinc-950 dark:text-zinc-50 selection:bg-emerald-500/30">
+    <div className="min-h-screen bg-white dark:bg-[#050505] text-zinc-950 dark:text-zinc-50 selection:bg-emerald-500/30 transition-colors duration-500">
       <NavbarFront />
 
-      {/* SECTION 1 : HERO - Supprimé l'opacité excessive pour du "Natif" */}
+      {/* SECTION 1 : HERO */}
       <section className="relative h-[90vh] flex flex-col items-center justify-center border-b border-zinc-200 dark:border-white/5 overflow-hidden">
         <WarpBackground
           className="opacity-100"
@@ -111,11 +111,9 @@ export default function ResumeExecutifPage() {
               <p className={UI_THEME.narrative}>
                 Architecture de résilience décisionnelle • Hub Abidjan
               </p>
-              <div className="h-8 shadow-sm">
+              <div className="h-8">
                 <WordRotate
-                  className={cn(
-                    "text-xl font-mono text-emerald-600 dark:text-emerald-400"
-                  )}
+                  className="text-xl font-mono text-emerald-600 dark:text-emerald-400"
                   words={[
                     "FLUX ANALYTIQUES",
                     "DONNÉES SÉCURISÉES",
@@ -128,7 +126,7 @@ export default function ResumeExecutifPage() {
         </WarpBackground>
       </section>
 
-      {/* SECTION 2 : ANALYSE - Plus de contraste et bordures franches */}
+      {/* SECTION 2 : ANALYSE */}
       <section className="relative z-20 py-32 px-6 bg-zinc-50 dark:bg-[#070707] border-b border-zinc-200 dark:border-white/5">
         <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-20 items-center">
           <div className="space-y-8">
@@ -140,8 +138,7 @@ export default function ResumeExecutifPage() {
             </h2>
             <div className="h-1.5 w-20 bg-emerald-500" />
             <p className={cn("max-w-md", UI_THEME.narrative)}>
-              Interconnexion sécurisée des nœuds stratégiques mondiaux. Zéro
-              latence, intégrité absolue.
+              Interconnexion sécurisée des nœuds mondiaux. Zéro latence.
             </p>
           </div>
           <div className="flex justify-center">
@@ -150,12 +147,13 @@ export default function ResumeExecutifPage() {
         </div>
       </section>
 
-      {/* SECTION 3 : GLOBE - Look Technique sans Brume */}
-      <section className="relative h-[85vh] w-full bg-white dark:bg-[#050505] overflow-hidden">
-        {/* Grille technique de fond */}
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:60px_60px]" />
+      {/* SECTION 3 : GLOBE - LA BOX RÉACTIVE */}
+      <section className="relative h-[85vh] w-full bg-white dark:bg-[#050505] transition-colors duration-500 overflow-hidden">
+        {/* Grille technique dont l'opacité change selon le mode */}
+        <div className="absolute inset-0 opacity-20 dark:opacity-40 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:60px_60px]" />
 
-        <div className="absolute inset-0 z-0 scale-110">
+        {/* LA BOX CONTENEUR : mix-blend permet de gérer la transition visuelle si le globe a un résidu noir */}
+        <div className="absolute inset-0 z-0 scale-110 mix-blend-multiply dark:mix-blend-screen bg-transparent">
           <World
             data={[
               {
@@ -171,7 +169,7 @@ export default function ResumeExecutifPage() {
           />
         </div>
 
-        {/* HUD de Transmission Néttoyé */}
+        {/* HUD UI */}
         <div className="absolute inset-0 flex flex-col items-center justify-center z-20 pointer-events-none">
           <AnimatePresence mode="wait">
             <motion.div
@@ -179,7 +177,6 @@ export default function ResumeExecutifPage() {
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 1.05 }}
-              transition={{ duration: 0.5 }}
               className="text-center"
             >
               <span className={UI_THEME.machineLabel}>
@@ -194,7 +191,7 @@ export default function ResumeExecutifPage() {
               >
                 {currentDest.label}
               </h2>
-              <div className="mt-4 flex items-center justify-center gap-4 bg-zinc-950/5 dark:bg-white/5 backdrop-blur-sm px-6 py-2 border border-zinc-200 dark:border-white/10">
+              <div className="mt-4 flex items-center justify-center gap-4 bg-zinc-950/5 dark:bg-white/5 backdrop-blur-md px-6 py-2 border border-zinc-200 dark:border-white/10">
                 <span className="h-2 w-2 rounded-full bg-emerald-500 animate-ping" />
                 <span className="font-mono text-[10px] tracking-widest uppercase">
                   Sync_Active
@@ -202,12 +199,6 @@ export default function ResumeExecutifPage() {
               </div>
             </motion.div>
           </AnimatePresence>
-        </div>
-
-        {/* Coordonnées techniques fixes */}
-        <div className="absolute bottom-10 right-10 z-20 font-mono text-[9px] text-zinc-400 hidden md:block">
-          TARGET_LAT: {currentDest.lat} <br />
-          TARGET_LNG: {currentDest.lng}
         </div>
       </section>
 
@@ -219,7 +210,6 @@ export default function ResumeExecutifPage() {
           </div>
         </div>
       </footer>
-
       <ScrollToTop />
     </div>
   );
