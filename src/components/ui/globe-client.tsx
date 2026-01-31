@@ -30,7 +30,7 @@ export default function GlobeClient({ data }: { data: any[] }) {
   }, []);
 
   const ringsData = useMemo(() => {
-    const color = isDark ? "#22c55e" : "#10b981";
+    const color = "#10b981"; // Vert Émeraude pur
     return [
       { lat: 5.33, lng: -4.03, color, maxR: 5, speed: 2 },
       ...(data || []).map((d) => ({
@@ -41,7 +41,7 @@ export default function GlobeClient({ data }: { data: any[] }) {
         speed: 1.5,
       })),
     ];
-  }, [data, isDark]);
+  }, [data]);
 
   useEffect(() => {
     const globe = globeRef.current;
@@ -50,32 +50,33 @@ export default function GlobeClient({ data }: { data: any[] }) {
     globe
       .hexPolygonsData(geoData.features)
       .hexPolygonResolution(3)
-      .hexPolygonMargin(0.15)
+      .hexPolygonMargin(0.12)
       .hexPolygonColor(() =>
-        isDark ? "rgba(34, 197, 94, 0.2)" : "rgba(0, 0, 0, 0.1)"
-      )
+        isDark ? "rgba(34, 197, 94, 0.4)" : "rgba(16, 185, 129, 0.7)"
+      ) // Vert saturé
       .showAtmosphere(true)
-      .atmosphereColor(isDark ? "#22c55e" : "#10b981")
-      .atmosphereAltitude(isDark ? 0.2 : 0.08) // Réduction radicale de la brume
+      .atmosphereColor("#10b981")
+      .atmosphereAltitude(isDark ? 0.2 : 0.1)
       .ringsData(ringsData)
       .ringColor((d: any) => d.color)
       .arcsData(data)
       .arcColor((d: any) => d.color)
+      .arcStroke(0.5)
       .arcDashAnimateTime(4000);
 
     const mat = globe.globeMaterial() as THREE.MeshPhongMaterial;
     mat.color = new THREE.Color(isDark ? "#050505" : "#ffffff");
-    mat.shininess = isDark ? 0 : 40;
+    mat.emissive = new THREE.Color(isDark ? "#000000" : "#f0fff4"); // Lueur interne pour le peps
+    mat.shininess = 100;
   }, [geoData, data, ringsData, isDark]);
 
   return (
     <Canvas
       camera={{ position: [0, 0, 320], fov: 45 }}
       gl={{ antialias: true, alpha: true, toneMapping: THREE.NoToneMapping }}
-      onCreated={({ gl }) => gl.setClearColor(0x000000, 0)}
     >
-      <ambientLight intensity={isDark ? 0.6 : 1.2} />
-      <pointLight position={[400, 400, 400]} intensity={isDark ? 0.8 : 2.5} />
+      <ambientLight intensity={isDark ? 0.7 : 1.5} />
+      <pointLight position={[400, 400, 400]} intensity={isDark ? 1 : 2.5} />
       <primitive object={globeRef.current} />
       <OrbitControls enableZoom={false} autoRotate autoRotateSpeed={0.5} />
     </Canvas>

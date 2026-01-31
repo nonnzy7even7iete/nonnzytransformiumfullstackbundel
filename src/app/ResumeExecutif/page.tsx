@@ -88,9 +88,8 @@ export default function ResumeExecutifPage() {
     <div className="min-h-screen bg-white dark:bg-[#050505] text-zinc-950 dark:text-zinc-50 transition-colors duration-700">
       <NavbarFront />
 
-      {/* SECTION 1 : HERO - GRILLE CSS PURE (SANS WARP) */}
+      {/* SECTION 1 : HERO - GRILLE NETTE */}
       <section className="relative h-[80vh] flex flex-col items-center justify-center border-b border-zinc-100 dark:border-white/5 overflow-hidden">
-        {/* Grille de fond épurée */}
         <div className="absolute inset-0 z-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:40px_40px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_50%,#000_70%,transparent_100%)]" />
 
         <motion.div
@@ -103,16 +102,14 @@ export default function ResumeExecutifPage() {
           </div>
           <h1
             className={cn(
-              "text-6xl md:text-8xl tracking-tighter",
+              "text-6xl md:text-8xl tracking-tighter uppercase",
               UI_THEME.techBold
             )}
           >
-            <span className="text-zinc-900 dark:text-white uppercase">
-              Nonnzytr
-            </span>
+            <span className="text-zinc-900 dark:text-white">Nonnzytr</span>
             <br />
-            <span className="text-zinc-400 font-light italic text-4xl md:text-5xl tracking-widest">
-              OPERATIONS
+            <span className="text-zinc-400 font-light italic text-4xl tracking-widest">
+              Operations
             </span>
           </h1>
           <div className="mt-16 space-y-4">
@@ -154,7 +151,7 @@ export default function ResumeExecutifPage() {
         </div>
       </section>
 
-      {/* SECTION 3 : GLOBE ET SIGNAL */}
+      {/* SECTION 3 : GLOBE - COULEURS VIVES & SIGNAL INTERNATIONAL */}
       <section className="relative h-[90vh] w-full bg-white dark:bg-[#050505] overflow-hidden">
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808008_1px,transparent_1px),linear-gradient(to_bottom,#80808008_1px,transparent_1px)] bg-[size:80px_80px] pointer-events-none" />
 
@@ -184,7 +181,7 @@ export default function ResumeExecutifPage() {
               <span className={UI_THEME.machineLabel}>Remote_Node</span>
               <h2
                 className={cn(
-                  "text-6xl md:text-[10rem] mt-2",
+                  "text-6xl md:text-[10rem] mt-2 transition-all",
                   UI_THEME.techBold,
                   UI_THEME.steelGradient
                 )}
@@ -193,14 +190,14 @@ export default function ResumeExecutifPage() {
               </h2>
 
               <div className="mt-8 flex flex-col items-center gap-4">
-                <div className="flex items-center gap-3 bg-white/50 dark:bg-white/5 backdrop-blur-md px-5 py-2 border border-zinc-200 dark:border-white/10 rounded-full">
-                  <span className="h-2 w-2 rounded-full bg-emerald-500 animate-ping" />
-                  <span className="font-mono text-[9px] tracking-[0.3em] uppercase text-emerald-600 font-bold">
-                    Ivory coast data-driven
+                <div className="flex items-center gap-3 bg-white/60 dark:bg-white/5 backdrop-blur-md px-5 py-2 border border-zinc-200 dark:border-white/10 rounded-full">
+                  <span className="h-2.5 w-2.5 rounded-full bg-[#10b981] animate-ping" />
+                  <span className="font-mono text-[9px] tracking-[0.3em] uppercase text-[#10b981] font-bold">
+                    Signal Actif
                   </span>
                 </div>
 
-                <p className="max-w-md font-mono text-[9px] leading-loose tracking-[0.15em] text-zinc-400 uppercase">
+                <p className="max-w-md font-mono text-[9px] leading-loose tracking-[0.15em] text-zinc-500 dark:text-zinc-400 uppercase">
                   Signal de prédisposition à la coopération internationale{" "}
                   <br /> en provenance d'Abidjan
                 </p>
