@@ -12,6 +12,7 @@ import { LogicBadge } from "@/components/frontendkit/LogicBadge";
 import { WordRotate } from "@/components/frontendkit/word-rotate";
 import { cn } from "@/lib/utils";
 
+// Thème UI
 const UI_THEME = {
   techBold: "font-oswald font-semibold tracking-[0.02em] leading-[1.1]",
   orangeGreenGradient:
@@ -24,11 +25,16 @@ const UI_THEME = {
     "font-sans uppercase tracking-widest text-zinc-400 font-normal text-xs md:text-sm",
 };
 
+// Import dynamique du Globe pour éviter les erreurs SSR sur Vercel
 const World = dynamic(
   () => import("@/components/ui/globe").then((m) => m.World),
   {
     ssr: false,
-    loading: () => <div className="absolute inset-0 bg-[#050505]" />,
+    loading: () => (
+      <div className="absolute inset-0 bg-[#050505] flex items-center justify-center text-zinc-800 font-mono text-xs">
+        INITIALISATION RÉSEAU...
+      </div>
+    ),
   }
 );
 
@@ -37,44 +43,52 @@ export default function ResumeExecutifPage() {
   const [index, setIndex] = useState(0);
   const ABIDJAN = { lat: 5.33, lng: -4.03 };
 
-  // --- LOGIQUE DES DESTINATIONS OPTIMISÉE ---
   const destinations = useMemo(
     () => [
-      // AFRIQUE DE L'OUEST & CENTRALE
       { label: "SÉNÉGAL", lat: 14.49, lng: -14.45, color: "#22c55e" },
       { label: "NIGÉRIA", lat: 9.08, lng: 8.67, color: "#22c55e" },
-      { label: "CENTRAFRIQUE", lat: 6.61, lng: 20.93, color: "#22c55e" },
-      // MAGHREB
       { label: "MAROC", lat: 31.79, lng: -7.09, color: "#f97316" },
-      // ASIE & AMÉRIQUE & RUSSIE
       { label: "CHINE", lat: 35.86, lng: 104.19, color: "#ef4444" },
-      { label: "AMÉRIQUE DU NORD", lat: 37.09, lng: -95.71, color: "#3b82f6" },
-      { label: "RUSSIE", lat: 61.52, lng: 105.31, color: "#ffffff" },
-      // EUROPE & LATAM
+      { label: "USA", lat: 37.09, lng: -95.71, color: "#3b82f6" },
       { label: "EUROPE", lat: 48.85, lng: 2.35, color: "#eab308" },
-      { label: "AMÉRIQUE LATINE", lat: -14.23, lng: -51.92, color: "#8b5cf6" },
-      // RETOUR ZONE SAHEL
       { label: "MALI", lat: 17.57, lng: -3.99, color: "#22c55e" },
     ],
     []
   );
 
+  // Gestion du montage et du cycle des destinations
   useEffect(() => {
     setMounted(true);
-    const timer = setInterval(() => {
-      setIndex((p) => (p + 1) % destinations.length);
-    }, 5000); // Transition un peu plus rapide pour dynamiser le parcours
-    return () => clearInterval(timer);
+    const intervalId = setInterval(() => {
+      setIndex((prev) => (prev + 1) % destinations.length);
+    }, 5000);
+    return () => clearInterval(intervalId);
   }, [destinations.length]);
 
-  if (!mounted) return null;
+  // Données factices pour éviter que le CardStack ne crash s'il reçoit un tableau vide
+  const dummyCards = [
+    {
+      id: 1,
+      name: "FLUX ALPHA",
+      designation: "OPÉRATIONNEL",
+      content: "Analyse des signaux entrants en temps réel.",
+    },
+    {
+      id: 2,
+      name: "FLUX BETA",
+      designation: "STABLE",
+      content: "Intégrité des données vérifiée sur le hub Abidjan.",
+    },
+  ];
+
+  if (!mounted) return <div className="min-h-screen bg-[#050505]" />;
 
   return (
-    <div className="flex flex-col min-h-screen bg-[#050505] text-zinc-50 selection:bg-green-500/30">
+    <div className="flex flex-col min-h-screen bg-[#050505] text-zinc-50 selection:bg-green-500/30 overflow-x-hidden">
       <NavbarFront />
 
-      {/* --- SECTION 1 : ACCUEIL --- */}
-      <section className="relative w-full min-h-[85vh] flex flex-col items-center justify-center pt-24 overflow-hidden border-b border-white/5 bg-[#050505]">
+      {/* SECTION 1 : HERO */}
+      <section className="relative w-full min-h-[85vh] flex flex-col items-center justify-center pt-24 overflow-hidden border-b border-white/5">
         <WarpBackground
           className="w-full h-full opacity-40"
           gridColor="rgba(34, 197, 94, 0.15)"
@@ -94,7 +108,6 @@ export default function ResumeExecutifPage() {
                   <span className={UI_THEME.orangeGreenGradient}>opère</span>
                 </h1>
               </div>
-
               <div className="flex flex-col items-center gap-10">
                 <p
                   className={cn(
@@ -120,7 +133,6 @@ export default function ResumeExecutifPage() {
                   />
                 </div>
               </div>
-
               <div className="pt-4">
                 <LogicBadge text="Logique Mesurable" />
               </div>
@@ -129,7 +141,7 @@ export default function ResumeExecutifPage() {
         </WarpBackground>
       </section>
 
-      {/* --- SECTION 2 : ANALYSE DES FLUX --- */}
+      {/* SECTION 2 : ANALYSE (CardStack) */}
       <section className="relative z-30 w-full py-24 px-6 bg-[#050505] border-b border-white/5">
         <div className="max-w-6xl w-full mx-auto grid grid-cols-1 md:grid-cols-2 gap-20 items-center">
           <div className="space-y-8">
@@ -148,12 +160,13 @@ export default function ResumeExecutifPage() {
             </p>
           </div>
           <div className="flex justify-center md:justify-end min-h-[400px]">
-            <CardStack items={[]} offset={12} scaleFactor={0.06} />
+            {/* On passe dummyCards pour éviter le crash du tableau vide */}
+            <CardStack items={dummyCards} offset={12} scaleFactor={0.06} />
           </div>
         </div>
       </section>
 
-      {/* --- SECTION 3 : RÉSEAU MONDIAL --- */}
+      {/* SECTION 3 : GLOBE */}
       <section className="relative h-[80vh] w-full overflow-hidden bg-[#050505]">
         <div className="absolute inset-0 z-0">
           <World
@@ -165,14 +178,12 @@ export default function ResumeExecutifPage() {
                 endLat: destinations[index].lat,
                 endLng: destinations[index].lng,
                 arcAlt: 0.3,
-                color: destinations[index].color, // L'arc prend la couleur de la destination
+                color: destinations[index].color,
               },
             ]}
           />
         </div>
-
-        <div className="absolute inset-0 bg-gradient-to-b from-[#050505] via-transparent to-[#050505] opacity-100 pointer-events-none" />
-
+        <div className="absolute inset-0 bg-gradient-to-b from-[#050505] via-transparent to-[#050505] pointer-events-none" />
         <div className="relative z-20 h-full flex flex-col items-center justify-center pointer-events-none">
           <AnimatePresence mode="wait">
             <motion.div
@@ -204,7 +215,6 @@ export default function ResumeExecutifPage() {
           Architecture data driven // 2026
         </p>
       </footer>
-
       <ScrollToTop />
     </div>
   );
