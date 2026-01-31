@@ -12,27 +12,26 @@ import { LogicBadge } from "@/components/frontendkit/LogicBadge";
 import { WordRotate } from "@/components/frontendkit/word-rotate";
 import { cn } from "@/lib/utils";
 
-// --- THEME ENGINE : SOFT & PRO ---
+// --- THEME ENGINE : NATIVE & SHARP ---
 const UI_THEME = {
-  techBold: "font-oswald font-semibold tracking-[0.02em] leading-[1.1]",
+  techBold: "font-oswald font-bold tracking-tight leading-[0.95]",
   orangeGreenGradient:
-    "bg-gradient-to-r from-orange-500 to-emerald-500 bg-clip-text text-transparent",
+    "bg-gradient-to-r from-orange-600 to-emerald-500 bg-clip-text text-transparent",
   steelGradient:
-    "bg-gradient-to-b from-zinc-800 via-zinc-500 to-zinc-400 dark:from-white dark:via-zinc-300 dark:to-zinc-600 bg-clip-text text-transparent",
+    "bg-gradient-to-b from-zinc-950 to-zinc-600 dark:from-white dark:to-zinc-500 bg-clip-text text-transparent",
   machineLabel:
-    "font-mono text-[9px] uppercase tracking-[0.3em] text-zinc-400/70",
+    "font-mono text-[10px] uppercase tracking-[0.4em] text-emerald-600 dark:text-emerald-400 font-bold",
   narrative:
-    "font-sans uppercase tracking-[0.2em] text-zinc-500 dark:text-zinc-400 font-normal text-[10px] md:text-xs",
+    "font-sans uppercase tracking-[0.15em] text-zinc-600 dark:text-zinc-400 text-[11px] leading-relaxed",
 };
 
-// Globe import avec priorité haute performance
 const World = dynamic(
   () => import("@/components/ui/globe").then((m) => m.World),
   {
     ssr: false,
     loading: () => (
-      <div className="absolute inset-0 bg-white dark:bg-[#050505] flex items-center justify-center font-mono text-[10px] text-zinc-300">
-        SYSTEM_INIT...
+      <div className="absolute inset-0 flex items-center justify-center font-mono text-[10px] text-emerald-500 animate-pulse">
+        [ SYSTEM_LOADING... ]
       </div>
     ),
   }
@@ -45,13 +44,12 @@ export default function ResumeExecutifPage() {
 
   const destinations = useMemo(
     () => [
-      { label: "SÉNÉGAL", lat: 14.49, lng: -14.45, color: "#22c55e" },
-      { label: "NIGÉRIA", lat: 9.08, lng: 8.67, color: "#22c55e" },
+      { label: "SÉNÉGAL", lat: 14.49, lng: -14.45, color: "#10b981" },
+      { label: "NIGÉRIA", lat: 9.08, lng: 8.67, color: "#10b981" },
       { label: "MAROC", lat: 31.79, lng: -7.09, color: "#f97316" },
       { label: "CHINE", lat: 35.86, lng: 104.19, color: "#ef4444" },
       { label: "USA", lat: 37.09, lng: -95.71, color: "#3b82f6" },
       { label: "EUROPE", lat: 48.85, lng: 2.35, color: "#eab308" },
-      { label: "MALI", lat: 17.57, lng: -3.99, color: "#22c55e" },
     ],
     []
   );
@@ -76,100 +74,88 @@ export default function ResumeExecutifPage() {
 
   useEffect(() => {
     setMounted(true);
-    const intervalId = setInterval(() => {
+    const interval = setInterval(() => {
       setIndex((prev) => (prev + 1) % destinations.length);
-    }, 6000); // Ralenti pour plus de majesté
-    return () => clearInterval(intervalId);
+    }, 5000);
+    return () => clearInterval(interval);
   }, [destinations.length]);
 
   if (!mounted) return null;
 
-  const currentDest = destinations[index] || destinations[0];
+  const currentDest = destinations[index];
 
   return (
-    <div className="flex flex-col min-h-screen bg-white dark:bg-[#050505] text-zinc-900 dark:text-zinc-50 selection:bg-emerald-500/30 overflow-x-hidden transition-colors duration-700">
+    <div className="min-h-screen bg-white dark:bg-[#050505] text-zinc-950 dark:text-zinc-50 selection:bg-emerald-500/30">
       <NavbarFront />
 
-      {/* --- SECTION 1 : HERO (WARP) --- */}
-      <section className="relative w-full min-h-[90vh] flex flex-col items-center justify-center pt-20 overflow-hidden">
+      {/* SECTION 1 : HERO - Supprimé l'opacité excessive pour du "Natif" */}
+      <section className="relative h-[90vh] flex flex-col items-center justify-center border-b border-zinc-200 dark:border-white/5 overflow-hidden">
         <WarpBackground
-          className="w-full h-full opacity-30 dark:opacity-40"
-          gridColor="rgba(34, 197, 94, 0.12)"
+          className="opacity-100"
+          gridColor="rgba(16, 185, 129, 0.1)"
         >
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-            className="relative z-10 flex flex-col items-center text-center px-6 max-w-5xl mx-auto w-full"
+            className="relative z-10 text-center px-6"
           >
-            <span className={UI_THEME.machineLabel}>
-              Système Actif // Node_01
-            </span>
-            <h1
-              className={cn(
-                "text-6xl md:text-9xl mt-6 mb-12",
-                UI_THEME.techBold
-              )}
-            >
-              <span className={UI_THEME.steelGradient}>Nonnzytr</span>
+            <div className="mb-8 flex justify-center">
+              <LogicBadge text="Node_01 // Operational" />
+            </div>
+            <h1 className={cn("text-7xl md:text-[10rem]", UI_THEME.techBold)}>
+              <span className={UI_THEME.steelGradient}>NONNZYTR</span>
               <br />
-              <span className={UI_THEME.orangeGreenGradient}>opère</span>
+              <span className={UI_THEME.orangeGreenGradient}>OPÈRE</span>
             </h1>
-
-            <div className="flex flex-col items-center gap-8">
-              <p
-                className={cn(
-                  "max-w-xl mx-auto leading-relaxed opacity-70",
-                  UI_THEME.narrative
-                )}
-              >
-                Architecture de résilience décisionnelle. <br />
-                Intégrité des opérations en environnement instable.
+            <div className="mt-12 space-y-6">
+              <p className={UI_THEME.narrative}>
+                Architecture de résilience décisionnelle • Hub Abidjan
               </p>
-              <div className="h-12 flex items-center justify-center">
+              <div className="h-8 shadow-sm">
                 <WordRotate
                   className={cn(
-                    "text-xl md:text-3xl",
-                    UI_THEME.techBold,
-                    UI_THEME.steelGradient
+                    "text-xl font-mono text-emerald-600 dark:text-emerald-400"
                   )}
                   words={[
-                    "SIGNAUX CONTRADICTOIRES",
-                    "DONNÉES INCOMPLÈTES",
-                    "INTUITION DANGEREUSE",
+                    "FLUX ANALYTIQUES",
+                    "DONNÉES SÉCURISÉES",
+                    "VÉLOCITÉ MAXIMALE",
                   ]}
                 />
               </div>
-              <LogicBadge text="Logique Mesurable" />
             </div>
           </motion.div>
         </WarpBackground>
       </section>
 
-      {/* --- SECTION 2 : ANALYSE (FLUX) --- */}
-      <section className="relative z-20 w-full py-32 px-6 bg-zinc-50 dark:bg-[#050505] border-y border-zinc-100 dark:border-white/5 transition-colors">
-        <div className="max-w-6xl w-full mx-auto grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
-          <div className="space-y-6">
-            <span className={UI_THEME.machineLabel}>Data Stream Analysis</span>
-            <h2 className={cn("text-4xl md:text-6xl", UI_THEME.techBold)}>
-              <span className={UI_THEME.steelGradient}>Analyse des Flux</span>
+      {/* SECTION 2 : ANALYSE - Plus de contraste et bordures franches */}
+      <section className="relative z-20 py-32 px-6 bg-zinc-50 dark:bg-[#070707] border-b border-zinc-200 dark:border-white/5">
+        <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-20 items-center">
+          <div className="space-y-8">
+            <span className={UI_THEME.machineLabel}>
+              02 // Data Stream Analysis
+            </span>
+            <h2 className={cn("text-5xl md:text-7xl", UI_THEME.techBold)}>
+              ANALYSE DES FLUX
             </h2>
-            <div className="h-1 w-12 bg-emerald-500" />
-            <p className={cn("max-w-md opacity-80", UI_THEME.narrative)}>
-              Interconnexion sécurisée des nœuds stratégiques mondiaux depuis le
-              hub d'Abidjan.
+            <div className="h-1.5 w-20 bg-emerald-500" />
+            <p className={cn("max-w-md", UI_THEME.narrative)}>
+              Interconnexion sécurisée des nœuds stratégiques mondiaux. Zéro
+              latence, intégrité absolue.
             </p>
           </div>
-          <div className="flex justify-center md:justify-end">
-            <CardStack items={dummyCards} offset={12} scaleFactor={0.06} />
+          <div className="flex justify-center">
+            <CardStack items={dummyCards} offset={10} scaleFactor={0.05} />
           </div>
         </div>
       </section>
 
-      {/* --- SECTION 3 : GLOBE (THE MASTERPIECE) --- */}
-      <section className="relative h-[90vh] w-full overflow-hidden bg-white dark:bg-[#050505] flex items-center justify-center">
-        {/* Globe Layer */}
-        <div className="absolute inset-0 z-0">
+      {/* SECTION 3 : GLOBE - Look Technique sans Brume */}
+      <section className="relative h-[85vh] w-full bg-white dark:bg-[#050505] overflow-hidden">
+        {/* Grille technique de fond */}
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:60px_60px]" />
+
+        <div className="absolute inset-0 z-0 scale-110">
           <World
             data={[
               {
@@ -185,50 +171,53 @@ export default function ResumeExecutifPage() {
           />
         </div>
 
-        {/* Masque Soft-Alpha : Élimine la brume et nettoie le Light Mode */}
-        <div
-          className="absolute inset-0 z-10 pointer-events-none 
-          bg-[radial-gradient(circle_at_center,transparent_30%,white_90%)] 
-          dark:bg-[radial-gradient(circle_at_center,transparent_30%,#050505_90%)]"
-        />
-
-        {/* HUD de Transmission */}
-        <div className="relative z-20 text-center pointer-events-none">
+        {/* HUD de Transmission Néttoyé */}
+        <div className="absolute inset-0 flex flex-col items-center justify-center z-20 pointer-events-none">
           <AnimatePresence mode="wait">
             <motion.div
               key={currentDest.label}
-              initial={{ opacity: 0, filter: "blur(8px)", scale: 0.9 }}
-              animate={{ opacity: 1, filter: "blur(0px)", scale: 1 }}
-              exit={{ opacity: 0, filter: "blur(8px)", scale: 1.1 }}
-              transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 1.05 }}
+              transition={{ duration: 0.5 }}
+              className="text-center"
             >
               <span className={UI_THEME.machineLabel}>
-                Signal Transmission : Global
+                Remote Signal : Live
               </span>
               <h2
                 className={cn(
-                  "text-5xl md:text-9xl mt-4",
+                  "text-6xl md:text-[12rem] mt-2",
                   UI_THEME.techBold,
                   UI_THEME.steelGradient
                 )}
               >
                 {currentDest.label}
               </h2>
-              <div className="mt-6 flex items-center justify-center gap-3">
-                <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                <span className="font-mono text-[9px] tracking-[0.4em] text-emerald-500/80">
-                  EN COURS
+              <div className="mt-4 flex items-center justify-center gap-4 bg-zinc-950/5 dark:bg-white/5 backdrop-blur-sm px-6 py-2 border border-zinc-200 dark:border-white/10">
+                <span className="h-2 w-2 rounded-full bg-emerald-500 animate-ping" />
+                <span className="font-mono text-[10px] tracking-widest uppercase">
+                  Sync_Active
                 </span>
               </div>
             </motion.div>
           </AnimatePresence>
         </div>
+
+        {/* Coordonnées techniques fixes */}
+        <div className="absolute bottom-10 right-10 z-20 font-mono text-[9px] text-zinc-400 hidden md:block">
+          TARGET_LAT: {currentDest.lat} <br />
+          TARGET_LNG: {currentDest.lng}
+        </div>
       </section>
 
-      <footer className="py-20 text-center bg-white dark:bg-[#050505] opacity-40">
-        <p className={UI_THEME.machineLabel}>
-          Architecture Data Driven // Abidjan 2026
-        </p>
+      <footer className="py-20 border-t border-zinc-200 dark:border-white/5 bg-zinc-50 dark:bg-[#050505]">
+        <div className="text-center space-y-4">
+          <p className={UI_THEME.machineLabel}>Abidjan Data Center // 2026</p>
+          <div className="text-[10px] font-mono opacity-30 italic">
+            © Nonnzytr System v4.0.2
+          </div>
+        </div>
       </footer>
 
       <ScrollToTop />
