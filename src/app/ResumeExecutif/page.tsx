@@ -12,12 +12,16 @@ import { LogicBadge } from "@/components/frontendkit/LogicBadge";
 import { WordRotate } from "@/components/frontendkit/word-rotate";
 import { cn } from "@/lib/utils";
 
+// --- THEME LOGIC : Typographie raffinée ---
 const UI_THEME = {
-  techBold: "font-oswald font-black uppercase tracking-tighter leading-[0.95]",
+  // Oswald moins gras (semibold au lieu de black) et plus espacé
+  techBold:
+    "font-oswald font-semibold uppercase tracking-[0.05em] leading-[1.1]",
+  // Textes non-gras en UPPERCASE standard
   machineLabel:
-    "font-mono-tech uppercase tracking-[0.2em] text-[11px] text-zinc-500 dark:text-green-500/80",
+    "font-mono-tech uppercase tracking-[0.25em] text-[10px] text-zinc-500 dark:text-green-500/80",
   narrative:
-    "font-sans text-zinc-600 dark:text-zinc-300 font-medium text-base md:text-lg",
+    "font-sans uppercase tracking-widest text-zinc-500 dark:text-zinc-400 font-normal text-xs md:text-sm",
 };
 
 const LOG_CARDS_DATA = [
@@ -25,13 +29,21 @@ const LOG_CARDS_DATA = [
     id: 0,
     name: "BACKBONE_ENGINE",
     designation: "NODE: ABIDJAN",
-    content: <p className="text-sm">Flux critiques traités en temps réel.</p>,
+    content: (
+      <p className="text-[10px] uppercase tracking-wider">
+        Traitement des flux critiques en temps réel.
+      </p>
+    ),
   },
   {
     id: 1,
     name: "SECURITY_MESH",
     designation: "SHIELD: ACTIVE",
-    content: <p className="text-sm">Chiffrement AES-256 haute performance.</p>,
+    content: (
+      <p className="text-[10px] uppercase tracking-wider">
+        Protocoles de chiffrement haute performance.
+      </p>
+    ),
   },
 ];
 
@@ -72,26 +84,25 @@ export default function ResumeExecutifPage() {
     <div className="flex flex-col min-h-screen bg-white dark:bg-[#050505] text-zinc-900 dark:text-zinc-50 transition-colors duration-500">
       <NavbarFront />
 
-      {/* --- HERO : PLUS CLAIR ET MOINS VOILÉ --- */}
-      <section className="relative w-full min-h-[85vh] flex flex-col items-center justify-center pt-24 overflow-hidden border-b border-zinc-100 dark:border-white/10">
-        {/* Suppression de l'opacité basse pour plus de clarté */}
+      {/* --- SECTION 1 : HERO (Oswald adouci & Narrative Uppercase) --- */}
+      <section className="relative w-full min-h-[85vh] flex flex-col items-center justify-center pt-24 overflow-hidden border-b border-zinc-100 dark:border-white/5">
         <WarpBackground
           className="w-full h-full opacity-100 dark:opacity-80"
           gridColor="rgba(34, 197, 94, 0.15)"
         >
           <div className="relative z-10 flex flex-col items-center text-center px-6 max-w-5xl mx-auto w-full">
             <motion.div
-              initial={{ opacity: 0, scale: 0.98 }}
-              animate={{ opacity: 1, scale: 1 }}
-              className="space-y-12"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="space-y-14"
             >
               <div className="space-y-4">
                 <span className={UI_THEME.machineLabel}>
-                  System Integrity: Verified
+                  Status: System Operational
                 </span>
                 <h1
                   className={cn(
-                    "text-5xl md:text-8xl text-zinc-950 dark:text-white drop-shadow-sm",
+                    "text-4xl md:text-7xl text-zinc-950 dark:text-white",
                     UI_THEME.techBold
                   )}
                 >
@@ -102,20 +113,20 @@ export default function ResumeExecutifPage() {
                 </h1>
               </div>
 
-              <div className="flex flex-col items-center gap-8">
+              <div className="flex flex-col items-center gap-10">
                 <p
                   className={cn(
-                    "max-w-2xl mx-auto text-zinc-500 dark:text-zinc-300",
+                    "max-w-xl mx-auto leading-loose",
                     UI_THEME.narrative
                   )}
                 >
-                  Architecture de résilience décisionnelle. Garantissez
-                  l'intégrité de vos opérations en environnement instable.
+                  Architecture de résilience décisionnelle. <br />
+                  Intégrité des opérations en environnement instable.
                 </p>
-                <div className="h-20 flex items-center justify-center">
+                <div className="h-16 flex items-center justify-center">
                   <WordRotate
                     className={cn(
-                      "text-3xl md:text-5xl text-zinc-900 dark:text-green-400",
+                      "text-2xl md:text-4xl text-zinc-800 dark:text-green-400",
                       UI_THEME.techBold
                     )}
                     words={[
@@ -135,14 +146,14 @@ export default function ResumeExecutifPage() {
         </WarpBackground>
       </section>
 
-      {/* --- LOGS : FOND ÉPURÉ --- */}
+      {/* --- SECTION 2 : DATA FLOW --- */}
       <section className="relative z-30 w-full py-24 px-6 bg-white dark:bg-transparent">
         <div className="max-w-6xl w-full mx-auto grid grid-cols-1 md:grid-cols-2 gap-20 items-center">
           <div className="space-y-8">
-            <span className={UI_THEME.machineLabel}>Infrastructure Data</span>
+            <span className={UI_THEME.machineLabel}>Infrastructure Node</span>
             <h2
               className={cn(
-                "text-3xl md:text-6xl text-zinc-950 dark:text-zinc-50",
+                "text-3xl md:text-5xl text-zinc-950 dark:text-zinc-50",
                 UI_THEME.techBold
               )}
             >
@@ -151,12 +162,12 @@ export default function ResumeExecutifPage() {
             </h2>
             <p
               className={cn(
-                "max-w-md border-l-2 border-green-500/50 pl-6 py-2",
+                "max-w-md border-l border-green-500/30 pl-6 py-2",
                 UI_THEME.narrative
               )}
             >
-              Monitoring stratégique sans voile. La donnée brute au service de
-              la décision.
+              Monitoring stratégique des signaux critiques sur le backbone
+              national.
             </p>
           </div>
           <div className="flex justify-center md:justify-end min-h-[400px]">
@@ -165,13 +176,12 @@ export default function ResumeExecutifPage() {
         </div>
       </section>
 
-      {/* --- GLOBE : VISIBILITÉ TOTALE --- */}
+      {/* --- SECTION 3 : GLOBE --- */}
       <section className="relative h-[80vh] w-full overflow-hidden bg-zinc-50 dark:bg-[#050505]">
-        {/* Hub central plus lumineux */}
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 pointer-events-none">
           <div className="relative flex h-4 w-4">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-500 opacity-100"></span>
-            <span className="relative inline-flex rounded-full h-4 w-4 bg-green-500 shadow-[0_0_15px_rgba(34,197,94,0.8)]"></span>
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-500 opacity-80"></span>
+            <span className="relative inline-flex rounded-full h-4 w-4 bg-green-500 shadow-[0_0_15px_rgba(34,197,94,0.6)]"></span>
           </div>
         </div>
 
@@ -190,7 +200,7 @@ export default function ResumeExecutifPage() {
             ]}
             globeConfig={{
               pointSize: 4,
-              globeColor: "#18181b", // Globe gris foncé pour voir les terres en Dark
+              globeColor: "#18181b",
               atmosphereColor: "#22c55e",
               autoRotate: true,
               autoRotateSpeed: 0.6,
@@ -198,18 +208,17 @@ export default function ResumeExecutifPage() {
           />
         </div>
 
-        {/* Masque allégé : On réduit l'opacité du gradient de 100% à 60% */}
         <div className="absolute inset-0 bg-gradient-to-b from-white dark:from-[#050505] via-transparent to-white dark:to-[#050505] opacity-60 pointer-events-none" />
 
         <div className="relative z-20 h-full flex items-center justify-center pointer-events-none">
           <AnimatePresence mode="wait">
             <motion.h2
               key={destinations[index].label}
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 0.6, y: 0 }}
-              exit={{ opacity: 0, y: -30 }}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 0.5, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
               className={cn(
-                "text-4xl md:text-8xl text-zinc-950 dark:text-white drop-shadow-2xl",
+                "text-3xl md:text-7xl text-zinc-950 dark:text-white",
                 UI_THEME.techBold
               )}
             >
@@ -220,7 +229,7 @@ export default function ResumeExecutifPage() {
       </section>
 
       <footer className="py-16 text-center bg-zinc-50 dark:bg-black">
-        <p className={UI_THEME.machineLabel}>NETWORK ARCHITECTURE // 2026</p>
+        <p className={UI_THEME.machineLabel}>Architecture Digitale // 2026</p>
       </footer>
 
       <ScrollToTop />
