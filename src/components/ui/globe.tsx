@@ -5,9 +5,9 @@ import * as THREE from "three";
 import ThreeGlobe from "three-globe";
 import { Canvas, extend, ThreeElement } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
-import { useTheme } from "next-themes";
 import countries from "../../data/globe.json";
 
+// Enregistrement du composant pour React Three Fiber
 extend({ ThreeGlobe: ThreeGlobe });
 
 declare global {
@@ -18,28 +18,11 @@ declare global {
   }
 }
 
-const cameraZ = 320;
-let sharedGlobeInstance: ThreeGlobe | null = null;
-
 export function Globe({ data }: { data: any[] }) {
-  const groupRef = useRef<THREE.Group>(null);
-  const { resolvedTheme } = useTheme();
-  const isDark = resolvedTheme === "dark";
-
-  // Configuration Abidjan
+  const globeRef = useRef<ThreeGlobe>(null);
   const ABIDJAN = { lat: 5.33, lng: -4.03 };
 
-  const colors = useMemo(
-    () => ({
-      globe: isDark ? "#050505" : "#f8fafc",
-      land: isDark ? "rgba(34, 197, 94, 0.12)" : "rgba(34, 197, 94, 0.3)",
-      atmosphere: isDark ? "#22c55e" : "#16a34a",
-      arcDefault: "#22c55e",
-    }),
-    [isDark]
-  );
-
-  // Logique des Rings (Ondes) : Abidjan (Source) + Destinations (Cibles)
+  // Mémoïsation des données des anneaux (Rings)
   const ringsData = useMemo(() => {
     const source = [
       {
@@ -50,36 +33,37 @@ export function Globe({ data }: { data: any[] }) {
         speed: 2,
       },
     ];
-
-    const targets = data.map((d) => ({
+    const targets = (data || []).map((d) => ({
       lat: d.endLat,
       lng: d.endLng,
       color: d.color || "#ffffff",
       maxR: 3,
       speed: 1.5,
     }));
-
     return [...source, ...targets];
   }, [data]);
 
   useEffect(() => {
-    if (!groupRef.current) return;
-    if (!sharedGlobeInstance) sharedGlobeInstance = new ThreeGlobe();
+    const globe = globeRef.current;
+    if (!globe) return;
 
-    const globe = sharedGlobeInstance;
-    groupRef.current.add(globe);
-
-    // 1. Géographie et Atmosphère
+    // 1. Géographie
     globe
       .hexPolygonsData(countries.features)
       .hexPolygonResolution(3)
       .hexPolygonMargin(0.12)
-      .hexPolygonColor(() => colors.land)
+      .hexPolygonColor(() => "rgba(34, 197, 94, 0.12)")
       .showAtmosphere(true)
-      .atmosphereColor(colors.atmosphere)
-      .atmosphereAltitude(isDark ? 0.15 : 0.08);
+      .atmosphereColor("#22c55e")
+      .atmosphereAltitude(0.15);
 
-    // 2. Ondes Pulsantes (Rings)
+    // 2. Matériau (Noir Pur pour unification)
+    const globeMaterial = globe.globeMaterial() as THREE.MeshPhongMaterial;
+    globeMaterial.color = new THREE.Color("#050505");
+    globeMaterial.specular = new THREE.Color("#000000");
+    globeMaterial.shininess = 0;
+
+    // 3. Ondes (Rings)
     globe
       .ringsData(ringsData)
       .ringColor((d: any) => d.color)
@@ -87,61 +71,43 @@ export function Globe({ data }: { data: any[] }) {
       .ringPropagationSpeed((d: any) => d.speed)
       .ringRepeatPeriod(1000);
 
-    // 3. Matériau du Globe (Noir Pur)
-    const globeMaterial = globe.globeMaterial() as THREE.MeshPhongMaterial;
-    globeMaterial.color = new THREE.Color(colors.globe);
-    globeMaterial.specular = new THREE.Color("#000000");
-    globeMaterial.shininess = 0;
-
-    return () => {
-      if (groupRef.current) groupRef.current.remove(globe);
-    };
-  }, [colors, isDark, ringsData]);
-
-  // 4. Arcs de données
-  useEffect(() => {
-    if (!sharedGlobeInstance || !data) return;
-    sharedGlobeInstance
-      .arcsData(data)
-      .arcColor((d: any) => d.color || colors.arcDefault)
+    // 4. Arcs de données
+    globe
+      .arcsData(data || [])
+      .arcColor((d: any) => d.color || "#22c55e")
       .arcDashLength(0.9)
       .arcDashGap(4)
       .arcDashAnimateTime(4000)
       .arcStroke(0.5);
-  }, [data, colors.arcDefault]);
+  }, [ringsData, data]);
 
-  return <group ref={groupRef} />;
+  return <threeGlobe ref={globeRef} />;
 }
 
 export function World(props: any) {
-  const { resolvedTheme } = useTheme();
-  const [ready, setReady] = useState(false);
+  const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
-    setReady(true);
+    setIsClient(true);
   }, []);
-  if (!ready) return null;
+
+  if (!isClient) return <div className="absolute inset-0 bg-[#050505]" />;
 
   return (
     <div className="absolute inset-0 w-full h-full bg-[#050505]">
       <Canvas
-        camera={{ fov: 45, near: 10, far: 2000, position: [0, 0, cameraZ] }}
+        camera={{ fov: 45, near: 10, far: 2000, position: [0, 0, 320] }}
         gl={{
           antialias: true,
           alpha: true,
           powerPreference: "high-performance",
         }}
       >
-        <ambientLight
-          intensity={resolvedTheme === "dark" ? 0.8 : 2.0}
-          color="#ffffff"
-        />
-        <pointLight
-          position={[cameraZ, cameraZ, cameraZ]}
-          intensity={0.5}
-          color="#ffffff"
-        />
+        <ambientLight intensity={0.8} color="#ffffff" />
+        <pointLight position={[320, 320, 320]} intensity={0.5} />
+
         <Globe {...props} />
+
         <OrbitControls
           enablePan={false}
           enableZoom={false}
