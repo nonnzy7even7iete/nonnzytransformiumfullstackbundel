@@ -1,27 +1,22 @@
 "use client";
 
-import React, { useEffect, useState, useMemo, useRef } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import * as THREE from "three";
 import ThreeGlobe from "three-globe";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
 
 function GlobeInternal({ data }: { data: any[] }) {
-  const globeRef = useRef<ThreeGlobe>(null);
   const [globe] = useState(() => new ThreeGlobe());
   const [geoData, setGeoData] = useState<any>(null);
   const ABIDJAN = { lat: 5.33, lng: -4.03 };
 
-  // Chargement sécurisé du JSON depuis le dossier public
+  // Chargement asynchrone du JSON depuis /public
   useEffect(() => {
     fetch("/globe.json")
-      .then((res) => {
-        if (!res.ok)
-          throw new Error("Fichier globe.json introuvable dans public/");
-        return res.json();
-      })
+      .then((res) => res.json())
       .then((json) => setGeoData(json))
-      .catch((err) => console.error("Erreur Globe Data:", err));
+      .catch((err) => console.error("Erreur critique JSON:", err));
   }, []);
 
   const ringsData = useMemo(() => {
@@ -49,7 +44,7 @@ function GlobeInternal({ data }: { data: any[] }) {
 
     globe
       .hexPolygonsData(geoData.features)
-      .hexPolygonResolution(3) // Réduis à 2 si ça rame encore
+      .hexPolygonResolution(3) // Si ça plante encore, baisse à 2
       .hexPolygonMargin(0.12)
       .hexPolygonColor(() => "rgba(34, 197, 94, 0.12)")
       .showAtmosphere(true)
@@ -80,15 +75,10 @@ export default function GlobeClient({ data }: { data: any[] }) {
   return (
     <Canvas
       camera={{ fov: 45, near: 10, far: 2000, position: [0, 0, 320] }}
-      gl={{
-        antialias: true,
-        alpha: true,
-        powerPreference: "high-performance",
-        outputColorSpace: THREE.SRGBColorSpace,
-      }}
+      gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
     >
       <ambientLight intensity={0.8} />
-      <pointLight position={[320, 320, 320]} intensity={1} />
+      <pointLight position={[320, 320, 320]} intensity={0.5} />
       <GlobeInternal data={data} />
       <OrbitControls
         enablePan={false}
