@@ -4,24 +4,22 @@ import React, { useState, useEffect, useMemo } from "react";
 import dynamic from "next/dynamic";
 import { motion, AnimatePresence } from "framer-motion";
 
-// Tes composants frontendkit
+// Tes composants frontendkit (Imports respectés)
 import NavbarFront from "@/components/frontendkit/NavbarFront";
 import { CardStack } from "@/components/frontendkit/CardStack";
 import { ScrollToTop } from "@/components/frontendkit/ScrollToTop";
 import { WarpBackground } from "@/components/frontendkit/WarpBackground";
 import { LogicBadge } from "@/components/frontendkit/LogicBadge";
-
-// Magic UI
-import { WordRotate } from "@/components/frontendkit/word-rotate";
+import { WordRotate } from "@/components/frontendkit/word-rotate"; // Ajusté selon ton dossier
 import { cn } from "@/lib/utils";
 
-// --- THEME LOGIC : Couleurs basées sur ta config CSS ---
+// --- THEME LOGIC : Polices Standards & Adaptatives ---
 const UI_THEME = {
-  techBold: "font-oswald font-black uppercase tracking-tighter leading-[0.9]",
+  techBold: "font-oswald font-black uppercase tracking-tighter leading-[0.95]",
   machineLabel:
-    "font-mono-tech uppercase tracking-[0.3em] text-[9px] text-zinc-500 dark:text-green-500/60",
+    "font-mono-tech uppercase tracking-[0.2em] text-[11px] text-zinc-500 dark:text-green-500/70",
   narrative:
-    "font-sans text-zinc-600 dark:text-zinc-400 font-medium tracking-tight",
+    "font-sans text-zinc-600 dark:text-zinc-400 font-medium tracking-normal text-base md:text-lg",
 };
 
 const LOG_CARDS_DATA = [
@@ -30,14 +28,20 @@ const LOG_CARDS_DATA = [
     name: "BACKBONE_ENGINE",
     designation: "NODE: ABIDJAN",
     content: (
-      <p className="text-xs">Analyse des flux critiques en temps réel.</p>
+      <p className="text-sm">
+        Analyse des flux critiques en temps réel sur le backbone national.
+      </p>
     ),
   },
   {
     id: 1,
     name: "SECURITY_MESH",
     designation: "SHIELD: ACTIVE",
-    content: <p className="text-xs">Chiffrement AES-256 haute performance.</p>,
+    content: (
+      <p className="text-sm">
+        Chiffrement AES-256 haute performance et monitoring des menaces.
+      </p>
+    ),
   },
 ];
 
@@ -80,25 +84,26 @@ export default function ResumeExecutifPage() {
     <div className="flex flex-col min-h-screen bg-white dark:bg-[#020408] text-zinc-900 dark:text-zinc-50 transition-colors duration-500">
       <NavbarFront />
 
-      {/* --- SECTION 1 : HERO (Taille Réduite) --- */}
-      <section className="relative w-full min-h-[85vh] flex flex-col items-center justify-center pt-24 overflow-hidden border-b border-zinc-100 dark:border-white/5">
+      {/* --- SECTION 1 : HERO (Tailles Standardisées) --- */}
+      <section className="relative w-full min-h-[90vh] flex flex-col items-center justify-center pt-24 overflow-hidden border-b border-zinc-100 dark:border-white/5">
         <WarpBackground
-          className="w-full h-full opacity-60 dark:opacity-30"
-          gridColor="rgba(34, 197, 94, 0.2)"
+          className="w-full h-full opacity-70 dark:opacity-30"
+          gridColor="rgba(34, 197, 94, 0.25)"
         >
-          <div className="relative z-10 flex flex-col items-center text-center px-6 max-w-4xl mx-auto">
+          <div className="relative z-10 flex flex-col items-center text-center px-6 max-w-5xl mx-auto">
             <motion.div
-              initial={{ opacity: 0, y: 15 }}
+              initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="space-y-10"
+              className="space-y-12"
             >
-              <div className="space-y-3">
+              <div className="space-y-4">
                 <span className={UI_THEME.machineLabel}>
-                  Protocol v2.0.26 // Active
+                  Protocol v2.0.26 // Active System
                 </span>
+                {/* Taille standardisée : text-5xl à 8xl */}
                 <h1
                   className={cn(
-                    "text-4xl md:text-6xl text-zinc-950 dark:text-white",
+                    "text-5xl md:text-8xl text-zinc-950 dark:text-white",
                     UI_THEME.techBold
                   )}
                 >
@@ -109,19 +114,21 @@ export default function ResumeExecutifPage() {
                 </h1>
               </div>
 
-              <div className="flex flex-col items-center gap-4">
+              <div className="flex flex-col items-center gap-6">
                 <p
                   className={cn(
-                    "text-sm md:text-base max-w-lg mx-auto italic opacity-70",
+                    "max-w-2xl mx-auto opacity-80 leading-relaxed",
                     UI_THEME.narrative
                   )}
                 >
-                  Architecture de résilience pour environnements instables.
+                  Déployez une architecture de résilience décisionnelle là où
+                  l'incertitude domine. Garantissez l'intégrité de vos
+                  opérations en environnement instable.
                 </p>
-                <div className="h-12 flex items-center justify-center">
+                <div className="h-16 flex items-center justify-center">
                   <WordRotate
                     className={cn(
-                      "text-xl md:text-3xl text-zinc-800 dark:text-green-400",
+                      "text-3xl md:text-5xl text-zinc-800 dark:text-green-400 drop-shadow-sm",
                       UI_THEME.techBold
                     )}
                     words={[
@@ -133,7 +140,7 @@ export default function ResumeExecutifPage() {
                 </div>
               </div>
 
-              <div className="pt-4">
+              <div className="pt-6">
                 <LogicBadge text="LOGIQUE MESURABLE" />
               </div>
             </motion.div>
@@ -142,36 +149,49 @@ export default function ResumeExecutifPage() {
       </section>
 
       {/* --- SECTION 2 : LOGS & CARDSTACK --- */}
-      <section className="relative z-30 w-full py-20 px-6 bg-zinc-50/50 dark:bg-transparent">
-        <div className="max-w-5xl w-full mx-auto grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
-          <div className="space-y-6">
-            <span className={UI_THEME.machineLabel}>Network Backbone</span>
+      <section className="relative z-30 w-full py-24 px-6 bg-zinc-50/80 dark:bg-transparent">
+        <div className="max-w-6xl w-full mx-auto grid grid-cols-1 md:grid-cols-2 gap-20 items-center">
+          <div className="space-y-8">
+            <span className={UI_THEME.machineLabel}>
+              Network Infrastructure
+            </span>
             <h2
               className={cn(
-                "text-2xl md:text-4xl text-zinc-950 dark:text-zinc-50",
+                "text-3xl md:text-5xl text-zinc-950 dark:text-zinc-50",
                 UI_THEME.techBold
               )}
             >
               Analyse des{" "}
-              <span className="text-green-600 dark:text-green-500">Flux</span>
+              <span className="text-green-600 dark:text-green-500">
+                Flux de Données
+              </span>
             </h2>
             <p
               className={cn(
-                "text-sm max-w-xs border-l border-zinc-200 dark:border-green-500/30 pl-4",
+                "max-w-md border-l-2 border-zinc-300 dark:border-green-500/30 pl-6 py-2",
                 UI_THEME.narrative
               )}
             >
-              Traitement temps réel sur les nœuds stratégiques.
+              Monitoring stratégique des nœuds critiques. Traitement de la
+              donnée à la source pour une réactivité maximale.
             </p>
           </div>
-          <div className="flex justify-center md:justify-end min-h-[300px]">
-            <CardStack items={LOG_CARDS_DATA} offset={8} scaleFactor={0.05} />
+          <div className="flex justify-center md:justify-end min-h-[400px]">
+            <CardStack items={LOG_CARDS_DATA} offset={10} scaleFactor={0.06} />
           </div>
         </div>
       </section>
 
-      {/* --- SECTION 3 : GLOBE (Couleurs Adaptatives) --- */}
-      <section className="relative h-[70vh] w-full overflow-hidden border-t border-zinc-100 dark:border-white/5">
+      {/* --- SECTION 3 : GLOBE (Pulse Active & Standard Size) --- */}
+      <section className="relative h-[85vh] w-full overflow-hidden border-t border-zinc-100 dark:border-white/5">
+        {/* Effet Pulse / Point de présence sur le Globe */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 pointer-events-none">
+          <div className="relative flex h-3 w-3">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+            <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
+          </div>
+        </div>
+
         <div className="absolute inset-0 z-0">
           <World
             data={[
@@ -187,7 +207,7 @@ export default function ResumeExecutifPage() {
             ]}
             globeConfig={{
               pointSize: 4,
-              globeColor: "#f4f4f5", // Light: Zinc-100
+              globeColor: "#f4f4f5",
               atmosphereColor: "#22c55e",
               autoRotate: true,
               autoRotateSpeed: 0.5,
@@ -195,18 +215,17 @@ export default function ResumeExecutifPage() {
           />
         </div>
 
-        {/* Masque adaptatif */}
         <div className="absolute inset-0 bg-gradient-to-b from-white dark:from-[#020408] via-transparent to-white dark:to-[#020408] pointer-events-none" />
 
-        <div className="relative z-10 h-full flex items-center justify-center pointer-events-none">
+        <div className="relative z-20 h-full flex items-center justify-center pointer-events-none">
           <AnimatePresence mode="wait">
             <motion.h2
               key={destinations[index].label}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 0.15, y: 0 }}
+              initial={{ opacity: 0, letterSpacing: "0.5em" }}
+              animate={{ opacity: 0.3, letterSpacing: "0.2em" }}
               exit={{ opacity: 0 }}
               className={cn(
-                "text-3xl md:text-5xl text-zinc-950 dark:text-white",
+                "text-4xl md:text-8xl text-zinc-950 dark:text-white",
                 UI_THEME.techBold
               )}
             >
@@ -216,9 +235,9 @@ export default function ResumeExecutifPage() {
         </div>
       </section>
 
-      <footer className="py-12 text-center bg-zinc-50 dark:bg-black border-t border-zinc-100 dark:border-white/5">
+      <footer className="py-16 text-center bg-zinc-50 dark:bg-black border-t border-zinc-100 dark:border-white/5">
         <p className={UI_THEME.machineLabel}>
-          IVORY COAST DIGITAL BACKBONE © 2026
+          IVORY COAST BACKBONE ARCHITECTURE © 2026
         </p>
       </footer>
 

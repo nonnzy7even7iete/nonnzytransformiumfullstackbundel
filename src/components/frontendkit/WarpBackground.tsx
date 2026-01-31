@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils";
 export const WarpBackground = ({
   children,
   className,
+  // On laisse une valeur par défaut, mais elle sera modulée par l'opacité CSS
   gridColor = "rgba(34, 197, 94, 0.3)",
 }: {
   children: React.ReactNode;
@@ -16,7 +17,8 @@ export const WarpBackground = ({
   return (
     <div
       className={cn(
-        "relative flex items-center justify-center overflow-hidden bg-[#020408]",
+        // Correction : Fond adaptatif au lieu de fixe
+        "relative flex items-center justify-center overflow-hidden bg-white dark:bg-[#020408] transition-colors duration-500",
         className
       )}
     >
@@ -25,14 +27,14 @@ export const WarpBackground = ({
         <div
           className="absolute inset-0"
           style={{
-            perspective: "150px", // Perspective forcée pour l'effet tunnel
+            perspective: "150px",
             perspectiveOrigin: "50% 50%",
           }}
         >
           <motion.div
             initial={{ rotateX: 0, translateZ: 0 }}
             animate={{
-              translateZ: ["0px", "40px"], // On avance vers l'utilisateur
+              translateZ: ["0px", "40px"],
             }}
             transition={{
               duration: 2,
@@ -48,16 +50,15 @@ export const WarpBackground = ({
               backgroundSize: "60px 60px",
               transformStyle: "preserve-3d",
               rotateX: "75deg",
-              /* Effet de lueur et de flou sur les bords pour la vitesse */
               maskImage:
                 "radial-gradient(circle at center, black 30%, transparent 80%)",
             }}
           />
         </div>
 
-        {/* Overlay de profondeur (sombre au centre, lueur sur les bords) */}
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#020408] z-[1]" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,#020408_70%)] z-[1]" />
+        {/* Overlays de profondeur adaptatifs via Tailwind dark: classes */}
+        <div className="absolute inset-0 z-[1] bg-gradient-to-b from-transparent via-transparent to-white dark:to-[#020408]" />
+        <div className="absolute inset-0 z-[1] bg-[radial-gradient(circle_at_center,transparent_0%,white_70%,white_100%)] dark:bg-[radial-gradient(circle_at_center,transparent_0%,#020408_70%)] opacity-90" />
       </div>
 
       {/* Ton contenu qui "flotte" au centre du tunnel */}
