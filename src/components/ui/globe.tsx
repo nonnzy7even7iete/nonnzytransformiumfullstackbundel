@@ -19,8 +19,6 @@ declare global {
 }
 
 const cameraZ = 320;
-
-// 1. Singleton pour éviter de recréer l'instance à chaque re-rendu
 let sharedGlobeInstance: ThreeGlobe | null = null;
 
 export function Globe({ data }: { data: any[] }) {
@@ -28,58 +26,89 @@ export function Globe({ data }: { data: any[] }) {
   const { resolvedTheme } = useTheme();
   const isDark = resolvedTheme === "dark";
 
-  // 2. Memoization des couleurs pour éviter les calculs inutiles
+  // Configuration Abidjan
+  const ABIDJAN = { lat: 5.33, lng: -4.03 };
+
   const colors = useMemo(
     () => ({
-      globe: isDark ? "#05070a" : "#f8fafc",
-      land: isDark ? "rgba(34, 197, 94, 0.15)" : "rgba(34, 197, 94, 0.3)",
+      globe: isDark ? "#050505" : "#f8fafc",
+      land: isDark ? "rgba(34, 197, 94, 0.12)" : "rgba(34, 197, 94, 0.3)",
       atmosphere: isDark ? "#22c55e" : "#16a34a",
-      point: isDark ? "#ffffff" : "#0f172a",
-      arc: "#22c55e",
+      arcDefault: "#22c55e",
     }),
     [isDark]
   );
 
+  // Logique des Rings (Ondes) : Abidjan (Source) + Destinations (Cibles)
+  const ringsData = useMemo(() => {
+    const source = [
+      {
+        lat: ABIDJAN.lat,
+        lng: ABIDJAN.lng,
+        color: "#22c55e",
+        maxR: 5,
+        speed: 2,
+      },
+    ];
+
+    const targets = data.map((d) => ({
+      lat: d.endLat,
+      lng: d.endLng,
+      color: d.color || "#ffffff",
+      maxR: 3,
+      speed: 1.5,
+    }));
+
+    return [...source, ...targets];
+  }, [data]);
+
   useEffect(() => {
     if (!groupRef.current) return;
-
-    // Réutilisation de l'instance si elle existe déjà
-    if (!sharedGlobeInstance) {
-      sharedGlobeInstance = new ThreeGlobe();
-    }
+    if (!sharedGlobeInstance) sharedGlobeInstance = new ThreeGlobe();
 
     const globe = sharedGlobeInstance;
     groupRef.current.add(globe);
 
-    // Optimisation : On ne charge les polygones qu'une seule fois
+    // 1. Géographie et Atmosphère
     globe
       .hexPolygonsData(countries.features)
       .hexPolygonResolution(3)
       .hexPolygonMargin(0.12)
       .hexPolygonColor(() => colors.land)
-      .hexPolygonAltitude(0.01)
       .showAtmosphere(true)
       .atmosphereColor(colors.atmosphere)
       .atmosphereAltitude(isDark ? 0.15 : 0.08);
 
+    // 2. Ondes Pulsantes (Rings)
+    globe
+      .ringsData(ringsData)
+      .ringColor((d: any) => d.color)
+      .ringMaxRadius((d: any) => d.maxR)
+      .ringPropagationSpeed((d: any) => d.speed)
+      .ringRepeatPeriod(1000);
+
+    // 3. Matériau du Globe (Noir Pur)
     const globeMaterial = globe.globeMaterial() as THREE.MeshPhongMaterial;
     globeMaterial.color = new THREE.Color(colors.globe);
+    globeMaterial.specular = new THREE.Color("#000000");
+    globeMaterial.shininess = 0;
 
-    // Nettoyage lors du démontage pour éviter les fuites mémoire mais garder l'instance
     return () => {
       if (groupRef.current) groupRef.current.remove(globe);
     };
-  }, [colors, isDark]);
+  }, [colors, isDark, ringsData]);
 
-  // Gestion des ARCS séparée pour la performance
+  // 4. Arcs de données
   useEffect(() => {
     if (!sharedGlobeInstance || !data) return;
-
     sharedGlobeInstance
       .arcsData(data)
-      .arcColor((d: any) => d.color || colors.arc)
-      .arcDashAnimateTime(6000);
-  }, [data, colors.arc]);
+      .arcColor((d: any) => d.color || colors.arcDefault)
+      .arcDashLength(0.9)
+      .arcDashGap(4)
+      .arcDashAnimateTime(4000)
+      .arcStroke(0.5);
+  }, [data, colors.arcDefault]);
 
   return <group ref={groupRef} />;
 }
@@ -88,29 +117,36 @@ export function World(props: any) {
   const { resolvedTheme } = useTheme();
   const [ready, setReady] = useState(false);
 
-  // 3. On attend que le composant soit monté pour éviter le mismatch SSR
   useEffect(() => {
     setReady(true);
   }, []);
-
-  if (!ready) return null; // Ou un placeholder très léger
+  if (!ready) return null;
 
   return (
-    <div className="absolute inset-0 w-full h-full bg-transparent">
+    <div className="absolute inset-0 w-full h-full bg-[#050505]">
       <Canvas
         camera={{ fov: 45, near: 10, far: 2000, position: [0, 0, cameraZ] }}
         gl={{
-          antialias: false, // Performance ++
+          antialias: true,
+          alpha: true,
           powerPreference: "high-performance",
         }}
       >
-        <ambientLight intensity={resolvedTheme === "dark" ? 1.2 : 2.0} />
+        <ambientLight
+          intensity={resolvedTheme === "dark" ? 0.8 : 2.0}
+          color="#ffffff"
+        />
+        <pointLight
+          position={[cameraZ, cameraZ, cameraZ]}
+          intensity={0.5}
+          color="#ffffff"
+        />
         <Globe {...props} />
         <OrbitControls
           enablePan={false}
           enableZoom={false}
           autoRotate={true}
-          autoRotateSpeed={0.3}
+          autoRotateSpeed={0.5}
         />
       </Canvas>
     </div>

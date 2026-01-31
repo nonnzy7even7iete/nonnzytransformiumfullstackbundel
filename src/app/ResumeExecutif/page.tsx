@@ -14,40 +14,15 @@ import { cn } from "@/lib/utils";
 
 const UI_THEME = {
   techBold: "font-oswald font-semibold tracking-[0.02em] leading-[1.1]",
-  // Gradient UNIQUE pour l'action
   orangeGreenGradient:
     "bg-[linear-gradient(135deg,#f97316_0%,#22c55e_100%)] bg-clip-text text-transparent",
-  // Gradient Gris Acier optimisé (plus de blanc en haut pour la brillance)
   steelGradient:
-    "bg-gradient-to-b from-white via-zinc-200 to-zinc-500 bg-clip-text text-transparent",
+    "bg-gradient-to-b from-white via-zinc-300 to-zinc-600 bg-clip-text text-transparent",
   machineLabel:
     "font-mono-tech uppercase tracking-[0.25em] text-[10px] text-zinc-500",
   narrative:
     "font-sans uppercase tracking-widest text-zinc-400 font-normal text-xs md:text-sm",
 };
-
-const LOG_CARDS_DATA = [
-  {
-    id: 0,
-    name: "MOTEUR_CENTRAL",
-    designation: "NŒUD : ABIDJAN",
-    content: (
-      <p className="text-[10px] uppercase tracking-widest">
-        Traitement des flux critiques en temps réel.
-      </p>
-    ),
-  },
-  {
-    id: 1,
-    name: "MAILLAGE_SÉCURITÉ",
-    designation: "PROTECTION : ACTIVE",
-    content: (
-      <p className="text-[10px] uppercase tracking-widest">
-        Protocoles de chiffrement haute performance.
-      </p>
-    ),
-  },
-];
 
 const World = dynamic(
   () => import("@/components/ui/globe").then((m) => m.World),
@@ -62,35 +37,47 @@ export default function ResumeExecutifPage() {
   const [index, setIndex] = useState(0);
   const ABIDJAN = { lat: 5.33, lng: -4.03 };
 
+  // --- LOGIQUE DES DESTINATIONS OPTIMISÉE ---
   const destinations = useMemo(
     () => [
-      { label: "AMÉRIQUE DU NORD", lat: 39.82, lng: -98.57 },
-      { label: "NŒUDS EUROPÉENS", lat: 50.11, lng: 14.42 },
-      { label: "HUB ABIDJAN", lat: 5.33, lng: -4.03 },
+      // AFRIQUE DE L'OUEST & CENTRALE
+      { label: "SÉNÉGAL", lat: 14.49, lng: -14.45, color: "#22c55e" },
+      { label: "NIGÉRIA", lat: 9.08, lng: 8.67, color: "#22c55e" },
+      { label: "CENTRAFRIQUE", lat: 6.61, lng: 20.93, color: "#22c55e" },
+      // MAGHREB
+      { label: "MAROC", lat: 31.79, lng: -7.09, color: "#f97316" },
+      // ASIE & AMÉRIQUE & RUSSIE
+      { label: "CHINE", lat: 35.86, lng: 104.19, color: "#ef4444" },
+      { label: "AMÉRIQUE DU NORD", lat: 37.09, lng: -95.71, color: "#3b82f6" },
+      { label: "RUSSIE", lat: 61.52, lng: 105.31, color: "#ffffff" },
+      // EUROPE & LATAM
+      { label: "EUROPE", lat: 48.85, lng: 2.35, color: "#eab308" },
+      { label: "AMÉRIQUE LATINE", lat: -14.23, lng: -51.92, color: "#8b5cf6" },
+      // RETOUR ZONE SAHEL
+      { label: "MALI", lat: 17.57, lng: -3.99, color: "#22c55e" },
     ],
     []
   );
 
   useEffect(() => {
     setMounted(true);
-    const timer = setInterval(
-      () => setIndex((p) => (p + 1) % destinations.length),
-      6000
-    );
+    const timer = setInterval(() => {
+      setIndex((p) => (p + 1) % destinations.length);
+    }, 5000); // Transition un peu plus rapide pour dynamiser le parcours
     return () => clearInterval(timer);
   }, [destinations.length]);
 
   if (!mounted) return null;
 
   return (
-    <div className="flex flex-col min-h-screen bg-[#050505] text-zinc-50 transition-colors duration-500">
+    <div className="flex flex-col min-h-screen bg-[#050505] text-zinc-50 selection:bg-green-500/30">
       <NavbarFront />
 
       {/* --- SECTION 1 : ACCUEIL --- */}
       <section className="relative w-full min-h-[85vh] flex flex-col items-center justify-center pt-24 overflow-hidden border-b border-white/5 bg-[#050505]">
         <WarpBackground
-          className="w-full h-full opacity-60"
-          gridColor="rgba(34, 197, 94, 0.1)"
+          className="w-full h-full opacity-40"
+          gridColor="rgba(34, 197, 94, 0.15)"
         >
           <div className="relative z-10 flex flex-col items-center text-center px-6 max-w-5xl mx-auto w-full">
             <motion.div
@@ -143,30 +130,30 @@ export default function ResumeExecutifPage() {
       </section>
 
       {/* --- SECTION 2 : ANALYSE DES FLUX --- */}
-      <section className="relative z-30 w-full py-24 px-6 bg-[#050505]">
+      <section className="relative z-30 w-full py-24 px-6 bg-[#050505] border-b border-white/5">
         <div className="max-w-6xl w-full mx-auto grid grid-cols-1 md:grid-cols-2 gap-20 items-center">
           <div className="space-y-8">
-            <span className={UI_THEME.machineLabel}>Nœud d'infrastructure</span>
+            <span className={UI_THEME.machineLabel}>Flux de Données</span>
             <h2 className={cn("text-3xl md:text-5xl", UI_THEME.techBold)}>
               <span className={UI_THEME.steelGradient}>Analyse des Flux</span>
             </h2>
             <p
               className={cn(
-                "max-w-md border-l border-zinc-700 pl-6 py-2",
+                "max-w-md border-l border-zinc-800 pl-6 py-2",
                 UI_THEME.narrative
               )}
             >
-              Surveillance stratégique des signaux critiques sur le réseau
-              national.
+              Interconnexion sécurisée des nœuds stratégiques mondiaux depuis le
+              hub d'Abidjan.
             </p>
           </div>
           <div className="flex justify-center md:justify-end min-h-[400px]">
-            <CardStack items={LOG_CARDS_DATA} offset={12} scaleFactor={0.06} />
+            <CardStack items={[]} offset={12} scaleFactor={0.06} />
           </div>
         </div>
       </section>
 
-      {/* --- SECTION 3 : RÉSEAU --- */}
+      {/* --- SECTION 3 : RÉSEAU MONDIAL --- */}
       <section className="relative h-[80vh] w-full overflow-hidden bg-[#050505]">
         <div className="absolute inset-0 z-0">
           <World
@@ -178,43 +165,43 @@ export default function ResumeExecutifPage() {
                 endLat: destinations[index].lat,
                 endLng: destinations[index].lng,
                 arcAlt: 0.3,
-                color: "#22c55e",
+                color: destinations[index].color, // L'arc prend la couleur de la destination
               },
             ]}
-            globeConfig={{
-              pointSize: 4,
-              globeColor: "#18181b",
-              atmosphereColor: "#22c55e",
-              autoRotate: true,
-              autoRotateSpeed: 0.6,
-            }}
           />
         </div>
 
-        <div className="absolute inset-0 bg-gradient-to-b from-[#050505] via-transparent to-[#050505] opacity-80 pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#050505] via-transparent to-[#050505] opacity-100 pointer-events-none" />
 
-        <div className="relative z-20 h-full flex items-center justify-center pointer-events-none">
+        <div className="relative z-20 h-full flex flex-col items-center justify-center pointer-events-none">
           <AnimatePresence mode="wait">
-            <motion.h2
+            <motion.div
               key={destinations[index].label}
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 0.5, y: 0 }}
-              exit={{ opacity: 0, y: -15 }}
-              className={cn(
-                "text-3xl md:text-7xl",
-                UI_THEME.techBold,
-                UI_THEME.steelGradient
-              )}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 0.6, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              className="text-center"
             >
-              {destinations[index].label}
-            </motion.h2>
+              <span className={UI_THEME.machineLabel}>
+                Transmission en cours...
+              </span>
+              <h2
+                className={cn(
+                  "text-3xl md:text-7xl mt-4",
+                  UI_THEME.techBold,
+                  UI_THEME.steelGradient
+                )}
+              >
+                {destinations[index].label}
+              </h2>
+            </motion.div>
           </AnimatePresence>
         </div>
       </section>
 
-      <footer className="py-16 text-center bg-black border-t border-white/5">
+      <footer className="py-16 text-center bg-[#050505] border-t border-white/5">
         <p className={UI_THEME.machineLabel}>
-          Architecture Numérique Côte d'Ivoire // 2026
+          Architecture data driven // 2026
         </p>
       </footer>
 
