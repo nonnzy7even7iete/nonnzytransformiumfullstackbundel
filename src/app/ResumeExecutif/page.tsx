@@ -7,7 +7,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import NavbarFront from "@/components/frontendkit/NavbarFront";
 import { CardStack } from "@/components/frontendkit/CardStack";
 import { ScrollToTop } from "@/components/frontendkit/ScrollToTop";
-import { WarpBackground } from "@/components/frontendkit/WarpBackground";
 import { LogicBadge } from "@/components/frontendkit/LogicBadge";
 import { WordRotate } from "@/components/frontendkit/word-rotate";
 import { cn } from "@/lib/utils";
@@ -22,7 +21,6 @@ const UI_THEME = {
     "font-sans uppercase tracking-[0.15em] text-zinc-500 dark:text-zinc-400 text-[10px] leading-relaxed",
 };
 
-// Import dynamique sécurisé
 const World = dynamic(
   () => import("@/components/ui/globe").then((m) => m.World),
   { ssr: false }
@@ -90,13 +88,10 @@ export default function ResumeExecutifPage() {
     <div className="min-h-screen bg-white dark:bg-[#050505] text-zinc-950 dark:text-zinc-50 transition-colors duration-700">
       <NavbarFront />
 
-      {/* SECTION 1 : HERO ÉPURÉE */}
+      {/* SECTION 1 : HERO - GRILLE CSS PURE (SANS WARP) */}
       <section className="relative h-[80vh] flex flex-col items-center justify-center border-b border-zinc-100 dark:border-white/5 overflow-hidden">
-        <div className="absolute inset-0 opacity-40 bg-[radial-gradient(circle_at_center,transparent_0%,white_100%)] dark:bg-[radial-gradient(circle_at_center,transparent_0%,#050505_100%)] z-[1]" />
-        <WarpBackground
-          className="opacity-60"
-          gridColor="rgba(0, 0, 0, 0.05)"
-        />
+        {/* Grille de fond épurée */}
+        <div className="absolute inset-0 z-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:40px_40px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_50%,#000_70%,transparent_100%)]" />
 
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -159,7 +154,7 @@ export default function ResumeExecutifPage() {
         </div>
       </section>
 
-      {/* SECTION 3 : GLOBE ET SIGNAL INTERNATIONAL */}
+      {/* SECTION 3 : GLOBE ET SIGNAL */}
       <section className="relative h-[90vh] w-full bg-white dark:bg-[#050505] overflow-hidden">
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808008_1px,transparent_1px),linear-gradient(to_bottom,#80808008_1px,transparent_1px)] bg-[size:80px_80px] pointer-events-none" />
 
