@@ -3,15 +3,19 @@
 import React, { useEffect, useState, useMemo, useRef } from "react";
 import * as THREE from "three";
 import ThreeGlobe from "three-globe";
-import { Canvas, useFrame } from "@react-three/fiber";
+import { Canvas } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
 
-function GlobeInternal({ data }: { data: any[] }) {
+interface GlobeProps {
+  data: any[];
+}
+
+function GlobeInternal({ data }: GlobeProps) {
   const globeRef = useRef<ThreeGlobe>(new ThreeGlobe());
   const [geoData, setGeoData] = useState<any>(null);
   const [isDark, setIsDark] = useState(false);
 
-  // Détection dynamique du mode Dark/Light
+  // Détection du thème
   useEffect(() => {
     const checkTheme = () => {
       setIsDark(document.documentElement.classList.contains("dark"));
@@ -25,19 +29,17 @@ function GlobeInternal({ data }: { data: any[] }) {
     return () => observer.disconnect();
   }, []);
 
-  // Chargement des données géo
   useEffect(() => {
     fetch("/globe.json")
       .then((res) => res.json())
-      .then((json) => setGeoData(json));
+      .then((json) => setGeoData(json))
+      .catch((err) => console.error("Globe JSON Error:", err));
   }, []);
 
-  // Mise à jour du Globe quand le thème ou les données changent
   useEffect(() => {
     const globe = globeRef.current;
     if (!globe || !geoData) return;
 
-    // Couleurs adaptatives
     const hexColor = isDark
       ? "rgba(34, 197, 94, 0.2)"
       : "rgba(16, 185, 129, 0.15)";
@@ -59,7 +61,7 @@ function GlobeInternal({ data }: { data: any[] }) {
       .arcDashAnimateTime(4000)
       .arcStroke(0.5);
 
-    // Update du matériel pour éviter le "bloc noir"
+    // FIX ERREUR VS CODE : Cast explicite du matériau
     const globeMaterial = globe.globeMaterial() as THREE.MeshPhongMaterial;
     globeMaterial.color = new THREE.Color(globeColor);
     globeMaterial.emissive = new THREE.Color(isDark ? "#000000" : "#f0f0f0");
@@ -70,20 +72,38 @@ function GlobeInternal({ data }: { data: any[] }) {
   return <primitive object={globeRef.current} />;
 }
 
-export default function Globe({ data }: { data: any[] }) {
+export default function Globe({ data }: GlobeProps) {
+  // On déplace la logique de détection ici aussi pour les lumières du Canvas
+  const [isDark, setIsDark] = useState(false);
+
+  useEffect(() => {
+    setIsDark(document.documentElement.classList.contains("dark"));
+    const observer = new MutationObserver(() => {
+      setIsDark(document.documentElement.classList.contains("dark"));
+    });
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["class"],
+    });
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <div className="w-full h-full bg-transparent">
       <Canvas
         camera={{ fov: 45, near: 10, far: 2000, position: [0, 0, 320] }}
         gl={{
           antialias: true,
-          alpha: true, // Crucial pour laisser passer le fond blanc
+          alpha: true,
           powerPreference: "high-performance",
         }}
       >
-        <ambientLight intensity={isDark ? 0.5 : 2.5} />
-        <pointLight position={[300, 300, 300]} intensity={isDark ? 0.5 : 2} />
+        {/* FIX ERREUR VS CODE : isDark est maintenant défini dans ce scope */}
+        <ambientLight intensity={isDark ? 0.7 : 1.5} />
+        <pointLight position={[300, 300, 300]} intensity={isDark ? 0.5 : 1.2} />
+
         <GlobeInternal data={data} />
+
         <OrbitControls
           enablePan={false}
           enableZoom={false}
