@@ -108,20 +108,24 @@ export default function ResumeExecutifPage() {
           >
             <span className="text-zinc-900 dark:text-white">Nonnzytr</span>
             <br />
-            <span className="text-zinc-400 font-light italic text-4xl tracking-widest">
-              Operations
+            <span className="text-zinc-600 font-light italic text-4xl tracking-widest">
+              Ivory coast global networking data driven
             </span>
           </h1>
           <div className="mt-16 space-y-4">
             <p className={UI_THEME.narrative}>
-              SYSTÈME DE RÉSILIENCE DÉCISIONNELLE
+              Nous opérons là où la décision devient instable.{" "}
             </p>
             <WordRotate
               className="text-sm font-mono text-emerald-600 dark:text-emerald-400 tracking-[0.2em]"
               words={[
-                "FLUX ANALYTIQUES",
-                "DONNÉES SÉCURISÉES",
-                "VÉLOCITÉ MAXIMALE",
+                "Lorsque vous commencez à sentir votre investissement menacé par l’intuition, la Côte d’Ivoire réduit votre charge mentale de part vectoring à la transparence quant a la valeur attendue, basée sur des choix minés de possibilités.",
+                "Décider n’est plus un pari. C’est un transfert de charge entre scénarios.",
+                "Il mesure pour chacun?",
+                "-le risque",
+                "-le potentiel",
+                "-le coût d’erreur",
+                "– la valeur espérée",
               ]}
             />
           </div>
