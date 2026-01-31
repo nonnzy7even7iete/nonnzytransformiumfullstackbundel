@@ -3,26 +3,16 @@
 import React, { useEffect, useRef, useState, useMemo } from "react";
 import * as THREE from "three";
 import ThreeGlobe from "three-globe";
-import { Canvas, extend, ThreeElement } from "@react-three/fiber";
+import { Canvas } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
 import countries from "../../data/globe.json";
 
-// Enregistrement du composant pour React Three Fiber
-extend({ ThreeGlobe: ThreeGlobe });
-
-declare global {
-  namespace JSX {
-    interface IntrinsicElements {
-      threeGlobe: ThreeElement<typeof ThreeGlobe>;
-    }
-  }
-}
-
 export function Globe({ data }: { data: any[] }) {
-  const globeRef = useRef<ThreeGlobe>(null);
+  // On crée l'instance une seule fois de manière stable
+  const [globe] = useState(() => new ThreeGlobe());
+
   const ABIDJAN = { lat: 5.33, lng: -4.03 };
 
-  // Mémoïsation des données des anneaux (Rings)
   const ringsData = useMemo(() => {
     const source = [
       {
@@ -44,7 +34,6 @@ export function Globe({ data }: { data: any[] }) {
   }, [data]);
 
   useEffect(() => {
-    const globe = globeRef.current;
     if (!globe) return;
 
     // 1. Géographie
@@ -57,7 +46,7 @@ export function Globe({ data }: { data: any[] }) {
       .atmosphereColor("#22c55e")
       .atmosphereAltitude(0.15);
 
-    // 2. Matériau (Noir Pur pour unification)
+    // 2. Matériau
     const globeMaterial = globe.globeMaterial() as THREE.MeshPhongMaterial;
     globeMaterial.color = new THREE.Color("#050505");
     globeMaterial.specular = new THREE.Color("#000000");
@@ -71,7 +60,7 @@ export function Globe({ data }: { data: any[] }) {
       .ringPropagationSpeed((d: any) => d.speed)
       .ringRepeatPeriod(1000);
 
-    // 4. Arcs de données
+    // 4. Arcs
     globe
       .arcsData(data || [])
       .arcColor((d: any) => d.color || "#22c55e")
@@ -79,9 +68,10 @@ export function Globe({ data }: { data: any[] }) {
       .arcDashGap(4)
       .arcDashAnimateTime(4000)
       .arcStroke(0.5);
-  }, [ringsData, data]);
+  }, [globe, ringsData, data]);
 
-  return <threeGlobe ref={globeRef} />;
+  // "primitive" est l'astuce pour éviter les erreurs de type JSX
+  return <primitive object={globe} />;
 }
 
 export function World(props: any) {
