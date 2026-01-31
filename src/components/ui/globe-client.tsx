@@ -10,7 +10,6 @@ export default function GlobeClient({ data }: { data: any[] }) {
   const globeRef = useRef<ThreeGlobe>(new ThreeGlobe());
   const [geoData, setGeoData] = useState<any>(null);
   const [isDark, setIsDark] = useState(false);
-  const ABIDJAN = { lat: 5.33, lng: -4.03 };
 
   useEffect(() => {
     const check = () =>
@@ -31,15 +30,9 @@ export default function GlobeClient({ data }: { data: any[] }) {
   }, []);
 
   const ringsData = useMemo(() => {
-    const mainColor = isDark ? "#22c55e" : "#10b981";
+    const color = isDark ? "#22c55e" : "#10b981";
     return [
-      {
-        lat: ABIDJAN.lat,
-        lng: ABIDJAN.lng,
-        color: mainColor,
-        maxR: 5,
-        speed: 2,
-      },
+      { lat: 5.33, lng: -4.03, color, maxR: 5, speed: 2 },
       ...(data || []).map((d) => ({
         lat: d.endLat,
         lng: d.endLng,
@@ -56,8 +49,6 @@ export default function GlobeClient({ data }: { data: any[] }) {
 
     globe
       .hexPolygonsData(geoData.features)
-      .hexPolygonResolution(3)
-      .hexPolygonMargin(0.15)
       .hexPolygonColor(() =>
         isDark ? "rgba(34, 197, 94, 0.2)" : "rgba(16, 185, 129, 0.2)"
       )
@@ -80,11 +71,12 @@ export default function GlobeClient({ data }: { data: any[] }) {
       camera={{ position: [0, 0, 320], fov: 45 }}
       gl={{ antialias: true, alpha: true }}
       onCreated={({ gl }) => gl.setClearColor(0x000000, 0)}
+      style={{ background: "transparent" }}
     >
-      <ambientLight intensity={isDark ? 0.7 : 2.2} />
-      <pointLight position={[300, 300, 300]} intensity={isDark ? 0.5 : 1.8} />
+      <ambientLight intensity={isDark ? 0.7 : 2.5} />
+      <pointLight position={[300, 300, 300]} intensity={isDark ? 0.5 : 2} />
       <primitive object={globeRef.current} />
-      <OrbitControls enableZoom={false} autoRotate autoRotateSpeed={0.6} />
+      <OrbitControls enableZoom={false} autoRotate autoRotateSpeed={0.5} />
     </Canvas>
   );
 }
