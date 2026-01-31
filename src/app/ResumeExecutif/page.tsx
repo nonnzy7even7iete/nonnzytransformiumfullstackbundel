@@ -23,13 +23,14 @@ const UI_THEME = {
     "font-sans uppercase tracking-[0.15em] text-zinc-600 dark:text-zinc-400 text-[11px] leading-relaxed",
 };
 
+// Import dynamique du composant World (qui contient le GlobeClient)
 const World = dynamic(
   () => import("@/components/ui/globe").then((m) => m.World),
   {
     ssr: false,
     loading: () => (
-      <div className="absolute inset-0 flex items-center justify-center font-mono text-[10px] text-emerald-500 animate-pulse">
-        [ SYSTEM_INIT... ]
+      <div className="h-[85vh] flex items-center justify-center font-mono text-[10px] text-emerald-500 animate-pulse uppercase tracking-[0.3em]">
+        System_Init...
       </div>
     ),
   }
@@ -52,6 +53,24 @@ export default function ResumeExecutifPage() {
     []
   );
 
+  const dummyCards = useMemo(
+    () => [
+      {
+        id: 1,
+        name: "FLUX ALPHA",
+        designation: "OPÉRATIONNEL",
+        content: "Analyse des signaux entrants en temps réel.",
+      },
+      {
+        id: 2,
+        name: "FLUX BETA",
+        designation: "STABLE",
+        content: "Intégrité des données vérifiée sur le hub Abidjan.",
+      },
+    ],
+    []
+  );
+
   useEffect(() => {
     setMounted(true);
     const interval = setInterval(
@@ -68,7 +87,7 @@ export default function ResumeExecutifPage() {
     <div className="min-h-screen bg-white dark:bg-[#050505] text-zinc-950 dark:text-zinc-50 transition-colors duration-700 selection:bg-emerald-500/30">
       <NavbarFront />
 
-      {/* SECTION 1 : HERO */}
+      {/* --- SECTION 1 : HERO --- */}
       <section className="relative h-[90vh] flex flex-col items-center justify-center border-b border-zinc-200 dark:border-white/5 overflow-hidden">
         <WarpBackground
           className="opacity-100"
@@ -104,9 +123,36 @@ export default function ResumeExecutifPage() {
         </WarpBackground>
       </section>
 
-      {/* SECTION 3 : LE GLOBE (BOX RÉACTIVE) */}
+      {/* --- SECTION 2 : ANALYSE (RÉINTÉGRÉE) --- */}
+      <section className="relative z-20 py-32 px-6 bg-zinc-50 dark:bg-[#080808] border-b border-zinc-200 dark:border-white/5">
+        <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-20 items-center">
+          <div className="space-y-8 text-center md:text-left">
+            <span className={UI_THEME.machineLabel}>
+              02 // Data Stream Analysis
+            </span>
+            <h2
+              className={cn(
+                "text-5xl md:text-7xl uppercase",
+                UI_THEME.techBold
+              )}
+            >
+              Analyse des Flux
+            </h2>
+            <div className="h-1.5 w-20 bg-emerald-500 mx-auto md:mx-0" />
+            <p className={cn("max-w-md mx-auto md:mx-0", UI_THEME.narrative)}>
+              Interconnexion sécurisée des nœuds stratégiques mondiaux. Zéro
+              latence, intégrité absolue.
+            </p>
+          </div>
+          <div className="flex justify-center md:justify-end">
+            <CardStack items={dummyCards} offset={12} scaleFactor={0.06} />
+          </div>
+        </div>
+      </section>
+
+      {/* --- SECTION 3 : GLOBE (NETTOYÉ) --- */}
       <section className="relative h-[85vh] w-full bg-white dark:bg-[#050505] transition-colors duration-700 overflow-hidden">
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808008_1px,transparent_1px),linear-gradient(to_bottom,#80808008_1px,transparent_1px)] bg-[size:50px_50px]" />
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808008_1px,transparent_1px),linear-gradient(to_bottom,#80808008_1px,transparent_1px)] bg-[size:50px_50px] pointer-events-none" />
 
         <div className="absolute inset-0 z-0 scale-110">
           <World
