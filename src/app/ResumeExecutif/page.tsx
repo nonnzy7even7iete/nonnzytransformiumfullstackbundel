@@ -196,7 +196,7 @@ export default function ResumeExecutifPage() {
                 <div className="flex items-center gap-3 bg-white/50 dark:bg-white/5 backdrop-blur-md px-5 py-2 border border-zinc-200 dark:border-white/10 rounded-full">
                   <span className="h-2 w-2 rounded-full bg-emerald-500 animate-ping" />
                   <span className="font-mono text-[9px] tracking-[0.3em] uppercase text-emerald-600 font-bold">
-                    Signal Actif
+                    Ivory coast data-driven
                   </span>
                 </div>
 
