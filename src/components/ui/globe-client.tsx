@@ -9,9 +9,24 @@ import { OrbitControls } from "@react-three/drei";
 function GlobeInternal({ data }: { data: any[] }) {
   const [globe] = useState(() => new ThreeGlobe());
   const [geoData, setGeoData] = useState<any>(null);
-  const ABIDJAN = { lat: 5.33, lng: -4.03 };
+  const [isDark, setIsDark] = useState(false);
 
-  // Chargement asynchrone du JSON depuis /public
+  // 1. Détection du thème (Dark/Light)
+  useEffect(() => {
+    const checkTheme = () => {
+      setIsDark(document.documentElement.classList.contains("dark"));
+    };
+    checkTheme(); // Initial check
+
+    const observer = new MutationObserver(checkTheme);
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["class"],
+    });
+    return () => observer.disconnect();
+  }, []);
+
+  // 2. Chargement des données géo
   useEffect(() => {
     fetch("/globe.json")
       .then((res) => res.json())
@@ -22,9 +37,9 @@ function GlobeInternal({ data }: { data: any[] }) {
   const ringsData = useMemo(() => {
     const source = [
       {
-        lat: ABIDJAN.lat,
-        lng: ABIDJAN.lng,
-        color: "#22c55e",
+        lat: 5.33,
+        lng: -4.03,
+        color: isDark ? "#22c55e" : "#16a34a",
         maxR: 5,
         speed: 2,
       },
@@ -32,60 +47,77 @@ function GlobeInternal({ data }: { data: any[] }) {
     const targets = (data || []).map((d) => ({
       lat: d.endLat,
       lng: d.endLng,
-      color: d.color || "#ffffff",
+      color: d.color || (isDark ? "#ffffff" : "#000000"),
       maxR: 3,
       speed: 1.5,
     }));
     return [...source, ...targets];
-  }, [data]);
+  }, [data, isDark]);
 
+  // 3. Mise à jour dynamique du Globe
   useEffect(() => {
     if (!globe || !geoData) return;
 
+    // Couleurs adaptatives
+    const hexColor = isDark
+      ? "rgba(34, 197, 94, 0.2)"
+      : "rgba(22, 163, 74, 0.15)";
+    const atmosphereColor = isDark ? "#22c55e" : "#16a34a";
+    const globeColor = isDark ? "#050505" : "#ffffff";
+
     globe
       .hexPolygonsData(geoData.features)
-      .hexPolygonResolution(3) // Si ça plante encore, baisse à 2
-      .hexPolygonMargin(0.12)
-      .hexPolygonColor(() => "rgba(34, 197, 94, 0.12)")
+      .hexPolygonResolution(3)
+      .hexPolygonMargin(0.15)
+      .hexPolygonColor(() => hexColor)
       .showAtmosphere(true)
-      .atmosphereColor("#22c55e")
+      .atmosphereColor(atmosphereColor)
       .atmosphereAltitude(0.15)
       .ringsData(ringsData)
       .ringColor((d: any) => d.color)
       .ringMaxRadius((d: any) => d.maxR)
       .ringPropagationSpeed((d: any) => d.speed)
-      .ringRepeatPeriod(1000)
       .arcsData(data || [])
-      .arcColor((d: any) => d.color || "#22c55e")
+      .arcColor((d: any) => d.color || atmosphereColor)
       .arcDashLength(0.9)
       .arcDashGap(4)
       .arcDashAnimateTime(4000)
       .arcStroke(0.5);
 
     const globeMaterial = globe.globeMaterial() as THREE.MeshPhongMaterial;
-    globeMaterial.color = new THREE.Color("#050505");
-    globeMaterial.specular = new THREE.Color("#000000");
-    globeMaterial.shininess = 0;
-  }, [globe, geoData, ringsData, data]);
+    globeMaterial.color = new THREE.Color(globeColor);
+    globeMaterial.specular = new THREE.Color(isDark ? "#111111" : "#e2e2e2");
+    globeMaterial.shininess = isDark ? 0 : 10;
+  }, [globe, geoData, ringsData, data, isDark]);
 
   return <primitive object={globe} />;
 }
 
 export default function GlobeClient({ data }: { data: any[] }) {
   return (
-    <Canvas
-      camera={{ fov: 45, near: 10, far: 2000, position: [0, 0, 320] }}
-      gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
-    >
-      <ambientLight intensity={0.8} />
-      <pointLight position={[320, 320, 320]} intensity={0.5} />
-      <GlobeInternal data={data} />
-      <OrbitControls
-        enablePan={false}
-        enableZoom={false}
-        autoRotate
-        autoRotateSpeed={0.5}
-      />
-    </Canvas>
+    <div className="w-full h-full">
+      <Canvas
+        camera={{ fov: 45, near: 10, far: 2000, position: [0, 0, 320] }}
+        gl={{
+          antialias: true,
+          alpha: true,
+          powerPreference: "high-performance",
+          toneMapping: THREE.NoToneMapping,
+        }}
+      >
+        {/* Lumières adaptatives */}
+        <ambientLight intensity={1.5} />
+        <pointLight position={[320, 320, 320]} intensity={1} />
+
+        <GlobeInternal data={data} />
+
+        <OrbitControls
+          enablePan={false}
+          enableZoom={false}
+          autoRotate
+          autoRotateSpeed={0.8}
+        />
+      </Canvas>
+    </div>
   );
 }
