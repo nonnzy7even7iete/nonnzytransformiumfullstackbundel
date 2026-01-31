@@ -16,8 +16,6 @@ const UI_THEME = {
   techBold: "font-oswald font-black tracking-tighter leading-[0.85]",
   orangeGreenGradient:
     "bg-gradient-to-r from-[#ff5f00] to-[#00ff62] bg-clip-text text-transparent",
-  machineLabel:
-    "font-mono text-[11px] uppercase tracking-[0.4em] text-[#00ff62] font-bold",
 };
 
 const World = dynamic(
@@ -45,7 +43,6 @@ export default function ResumeExecutifPage() {
     []
   );
 
-  // Correction : Formatage strict pour le composant CardStack local
   const dummyCards = useMemo(
     () => [
       {
@@ -86,45 +83,46 @@ export default function ResumeExecutifPage() {
     <div className="flex flex-col min-h-screen bg-white dark:bg-[#050505] text-black dark:text-white overflow-x-hidden">
       <NavbarFront />
 
-      {/* --- SECTION 1 : HERO ULTRA-VIF --- */}
-      <section className="relative w-full min-h-screen flex flex-col items-center justify-center pt-20 border-b-4 border-[#00ff62]">
-        <div className="absolute inset-0 z-0 opacity-40">
-          <WarpBackground gridColor="#00ff62" />
-        </div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 50 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="relative z-10 flex flex-col items-center text-center px-6"
+      {/* --- SECTION 1 : HERO (Fixée pour children) --- */}
+      <section className="relative w-full min-h-screen flex flex-col border-b-4 border-[#00ff62]">
+        <WarpBackground
+          gridColor="#00ff62"
+          className="flex-1 flex items-center justify-center"
         >
-          <div className="bg-[#00ff62] text-black px-4 py-1 mb-6 font-black text-sm tracking-[0.3em]">
-            SYSTEM_STATUS: OPERATIONAL
-          </div>
-
-          <h1
-            className={cn(
-              "text-[15vw] md:text-[12rem] uppercase",
-              UI_THEME.techBold
-            )}
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="relative z-10 flex flex-col items-center text-center px-6 py-20"
           >
-            <span className="text-black dark:text-white">NONNZYTR</span>
-            <br />
-            <span className={UI_THEME.orangeGreenGradient}>OPÈRE</span>
-          </h1>
-
-          <div className="mt-12 flex flex-col items-center gap-6">
-            <WordRotate
-              className="text-3xl md:text-6xl font-black text-[#00ff62] italic"
-              words={["LIVE_STREAM", "SHARP_DATA", "PURE_LOGIC"]}
-            />
-            <div className="scale-150 mt-4">
-              <LogicBadge text="DIRECT_ACCESS" />
+            <div className="bg-[#00ff62] text-black px-4 py-1 mb-6 font-black text-sm tracking-[0.3em]">
+              SYSTEM_STATUS: OPERATIONAL
             </div>
-          </div>
-        </motion.div>
+
+            <h1
+              className={cn(
+                "text-[15vw] md:text-[12rem] uppercase",
+                UI_THEME.techBold
+              )}
+            >
+              <span className="text-black dark:text-white">NONNZYTR</span>
+              <br />
+              <span className={UI_THEME.orangeGreenGradient}>OPÈRE</span>
+            </h1>
+
+            <div className="mt-12 flex flex-col items-center gap-6">
+              <WordRotate
+                className="text-3xl md:text-6xl font-black text-[#00ff62] italic"
+                words={["LIVE_STREAM", "SHARP_DATA", "PURE_LOGIC"]}
+              />
+              <div className="scale-125 md:scale-150 mt-4">
+                <LogicBadge text="DIRECT_ACCESS" />
+              </div>
+            </div>
+          </motion.div>
+        </WarpBackground>
       </section>
 
-      {/* --- SECTION 2 : ANALYSE (BRUT) --- */}
+      {/* --- SECTION 2 : ANALYSE --- */}
       <section className="relative w-full py-24 px-6 grid grid-cols-1 md:grid-cols-2 gap-0 border-b-4 border-[#ff5f00]">
         <div className="p-12 bg-[#00ff62] text-black flex flex-col justify-center">
           <h2 className="text-6xl md:text-8xl font-black uppercase leading-[0.8] mb-6">
@@ -132,8 +130,8 @@ export default function ResumeExecutifPage() {
             <br />
             DES FLUX
           </h2>
-          <p className="text-xl font-black border-t-4 border-black pt-4">
-            INTERCONNEXION BRUTE. ZÉRO FILTRE. ZÉRO BRUME.
+          <p className="text-xl font-black border-t-4 border-black pt-4 uppercase">
+            Interconnexion brute. Zéro filtre. Zéro brume.
           </p>
         </div>
         <div className="bg-black dark:bg-zinc-900 flex items-center justify-center p-12 min-h-[450px]">
@@ -141,9 +139,8 @@ export default function ResumeExecutifPage() {
         </div>
       </section>
 
-      {/* --- SECTION 3 : GLOBE (PURETÉ TOTALE) --- */}
+      {/* --- SECTION 3 : GLOBE (PUREMENT VIF) --- */}
       <section className="relative h-screen w-full bg-black overflow-hidden">
-        {/* Le Globe : Aucune brume, aucune couche de gradient par-dessus */}
         <div className="absolute inset-0">
           <World
             data={[
@@ -160,18 +157,17 @@ export default function ResumeExecutifPage() {
           />
         </div>
 
-        {/* HUD UI ULTRA-VIF & TRANCHANT */}
         <div className="absolute inset-0 z-20 flex flex-col items-center justify-between py-24 pointer-events-none">
-          <div className={UI_THEME.machineLabel}>
+          <div className="font-mono text-[11px] uppercase tracking-[0.4em] text-[#00ff62] font-bold">
             GLOBAL_NETWORK_ESTABLISHED
           </div>
 
           <AnimatePresence mode="wait">
             <motion.div
               key={destinations[index].label}
-              initial={{ opacity: 0, x: -100, rotate: -5 }}
-              animate={{ opacity: 1, x: 0, rotate: 0 }}
-              exit={{ opacity: 0, x: 100, rotate: 5 }}
+              initial={{ opacity: 0, x: -100 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: 100 }}
               transition={{ type: "spring", stiffness: 400, damping: 15 }}
               className="text-center"
             >
@@ -188,15 +184,13 @@ export default function ResumeExecutifPage() {
           </div>
         </div>
 
-        {/* Cadre de viseur technique pour renforcer le côté vif */}
-        <div className="absolute inset-10 border-2 border-white/10 pointer-events-none z-10" />
         <div className="absolute top-10 left-10 w-20 h-20 border-t-4 border-l-4 border-[#00ff62] z-30" />
         <div className="absolute bottom-10 right-10 w-20 h-20 border-b-4 border-r-4 border-[#ff5f00] z-30" />
       </section>
 
       <footer className="bg-black text-[#00ff62] p-8 flex flex-col md:flex-row justify-between items-center font-black border-t-4 border-[#00ff62]">
-        <span className="text-2xl italic tracking-tighter">
-          NONNZYTR // ARCHITECTURE 2026
+        <span className="text-2xl italic tracking-tighter uppercase">
+          Nonnzytr // Architecture 2026
         </span>
         <span className="text-sm tracking-[0.5em]">ABIDJAN_CORE_UNIT</span>
       </footer>
