@@ -104,7 +104,7 @@ export default function ResumeExecutifPage() {
                 </span>
                 <h1 className={cn("text-5xl md:text-8xl", UI_THEME.techBold)}>
                   <span className={UI_THEME.steelGradient}>Nonnzytr</span>{" "}
-                  <span className={UI_THEME.orangeGreenGradient}>Opérer</span>
+                  <span className={UI_THEME.orangeGreenGradient}>opère</span>
                 </h1>
               </div>
 
