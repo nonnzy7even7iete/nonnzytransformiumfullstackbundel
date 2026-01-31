@@ -5,13 +5,15 @@ import * as THREE from "three";
 import ThreeGlobe from "three-globe";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
+// Importation des données géographiques
 import countries from "../../data/globe.json";
 
-// Ce sous-composant gère l'objet ThreeGlobe
 function GlobeInternal({ data }: { data: any[] }) {
+  // Instance unique du globe pour la performance
   const [globe] = useState(() => new ThreeGlobe());
   const ABIDJAN = { lat: 5.33, lng: -4.03 };
 
+  // Calcul des ondes (Rings) : Abidjan + Destinations
   const ringsData = useMemo(() => {
     const source = [
       {
@@ -22,6 +24,7 @@ function GlobeInternal({ data }: { data: any[] }) {
         speed: 2,
       },
     ];
+
     const targets = (data || []).map((d) => ({
       lat: d.endLat,
       lng: d.endLng,
@@ -29,11 +32,14 @@ function GlobeInternal({ data }: { data: any[] }) {
       maxR: 3,
       speed: 1.5,
     }));
+
     return [...source, ...targets];
   }, [data]);
 
   useEffect(() => {
     if (!globe) return;
+
+    // 1. Configuration de la Terre
     globe
       .hexPolygonsData(countries.features)
       .hexPolygonResolution(3)
@@ -41,12 +47,18 @@ function GlobeInternal({ data }: { data: any[] }) {
       .hexPolygonColor(() => "rgba(34, 197, 94, 0.12)")
       .showAtmosphere(true)
       .atmosphereColor("#22c55e")
-      .atmosphereAltitude(0.15)
+      .atmosphereAltitude(0.15);
+
+    // 2. Ondes pulsantes (Rings)
+    globe
       .ringsData(ringsData)
       .ringColor((d: any) => d.color)
       .ringMaxRadius((d: any) => d.maxR)
       .ringPropagationSpeed((d: any) => d.speed)
-      .ringRepeatPeriod(1000)
+      .ringRepeatPeriod(1000);
+
+    // 3. Trajectoires de données (Arcs)
+    globe
       .arcsData(data || [])
       .arcColor((d: any) => d.color || "#22c55e")
       .arcDashLength(0.9)
@@ -54,6 +66,7 @@ function GlobeInternal({ data }: { data: any[] }) {
       .arcDashAnimateTime(4000)
       .arcStroke(0.5);
 
+    // 4. Apparence du globe (Noir pur sans reflets bleus)
     const globeMaterial = globe.globeMaterial() as THREE.MeshPhongMaterial;
     globeMaterial.color = new THREE.Color("#050505");
     globeMaterial.specular = new THREE.Color("#000000");
@@ -63,24 +76,27 @@ function GlobeInternal({ data }: { data: any[] }) {
   return <primitive object={globe} />;
 }
 
-// Le composant exporté par défaut
 export default function GlobeClient({ data }: { data: any[] }) {
   return (
-    <div className="w-full h-full bg-[#050505]">
-      <Canvas
-        camera={{ fov: 45, near: 10, far: 2000, position: [0, 0, 320] }}
-        gl={{ antialias: true, alpha: true }}
-      >
-        <ambientLight intensity={0.8} color="#ffffff" />
-        <pointLight position={[320, 320, 320]} intensity={0.5} />
-        <GlobeInternal data={data} />
-        <OrbitControls
-          enablePan={false}
-          enableZoom={false}
-          autoRotate
-          autoRotateSpeed={0.5}
-        />
-      </Canvas>
-    </div>
+    <Canvas
+      camera={{ fov: 45, near: 10, far: 2000, position: [0, 0, 320] }}
+      gl={{
+        antialias: true,
+        alpha: true,
+        powerPreference: "high-performance",
+      }}
+    >
+      <ambientLight intensity={0.8} color="#ffffff" />
+      <pointLight position={[320, 320, 320]} intensity={0.5} color="#ffffff" />
+
+      <GlobeInternal data={data} />
+
+      <OrbitControls
+        enablePan={false}
+        enableZoom={false}
+        autoRotate
+        autoRotateSpeed={0.5}
+      />
+    </Canvas>
   );
 }
