@@ -114,14 +114,14 @@ export default function ResumeExecutifPage() {
             </div>
             <h1
               className={cn(
-                "text-6xl md:text-8xl tracking-tighter",
+                "text-3xl md:text-4xl tracking-tighter",
                 UI_THEME.techBold
               )}
             >
-              <span className="text-zinc-900 dark:text-white">NONNZYTR</span>
+              <span className="text-black dark:text-white">Nonnzytr</span>
               <br />
               <span className="opacity-40 font-light italic uppercase tracking-widest">
-                Global Operations
+                Global Networking Data
               </span>
             </h1>
             <div className="mt-16 space-y-4 max-w-xs mx-auto">
