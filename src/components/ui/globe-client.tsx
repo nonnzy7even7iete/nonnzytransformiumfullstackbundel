@@ -52,7 +52,7 @@ export default function GlobeClient({ data }: { data: any[] }) {
       .hexPolygonResolution(3)
       .hexPolygonMargin(0.12)
       .hexPolygonColor(() =>
-        isDark ? "rgba(34, 197, 94, 0.4)" : "rgba(16, 185, 129, 0.7)"
+        isDark ? "rgba(34, 197, 94, 0.4)" : "rgba(13, 214, 147, 0.7)"
       ) // Vert saturé
       .showAtmosphere(true)
       .atmosphereColor("#10b981")

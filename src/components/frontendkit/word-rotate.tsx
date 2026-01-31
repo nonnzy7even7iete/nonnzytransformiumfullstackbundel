@@ -14,12 +14,12 @@ interface WordRotateProps {
 
 export function WordRotate({
   words = [],
-  duration = 8000,
+  duration = 12000, // Ajusté à 12 secondes
   framerProps = {
-    initial: { opacity: 0, y: 15 },
+    initial: { opacity: 0, y: 10 },
     animate: { opacity: 1, y: 0 },
-    exit: { opacity: 0, y: -15 },
-    transition: { duration: 0.5, ease: "easeOut" },
+    exit: { opacity: 0, y: -10 },
+    transition: { duration: 0.6, ease: "easeInOut" },
   },
   className,
   containerClassName,
@@ -29,11 +29,9 @@ export function WordRotate({
 
   useEffect(() => {
     if (!words || words.length <= 1 || isPaused) return;
-
     const interval = setInterval(() => {
-      setIndex((prevIndex) => (prevIndex + 1) % words.length);
+      setIndex((prev) => (prev + 1) % words.length);
     }, duration);
-
     return () => clearInterval(interval);
   }, [words, duration, isPaused]);
 
@@ -42,7 +40,7 @@ export function WordRotate({
   return (
     <div
       className={cn(
-        "relative flex items-center justify-center text-center w-full min-h-[4rem]",
+        "grid text-center items-center justify-center w-full min-h-[80px]",
         containerClassName
       )}
       onMouseEnter={() => setIsPaused(true)}
@@ -51,21 +49,16 @@ export function WordRotate({
       <AnimatePresence mode="wait">
         <motion.span
           key={words[index]}
-          className={cn(
-            className,
-            "absolute inset-0 flex items-center justify-center text-center px-4"
-          )}
+          className={cn(className, "col-start-1 row-start-1 text-center")}
           {...framerProps}
         >
           {words[index]}
         </motion.span>
       </AnimatePresence>
-
-      {/* Ghost element : invisible mais garde l'espace pour la plus longue phrase */}
       <span
         className={cn(
           className,
-          "invisible pointer-events-none px-4 opacity-0"
+          "invisible col-start-1 row-start-1 pointer-events-none"
         )}
       >
         {words.reduce((a, b) => (a.length > b.length ? a : b), "")}
