@@ -28,13 +28,13 @@ export default function HomePage() {
     <>
       <Navbar />
 
-      <main className="relative flex flex-col md:flex-row items-center justify-center min-h-screen overflow-hidden px-4 md:px-8 pb-10 gap-6 md:gap-0 pt-32 md:pt-40 bg-app-gradient">
-        {/* Intégration de l'Aurora */}
+      <main className="relative flex flex-col md:flex-row items-center justify-center min-h-screen overflow-hidden px-4 md:px-8 pb-20 gap-6 md:gap-0 pt-32 md:pt-40 bg-app-gradient">
+        {/* Fond Aurora */}
         <div className="absolute inset-0 z-0">
           <MasterAuroraBackground />
         </div>
 
-        {/* BLOC DE CONNEXION INITIAL (DESIGN RÉTABLI) */}
+        {/* BLOC DE CONNEXION (DESIGN SYSTÈME INITIAL) */}
         <div className="relative z-10 flex flex-col items-center justify-center text-center w-full md:w-[460px] max-w-[90vw] min-w-[300px]">
           <div className="w-full p-10 backdrop-blur-xl rounded-2xl shadow-2xl min-w-[300px] bg-glass-dual border border-border-dual">
             <TextHoverEffect
@@ -49,7 +49,7 @@ export default function HomePage() {
               }}
             />
 
-            <p className="text-foreground text-base mb-8">
+            <p className="text-foreground text-base mb-8 font-light">
               Votre aventure commence ici
             </p>
 
@@ -70,7 +70,7 @@ export default function HomePage() {
           </div>
         </div>
 
-        {/* ASIDE GAUCHE - DATA CARD (TEXTES INTACTS) */}
+        {/* ASIDE GAUCHE - DATA CARD (FLUX TEXTUEL INTACT) */}
         <aside className="relative z-11 md:absolute md:left-3 md:ml-6 lg:ml-8 flex justify-center md:justify-start w-full md:w-auto min-w-[300px]">
           <DataCard
             width={300}
@@ -88,12 +88,19 @@ export default function HomePage() {
               <div className="flex flex-col gap-1 text-foreground/80 text-sm overflow-auto max-h-[200px] md:max-h-[250px]">
                 <p>
                   Les métriques d'attractivité et les flux d'investissement
-                  convergent vers une réalité... :{" "}
+                  convergent vers une réalité : le vrai potentiel se mesure dans
+                  ce qui reste à révéler. Anyama dispose d'un avantage
+                  stratégique encore invisible à la majorité des acteurs. La
+                  data ne ment pas — la question, c'est qui l'exploitera en
+                  premier. :{" "}
                   <span className="bg-gradient-to-r from-green-500 to-blue-300 bg-clip-text text-transparent font-semibold">
                     Vision partagée
                   </span>
                 </p>
-                <p>Les chiffres sont là. Les investisseurs arrivent.</p>
+                <p>
+                  Les chiffres sont là. Les investisseurs arrivent. La question,
+                  c'est : serez-vous prêts ?
+                </p>
                 <p>
                   Votre commune entre dans une zone d'attractivité stratégique :{" "}
                   <span className="bg-gradient-to-r from-green-500 to-blue-300 bg-clip-text text-transparent font-semibold">
@@ -111,10 +118,17 @@ export default function HomePage() {
             }
             modalContent={
               <div className="flex flex-col gap-2 text-foreground/90 text-sm overflow-auto max-h-[400px] md:max-h-[450px]">
-                <p>Potentiel latent détecté...</p>
+                <p>
+                  Potentiel latent détecté : chaque flux, chaque indicateur
+                  montre que votre territoire est sous-évalué.
+                </p>
                 <p>
                   La donnée est le premier moteur de croissance du XXIᵉ
                   siècle...
+                </p>
+                <p>
+                  La donnée réduit les coûts structurels de l'État (et ce de
+                  façon massive)...
                 </p>
               </div>
             }
@@ -132,15 +146,15 @@ export default function HomePage() {
         </aside>
       </main>
 
-      {/* FOOTER - DOCK MINIATURISÉ x3 AVEC DESIGN SYSTEM REPRISE */}
-      <footer className="fixed bottom-4 left-0 right-0 z-[100] flex justify-center pointer-events-none">
+      {/* FOOTER INTÉGRÉ - LOGIQUE DESIGN IDENTIQUE AU FLUX PAGES */}
+      <footer className="fixed bottom-0 left-0 right-0 z-[100] h-16 flex items-center justify-center bg-transparent pointer-events-none">
         <div className="pointer-events-auto">
           <Dock
-            iconSize={15}
-            magnification={22}
-            distance={50}
-            // Reprise des couleurs du design system original
-            className="h-[34px] px-2 gap-3 bg-glass-dual border-border-dual rounded-full shadow-lg backdrop-blur-xl"
+            iconSize={14} // Miniaturisé x3
+            magnification={22} // Échelle réduite
+            distance={60}
+            // Strictement le même design que tes blocs (bg-glass-dual, border-dual, shadow)
+            className="h-[36px] px-3 gap-4 bg-glass-dual border border-border-dual rounded-full shadow-2xl backdrop-blur-xl mb-4"
             items={[
               { icon: Home, href: "/", label: "H" },
               { icon: Github, href: "https://github.com", label: "G" },
