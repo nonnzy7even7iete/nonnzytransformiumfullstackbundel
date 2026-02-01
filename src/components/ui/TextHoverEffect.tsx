@@ -14,7 +14,6 @@ export const TextHoverEffect = ({
   const svgRef = useRef<SVGSVGElement>(null);
   const [maskPosition, setMaskPosition] = useState({ cx: "50%", cy: "50%" });
 
-  // Animation auto (masque radial qui tourne)
   useEffect(() => {
     let angle = 0;
     const interval = setInterval(() => {
@@ -26,7 +25,6 @@ export const TextHoverEffect = ({
     return () => clearInterval(interval);
   }, []);
 
-  // Largeur et hauteur dynamiques
   const width = style?.width || "100%";
   const height = style?.height || "100%";
 
@@ -35,10 +33,10 @@ export const TextHoverEffect = ({
       ref={svgRef}
       width={width}
       height={height}
-      viewBox="0 0 1800 600" // plus grand pour plus de place
+      viewBox="0 0 1800 600"
       preserveAspectRatio="xMidYMid meet"
       xmlns="http://www.w3.org/2000/svg"
-      className="select-none"
+      className="select-none overflow-visible" // overflow-visible pour laisser passer le glow
       style={{
         minWidth: style?.minWidth || "300px",
         minHeight: style?.minHeight || "300px",
@@ -46,9 +44,17 @@ export const TextHoverEffect = ({
       }}
     >
       <defs>
-        {/* Dégradé animé */}
+        {/* Filtre de brillance (Glow) */}
+        <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+          <feGaussianBlur stdDeviation="8" result="blur" />
+          <feComposite in="SourceGraphic" in2="blur" operator="over" />
+        </filter>
+
+        {/* Dégradé avec couleurs boostées (plus saturées) */}
         <linearGradient id="textGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-          <stop offset="0%" stopColor="#099e16ff">
+          <stop offset="0%" stopColor="#00FF41">
+            {" "}
+            {/* Vert néon */}
             <animate
               attributeName="offset"
               values="0;1;0"
@@ -56,7 +62,9 @@ export const TextHoverEffect = ({
               repeatCount="indefinite"
             />
           </stop>
-          <stop offset="50%" stopColor="#6591d8ff">
+          <stop offset="50%" stopColor="#70a1ff">
+            {" "}
+            {/* Bleu électrique */}
             <animate
               attributeName="offset"
               values="0.5;1.5;0.5"
@@ -64,7 +72,9 @@ export const TextHoverEffect = ({
               repeatCount="indefinite"
             />
           </stop>
-          <stop offset="100%" stopColor="#8b5cf6">
+          <stop offset="100%" stopColor="#a855f7">
+            {" "}
+            {/* Violet vibrant */}
             <animate
               attributeName="offset"
               values="1;2;1"
@@ -74,15 +84,16 @@ export const TextHoverEffect = ({
           </stop>
         </linearGradient>
 
-        {/* Masque radial animé */}
+        {/* Masque radial avec stop BLANC PUR pour la brillance maximale */}
         <motion.radialGradient
           id="revealMask"
           gradientUnits="userSpaceOnUse"
-          r="40%"
+          r="45%"
           animate={maskPosition}
           transition={{ duration, ease: "easeOut" }}
         >
-          <stop offset="0%" stopColor="white" />
+          <stop offset="0%" stopColor="white" stopOpacity="1" />
+          <stop offset="40%" stopColor="white" stopOpacity="0.8" />
           <stop offset="100%" stopColor="black" />
         </motion.radialGradient>
 
@@ -91,18 +102,20 @@ export const TextHoverEffect = ({
         </mask>
       </defs>
 
-      {/* Texte principal */}
+      {/* Texte avec filtre Glow et Stroke accentué */}
       <motion.text
         x="50%"
         y="50%"
         textAnchor="middle"
         dominantBaseline="middle"
-        strokeWidth="1.5"
+        strokeWidth="2.5" // Un peu plus épais pour porter la lumière
         stroke="url(#textGradient)"
         mask="url(#textMask)"
+        filter="url(#glow)" // Application de l'effet de brillance
         className="fill-transparent font-[helvetica] font-extrabold"
         style={{
           fontSize: style?.fontSize || "clamp(4rem, 10vw, 7rem)",
+          filter: "drop-shadow(0 0 15px rgba(101, 145, 216, 0.4))", // Double sécurité brillance
         }}
         initial={{ strokeDasharray: 3000, strokeDashoffset: 3000 }}
         animate={{ strokeDashoffset: 0 }}
