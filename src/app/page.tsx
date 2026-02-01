@@ -34,31 +34,32 @@ export default function HomePage() {
   if (status === "loading" || status === "authenticated") return <Loader />;
 
   return (
-    <div className="relative min-h-screen flex flex-col bg-app-gradient overflow-x-hidden">
+    <div className="relative min-h-screen flex flex-col bg-black overflow-x-hidden font-extralight selection:bg-white/20">
       <Navbar />
 
-      {/* BACKGROUND FIXE SANS INTERFÉRENCE */}
-      <div className="fixed inset-0 z-0 pointer-events-none">
+      {/* BACKGROUND LAYER - OPACITÉ RÉDUITE POUR LE NOIR PUR */}
+      <div className="fixed inset-0 z-0 pointer-events-none opacity-40">
         <MasterAuroraBackground />
       </div>
 
-      <main className="relative z-10 flex-1 flex flex-col md:flex-row items-center justify-center px-4 md:px-8 pt-20 pb-48 gap-10">
-        {/* ASIDE GAUCHE : DATA CARD (TEXTES COMPLETS) */}
-        <aside className="w-full md:w-auto flex justify-center lg:absolute lg:left-8 xl:left-16 lg:top-1/2 lg:-translate-y-1/2">
+      {/* MAIN LAYOUT PROPORTIONNEL ALIGNÉ */}
+      <main className="relative z-10 flex-1 grid grid-cols-1 lg:grid-cols-3 items-center justify-items-center px-6 md:px-16 lg:px-24 py-32 gap-12 lg:gap-0">
+        {/* BLOC GAUCHE - DATA CARD (TEXTE INTÉGRAL SANS COUPURE) */}
+        <div className="w-full max-w-[340px] flex justify-center">
           <DataCard
-            width={320}
+            width={340}
             height={320}
             title={
               <div className="flex items-center gap-2 text-foreground">
-                <Info className="w-4 h-4 text-blue-400 shrink-0" />
-                <span className="font-semibold text-[13px] leading-tight">
+                <Info className="w-4 h-4 text-blue-500 shrink-0" />
+                <span className="font-light text-[11px] uppercase tracking-widest leading-tight">
                   Data-driven growth : chaque flux, chaque métrique confirme le
                   potentiel d'Anyama
                 </span>
               </div>
             }
             content={
-              <div className="flex flex-col gap-3 text-foreground/80 text-[13px] leading-relaxed font-light text-justify">
+              <div className="flex flex-col gap-3 text-zinc-400 text-[13px] leading-relaxed font-extralight italic">
                 <p>
                   Les métriques d'attractivité et les flux d'investissement
                   convergent vers une réalité : le vrai potentiel se mesure dans
@@ -66,7 +67,7 @@ export default function HomePage() {
                   stratégique encore invisible à la majorité des acteurs. La
                   data ne ment pas — la question, c'est qui l'exploitera en
                   premier :{" "}
-                  <span className="bg-gradient-to-r from-green-500 to-blue-400 bg-clip-text text-transparent font-bold">
+                  <span className="bg-gradient-to-r from-green-400 to-blue-400 bg-clip-text text-transparent font-normal not-italic tracking-normal">
                     Vision partagée
                   </span>
                 </p>
@@ -76,19 +77,19 @@ export default function HomePage() {
                 </p>
                 <p>
                   Votre commune entre dans une zone d'attractivité stratégique :{" "}
-                  <span className="bg-gradient-to-r from-green-500 to-blue-400 bg-clip-text text-transparent font-bold">
+                  <span className="bg-gradient-to-r from-green-400 to-blue-400 bg-clip-text text-transparent font-normal not-italic tracking-normal">
                     Sans insights, chaque décision est un pari perdu d'avance.
                   </span>
                 </p>
               </div>
             }
             buttonContent={
-              <div className="w-full py-2 bg-foreground/5 border border-border rounded-xl text-[10px] font-bold uppercase tracking-widest text-foreground hover:bg-foreground/10 transition-all text-center">
-                Comprendre
+              <div className="w-full py-2 border border-white/10 rounded-full text-[10px] uppercase tracking-[0.3em] text-white/60 hover:text-white transition-colors text-center">
+                Explorer
               </div>
             }
             modalContent={
-              <div className="space-y-4 text-foreground/90 text-sm font-light p-4 text-justify">
+              <div className="space-y-4 text-zinc-300 text-sm font-extralight p-2">
                 <p>
                   Potentiel latent détecté : chaque flux, chaque indicateur
                   montre que votre territoire est sous-évalué.
@@ -109,66 +110,68 @@ export default function HomePage() {
               </div>
             }
           />
-        </aside>
+        </div>
 
-        {/* SECTION CENTRALE : LOGIN BOX CENTRÉE & LOGO RESPONSIVE */}
-        <section className="relative z-20 flex flex-col items-center justify-center w-full md:w-[500px]">
-          <div className="w-full p-10 md:p-14 backdrop-blur-3xl rounded-3xl bg-glass-dual border border-border-dual shadow-none flex flex-col items-center">
-            <div className="w-full h-48 md:h-72 flex items-center justify-center">
+        {/* BLOC CENTRAL - CONNEXION (LAYOUT CENTRÉ & TYPO PRO) */}
+        <div className="w-full max-w-[480px] flex flex-col items-center">
+          <div className="w-full p-12 backdrop-blur-3xl rounded-[2.5rem] bg-black/40 border border-white/5 flex flex-col items-center shadow-none">
+            <div className="w-full h-40 md:h-56 flex items-center justify-center">
               <TextHoverEffect
                 text="Nonnzytr"
-                duration={0.6}
+                duration={0.8}
                 style={{
                   width: "100%",
                   height: "100%",
-                  fontSize: "clamp(8rem, 20vw, 14rem)", // Taille massive pour mobile
+                  fontSize: "clamp(6.5rem, 18vw, 13rem)",
                 }}
               />
             </div>
 
-            <div className="w-full flex flex-col items-center text-center -mt-4">
-              <p className="text-foreground text-base mb-10 font-light tracking-[0.3em] uppercase">
+            <div className="w-full flex flex-col items-center text-center mt-6">
+              <h1 className="text-white text-base mb-10 tracking-[0.4em] uppercase font-extralight opacity-70">
                 Votre aventure commence ici
-              </p>
+              </h1>
 
               <button
                 onClick={() => signIn("google", { callbackUrl: "/dashboard" })}
-                className="w-full max-w-sm py-4 flex items-center justify-center gap-4 bg-foreground text-background font-bold rounded-2xl shadow-none transition-all hover:opacity-90 active:scale-95"
+                className="w-full max-w-[300px] py-4 flex items-center justify-center gap-4 bg-white text-black font-medium rounded-full hover:bg-zinc-200 transition-all active:scale-95"
               >
-                <FcGoogle className="text-2xl" />
-                <span className="tracking-widest">CONTINUER AVEC GOOGLE</span>
+                <FcGoogle className="text-xl" />
+                <span className="text-[11px] tracking-[0.2em] uppercase">
+                  Continuer avec Google
+                </span>
               </button>
 
-              <p className="mt-8 text-foreground/40 text-[10px] italic tracking-wider">
+              <p className="mt-12 text-zinc-600 text-[9px] uppercase tracking-[0.2em] italic">
                 Connexion sécurisée via Google requise pour accéder au Workflow.
               </p>
             </div>
           </div>
-        </section>
+        </div>
 
-        {/* ASIDE DROIT : SIDE CARD (TEXTE INTÉGRAL) */}
-        <aside className="w-full md:w-auto flex justify-center lg:absolute lg:right-8 xl:right-16 lg:top-1/2 lg:-translate-y-1/2">
+        {/* BLOC DROIT - SIDE CARD (TEXTE INTÉGRAL) */}
+        <div className="w-full max-w-[340px] flex justify-center">
           <SideCard
             imageSrc="/zyy.png"
             title="Zy recherche un financement orienté workspace & Workflow"
             description="Exécution de la logique métier et serveur en burn out."
             location="Anyama, Abidjan, Côte d'Ivoire"
           />
-        </aside>
+        </div>
       </main>
 
-      {/* FOOTER : DESIGN IDENTIQUE, SANS SHADOW, AVEC OCCLUSION BRUMEUSE */}
-      <footer className="fixed bottom-0 left-0 right-0 z-[100] h-24 flex items-center justify-center pointer-events-none">
-        {/* Zone de brume pour masquer le texte au scroll */}
-        <div className="absolute inset-x-0 bottom-0 h-full bg-gradient-to-t from-background via-background/90 to-transparent z-[-1]" />
+      {/* FOOTER NOIR PUR STRICT */}
+      <footer className="fixed bottom-0 left-0 right-0 z-[100] h-28 flex items-end justify-center pointer-events-none pb-8">
+        {/* GRADIENT NOIR PUR (OCCLUSION) */}
+        <div className="absolute inset-x-0 bottom-0 h-full bg-gradient-to-t from-black via-black/95 to-transparent z-[-1]" />
 
-        <div className="relative pointer-events-auto">
+        <div className="pointer-events-auto">
           <Dock
             items={dockItems}
-            iconSize={15}
-            magnification={22}
-            distance={70}
-            className="bg-glass-dual border border-border-dual shadow-none backdrop-blur-3xl"
+            iconSize={14}
+            magnification={20}
+            distance={60}
+            className="bg-black border-white/10 shadow-none backdrop-blur-3xl h-[42px] px-5 rounded-full"
           />
         </div>
       </footer>
