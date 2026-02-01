@@ -137,7 +137,7 @@ export default function HomePage() {
           </div>
 
           <div className="w-full flex flex-col items-center justify-center gap-6 mt-4">
-            <p className="text-foreground/80 text-[13px] tracking-[0.4em] uppercase font-medium">
+            <p className="text-foreground/80 text-[13px] tracking-[0.4em] uppercase font-medium text-center">
               Votre aventure commence ici
             </p>
             <button
