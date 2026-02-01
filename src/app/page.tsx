@@ -34,32 +34,31 @@ export default function HomePage() {
   if (status === "loading" || status === "authenticated") return <Loader />;
 
   return (
-    <div className="relative min-h-screen flex flex-col bg-app-gradient overflow-hidden">
+    <div className="relative min-h-screen flex flex-col bg-background overflow-x-hidden">
       <Navbar />
 
-      {/* BACKGROUND FIXE SANS COUPURE */}
+      {/* BACKGROUND LAYER - IMMERSIF */}
       <div className="fixed inset-0 z-0 pointer-events-none">
         <MasterAuroraBackground />
       </div>
 
-      {/* LAYOUT PROPORTIONNEL : TOUS LES BLOCS À HAUTEUR 350PX */}
-      <main className="relative z-10 flex-1 flex flex-col lg:flex-row items-center justify-center px-4 md:px-10 gap-6 pt-32 pb-40">
-        {/* DATA CARD (350x350) + SCROLL INTERNE */}
-        <div className="w-[350px] h-[350px] flex shrink-0">
+      {/* MAIN SIZING : UN SEUL FLUX PROPORTIONNÉ (HEIGHT 480PX+) */}
+      <main className="relative z-10 flex-1 flex flex-col lg:flex-row items-center justify-center px-6 md:px-12 gap-8 pt-32 pb-44">
+        {/* BLOC GAUCHE : DATA CARD (350x450 pour respirer) */}
+        <div className="w-[350px] min-h-[450px] flex flex-col">
           <DataCard
             width={350}
-            height={350}
+            height={450}
             title={
               <div className="flex items-center gap-2 text-foreground">
                 <Info className="w-4 h-4 text-blue-400 shrink-0" />
-                <span className="font-semibold text-xs leading-tight">
-                  Data-driven growth : chaque flux, chaque métrique confirme le
-                  potentiel d'Anyama
+                <span className="font-bold text-[12px] leading-tight uppercase tracking-tighter">
+                  Data-driven growth : potentiel d'Anyama
                 </span>
               </div>
             }
             content={
-              <div className="flex flex-col gap-3 text-foreground/80 text-sm leading-relaxed overflow-y-auto max-h-[180px] pr-2 scrollbar-hide">
+              <div className="flex flex-col gap-4 text-foreground/80 text-[13px] leading-relaxed overflow-y-auto max-h-[280px] pr-2 scrollbar-thin scrollbar-thumb-white/10">
                 <p>
                   Les métriques d'attractivité et les flux d'investissement
                   convergent vers une réalité : le vrai potentiel se mesure dans
@@ -67,7 +66,7 @@ export default function HomePage() {
                   stratégique encore invisible à la majorité des acteurs. La
                   data ne ment pas — la question, c'est qui l'exploitera en
                   premier :{" "}
-                  <span className="bg-gradient-to-r from-green-500 to-blue-400 bg-clip-text text-transparent font-bold inline-block">
+                  <span className="bg-gradient-to-r from-green-400 to-blue-400 bg-clip-text text-transparent font-bold">
                     Vision partagée
                   </span>
                 </p>
@@ -77,19 +76,19 @@ export default function HomePage() {
                 </p>
                 <p>
                   Votre commune entre dans une zone d'attractivité stratégique :{" "}
-                  <span className="bg-gradient-to-r from-green-500 to-blue-400 bg-clip-text text-transparent font-bold inline-block">
+                  <span className="bg-gradient-to-r from-green-400 to-blue-400 bg-clip-text text-transparent font-bold">
                     Sans insights, chaque décision est un pari perdu d'avance.
                   </span>
                 </p>
               </div>
             }
             buttonContent={
-              <span className="text-xs font-bold uppercase tracking-widest">
-                Comprendre
+              <span className="text-xs font-bold uppercase tracking-[0.2em]">
+                Explorer la data
               </span>
             }
             modalContent={
-              <div className="space-y-4 text-foreground/90 overflow-y-auto max-h-[300px] pr-2">
+              <div className="space-y-4 text-sm leading-relaxed text-foreground/90">
                 <p>
                   Potentiel latent détecté : chaque flux, chaque indicateur
                   montre que votre territoire est sous-évalué.
@@ -101,47 +100,52 @@ export default function HomePage() {
                   les crises plutôt que les subir.
                 </p>
                 <p>
-                  La donnée réduit les coûts structurels de l'État (et ce de
-                  façon massive). Investir dans la donnée n'est pas une dépense
-                  : c'est un amortisseur de dépenses futures.
+                  La donnée réduit les coûts structurels de l'État. Investir
+                  dans la donnée n'est pas une dépense : c'est un amortisseur de
+                  dépenses futures.
                 </p>
               </div>
             }
           />
         </div>
 
-        {/* CONNEXION CARD (400x350) + CENTRAGE TOTAL */}
-        <div className="w-[400px] h-[350px] p-8 backdrop-blur-3xl rounded-2xl bg-glass-dual border border-border-dual flex flex-col items-center justify-center text-center shadow-none shrink-0">
-          <div className="w-full h-40 flex items-center justify-center overflow-visible">
+        {/* BLOC CENTRAL : CONNEXION CARD (450x450 pour le logo géant) */}
+        <div className="w-[450px] h-[450px] p-12 backdrop-blur-3xl rounded-[2rem] bg-glass-dual border border-border-dual flex flex-col items-center justify-between shadow-2xl shadow-black/20">
+          <div className="w-full flex-1 flex items-center justify-center overflow-visible">
             <TextHoverEffect
               text="Nonnzytr"
               duration={0.6}
               style={{
                 width: "140%",
                 height: "100%",
-                fontSize: "clamp(6rem, 15vw, 10rem)",
+                fontSize: "clamp(8rem, 20vw, 14rem)",
               }}
             />
           </div>
 
-          <div className="mt-4 flex flex-col items-center w-full">
-            <p className="text-foreground/70 text-xs mb-6 tracking-[0.3em] uppercase font-light">
+          <div className="w-full flex flex-col items-center gap-8">
+            <p className="text-foreground/60 text-[11px] tracking-[0.5em] uppercase font-light">
               Votre aventure commence ici
             </p>
+
             <button
               onClick={() => signIn("google", { callbackUrl: "/dashboard" })}
-              className="w-full py-3.5 flex items-center justify-center gap-3 bg-foreground text-background font-bold rounded-xl hover:scale-[1.02] active:scale-95 transition-all duration-300"
+              className="w-full py-4 flex items-center justify-center gap-4 bg-foreground text-background font-bold rounded-2xl hover:scale-[1.02] active:scale-95 transition-all duration-300"
             >
-              <FcGoogle className="text-xl" />
-              <span className="text-xs tracking-wider font-black">
-                CONTINUER
+              <FcGoogle className="text-2xl" />
+              <span className="text-xs tracking-widest uppercase">
+                Continuer avec Google
               </span>
             </button>
+
+            <p className="text-foreground/30 text-[9px] uppercase tracking-widest italic">
+              Secure Cloud Access • Anyama Workspace
+            </p>
           </div>
         </div>
 
-        {/* SIDE CARD (350x350) */}
-        <div className="w-[350px] h-[350px] flex shrink-0">
+        {/* BLOC DROIT : SIDE CARD (350x450) */}
+        <div className="w-[350px] h-[450px] flex">
           <SideCard
             imageSrc="/zyy.png"
             title="Zy recherche un financement orienté workspace & Workflow"
@@ -151,19 +155,18 @@ export default function HomePage() {
         </div>
       </main>
 
-      {/* FOOTER : GLASSMORPHISM UNIFIÉ AU BACKGROUND */}
-      <footer className="fixed bottom-0 left-0 right-0 z-[100] h-24 flex items-center justify-center pointer-events-none">
-        {/* Gradient d'occlusion qui utilise les couleurs du flux (app-gradient) */}
-        <div className="absolute inset-x-0 bottom-0 h-full bg-gradient-to-t from-background/90 via-background/40 to-transparent z-[-1]" />
+      {/* FOOTER : L'EFFET DE BRUME "SEAMLESS" (SANS COUPURE) */}
+      <footer className="fixed bottom-0 left-0 right-0 z-[100] h-32 flex items-center justify-center pointer-events-none">
+        {/* Occlusion douce qui se fond dans le bg-background ou le noir pur sans ligne visible */}
+        <div className="absolute inset-x-0 bottom-0 h-full bg-gradient-to-t from-background via-background/60 to-transparent dark:from-black dark:via-black/40 z-[-1]" />
 
         <div className="relative pointer-events-auto">
           <Dock
             items={dockItems}
-            iconSize={15}
-            magnification={22}
-            distance={70}
-            // Glassmorphism pur sans ombre pour ne pas casser le background
-            className="bg-glass-dual border border-border-dual shadow-none backdrop-blur-3xl h-[42px] px-6 rounded-full"
+            iconSize={16}
+            magnification={24}
+            distance={80}
+            className="bg-background/40 dark:bg-black/40 border border-white/10 shadow-none backdrop-blur-2xl h-[46px] px-6 rounded-full"
           />
         </div>
       </footer>
