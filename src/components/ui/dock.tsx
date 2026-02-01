@@ -27,9 +27,9 @@ interface DockProps {
 export function Dock({
   items,
   className,
-  iconSize = 38,
-  magnification = 60,
-  distance = 140,
+  iconSize = 16, // Taille miniaturisée par défaut
+  magnification = 22, // Effet de loupe discret
+  distance = 100,
 }: DockProps) {
   const mouseX = useMotionValue(Infinity);
 
@@ -38,11 +38,10 @@ export function Dock({
       onMouseMove={(e) => mouseX.set(e.pageX)}
       onMouseLeave={() => mouseX.set(Infinity)}
       className={cn(
-        "flex h-[64px] items-center gap-4 px-4 rounded-full border shadow-[0_20px_50px_rgba(0,0,0,0.1)] transition-all duration-500",
-        // Light Mode : Verre blanc pur
-        "border-white/40 bg-white/30 backdrop-blur-2xl shadow-zinc-200",
-        // Dark Mode : Verre noir profond
-        "dark:border-white/5 dark:bg-black/30 dark:backdrop-blur-3xl dark:shadow-black/50",
+        "flex h-[38px] items-center gap-3 px-3 rounded-full border transition-all duration-500 shadow-xl",
+        // LOGIQUE IU : Opacité renforcée et blur massif pour stopper la lecture du texte en arrière-plan
+        "bg-white/70 backdrop-blur-[30px] border-white/40 shadow-zinc-200/50",
+        "dark:bg-zinc-950/80 dark:backdrop-blur-[40px] dark:border-white/10 dark:shadow-black/60",
         className
       )}
     >
@@ -62,7 +61,7 @@ export function Dock({
               rel="noreferrer"
               className="flex h-full w-full items-center justify-center"
             >
-              <IconComponent className="h-full w-full stroke-[1.2px] text-zinc-900/70 dark:text-zinc-100/70 hover:text-zinc-950 dark:hover:text-white transition-colors duration-300" />
+              <IconComponent className="h-full w-full stroke-[1.5px] text-zinc-900/80 dark:text-zinc-100/80 transition-colors duration-300" />
             </a>
           </DockIcon>
         );
@@ -105,7 +104,7 @@ function DockIcon({
     <motion.div
       ref={ref}
       style={{ width: scaleSize, height: scaleSize }}
-      className="flex aspect-square items-center justify-center rounded-full hover:bg-white/10 dark:hover:bg-white/5 transition-colors"
+      className="flex aspect-square items-center justify-center rounded-full transition-colors"
     >
       {children}
     </motion.div>
