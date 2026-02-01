@@ -11,7 +11,6 @@ export const TextHoverEffect = ({
   duration?: number;
   style?: React.CSSProperties;
 }) => {
-  const svgRef = useRef<SVGSVGElement>(null);
   const [maskPosition, setMaskPosition] = useState({ cx: "50%", cy: "50%" });
 
   useEffect(() => {
@@ -25,58 +24,24 @@ export const TextHoverEffect = ({
     return () => clearInterval(interval);
   }, []);
 
-  const width = style?.width || "100%";
-  const height = style?.height || "100%";
-
   return (
     <svg
-      ref={svgRef}
-      width={width}
-      height={height}
-      /* On augmente la hauteur du viewBox de 600 à 800 pour donner de l'air en haut et en bas */
-      viewBox="0 0 1800 800"
+      width={style?.width || "100%"}
+      height={style?.height || "100%"}
+      viewBox="0 0 1800 900" // Hauteur augmentée pour le padding interne
       preserveAspectRatio="xMidYMid meet"
-      xmlns="http://www.w3.org/2000/svg"
-      /* Essentiel pour que le filtre glow ne soit pas coupé aux bords du SVG */
-      className="select-none overflow-visible p-4"
-      style={{
-        minWidth: style?.minWidth || "300px",
-        minHeight: style?.minHeight || "300px",
-        ...style,
-      }}
+      className="select-none overflow-visible"
     >
       <defs>
-        {/* Filtre Glow élargi pour éviter le "clipping" */}
-        <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
-          <feGaussianBlur stdDeviation="12" result="blur" />
+        <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+          <feGaussianBlur stdDeviation="10" result="blur" />
           <feComposite in="SourceGraphic" in2="blur" operator="over" />
         </filter>
 
         <linearGradient id="textGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-          <stop offset="0%" stopColor="#00FF41">
-            <animate
-              attributeName="offset"
-              values="0;1;0"
-              dur="4s"
-              repeatCount="indefinite"
-            />
-          </stop>
-          <stop offset="50%" stopColor="#70a1ff">
-            <animate
-              attributeName="offset"
-              values="0.5;1.5;0.5"
-              dur="4s"
-              repeatCount="indefinite"
-            />
-          </stop>
-          <stop offset="100%" stopColor="#a855f7">
-            <animate
-              attributeName="offset"
-              values="1;2;1"
-              dur="4s"
-              repeatCount="indefinite"
-            />
-          </stop>
+          <stop offset="0%" stopColor="#00FF41" />
+          <stop offset="50%" stopColor="#70a1ff" />
+          <stop offset="100%" stopColor="#a855f7" />
         </linearGradient>
 
         <motion.radialGradient
@@ -87,7 +52,6 @@ export const TextHoverEffect = ({
           transition={{ duration, ease: "easeOut" }}
         >
           <stop offset="0%" stopColor="white" stopOpacity="1" />
-          <stop offset="40%" stopColor="white" stopOpacity="0.8" />
           <stop offset="100%" stopColor="black" />
         </motion.radialGradient>
 
@@ -96,10 +60,6 @@ export const TextHoverEffect = ({
         </mask>
       </defs>
 
-      {/* Ajustement Senior : 
-          y="50%" combiné à un viewBox plus grand crée le padding interne automatique.
-          dominantBaseline="central" assure un centrage vertical parfait.
-      */}
       <motion.text
         x="50%"
         y="50%"
@@ -110,10 +70,7 @@ export const TextHoverEffect = ({
         mask="url(#textMask)"
         filter="url(#glow)"
         className="fill-transparent font-sans font-black uppercase tracking-tighter"
-        style={{
-          fontSize: style?.fontSize || "320px",
-          /* On retire le drop-shadow CSS ici pour laisser le filtre SVG glow faire le travail proprement sans décalage */
-        }}
+        style={{ fontSize: style?.fontSize || "350px" }}
         initial={{ strokeDasharray: 3000, strokeDashoffset: 3000 }}
         animate={{ strokeDashoffset: 0 }}
         transition={{ duration: 3, ease: "easeInOut" }}

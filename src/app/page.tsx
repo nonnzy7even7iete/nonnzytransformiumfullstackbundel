@@ -37,13 +37,15 @@ export default function HomePage() {
     <div className="relative min-h-screen flex flex-col bg-background overflow-x-hidden">
       <Navbar />
 
+      {/* BACKGROUND LAYER */}
       <div className="fixed inset-0 z-0 pointer-events-none">
         <MasterAuroraBackground />
       </div>
 
-      <main className="relative z-10 flex-1 flex flex-col lg:flex-row items-center lg:justify-between px-6 lg:px-0 gap-8 pt-32 pb-44 w-[97vw] lg:w-[90vw] mx-auto">
-        {/* BLOC GAUCHE - DATA CARD (INTACTE POUR FINANCEMENT) */}
-        <div className="w-full lg:w-[350px] h-[450px] flex flex-col shrink-0">
+      {/* MAIN LAYOUT : Optimisé 97vw Mobile / 90vw Desktop */}
+      <main className="relative z-10 flex-1 flex flex-col lg:flex-row items-center lg:justify-between px-4 lg:px-0 gap-10 pt-32 pb-44 w-[97vw] lg:w-[90vw] mx-auto">
+        {/* BLOC GAUCHE - DATA CARD (CONTENU INTÉGRAL FINANCEMENT) */}
+        <div className="w-full max-w-[350px] lg:w-[350px] h-[450px] flex flex-col shrink-0 order-2 lg:order-1">
           <DataCard
             width={350}
             height={450}
@@ -56,9 +58,9 @@ export default function HomePage() {
               </div>
             }
             content={
-              <div className="flex flex-col h-[350px]">
-                {/* Corps de texte intégral */}
-                <div className="flex-grow overflow-y-auto pr-2 scrollbar-hide text-left">
+              <div className="flex flex-col h-[350px] text-left">
+                {/* Zone de texte avec scrolling discret */}
+                <div className="flex-grow overflow-y-auto pr-2 scrollbar-hide">
                   <div className="flex flex-col gap-4 text-foreground/90 text-[14px] leading-relaxed">
                     <p>
                       Les métriques d'attractivité et les flux d'investissement
@@ -86,8 +88,8 @@ export default function HomePage() {
                   </div>
                 </div>
 
-                {/* BOUTON ANCRÉ AU BAS DU CONTAINER */}
-                <div className="mt-auto pt-4">
+                {/* Bouton d'action ancré au bas du container interne */}
+                <div className="mt-auto pt-4 border-t border-white/5">
                   <span className="text-xs font-bold uppercase tracking-[0.2em] opacity-80">
                     Explorer la data
                   </span>
@@ -97,6 +99,9 @@ export default function HomePage() {
             modalContent={
               <div className="flex flex-col h-full justify-between gap-6 text-sm leading-relaxed text-foreground/90">
                 <div className="space-y-4">
+                  <p className="font-bold text-blue-400 uppercase tracking-widest text-[10px]">
+                    Argumentaire Financement
+                  </p>
                   <p>
                     Potentiel latent détecté : chaque flux, chaque indicateur
                     montre que votre territoire est sous-évalué.
@@ -116,47 +121,50 @@ export default function HomePage() {
                     futures.
                   </p>
                 </div>
-                {/* Le bouton de fermeture (modal) sera naturellement poussé vers le bas ici */}
               </div>
             }
           />
         </div>
 
-        {/* BLOC CENTRAL - LOGIN CARD (TEXTE BIEN CENTRÉ) */}
-        <div className="w-full lg:w-[450px] h-[450px] p-10 backdrop-blur-3xl rounded-2xl bg-glass-dual border border-border-dual flex flex-col items-center justify-center shadow-none shrink-0">
+        {/* BLOC CENTRAL - LOGIN CARD (L'IMPACT VISUEL) */}
+        <div className="w-full max-w-[450px] lg:w-[450px] h-[450px] p-8 lg:p-10 backdrop-blur-3xl rounded-2xl bg-glass-dual border border-border-dual flex flex-col items-center justify-center shadow-2xl shrink-0 order-1 lg:order-2">
+          {/* Logo avec Padding interne via le composant TextHoverEffect */}
           <div className="w-full flex-1 flex items-center justify-center overflow-visible">
             <TextHoverEffect
               text="Nonnzytr"
               duration={0.6}
               style={{
-                width: "160%",
+                width: "150%",
                 height: "100%",
-                fontSize: "clamp(8rem, 20vw, 15rem)",
+                fontSize: "clamp(8rem, 22vw, 15rem)",
               }}
             />
           </div>
 
+          {/* Groupe Action bien centré et ancré bas */}
           <div className="w-full flex flex-col items-center justify-center gap-6 mt-4">
             <p className="text-foreground/80 text-[13px] tracking-[0.4em] uppercase font-medium text-center">
               Votre aventure commence ici
             </p>
+
             <button
               onClick={() => signIn("google", { callbackUrl: "/dashboard" })}
-              className="w-full max-w-[320px] py-4.5 flex items-center justify-center gap-3 bg-foreground text-background font-bold rounded-xl hover:scale-[1.02] active:scale-95 transition-all duration-300 mx-auto shadow-xl"
+              className="w-full max-w-[320px] py-4.5 flex items-center justify-center gap-3 bg-foreground text-background font-bold rounded-xl hover:scale-[1.02] active:scale-95 transition-all duration-300 shadow-xl"
             >
               <FcGoogle className="text-2xl shrink-0" />
               <span className="text-xs tracking-widest uppercase font-black">
                 Continuer avec Google
               </span>
             </button>
-            <p className="text-foreground/50 text-[10px] italic text-center max-w-[280px] leading-tight font-medium">
+
+            <p className="text-foreground/40 text-[10px] italic text-center max-w-[280px] leading-tight">
               Connexion sécurisée via Google requise pour accéder au Workflow.
             </p>
           </div>
         </div>
 
-        {/* BLOC DROIT - SIDE CARD (INTACTE) */}
-        <div className="w-full lg:w-[350px] h-[450px] flex shrink-0 justify-center lg:justify-end">
+        {/* BLOC DROIT - SIDE CARD */}
+        <div className="w-full max-w-[350px] lg:w-[350px] h-[450px] flex shrink-0 justify-center lg:justify-end order-3">
           <SideCard
             imageSrc="/zyy.png"
             title="Zy recherche un financement orienté workspace & Workflow"
@@ -166,9 +174,10 @@ export default function HomePage() {
         </div>
       </main>
 
-      {/* FOOTER */}
+      {/* FOOTER FIXED WITH DOCK */}
       <footer className="fixed bottom-0 left-0 right-0 z-[100] h-28 flex items-center justify-center pointer-events-none">
         <div className="absolute inset-x-0 bottom-0 h-full bg-gradient-to-t from-background via-background/60 to-transparent dark:from-black dark:via-black/40 z-[-1]" />
+
         <div className="relative pointer-events-auto">
           <Dock
             items={dockItems}
