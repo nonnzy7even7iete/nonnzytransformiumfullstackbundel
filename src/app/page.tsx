@@ -34,16 +34,18 @@ export default function HomePage() {
   if (status === "loading" || status === "authenticated") return <Loader />;
 
   return (
-    <div className="relative min-h-screen flex flex-col bg-app-gradient overflow-hidden">
+    // Suppression de overflow-hidden pour permettre le scroll
+    <div className="relative min-h-screen flex flex-col bg-app-gradient">
       <Navbar />
 
       {/* BACKGROUND INITIAL */}
-      <div className="absolute inset-0 z-0">
+      <div className="fixed inset-0 z-0">
         <MasterAuroraBackground />
       </div>
 
-      <main className="relative z-10 flex-1 flex flex-col md:flex-row items-center justify-center px-4 md:px-8 pb-10 gap-6 md:gap-0 pt-32 md:pt-40">
-        {/* ASIDE GAUCHE : DATA CARD (TEXTE ET STYLE RESTAURÉS) */}
+      {/* MAIN CONTENT - RESTAURATION DU LAYOUT INITIAL */}
+      <main className="relative z-10 flex-1 flex flex-col md:flex-row items-center justify-center px-4 md:px-8 pb-32 pt-32 md:pt-40 gap-6 md:gap-0">
+        {/* ASIDE GAUCHE : DATA CARD (STYLE ET TEXTE RESTAURÉS) */}
         <aside className="relative z-11 md:absolute md:left-3 md:ml-6 lg:ml-8 flex justify-center md:justify-start w-full md:w-auto min-w-[300px]">
           <DataCard
             width={300}
@@ -113,9 +115,9 @@ export default function HomePage() {
           />
         </aside>
 
-        {/* SECTION CENTRALE : LOGIN BOX (DESIGN INITIAL RESTAURÉ) */}
+        {/* SECTION CENTRALE : LOGIN BOX (RADIUS 2XL ET SIZING RESTAURÉS) */}
         <div className="relative z-10 flex flex-col items-center justify-center text-center w-full md:w-[460px] max-w-[90vw] min-w-[300px]">
-          <div className="w-full p-10 backdrop-blur-xl rounded-2xl shadow-2xl min-w-[300px] bg-glass-dual border border-border-dual flex flex-col items-center">
+          <div className="w-full p-10 backdrop-blur-xl rounded-2xl shadow-none bg-glass-dual border border-border-dual flex flex-col items-center">
             <div className="w-full h-40 md:h-64 flex items-center justify-center">
               <TextHoverEffect
                 text="Nonnzytr"
@@ -123,7 +125,7 @@ export default function HomePage() {
                 style={{
                   width: "100%",
                   height: "100%",
-                  fontSize: "clamp(6rem, 18vw, 12rem)", // Garde juste le resize mobile
+                  fontSize: "clamp(6rem, 18vw, 12rem)",
                 }}
               />
             </div>
@@ -135,8 +137,8 @@ export default function HomePage() {
             <button
               onClick={() => signIn("google", { callbackUrl: "/dashboard" })}
               className="w-full py-3 flex items-center justify-center gap-2 
-              bg-foreground text-background font-semibold rounded-xl shadow-md
-              hover:shadow-xl hover:scale-105 active:scale-95 
+              bg-foreground text-background font-semibold rounded-xl
+              hover:scale-105 active:scale-95 
               transition-all duration-300 mb-6"
             >
               <FcGoogle className="text-2xl" />
@@ -160,11 +162,12 @@ export default function HomePage() {
         </aside>
       </main>
 
-      {/* FOOTER : NOIR PUR + DOCK MINI (IDENTITÉ CONSERVÉE) */}
-      <footer className="fixed bottom-0 left-0 right-0 z-[100] h-20 flex items-center justify-center pointer-events-none">
-        <div className="absolute inset-x-0 bottom-0 h-full bg-gradient-to-t from-black via-black/90 to-transparent z-[-1]" />
+      {/* FOOTER NOIR PUR - DOCK MINIATURISÉ SANS SHADOW */}
+      <footer className="fixed bottom-0 left-0 right-0 z-[100] h-24 flex items-center justify-center pointer-events-none">
+        {/* L'OCCLUSION NOIRE PURE */}
+        <div className="absolute inset-x-0 bottom-0 h-full bg-gradient-to-t from-black via-black/95 to-transparent z-[-1]" />
 
-        <div className="pointer-events-auto">
+        <div className="relative pointer-events-auto">
           <Dock
             items={dockItems}
             iconSize={15}
