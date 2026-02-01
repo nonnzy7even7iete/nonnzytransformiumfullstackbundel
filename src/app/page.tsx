@@ -41,22 +41,23 @@ export default function HomePage() {
         <MasterAuroraBackground />
       </div>
 
-      <main className="relative z-10 flex-1 flex flex-col lg:flex-row items-center justify-center px-6 md:px-12 gap-8 pt-32 pb-44">
-        {/* BLOC GAUCHE */}
-        <div className="w-[350px] h-[450px] flex flex-col">
+      {/* Main sizer : 90vw sur desktop pour un impact maximum */}
+      <main className="relative z-10 flex-1 flex flex-col lg:flex-row items-center justify-center gap-8 pt-32 pb-44 px-4 lg:w-[90vw] mx-auto">
+        {/* BLOC GAUCHE - DATA CARD (350x450) */}
+        <div className="w-[350px] h-[450px] flex flex-col shrink-0">
           <DataCard
             width={350}
             height={450}
             title={
               <div className="flex items-center gap-2 text-foreground">
                 <Info className="w-4 h-4 text-blue-400 shrink-0" />
-                <span className="font-bold text-[12px] leading-tight uppercase tracking-tighter">
+                <span className="font-bold text-[13px] leading-tight uppercase tracking-tighter">
                   Data-driven growth : potentiel d'Anyama
                 </span>
               </div>
             }
             content={
-              <div className="flex flex-col gap-4 text-foreground/80 text-[13px] leading-relaxed overflow-y-auto max-h-[280px] pr-2 scrollbar-hide">
+              <div className="flex flex-col gap-4 text-foreground/90 text-[14px] leading-relaxed overflow-y-auto max-h-[280px] pr-2 scrollbar-hide">
                 <p>
                   Les métriques d'attractivité et les flux d'investissement
                   convergent vers une réalité : le vrai potentiel se mesure dans
@@ -93,62 +94,52 @@ export default function HomePage() {
                 </p>
                 <p>
                   La donnée est le premier moteur de croissance du XXIᵉ siècle.
-                  Les économies modernes sont tirées par : la précision des
-                  décisions, la rapiditée d'exécution, la capacité à anticiper
-                  les crises plutôt que les subir. Or, tout cela dépend de la
-                  donnée.
-                </p>
-                <p>
-                  La donnée réduit les coûts structurels de l'État (et ce de
-                  façon massive). Les administrations gèrent des millions de
-                  micro-décisions quotidiennes... Investir dans la donnée n'est
-                  pas une dépense : c'est un amortisseur de dépenses futures.
+                  Investir dans la donnée n'est pas une dépense : c'est un
+                  amortisseur de dépenses futures.
                 </p>
               </div>
             }
           />
         </div>
 
-        {/* BLOC CENTRAL : OPTIMISATION DES ESPACEMENTS BAS */}
-        <div className="w-[450px] h-[450px] p-10 backdrop-blur-3xl rounded-2xl bg-glass-dual border border-border-dual flex flex-col items-center shadow-none">
-          {/* Logo centré dans l'espace restant */}
+        {/* BLOC CENTRAL - LOGIN CARD (450x450) avec LOGO MASSIF */}
+        <div className="w-[450px] h-[450px] p-10 backdrop-blur-3xl rounded-2xl bg-glass-dual border border-border-dual flex flex-col items-center shadow-none shrink-0">
+          {/* Logo Géant Senior Award */}
           <div className="w-full flex-1 flex items-center justify-center overflow-visible">
             <TextHoverEffect
               text="Nonnzytr"
               duration={0.6}
               style={{
-                width: "140%",
-                height: "100%",
-                fontSize: "clamp(6rem, 15vw, 11rem)",
+                width: "160%",
+                height: "110%",
+                fontSize: "clamp(10rem, 20vw, 18rem)",
               }}
             />
           </div>
 
-          {/* Groupe Action : Poussé vers le bas avec mt-auto et espacements resserrés */}
           <div className="w-full flex flex-col items-center mt-auto">
-            <p className="text-foreground/60 text-[10px] tracking-[0.4em] uppercase font-light mb-6">
+            <p className="text-foreground/80 text-[13px] tracking-[0.4em] uppercase font-medium mb-6">
               Votre aventure commence ici
             </p>
 
             <button
               onClick={() => signIn("google", { callbackUrl: "/dashboard" })}
-              className="w-full max-w-[320px] py-4 flex items-center justify-center gap-3 bg-foreground text-background font-bold rounded-xl hover:scale-[1.02] active:scale-95 transition-all duration-300 mx-auto"
+              className="w-full max-w-[320px] py-4.5 flex items-center justify-center gap-3 bg-foreground text-background font-bold rounded-xl hover:scale-[1.02] active:scale-95 transition-all duration-300 mx-auto shadow-xl"
             >
               <FcGoogle className="text-2xl shrink-0" />
-              <span className="text-xs tracking-widest uppercase">
+              <span className="text-xs tracking-widest uppercase font-black">
                 Continuer avec Google
               </span>
             </button>
 
-            {/* Espacement réduit entre le bouton et la phrase (mt-4) */}
-            <p className="text-foreground/40 text-[9px] mt-4 italic text-center max-w-[280px]">
+            <p className="text-foreground/50 text-[10px] mt-4 italic text-center max-w-[280px] leading-tight font-medium">
               Connexion sécurisée via Google requise pour accéder au Workflow.
             </p>
           </div>
         </div>
 
-        {/* BLOC DROIT */}
-        <div className="w-[350px] h-[450px] flex">
+        {/* BLOC DROIT - SIDE CARD (350x450) */}
+        <div className="w-[350px] h-[450px] flex shrink-0">
           <SideCard
             imageSrc="/zyy.png"
             title="Zy recherche un financement orienté workspace & Workflow"
