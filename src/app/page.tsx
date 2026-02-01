@@ -4,7 +4,7 @@ import { signIn, useSession } from "next-auth/react";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { FcGoogle } from "react-icons/fc";
-import { Info, Home, Globe, LayoutDashboard, Settings } from "lucide-react";
+import { Info, Home, Github, Linkedin } from "lucide-react";
 
 import Loader from "@/components/frontendkit/Loader";
 import { MasterAuroraBackground } from "@/components/ui/MasterAuroraBackground";
@@ -12,7 +12,7 @@ import { TextHoverEffect } from "@/components/ui/TextHoverEffect";
 import SideCard from "@/components/frontendkit/SideCard";
 import DataCard from "@/components/frontendkit/DataCard";
 import Navbar from "@/components/frontendkit/NavbarFront";
-import { Dock, DockIcon } from "@/components/ui/dock";
+import { Dock } from "@/components/ui/dock";
 
 export default function HomePage() {
   const { data: session, status } = useSession();
@@ -29,7 +29,6 @@ export default function HomePage() {
       <Navbar />
 
       <main className="relative flex flex-col md:flex-row items-center justify-center min-h-screen overflow-hidden px-4 md:px-8 pb-10 gap-6 md:gap-0 pt-32 md:pt-40 bg-app-gradient">
-        {/* Intégration de l'Aurora sans les props de grille pour la pureté visuelle */}
         <div className="absolute inset-0 z-0">
           <MasterAuroraBackground />
         </div>
@@ -147,23 +146,20 @@ export default function HomePage() {
           />
         </aside>
 
-        {/* AJOUT DU DOCK - COUCHE NAVIGATION */}
-        <div className="fixed bottom-6 left-0 right-0 z-[100] pointer-events-none">
+        {/* CONTENEUR DE CENTRAGE DU DOCK */}
+        <div className="fixed bottom-10 left-0 right-0 z-[100] flex justify-center pointer-events-none px-4">
           <div className="pointer-events-auto">
-            <Dock direction="middle">
-              <DockIcon className="bg-zinc-100/10 dark:bg-white/5 text-emerald-500">
-                <Home className="size-5" />
-              </DockIcon>
-              <DockIcon className="bg-zinc-100/10 dark:bg-white/5 text-blue-400">
-                <Globe className="size-5" />
-              </DockIcon>
-              <DockIcon className="bg-zinc-100/10 dark:bg-white/5 text-purple-400">
-                <LayoutDashboard className="size-5" />
-              </DockIcon>
-              <DockIcon className="bg-zinc-100/10 dark:bg-white/5 text-zinc-400">
-                <Settings className="size-5" />
-              </DockIcon>
-            </Dock>
+            <Dock
+              items={[
+                { icon: Home, href: "/", label: "Home" },
+                { icon: Github, href: "https://github.com", label: "GitHub" },
+                {
+                  icon: Linkedin,
+                  href: "https://linkedin.com",
+                  label: "LinkedIn",
+                },
+              ]}
+            />
           </div>
         </div>
       </main>
