@@ -41,10 +41,13 @@ export default function HomePage() {
         <MasterAuroraBackground />
       </div>
 
-      {/* Main sizer : 90vw sur desktop pour un impact maximum */}
-      <main className="relative z-10 flex-1 flex flex-col lg:flex-row items-center justify-center gap-8 pt-32 pb-44 px-4 lg:w-[90vw] mx-auto">
-        {/* BLOC GAUCHE - DATA CARD (350x450) */}
-        <div className="w-[350px] h-[450px] flex flex-col shrink-0">
+      {/* MAIN CONTAINER : 
+          - Mobile : w-[97vw] centré
+          - Desktop : w-[90vw] centré avec mx-auto pour décoller des bords
+      */}
+      <main className="relative z-10 flex-1 flex flex-col lg:flex-row items-center justify-center gap-8 pt-32 pb-44 px-4 w-[97vw] lg:w-[90vw] mx-auto">
+        {/* BLOC GAUCHE - DATA CARD */}
+        <div className="w-full lg:w-[350px] h-[450px] flex flex-col shrink-0 items-center lg:items-start">
           <DataCard
             width={350}
             height={450}
@@ -57,7 +60,7 @@ export default function HomePage() {
               </div>
             }
             content={
-              <div className="flex flex-col gap-4 text-foreground/90 text-[14px] leading-relaxed overflow-y-auto max-h-[280px] pr-2 scrollbar-hide">
+              <div className="flex flex-col gap-4 text-foreground/90 text-[14px] leading-relaxed overflow-y-auto max-h-[280px] pr-2 scrollbar-hide text-left">
                 <p>
                   Les métriques d'attractivité et les flux d'investissement
                   convergent vers une réalité : le vrai potentiel se mesure dans
@@ -102,9 +105,8 @@ export default function HomePage() {
           />
         </div>
 
-        {/* BLOC CENTRAL - LOGIN CARD (450x450) avec LOGO MASSIF */}
-        <div className="w-[450px] h-[450px] p-10 backdrop-blur-3xl rounded-2xl bg-glass-dual border border-border-dual flex flex-col items-center shadow-none shrink-0">
-          {/* Logo Géant Senior Award */}
+        {/* BLOC CENTRAL - LOGIN CARD */}
+        <div className="w-full lg:w-[450px] h-[450px] p-10 backdrop-blur-3xl rounded-2xl bg-glass-dual border border-border-dual flex flex-col items-center shadow-none shrink-0">
           <div className="w-full flex-1 flex items-center justify-center overflow-visible">
             <TextHoverEffect
               text="Nonnzytr"
@@ -112,7 +114,7 @@ export default function HomePage() {
               style={{
                 width: "160%",
                 height: "110%",
-                fontSize: "clamp(10rem, 20vw, 18rem)",
+                fontSize: "clamp(8rem, 20vw, 16rem)",
               }}
             />
           </div>
@@ -138,8 +140,8 @@ export default function HomePage() {
           </div>
         </div>
 
-        {/* BLOC DROIT - SIDE CARD (350x450) */}
-        <div className="w-[350px] h-[450px] flex shrink-0">
+        {/* BLOC DROIT - SIDE CARD */}
+        <div className="w-full lg:w-[350px] h-[450px] flex shrink-0 justify-center lg:justify-end">
           <SideCard
             imageSrc="/zyy.png"
             title="Zy recherche un financement orienté workspace & Workflow"
@@ -152,7 +154,6 @@ export default function HomePage() {
       {/* FOOTER */}
       <footer className="fixed bottom-0 left-0 right-0 z-[100] h-28 flex items-center justify-center pointer-events-none">
         <div className="absolute inset-x-0 bottom-0 h-full bg-gradient-to-t from-background via-background/60 to-transparent dark:from-black dark:via-black/40 z-[-1]" />
-
         <div className="relative pointer-events-auto">
           <Dock
             items={dockItems}
