@@ -10,8 +10,9 @@ import {
 } from "framer-motion";
 import { cn } from "@/lib/utils";
 
+// Définition propre de l'interface pour TypeScript
 export interface DockItem {
-  icon: React.ElementType;
+  icon: React.ComponentType<{ className?: string }>;
   href: string;
   label: string;
   color?: string;
@@ -43,29 +44,34 @@ export function Dock({
         className
       )}
     >
-      {items.map((item, idx) => (
-        <DockIcon
-          key={idx}
-          mouseX={mouseX}
-          size={iconSize}
-          magnification={magnification}
-          distance={distance}
-        >
-          <a
-            href={item.href}
-            target={item.href.startsWith("http") ? "_blank" : "_self"}
-            rel="noreferrer"
-            className="flex h-full w-full items-center justify-center"
+      {items.map((item, idx) => {
+        // On extrait l'icône dans une constante Majuscule pour que React la reconnaisse comme composant
+        const IconComponent = item.icon;
+
+        return (
+          <DockIcon
+            key={idx}
+            mouseX={mouseX}
+            size={iconSize}
+            magnification={magnification}
+            distance={distance}
           >
-            <item.icon
-              className={cn(
-                "h-full w-full transition-colors duration-300",
-                item.color ? item.color : "text-zinc-950 dark:text-white"
-              )}
-            />
-          </a>
-        </DockIcon>
-      ))}
+            <a
+              href={item.href}
+              target={item.href.startsWith("http") ? "_blank" : "_self"}
+              rel="noreferrer"
+              className="flex h-full w-full items-center justify-center"
+            >
+              <IconComponent
+                className={cn(
+                  "h-full w-full transition-colors duration-300",
+                  item.color ? item.color : "text-zinc-950 dark:text-white"
+                )}
+              />
+            </a>
+          </DockIcon>
+        );
+      })}
     </motion.div>
   );
 }
