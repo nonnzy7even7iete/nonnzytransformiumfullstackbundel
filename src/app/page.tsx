@@ -34,40 +34,39 @@ export default function HomePage() {
   if (status === "loading" || status === "authenticated") return <Loader />;
 
   return (
-    <div className="relative min-h-screen flex flex-col bg-black overflow-x-hidden font-extralight selection:bg-white/20">
+    <div className="relative min-h-screen flex flex-col bg-app-gradient overflow-hidden">
       <Navbar />
 
-      {/* BACKGROUND LAYER - OPACITÉ RÉDUITE POUR LE NOIR PUR */}
-      <div className="fixed inset-0 z-0 pointer-events-none opacity-40">
+      {/* BACKGROUND INITIAL */}
+      <div className="absolute inset-0 z-0">
         <MasterAuroraBackground />
       </div>
 
-      {/* MAIN LAYOUT PROPORTIONNEL ALIGNÉ */}
-      <main className="relative z-10 flex-1 grid grid-cols-1 lg:grid-cols-3 items-center justify-items-center px-6 md:px-16 lg:px-24 py-32 gap-12 lg:gap-0">
-        {/* BLOC GAUCHE - DATA CARD (TEXTE INTÉGRAL SANS COUPURE) */}
-        <div className="w-full max-w-[340px] flex justify-center">
+      <main className="relative z-10 flex-1 flex flex-col md:flex-row items-center justify-center px-4 md:px-8 pb-10 gap-6 md:gap-0 pt-32 md:pt-40">
+        {/* ASIDE GAUCHE : DATA CARD (TEXTE ET STYLE RESTAURÉS) */}
+        <aside className="relative z-11 md:absolute md:left-3 md:ml-6 lg:ml-8 flex justify-center md:justify-start w-full md:w-auto min-w-[300px]">
           <DataCard
-            width={340}
-            height={320}
+            width={300}
+            height={270}
             title={
-              <div className="flex items-center gap-2 text-foreground">
-                <Info className="w-4 h-4 text-blue-500 shrink-0" />
-                <span className="font-light text-[11px] uppercase tracking-widest leading-tight">
+              <div className="flex items-center justify-center gap-2 text-foreground">
+                <Info className="w-4 h-4 text-blue-400" />
+                <span className="font-semibold">
                   Data-driven growth : chaque flux, chaque métrique confirme le
                   potentiel d'Anyama
                 </span>
               </div>
             }
             content={
-              <div className="flex flex-col gap-3 text-zinc-400 text-[13px] leading-relaxed font-extralight italic">
+              <div className="flex flex-col gap-1 text-foreground/80 text-sm overflow-auto max-h-[200px] md:max-h-[250px]">
                 <p>
                   Les métriques d'attractivité et les flux d'investissement
                   convergent vers une réalité : le vrai potentiel se mesure dans
                   ce qui reste à révéler. Anyama dispose d'un avantage
                   stratégique encore invisible à la majorité des acteurs. La
                   data ne ment pas — la question, c'est qui l'exploitera en
-                  premier :{" "}
-                  <span className="bg-gradient-to-r from-green-400 to-blue-400 bg-clip-text text-transparent font-normal not-italic tracking-normal">
+                  premier. :{" "}
+                  <span className="bg-gradient-to-r from-green-500 to-blue-300 bg-clip-text text-transparent font-semibold">
                     Vision partagée
                   </span>
                 </p>
@@ -77,19 +76,21 @@ export default function HomePage() {
                 </p>
                 <p>
                   Votre commune entre dans une zone d'attractivité stratégique :{" "}
-                  <span className="bg-gradient-to-r from-green-400 to-blue-400 bg-clip-text text-transparent font-normal not-italic tracking-normal">
+                  <span className="bg-gradient-to-r from-green-500 to-blue-300 bg-clip-text text-transparent font-semibold">
                     Sans insights, chaque décision est un pari perdu d'avance.
                   </span>
                 </p>
               </div>
             }
             buttonContent={
-              <div className="w-full py-2 border border-white/10 rounded-full text-[10px] uppercase tracking-[0.3em] text-white/60 hover:text-white transition-colors text-center">
-                Explorer
+              <div className="w-full py-2 flex items-center justify-center gap-2 bg-foreground/5 border border-border rounded-xl shadow-xl transition-all hover:bg-foreground/10 group">
+                <span className="text-sm font-bold uppercase tracking-tighter text-foreground group-hover:scale-105 transition-all">
+                  Comprendre
+                </span>
               </div>
             }
             modalContent={
-              <div className="space-y-4 text-zinc-300 text-sm font-extralight p-2">
+              <div className="flex flex-col gap-2 text-foreground/90 text-sm overflow-auto max-h-[400px] md:max-h-[450px]">
                 <p>
                   Potentiel latent détecté : chaque flux, chaque indicateur
                   montre que votre territoire est sous-évalué.
@@ -97,7 +98,7 @@ export default function HomePage() {
                 <p>
                   La donnée est le premier moteur de croissance du XXIᵉ siècle.
                   Les économies modernes sont tirées par : la précision des
-                  décisions, la rapidité d'exécution, la capacité à anticiper
+                  décisions, la rapiditée d'exécution, la capacité à anticiper
                   les crises plutôt que les subir. Or, tout cela dépend de la
                   donnée.
                 </p>
@@ -110,68 +111,66 @@ export default function HomePage() {
               </div>
             }
           />
-        </div>
+        </aside>
 
-        {/* BLOC CENTRAL - CONNEXION (LAYOUT CENTRÉ & TYPO PRO) */}
-        <div className="w-full max-w-[480px] flex flex-col items-center">
-          <div className="w-full p-12 backdrop-blur-3xl rounded-[2.5rem] bg-black/40 border border-white/5 flex flex-col items-center shadow-none">
-            <div className="w-full h-40 md:h-56 flex items-center justify-center">
+        {/* SECTION CENTRALE : LOGIN BOX (DESIGN INITIAL RESTAURÉ) */}
+        <div className="relative z-10 flex flex-col items-center justify-center text-center w-full md:w-[460px] max-w-[90vw] min-w-[300px]">
+          <div className="w-full p-10 backdrop-blur-xl rounded-2xl shadow-2xl min-w-[300px] bg-glass-dual border border-border-dual flex flex-col items-center">
+            <div className="w-full h-40 md:h-64 flex items-center justify-center">
               <TextHoverEffect
                 text="Nonnzytr"
-                duration={0.8}
+                duration={0.6}
                 style={{
                   width: "100%",
                   height: "100%",
-                  fontSize: "clamp(6.5rem, 18vw, 13rem)",
+                  fontSize: "clamp(6rem, 18vw, 12rem)", // Garde juste le resize mobile
                 }}
               />
             </div>
 
-            <div className="w-full flex flex-col items-center text-center mt-6">
-              <h1 className="text-white text-base mb-10 tracking-[0.4em] uppercase font-extralight opacity-70">
-                Votre aventure commence ici
-              </h1>
+            <p className="text-foreground text-base mb-8">
+              Votre aventure commence ici
+            </p>
 
-              <button
-                onClick={() => signIn("google", { callbackUrl: "/dashboard" })}
-                className="w-full max-w-[300px] py-4 flex items-center justify-center gap-4 bg-white text-black font-medium rounded-full hover:bg-zinc-200 transition-all active:scale-95"
-              >
-                <FcGoogle className="text-xl" />
-                <span className="text-[11px] tracking-[0.2em] uppercase">
-                  Continuer avec Google
-                </span>
-              </button>
+            <button
+              onClick={() => signIn("google", { callbackUrl: "/dashboard" })}
+              className="w-full py-3 flex items-center justify-center gap-2 
+              bg-foreground text-background font-semibold rounded-xl shadow-md
+              hover:shadow-xl hover:scale-105 active:scale-95 
+              transition-all duration-300 mb-6"
+            >
+              <FcGoogle className="text-2xl" />
+              Continuer avec Google
+            </button>
 
-              <p className="mt-12 text-zinc-600 text-[9px] uppercase tracking-[0.2em] italic">
-                Connexion sécurisée via Google requise pour accéder au Workflow.
-              </p>
-            </div>
+            <p className="text-foreground/50 text-xs italic">
+              Connexion sécurisée via Google requise pour accéder au Workflow.
+            </p>
           </div>
         </div>
 
-        {/* BLOC DROIT - SIDE CARD (TEXTE INTÉGRAL) */}
-        <div className="w-full max-w-[340px] flex justify-center">
+        {/* ASIDE DROIT : SIDE CARD (STYLE INITIAL) */}
+        <aside className="relative z-10 md:absolute md:right-3 md:mr-6 lg:mr-8 flex justify-center md:justify-end w-full md:w-auto min-w-[300px]">
           <SideCard
             imageSrc="/zyy.png"
             title="Zy recherche un financement orienté workspace & Workflow"
             description="Exécution de la logique métier et serveur en burn out."
             location="Anyama, Abidjan, Côte d'Ivoire"
           />
-        </div>
+        </aside>
       </main>
 
-      {/* FOOTER NOIR PUR STRICT */}
-      <footer className="fixed bottom-0 left-0 right-0 z-[100] h-28 flex items-end justify-center pointer-events-none pb-8">
-        {/* GRADIENT NOIR PUR (OCCLUSION) */}
-        <div className="absolute inset-x-0 bottom-0 h-full bg-gradient-to-t from-black via-black/95 to-transparent z-[-1]" />
+      {/* FOOTER : NOIR PUR + DOCK MINI (IDENTITÉ CONSERVÉE) */}
+      <footer className="fixed bottom-0 left-0 right-0 z-[100] h-20 flex items-center justify-center pointer-events-none">
+        <div className="absolute inset-x-0 bottom-0 h-full bg-gradient-to-t from-black via-black/90 to-transparent z-[-1]" />
 
         <div className="pointer-events-auto">
           <Dock
             items={dockItems}
-            iconSize={14}
-            magnification={20}
-            distance={60}
-            className="bg-black border-white/10 shadow-none backdrop-blur-3xl h-[42px] px-5 rounded-full"
+            iconSize={15}
+            magnification={22}
+            distance={70}
+            className="bg-black border-white/10 shadow-none backdrop-blur-3xl h-[40px] px-4 rounded-full"
           />
         </div>
       </footer>
