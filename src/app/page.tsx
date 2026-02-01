@@ -42,8 +42,8 @@ export default function HomePage() {
       </div>
 
       <main className="relative z-10 flex-1 flex flex-col lg:flex-row items-center justify-center px-6 md:px-12 gap-8 pt-32 pb-44">
-        {/* BLOC GAUCHE : DATA CARD */}
-        <div className="w-[350px] min-h-[450px] flex flex-col">
+        {/* BLOC GAUCHE */}
+        <div className="w-[350px] h-[450px] flex flex-col">
           <DataCard
             width={350}
             height={450}
@@ -109,9 +109,10 @@ export default function HomePage() {
           />
         </div>
 
-        {/* BLOC CENTRAL : CONNEXION CARD (RADIUS IDENTIQUE AUX AUTRES) */}
-        <div className="w-[450px] h-[450px] p-10 backdrop-blur-3xl rounded-2xl bg-glass-dual border border-border-dual flex flex-col items-center justify-center text-center shadow-none">
-          <div className="w-full h-40 flex items-center justify-center overflow-visible mb-4">
+        {/* BLOC CENTRAL : OPTIMISATION DES ESPACEMENTS BAS */}
+        <div className="w-[450px] h-[450px] p-10 backdrop-blur-3xl rounded-2xl bg-glass-dual border border-border-dual flex flex-col items-center shadow-none">
+          {/* Logo centré dans l'espace restant */}
+          <div className="w-full flex-1 flex items-center justify-center overflow-visible">
             <TextHoverEffect
               text="Nonnzytr"
               duration={0.6}
@@ -123,8 +124,9 @@ export default function HomePage() {
             />
           </div>
 
-          <div className="w-full flex flex-col items-center justify-center gap-8">
-            <p className="text-foreground/60 text-[11px] tracking-[0.5em] uppercase font-light">
+          {/* Groupe Action : Poussé vers le bas avec mt-auto et espacements resserrés */}
+          <div className="w-full flex flex-col items-center mt-auto">
+            <p className="text-foreground/60 text-[10px] tracking-[0.4em] uppercase font-light mb-6">
               Votre aventure commence ici
             </p>
 
@@ -138,13 +140,14 @@ export default function HomePage() {
               </span>
             </button>
 
-            <p className="text-foreground/40 text-[10px] italic leading-tight">
+            {/* Espacement réduit entre le bouton et la phrase (mt-4) */}
+            <p className="text-foreground/40 text-[9px] mt-4 italic text-center max-w-[280px]">
               Connexion sécurisée via Google requise pour accéder au Workflow.
             </p>
           </div>
         </div>
 
-        {/* BLOC DROIT : SIDE CARD */}
+        {/* BLOC DROIT */}
         <div className="w-[350px] h-[450px] flex">
           <SideCard
             imageSrc="/zyy.png"
