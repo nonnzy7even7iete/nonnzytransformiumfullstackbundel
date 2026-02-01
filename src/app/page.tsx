@@ -37,14 +37,12 @@ export default function HomePage() {
     <div className="relative min-h-screen flex flex-col bg-background overflow-x-hidden">
       <Navbar />
 
-      {/* BACKGROUND LAYER - IMMERSIF */}
       <div className="fixed inset-0 z-0 pointer-events-none">
         <MasterAuroraBackground />
       </div>
 
-      {/* MAIN SIZING : UN SEUL FLUX PROPORTIONNÉ (HEIGHT 480PX+) */}
       <main className="relative z-10 flex-1 flex flex-col lg:flex-row items-center justify-center px-6 md:px-12 gap-8 pt-32 pb-44">
-        {/* BLOC GAUCHE : DATA CARD (350x450 pour respirer) */}
+        {/* BLOC GAUCHE : DATA CARD */}
         <div className="w-[350px] min-h-[450px] flex flex-col">
           <DataCard
             width={350}
@@ -58,7 +56,7 @@ export default function HomePage() {
               </div>
             }
             content={
-              <div className="flex flex-col gap-4 text-foreground/80 text-[13px] leading-relaxed overflow-y-auto max-h-[280px] pr-2 scrollbar-thin scrollbar-thumb-white/10">
+              <div className="flex flex-col gap-4 text-foreground/80 text-[13px] leading-relaxed overflow-y-auto max-h-[280px] pr-2 scrollbar-hide">
                 <p>
                   Les métriques d'attractivité et les flux d'investissement
                   convergent vers une réalité : le vrai potentiel se mesure dans
@@ -97,54 +95,56 @@ export default function HomePage() {
                   La donnée est le premier moteur de croissance du XXIᵉ siècle.
                   Les économies modernes sont tirées par : la précision des
                   décisions, la rapiditée d'exécution, la capacité à anticiper
-                  les crises plutôt que les subir.
+                  les crises plutôt que les subir. Or, tout cela dépend de la
+                  donnée.
                 </p>
                 <p>
-                  La donnée réduit les coûts structurels de l'État. Investir
-                  dans la donnée n'est pas une dépense : c'est un amortisseur de
-                  dépenses futures.
+                  La donnée réduit les coûts structurels de l'État (et ce de
+                  façon massive). Les administrations gèrent des millions de
+                  micro-décisions quotidiennes... Investir dans la donnée n'est
+                  pas une dépense : c'est un amortisseur de dépenses futures.
                 </p>
               </div>
             }
           />
         </div>
 
-        {/* BLOC CENTRAL : CONNEXION CARD (450x450 pour le logo géant) */}
-        <div className="w-[450px] h-[450px] p-12 backdrop-blur-3xl rounded-[2rem] bg-glass-dual border border-border-dual flex flex-col items-center justify-between shadow-2xl shadow-black/20">
-          <div className="w-full flex-1 flex items-center justify-center overflow-visible">
+        {/* BLOC CENTRAL : CONNEXION CARD (RADIUS IDENTIQUE AUX AUTRES) */}
+        <div className="w-[450px] h-[450px] p-10 backdrop-blur-3xl rounded-2xl bg-glass-dual border border-border-dual flex flex-col items-center justify-center text-center shadow-none">
+          <div className="w-full h-40 flex items-center justify-center overflow-visible mb-4">
             <TextHoverEffect
               text="Nonnzytr"
               duration={0.6}
               style={{
                 width: "140%",
                 height: "100%",
-                fontSize: "clamp(8rem, 20vw, 14rem)",
+                fontSize: "clamp(6rem, 15vw, 11rem)",
               }}
             />
           </div>
 
-          <div className="w-full flex flex-col items-center gap-8">
+          <div className="w-full flex flex-col items-center justify-center gap-8">
             <p className="text-foreground/60 text-[11px] tracking-[0.5em] uppercase font-light">
               Votre aventure commence ici
             </p>
 
             <button
               onClick={() => signIn("google", { callbackUrl: "/dashboard" })}
-              className="w-full py-4 flex items-center justify-center gap-4 bg-foreground text-background font-bold rounded-2xl hover:scale-[1.02] active:scale-95 transition-all duration-300"
+              className="w-full max-w-[320px] py-4 flex items-center justify-center gap-3 bg-foreground text-background font-bold rounded-xl hover:scale-[1.02] active:scale-95 transition-all duration-300 mx-auto"
             >
-              <FcGoogle className="text-2xl" />
+              <FcGoogle className="text-2xl shrink-0" />
               <span className="text-xs tracking-widest uppercase">
                 Continuer avec Google
               </span>
             </button>
 
-            <p className="text-foreground/30 text-[9px] uppercase tracking-widest italic">
-              Secure Cloud Access • Anyama Workspace
+            <p className="text-foreground/40 text-[10px] italic leading-tight">
+              Connexion sécurisée via Google requise pour accéder au Workflow.
             </p>
           </div>
         </div>
 
-        {/* BLOC DROIT : SIDE CARD (350x450) */}
+        {/* BLOC DROIT : SIDE CARD */}
         <div className="w-[350px] h-[450px] flex">
           <SideCard
             imageSrc="/zyy.png"
@@ -155,9 +155,8 @@ export default function HomePage() {
         </div>
       </main>
 
-      {/* FOOTER : L'EFFET DE BRUME "SEAMLESS" (SANS COUPURE) */}
-      <footer className="fixed bottom-0 left-0 right-0 z-[100] h-32 flex items-center justify-center pointer-events-none">
-        {/* Occlusion douce qui se fond dans le bg-background ou le noir pur sans ligne visible */}
+      {/* FOOTER */}
+      <footer className="fixed bottom-0 left-0 right-0 z-[100] h-28 flex items-center justify-center pointer-events-none">
         <div className="absolute inset-x-0 bottom-0 h-full bg-gradient-to-t from-background via-background/60 to-transparent dark:from-black dark:via-black/40 z-[-1]" />
 
         <div className="relative pointer-events-auto">
