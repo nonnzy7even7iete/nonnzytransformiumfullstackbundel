@@ -34,18 +34,15 @@ export default function HomePage() {
   if (status === "loading" || status === "authenticated") return <Loader />;
 
   return (
-    // Suppression de overflow-hidden pour permettre le scroll
     <div className="relative min-h-screen flex flex-col bg-app-gradient">
       <Navbar />
 
-      {/* BACKGROUND INITIAL */}
       <div className="fixed inset-0 z-0">
         <MasterAuroraBackground />
       </div>
 
-      {/* MAIN CONTENT - RESTAURATION DU LAYOUT INITIAL */}
-      <main className="relative z-10 flex-1 flex flex-col md:flex-row items-center justify-center px-4 md:px-8 pb-32 pt-32 md:pt-40 gap-6 md:gap-0">
-        {/* ASIDE GAUCHE : DATA CARD (STYLE ET TEXTE RESTAURÉS) */}
+      <main className="relative z-10 flex-1 flex flex-col md:flex-row items-center justify-center px-4 md:px-8 pb-32 pt-24 md:pt-32 gap-6 md:gap-0">
+        {/* ASIDE GAUCHE */}
         <aside className="relative z-11 md:absolute md:left-3 md:ml-6 lg:ml-8 flex justify-center md:justify-start w-full md:w-auto min-w-[300px]">
           <DataCard
             width={300}
@@ -53,21 +50,21 @@ export default function HomePage() {
             title={
               <div className="flex items-center justify-center gap-2 text-foreground">
                 <Info className="w-4 h-4 text-blue-400" />
-                <span className="font-semibold">
+                <span className="font-semibold text-xs md:text-sm">
                   Data-driven growth : chaque flux, chaque métrique confirme le
                   potentiel d'Anyama
                 </span>
               </div>
             }
             content={
-              <div className="flex flex-col gap-1 text-foreground/80 text-sm overflow-auto max-h-[200px] md:max-h-[250px]">
+              <div className="flex flex-col gap-1 text-foreground/80 text-sm overflow-auto max-h-[200px]">
                 <p>
                   Les métriques d'attractivité et les flux d'investissement
                   convergent vers une réalité : le vrai potentiel se mesure dans
                   ce qui reste à révéler. Anyama dispose d'un avantage
                   stratégique encore invisible à la majorité des acteurs. La
                   data ne ment pas — la question, c'est qui l'exploitera en
-                  premier. :{" "}
+                  premier :{" "}
                   <span className="bg-gradient-to-r from-green-500 to-blue-300 bg-clip-text text-transparent font-semibold">
                     Vision partagée
                   </span>
@@ -92,7 +89,7 @@ export default function HomePage() {
               </div>
             }
             modalContent={
-              <div className="flex flex-col gap-2 text-foreground/90 text-sm overflow-auto max-h-[400px] md:max-h-[450px]">
+              <div className="flex flex-col gap-2 text-foreground/90 text-sm">
                 <p>
                   Potentiel latent détecté : chaque flux, chaque indicateur
                   montre que votre territoire est sous-évalué.
@@ -101,57 +98,55 @@ export default function HomePage() {
                   La donnée est le premier moteur de croissance du XXIᵉ siècle.
                   Les économies modernes sont tirées par : la précision des
                   décisions, la rapiditée d'exécution, la capacité à anticiper
-                  les crises plutôt que les subir. Or, tout cela dépend de la
-                  donnée.
+                  les crises plutôt que les subir.
                 </p>
                 <p>
-                  La donnée réduit les coûts structurels de l'État (et ce de
-                  façon massive). Les administrations gèrent des millions de
-                  micro-décisions quotidiennes... Investir dans la donnée n'est
-                  pas une dépense : c'est un amortisseur de dépenses futures.
+                  La donnée réduit les coûts structurels de l'État. Investir
+                  dans la donnée n'est pas une dépense : c'est un amortisseur de
+                  dépenses futures.
                 </p>
               </div>
             }
           />
         </aside>
 
-        {/* SECTION CENTRALE : LOGIN BOX (RADIUS 2XL ET SIZING RESTAURÉS) */}
-        <div className="relative z-10 flex flex-col items-center justify-center text-center w-full md:w-[460px] max-w-[90vw] min-w-[300px]">
-          <div className="w-full p-10 backdrop-blur-xl rounded-2xl shadow-none bg-glass-dual border border-border-dual flex flex-col items-center">
-            <div className="w-full h-40 md:h-64 flex items-center justify-center">
+        {/* SECTION CENTRALE : LOGIN BOX OPTIMISÉE POUR LOGO GÉANT */}
+        <div className="relative z-10 flex flex-col items-center justify-center text-center w-full md:w-[550px] max-w-[95vw]">
+          <div className="w-full p-6 md:p-10 backdrop-blur-2xl rounded-2xl bg-glass-dual border border-border-dual flex flex-col items-center">
+            {/* CONTAINER DU LOGO - On augmente la hauteur pour laisser respirer le texte */}
+            <div className="w-full h-48 md:h-80 flex items-center justify-center overflow-visible">
               <TextHoverEffect
                 text="Nonnzytr"
                 duration={0.6}
                 style={{
-                  width: "100%",
+                  width: "120%", // On force le dépassement léger pour l'impact
                   height: "100%",
-                  fontSize: "clamp(6rem, 18vw, 12rem)",
+                  fontSize: "clamp(10rem, 25vw, 18rem)", // TAILLE MASSIVE RESTAURÉE
                 }}
               />
             </div>
 
-            <p className="text-foreground text-base mb-8">
+            <p className="text-foreground text-lg mb-8 tracking-widest font-light uppercase">
               Votre aventure commence ici
             </p>
 
             <button
               onClick={() => signIn("google", { callbackUrl: "/dashboard" })}
-              className="w-full py-3 flex items-center justify-center gap-2 
-              bg-foreground text-background font-semibold rounded-xl
-              hover:scale-105 active:scale-95 
-              transition-all duration-300 mb-6"
+              className="w-full max-w-sm py-4 flex items-center justify-center gap-3 
+              bg-foreground text-background font-bold rounded-xl shadow-none
+              hover:scale-[1.02] active:scale-95 transition-all duration-300 mb-6"
             >
               <FcGoogle className="text-2xl" />
-              Continuer avec Google
+              CONTINUER AVEC GOOGLE
             </button>
 
-            <p className="text-foreground/50 text-xs italic">
+            <p className="text-foreground/40 text-[10px] italic tracking-tight">
               Connexion sécurisée via Google requise pour accéder au Workflow.
             </p>
           </div>
         </div>
 
-        {/* ASIDE DROIT : SIDE CARD (STYLE INITIAL) */}
+        {/* ASIDE DROIT */}
         <aside className="relative z-10 md:absolute md:right-3 md:mr-6 lg:mr-8 flex justify-center md:justify-end w-full md:w-auto min-w-[300px]">
           <SideCard
             imageSrc="/zyy.png"
@@ -162,11 +157,9 @@ export default function HomePage() {
         </aside>
       </main>
 
-      {/* FOOTER NOIR PUR - DOCK MINIATURISÉ SANS SHADOW */}
+      {/* FOOTER */}
       <footer className="fixed bottom-0 left-0 right-0 z-[100] h-24 flex items-center justify-center pointer-events-none">
-        {/* L'OCCLUSION NOIRE PURE */}
         <div className="absolute inset-x-0 bottom-0 h-full bg-gradient-to-t from-black via-black/95 to-transparent z-[-1]" />
-
         <div className="relative pointer-events-auto">
           <Dock
             items={dockItems}
