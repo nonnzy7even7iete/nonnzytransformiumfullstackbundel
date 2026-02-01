@@ -41,12 +41,12 @@ export default function HomePage() {
         <MasterAuroraBackground />
       </div>
 
-      {/* MAIN CONTAINER : 
-          - Mobile : w-[97vw] centré
-          - Desktop : w-[90vw] centré avec mx-auto pour décoller des bords
+      {/* MAIN SIZER : 
+          - lg:justify-between : Force l'alignement propre Gauche / Centre / Droite
+          - lg:w-[90vw] : L'espace Award-winning
       */}
-      <main className="relative z-10 flex-1 flex flex-col lg:flex-row items-center justify-center gap-8 pt-32 pb-44 px-4 w-[97vw] lg:w-[90vw] mx-auto">
-        {/* BLOC GAUCHE - DATA CARD */}
+      <main className="relative z-10 flex-1 flex flex-col lg:flex-row items-center lg:justify-between px-6 lg:px-0 gap-8 pt-32 pb-44 w-[97vw] lg:w-[90vw] mx-auto">
+        {/* BLOC GAUCHE - DATA CARD (Parfaitement aligné à gauche du 90vw) */}
         <div className="w-full lg:w-[350px] h-[450px] flex flex-col shrink-0 items-center lg:items-start">
           <DataCard
             width={350}
@@ -63,19 +63,12 @@ export default function HomePage() {
               <div className="flex flex-col gap-4 text-foreground/90 text-[14px] leading-relaxed overflow-y-auto max-h-[280px] pr-2 scrollbar-hide text-left">
                 <p>
                   Les métriques d'attractivité et les flux d'investissement
-                  convergent vers une réalité : le vrai potentiel se mesure dans
-                  ce qui reste à révéler. Anyama dispose d'un avantage
-                  stratégique encore invisible à la majorité des acteurs. La
-                  data ne ment pas — la question, c'est qui l'exploitera en
-                  premier :{" "}
+                  convergent vers une réalité... :{" "}
                   <span className="bg-gradient-to-r from-green-400 to-blue-400 bg-clip-text text-transparent font-bold">
                     Vision partagée
                   </span>
                 </p>
-                <p>
-                  Les chiffres sont là. Les investisseurs arrivent. La question,
-                  c'est : serez-vous prêts ?
-                </p>
+                <p>Les chiffres sont là. Les investisseurs arrivent.</p>
                 <p>
                   Votre commune entre dans une zone d'attractivité stratégique :{" "}
                   <span className="bg-gradient-to-r from-green-400 to-blue-400 bg-clip-text text-transparent font-bold">
@@ -89,17 +82,24 @@ export default function HomePage() {
                 Explorer la data
               </span>
             }
+            /* NB : Si le bouton de fermeture est dans DataCard, 
+               assurez-vous que le footer du modal dans DataCard.tsx 
+               n'a pas de padding-bottom excessif.
+            */
             modalContent={
-              <div className="space-y-4 text-sm leading-relaxed text-foreground/90">
-                <p>
-                  Potentiel latent détecté : chaque flux, chaque indicateur
-                  montre que votre territoire est sous-évalué.
-                </p>
-                <p>
-                  La donnée est le premier moteur de croissance du XXIᵉ siècle.
-                  Investir dans la donnée n'est pas une dépense : c'est un
-                  amortisseur de dépenses futures.
-                </p>
+              <div className="flex flex-col h-full justify-between gap-4 text-sm leading-relaxed text-foreground/90 pb-2">
+                <div className="space-y-4">
+                  <p>
+                    Potentiel latent détecté : chaque flux, chaque indicateur
+                    montre que votre territoire est sous-évalué.
+                  </p>
+                  <p>
+                    La donnée réduit les coûts structurels de l'État. Investir
+                    dans la donnée n'est pas une dépense : c'est un amortisseur
+                    de dépenses futures.
+                  </p>
+                </div>
+                {/* Le bouton de fermeture sera naturellement plus proche ici */}
               </div>
             }
           />
@@ -123,24 +123,22 @@ export default function HomePage() {
             <p className="text-foreground/80 text-[13px] tracking-[0.4em] uppercase font-medium mb-6">
               Votre aventure commence ici
             </p>
-
             <button
               onClick={() => signIn("google", { callbackUrl: "/dashboard" })}
-              className="w-full max-w-[320px] py-4.5 flex items-center justify-center gap-3 bg-foreground text-background font-bold rounded-xl hover:scale-[1.02] active:scale-95 transition-all duration-300 mx-auto shadow-xl"
+              className="w-full max-w-[320px] py-4.5 flex items-center justify-center gap-3 bg-foreground text-background font-bold rounded-xl hover:scale-[1.02] active:scale-95 transition-all duration-300 mx-auto"
             >
               <FcGoogle className="text-2xl shrink-0" />
               <span className="text-xs tracking-widest uppercase font-black">
                 Continuer avec Google
               </span>
             </button>
-
             <p className="text-foreground/50 text-[10px] mt-4 italic text-center max-w-[280px] leading-tight font-medium">
               Connexion sécurisée via Google requise pour accéder au Workflow.
             </p>
           </div>
         </div>
 
-        {/* BLOC DROIT - SIDE CARD */}
+        {/* BLOC DROIT - SIDE CARD (Parfaitement aligné à droite du 90vw) */}
         <div className="w-full lg:w-[350px] h-[450px] flex shrink-0 justify-center lg:justify-end">
           <SideCard
             imageSrc="/zyy.png"
