@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef } from "react";
+import React, { useRef, useMemo } from "react";
 import {
   motion,
   useMotionValue,
@@ -10,7 +10,6 @@ import {
 } from "framer-motion";
 import { cn } from "@/lib/utils";
 
-// Définition propre de l'interface pour TypeScript
 export interface DockItem {
   icon: React.ComponentType<{ className?: string }>;
   href: string;
@@ -30,8 +29,8 @@ export function Dock({
   items,
   className,
   iconSize = 40,
-  magnification = 60,
-  distance = 140,
+  magnification = 65,
+  distance = 150,
 }: DockProps) {
   const mouseX = useMotionValue(Infinity);
 
@@ -40,38 +39,41 @@ export function Dock({
       onMouseMove={(e) => mouseX.set(e.pageX)}
       onMouseLeave={() => mouseX.set(Infinity)}
       className={cn(
-        "flex h-[58px] items-end gap-2 rounded-2xl border border-zinc-200 dark:border-white/10 bg-white/10 dark:bg-black/10 p-2 backdrop-blur-md shadow-2xl",
+        "flex h-[64px] items-end gap-4 rounded-2xl border px-3 pb-3 pt-2 shadow-2xl transition-all duration-500",
+        "border-white/30 bg-white/20 backdrop-blur-2xl", // Light mode glass
+        "dark:border-white/10 dark:bg-black/20 dark:backdrop-blur-3xl", // Dark mode glass
         className
       )}
     >
-      {items.map((item, idx) => {
-        // On extrait l'icône dans une constante Majuscule pour que React la reconnaisse comme composant
-        const IconComponent = item.icon;
-
-        return (
-          <DockIcon
-            key={idx}
-            mouseX={mouseX}
-            size={iconSize}
-            magnification={magnification}
-            distance={distance}
+      {items.map((item, idx) => (
+        <DockIcon
+          key={idx}
+          mouseX={mouseX}
+          size={iconSize}
+          magnification={magnification}
+          distance={distance}
+          label={item.label}
+        >
+          <a
+            href={item.href}
+            target={item.href.startsWith("http") ? "_blank" : "_self"}
+            rel="noreferrer"
+            className="group flex h-full w-full flex-col items-center justify-center"
           >
-            <a
-              href={item.href}
-              target={item.href.startsWith("http") ? "_blank" : "_self"}
-              rel="noreferrer"
-              className="flex h-full w-full items-center justify-center"
-            >
-              <IconComponent
-                className={cn(
-                  "h-full w-full transition-colors duration-300",
-                  item.color ? item.color : "text-zinc-950 dark:text-white"
-                )}
-              />
-            </a>
-          </DockIcon>
-        );
-      })}
+            <item.icon
+              className={cn(
+                "h-full w-full transition-all duration-500 ease-out",
+                item.color
+                  ? item.color
+                  : "text-zinc-900/80 dark:text-zinc-100/80 group-hover:text-zinc-950 dark:group-hover:text-white"
+              )}
+            />
+            <span className="absolute -bottom-6 opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-[9px] font-extralight uppercase tracking-[0.3em] text-zinc-500 dark:text-zinc-400 whitespace-nowrap">
+              {item.label}
+            </span>
+          </a>
+        </DockIcon>
+      ))}
     </motion.div>
   );
 }
@@ -82,14 +84,17 @@ function DockIcon({
   distance,
   mouseX,
   children,
+  label,
 }: {
   size: number;
   magnification: number;
   distance: number;
   mouseX: MotionValue<number>;
   children: React.ReactNode;
+  label: string;
 }) {
   const ref = useRef<HTMLDivElement>(null);
+
   const distanceCalc = useTransform(mouseX, (val: number) => {
     const bounds = ref.current?.getBoundingClientRect() ?? { x: 0, width: 0 };
     return val - bounds.x - bounds.width / 2;
@@ -101,16 +106,16 @@ function DockIcon({
     [size, magnification, size]
   );
   const scaleSize = useSpring(sizeTransform, {
-    mass: 0.1,
-    stiffness: 150,
-    damping: 12,
+    mass: 0.15,
+    stiffness: 200,
+    damping: 15,
   });
 
   return (
     <motion.div
       ref={ref}
       style={{ width: scaleSize, height: scaleSize }}
-      className="flex aspect-square cursor-pointer items-center justify-center rounded-full bg-zinc-800/5 dark:bg-white/10 p-2 hover:bg-zinc-800/10 dark:hover:bg-white/20 transition-colors"
+      className="relative flex aspect-square items-center justify-center rounded-xl transition-colors hover:bg-white/10 dark:hover:bg-white/5"
     >
       {children}
     </motion.div>
