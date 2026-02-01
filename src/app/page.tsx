@@ -4,13 +4,15 @@ import { signIn, useSession } from "next-auth/react";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { FcGoogle } from "react-icons/fc";
+import { Info, Home, Globe, LayoutDashboard, Settings } from "lucide-react";
+
 import Loader from "@/components/frontendkit/Loader";
 import { MasterAuroraBackground } from "@/components/ui/MasterAuroraBackground";
 import { TextHoverEffect } from "@/components/ui/TextHoverEffect";
 import SideCard from "@/components/frontendkit/SideCard";
 import DataCard from "@/components/frontendkit/DataCard";
-import { Info } from "lucide-react";
 import Navbar from "@/components/frontendkit/NavbarFront";
+import { Dock, DockIcon } from "@/components/ui/dock";
 
 export default function HomePage() {
   const { data: session, status } = useSession();
@@ -144,6 +146,26 @@ export default function HomePage() {
             location="Anyama, Abidjan, Côte d'Ivoire"
           />
         </aside>
+
+        {/* AJOUT DU DOCK - COUCHE NAVIGATION */}
+        <div className="fixed bottom-6 left-0 right-0 z-[100] pointer-events-none">
+          <div className="pointer-events-auto">
+            <Dock direction="middle">
+              <DockIcon className="bg-zinc-100/10 dark:bg-white/5 text-emerald-500">
+                <Home className="size-5" />
+              </DockIcon>
+              <DockIcon className="bg-zinc-100/10 dark:bg-white/5 text-blue-400">
+                <Globe className="size-5" />
+              </DockIcon>
+              <DockIcon className="bg-zinc-100/10 dark:bg-white/5 text-purple-400">
+                <LayoutDashboard className="size-5" />
+              </DockIcon>
+              <DockIcon className="bg-zinc-100/10 dark:bg-white/5 text-zinc-400">
+                <Settings className="size-5" />
+              </DockIcon>
+            </Dock>
+          </div>
+        </div>
       </main>
     </>
   );
