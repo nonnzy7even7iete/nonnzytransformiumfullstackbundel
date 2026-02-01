@@ -34,31 +34,31 @@ export default function HomePage() {
   if (status === "loading" || status === "authenticated") return <Loader />;
 
   return (
-    <div className="relative min-h-screen flex flex-col bg-background transition-colors duration-300 overflow-x-hidden">
+    <div className="relative min-h-screen flex flex-col bg-background overflow-x-hidden">
       <Navbar />
 
-      {/* BACKGROUND AREA */}
       <div className="fixed inset-0 z-0 pointer-events-none">
         <MasterAuroraBackground />
       </div>
 
-      {/* MAIN GRID PROPORTIONNEL */}
-      <main className="relative z-10 flex-1 grid grid-cols-1 lg:grid-cols-3 items-center justify-items-center px-4 md:px-12 lg:px-20 pt-32 pb-48 gap-10 lg:gap-0">
-        {/* COLONNE GAUCHE : DATA CARD AVEC GRADIENTS */}
-        <div className="w-full flex justify-center lg:justify-start">
+      {/* Utilisation de Flexbox pour un contrôle total du centrage et des proportions */}
+      <main className="relative z-10 flex-1 flex flex-col lg:flex-row items-center justify-between px-6 md:px-12 lg:px-20 pt-32 pb-48 gap-12">
+        {/* BLOC GAUCHE : DATACARD AVEC SCROLL INTERNE */}
+        <div className="w-full lg:w-1/4 flex justify-center lg:justify-start order-2 lg:order-1">
           <DataCard
             width={320}
-            height={300}
+            height={320}
             title={
               <div className="flex items-center gap-2 text-foreground">
                 <Info className="w-4 h-4 text-blue-400 shrink-0" />
-                <span className="font-semibold text-xs">
+                <span className="font-semibold text-xs leading-tight">
                   Data-driven growth : Anyama
                 </span>
               </div>
             }
             content={
-              <div className="flex flex-col gap-3 text-foreground/80 text-sm leading-relaxed">
+              /* Scroll forcé ici avec overflow-y-auto */
+              <div className="flex flex-col gap-4 text-foreground/80 text-sm leading-relaxed overflow-y-auto max-h-[200px] pr-2 custom-scrollbar">
                 <p>
                   Les métriques d'attractivité et les flux d'investissement
                   convergent vers une réalité : le vrai potentiel se mesure dans
@@ -88,7 +88,7 @@ export default function HomePage() {
               </span>
             }
             modalContent={
-              <div className="space-y-4 text-foreground/90">
+              <div className="space-y-4 text-foreground/90 overflow-y-auto max-h-[350px] pr-2">
                 <p>
                   Potentiel latent détecté : chaque flux, chaque indicateur
                   montre que votre territoire est sous-évalué.
@@ -109,37 +109,46 @@ export default function HomePage() {
           />
         </div>
 
-        {/* COLONNE CENTRALE : LOGO GÉANT & CONNEXION */}
-        <div className="w-full flex flex-col items-center justify-center">
-          <div className="w-full max-w-[460px] p-10 backdrop-blur-2xl rounded-2xl bg-glass-dual border border-border-dual flex flex-col items-center">
-            <div className="w-full h-48 md:h-72 flex items-center justify-center overflow-visible">
+        {/* BLOC CENTRAL : CONNEXION ÉLARGIE ET CENTRAGE ABSOLU */}
+        <div className="w-full lg:w-2/4 flex flex-col items-center justify-center order-1 lg:order-2">
+          {/* Elargissement du max-width à 600px pour plus de présence */}
+          <div className="w-full max-w-[600px] p-10 md:p-14 backdrop-blur-2xl rounded-2xl bg-glass-dual border border-border-dual flex flex-col items-center justify-center text-center shadow-none">
+            <div className="w-full h-48 md:h-80 flex items-center justify-center overflow-visible">
               <TextHoverEffect
                 text="Nonnzytr"
                 duration={0.6}
                 style={{
-                  width: "150%",
+                  width: "140%",
                   height: "100%",
-                  fontSize: "clamp(8rem, 20vw, 15rem)",
+                  fontSize: "clamp(8rem, 22vw, 16rem)",
                 }}
               />
             </div>
 
-            <p className="text-foreground/70 text-sm mb-10 tracking-[0.3em] uppercase font-light">
-              Votre aventure commence ici
-            </p>
+            <div className="flex flex-col items-center w-full mt-4">
+              <p className="text-foreground/70 text-sm md:text-base mb-10 tracking-[0.3em] uppercase font-light">
+                Votre aventure commence ici
+              </p>
 
-            <button
-              onClick={() => signIn("google", { callbackUrl: "/dashboard" })}
-              className="w-full max-w-sm py-4 flex items-center justify-center gap-3 bg-foreground text-background font-bold rounded-xl hover:scale-[1.02] active:scale-95 transition-all duration-300"
-            >
-              <FcGoogle className="text-2xl" />
-              <span className="tracking-wider">CONTINUER AVEC GOOGLE</span>
-            </button>
+              <button
+                onClick={() => signIn("google", { callbackUrl: "/dashboard" })}
+                className="w-full max-w-[380px] py-4.5 flex items-center justify-center gap-4 bg-foreground text-background font-bold rounded-xl hover:scale-[1.02] active:scale-95 transition-all duration-300"
+              >
+                <FcGoogle className="text-2xl" />
+                <span className="tracking-[0.1em] text-sm">
+                  CONTINUER AVEC GOOGLE
+                </span>
+              </button>
+
+              <p className="text-foreground/40 text-[10px] mt-8 italic tracking-wide">
+                Connexion sécurisée via Google • Workflow Access
+              </p>
+            </div>
           </div>
         </div>
 
-        {/* COLONNE DROITE : SIDE CARD */}
-        <div className="w-full flex justify-center lg:justify-end">
+        {/* BLOC DROIT : SIDE CARD */}
+        <div className="w-full lg:w-1/4 flex justify-center lg:justify-end order-3">
           <SideCard
             imageSrc="/zyy.png"
             title="Zy recherche un financement orienté workspace & Workflow"
@@ -149,9 +158,8 @@ export default function HomePage() {
         </div>
       </main>
 
-      {/* FOOTER RÉACTIF (DARK/LIGHT) */}
+      {/* FOOTER RÉACTIF */}
       <footer className="fixed bottom-0 left-0 right-0 z-[100] h-28 flex items-center justify-center pointer-events-none">
-        {/* Gradient adaptatif : Noir pur en dark, Blanc/Transparent en light */}
         <div className="absolute inset-x-0 bottom-0 h-full bg-gradient-to-t from-background via-background/80 to-transparent dark:from-black dark:via-black/95 z-[-1]" />
 
         <div className="relative pointer-events-auto">
@@ -160,7 +168,7 @@ export default function HomePage() {
             iconSize={15}
             magnification={22}
             distance={70}
-            className="bg-background/80 dark:bg-zinc-900/90 border border-border-dual shadow-none backdrop-blur-3xl h-[42px] px-5 rounded-full"
+            className="bg-background/80 dark:bg-zinc-900/90 border border-border-dual shadow-none backdrop-blur-3xl h-[40px] px-5 rounded-full"
           />
         </div>
       </footer>
