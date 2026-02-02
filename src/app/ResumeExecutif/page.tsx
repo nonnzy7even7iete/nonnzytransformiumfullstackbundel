@@ -162,7 +162,7 @@ export default function ResumeExecutifPage() {
               className="text-sm md:text-base font-mono text-emerald-600 dark:text-emerald-400 tracking-[0.1em] leading-relaxed text-center block"
               words={[
                 "Lorsque vous commencez à sentir votre investissement menacé par l'intuition, la Côte d'Ivoire réduit votre charge mentale de par le vectoring à la transparence quant à la valeur attendue.",
-                "Décider n'est plus un pari. C'est un transfert de charge entre scénarios.",
+                "Décider n'est plus un pari. C'est un transfert de charge entre axe de Probabilité .",
                 "Nous mesurons pour vous : le risque, le potentiel, le coût d'erreur et la valeur espérée.",
                 "Une architecture de décision transformée en vecteurs a la certitude via l'analyse de données stratégiques.",
               ]}
