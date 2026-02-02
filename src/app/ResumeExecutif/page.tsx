@@ -51,26 +51,25 @@ export default function ResumeExecutifPage() {
       id: 1,
       name: "FLUX ALPHA",
       designation: "LIVE",
-      content: "Analyse des signaux entrants en temps réel via Node_01.",
+      content: "Analyse des signaux entrants en temps réel.",
     },
     {
       id: 2,
       name: "CORE_DATA",
       designation: "SYNC",
-      content:
-        "Intégrité des protocoles de coopération internationale vérifiée.",
+      content: "Intégrité des protocoles vérifiée.",
     },
     {
       id: 3,
       name: "HUB_ABIDJAN",
       designation: "ACTIVE",
-      content: "Point de sortie primaire vers les nœuds stratégiques mondiaux.",
+      content: "Point de sortie primaire.",
     },
     {
       id: 4,
       name: "RESILIENCE",
       designation: "SECURE",
-      content: "Architecture de protection des données à zéro latence.",
+      content: "Architecture zéro latence.",
     },
   ];
 
@@ -90,8 +89,8 @@ export default function ResumeExecutifPage() {
     <div className="min-h-screen bg-white dark:bg-[#050505] text-zinc-950 dark:text-zinc-50 transition-colors duration-700">
       <NavbarFront />
 
-      {/* SECTION 1 : LAMP (Cycle d'animation 7s/7s rétabli) */}
-      <section className="relative z-30 h-screen overflow-hidden pt-20">
+      {/* SECTION 1 : LAMP (Nettoyée et Rapprochée du Header) */}
+      <section className="relative z-30 h-[80vh] md:h-screen overflow-hidden -mt-20 md:-mt-16">
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: [0, 1, 1, 0] }}
@@ -108,23 +107,25 @@ export default function ResumeExecutifPage() {
           </LampContainer>
         </motion.div>
 
-        <div className="relative z-10 flex h-full flex-col items-center justify-center">
+        <div className="relative z-10 flex h-full flex-col items-center justify-start pt-32 md:pt-40 px-6">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="flex flex-col items-center"
+            className="flex flex-col items-center w-full max-w-5xl"
           >
-            <div className="mb-8">
+            {/* LogicBadge unique et centré */}
+            <div className="mb-6 md:mb-10">
               <LogicBadge text="Nonnzytransformium" />
             </div>
+
             <h1
               className={cn(
-                "bg-gradient-to-br from-slate-100 to-slate-500 py-4 bg-clip-text text-center text-4xl md:text-7xl italic",
+                "bg-gradient-to-br from-slate-100 to-slate-500 py-4 bg-clip-text text-center text-3xl md:text-7xl italic leading-tight",
                 UI_THEME.techBold
               )}
             >
               ALGORITHMIC_SOVEREIGNTY <br />
-              <span className="text-lg md:text-xl font-light tracking-[0.2em] text-emerald-400 block mt-4 normal-case not-italic px-4">
+              <span className="text-base md:text-xl font-light tracking-[0.1em] md:tracking-[0.2em] text-emerald-400 block mt-4 normal-case not-italic px-4 md:px-20">
                 "L'intuition est un luxe que nous avons remplacé par la
                 certitude."
               </span>
@@ -133,60 +134,61 @@ export default function ResumeExecutifPage() {
         </div>
       </section>
 
-      {/* SECTION 2 : HERO TEXTE (Structure préservée) */}
-      <section className="relative h-[80vh] flex flex-col items-center justify-center border-b border-zinc-100 dark:border-white/5 overflow-hidden">
-        <div className="absolute inset-0 z-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:40px_40px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_50%,#000_70%,transparent_100%)]" />
+      {/* SECTION 2 : HERO TEXTE (Nettoyée de la redondance LogicBadge) */}
+      <section className="relative py-24 flex flex-col items-center justify-center border-b border-zinc-100 dark:border-white/5 overflow-hidden px-8 md:px-24">
+        <div className="absolute inset-0 z-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:40px_40px]" />
+
         <motion.div
           initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="relative z-10 text-center px-6 max-w-5xl w-full"
+          whileInView={{ opacity: 1, y: 0 }}
+          className="relative z-10 text-center w-full max-w-6xl"
         >
-          <div className="mb-10">
-            <LogicBadge text="Nonnzytransformium" />
-          </div>
-          <h1
+          <h2
             className={cn(
-              "text-6xl md:text-8xl tracking-tighter uppercase",
+              "text-5xl md:text-8xl tracking-tighter uppercase mb-12",
               UI_THEME.techBold
             )}
           >
             <span className="text-zinc-900 dark:text-white">Data-Driven</span>
             <br />
-            <span className="text-zinc-600 font-light italic text-2xl md:text-4xl tracking-widest block mt-4 uppercase">
-              Ivory coast global networking data driven
+            <span className="text-zinc-600 font-light italic text-xl md:text-3xl tracking-widest block mt-4 uppercase px-4">
+              Ivory coast global networking
             </span>
-          </h1>
-          <div className="mt-16 space-y-6">
-            <p className={UI_THEME.narrative}>
+          </h2>
+
+          <div className="space-y-8 max-w-4xl mx-auto">
+            <p className={cn(UI_THEME.narrative, "px-4")}>
               Nous opérons là où la décision devient instable.
             </p>
-            <WordRotate
-              duration={ROTATION_DURATION}
-              className="text-sm md:text-base font-mono text-emerald-600 dark:text-emerald-400 tracking-[0.1em] leading-relaxed text-center block"
-              words={[
-                "Lorsque vous commencez à sentir votre investissement menacé par l'intuition, la Côte d'Ivoire réduit votre charge mentale de par le vectoring à la transparence quant à la valeur attendue.",
-                "Décider n'est plus un pari. C'est un transfert de charge entre scénarios.",
-                "Nous mesurons pour vous : le risque, le potentiel, le coût d'erreur et la valeur espérée.",
-                "Une architecture de décision transformée en vecteurs a la certitude via l'analyse de données stratégiques.",
-              ]}
-            />
+            <div className="px-6 md:px-12 border-x border-emerald-500/20">
+              <WordRotate
+                duration={ROTATION_DURATION}
+                className="text-sm md:text-base font-mono text-emerald-600 dark:text-emerald-400 tracking-[0.05em] leading-relaxed block"
+                words={[
+                  "Lorsque vous commencez à sentir votre investissement menacé par l'intuition, la Côte d'Ivoire réduit votre charge mentale.",
+                  "Décider n'est plus un pari. C'est un transfert de charge entre scénarios.",
+                  "Nous mesurons pour vous : le risque, le potentiel, le coût d'erreur et la valeur espérée.",
+                  "Une architecture de décision transformée en vecteurs via l'analyse de données stratégiques.",
+                ]}
+              />
+            </div>
           </div>
         </motion.div>
       </section>
 
-      {/* SECTION 3 : ANALYSE (Structure préservée) */}
+      {/* SECTION 3 & 4 (Analyse & Globe) : Structure préservée strictement */}
       <section className="relative z-20 py-32 px-6 bg-zinc-50/50 dark:bg-[#070707] border-b border-zinc-100 dark:border-white/5">
         <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-20 items-center">
           <div className="space-y-6">
             <span className={UI_THEME.machineLabel}>02 // Stream_Analysis</span>
-            <h2
+            <h3
               className={cn(
                 "text-4xl md:text-5xl uppercase",
                 UI_THEME.techBold
               )}
             >
               Analyse des Flux
-            </h2>
+            </h3>
             <p className={cn("max-w-sm opacity-70", UI_THEME.narrative)}>
               Interconnexion sécurisée des nœuds mondiaux.
             </p>
@@ -197,9 +199,7 @@ export default function ResumeExecutifPage() {
         </div>
       </section>
 
-      {/* SECTION 4 : GLOBE (Structure préservée) */}
       <section className="relative h-[90vh] w-full bg-white dark:bg-[#050505] overflow-hidden">
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808008_1px,transparent_1px),linear-gradient(to_bottom,#80808008_1px,transparent_1px)] bg-[size:80px_80px] pointer-events-none" />
         <div className="absolute inset-0 z-0 scale-105">
           <World
             data={[
@@ -225,32 +225,20 @@ export default function ResumeExecutifPage() {
               <span className={UI_THEME.machineLabel}>Remote_Node</span>
               <h2
                 className={cn(
-                  "text-6xl md:text-[10rem] mt-2 transition-all",
+                  "text-6xl md:text-[10rem] mt-2",
                   UI_THEME.techBold,
                   UI_THEME.steelGradient
                 )}
               >
                 {currentDest.label}
               </h2>
-              <div className="mt-8 flex flex-col items-center gap-4">
-                <div className="flex items-center gap-3 bg-white/60 dark:bg-white/5 backdrop-blur-md px-5 py-2 border border-zinc-200 dark:border-white/10 rounded-full">
-                  <span className="h-2.5 w-2.5 rounded-full bg-[#10b981] animate-ping" />
-                  <span className="font-mono text-[9px] tracking-[0.3em] uppercase text-[#10b981] font-bold">
-                    Signal Actif
-                  </span>
-                </div>
-                <p className="max-w-md font-mono text-[9px] leading-loose tracking-[0.15em] text-zinc-500 dark:text-zinc-400 uppercase">
-                  Signal de prédisposition à la coopération internationale{" "}
-                  <br /> en provenance d'Abidjan
-                </p>
-              </div>
             </motion.div>
           </AnimatePresence>
         </div>
       </section>
 
       <footer className="py-20 border-t border-zinc-100 dark:border-white/5 bg-zinc-50 dark:bg-[#050505] text-center">
-        <p className={UI_THEME.machineLabel}>Abidjan Data Center // 2026</p>
+        <p className={UI_THEME.machineLabel}>Abidjan Data driven // 2026</p>
       </footer>
       <ScrollToTop />
     </div>
