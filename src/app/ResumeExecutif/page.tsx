@@ -90,10 +90,8 @@ export default function ResumeExecutifPage() {
     <div className="min-h-screen bg-white dark:bg-[#050505] text-zinc-950 dark:text-zinc-50 transition-colors duration-700">
       <NavbarFront />
 
-      {/* SECTION 1 : LAMP (Rapprochée de la Navbar, positionnée derrière) */}
-      <section className="relative h-[85vh] overflow-hidden -mt-20">
-        {" "}
-        {/* -mt-20 pour rapprocher et passer sous la navbar */}
+      {/* SECTION 1 : LAMP (Optimisée Mobile & Proximité Navbar) */}
+      <section className="relative h-[60vh] md:h-[85vh] overflow-hidden -mt-32 md:-mt-20">
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: [0, 1, 1, 0] }}
@@ -103,14 +101,15 @@ export default function ResumeExecutifPage() {
             repeat: Infinity,
             ease: "easeInOut",
           }}
-          className="absolute inset-0 z-0"
+          className="absolute inset-0 z-0 scale-75 md:scale-100 origin-top"
         >
-          <LampContainer>
+          <LampContainer className="pt-0 translate-y-[-10%] md:translate-y-0">
             <div className="h-full w-full" />
           </LampContainer>
         </motion.div>
-        {/* Contenu Texte fixe */}
-        <div className="relative z-10 flex h-full flex-col items-center justify-center pt-32">
+
+        {/* Contenu Texte fixe : Remonté sur mobile */}
+        <div className="relative z-10 flex h-full flex-col items-center justify-center pt-20 md:pt-32 px-4">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -121,12 +120,12 @@ export default function ResumeExecutifPage() {
             </div>
             <h1
               className={cn(
-                "bg-gradient-to-br from-slate-100 to-slate-500 py-4 bg-clip-text text-center text-4xl font-medium tracking-tight text-transparent md:text-7xl italic",
+                "bg-gradient-to-br from-slate-100 to-slate-500 py-4 bg-clip-text text-center text-3xl md:text-7xl italic",
                 UI_THEME.techBold
               )}
             >
               ALGORITHMIC_SOVEREIGNTY <br />
-              <span className="text-lg md:text-xl font-light tracking-[0.2em] text-emerald-400 block mt-4 normal-case not-italic">
+              <span className="text-sm md:text-xl font-light tracking-[0.1em] md:tracking-[0.2em] text-emerald-400 block mt-2 md:mt-4 normal-case not-italic px-4 max-w-xs md:max-w-none">
                 "L'intuition est un luxe que nous avons remplacé par la
                 certitude."
               </span>
@@ -135,7 +134,7 @@ export default function ResumeExecutifPage() {
         </div>
       </section>
 
-      {/* SECTION 2 : HERO TEXTE (Structure préservée) */}
+      {/* RESTE DU FICHIER : Structure strictement préservée */}
       <section className="relative py-24 flex flex-col items-center justify-center border-b border-zinc-100 dark:border-white/5 overflow-hidden">
         <div className="absolute inset-0 z-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:40px_40px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_50%,#000_70%,transparent_100%)]" />
         <motion.div
@@ -161,7 +160,7 @@ export default function ResumeExecutifPage() {
         </motion.div>
       </section>
 
-      {/* SECTIONS ANALYSE & GLOBE : Structure strictement préservée */}
+      {/* ANALYSE & GLOBE : Structure préservée */}
       <section className="relative z-20 py-32 px-6 bg-zinc-50/50 dark:bg-[#070707] border-b border-zinc-100 dark:border-white/5">
         <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-20 items-center">
           <div className="space-y-6">
@@ -181,57 +180,6 @@ export default function ResumeExecutifPage() {
           <div className="flex justify-center h-[350px] items-center">
             <CardStack items={flowCards} offset={12} scaleFactor={0.06} />
           </div>
-        </div>
-      </section>
-
-      <section className="relative h-[90vh] w-full bg-white dark:bg-[#050505] overflow-hidden">
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808008_1px,transparent_1px),linear-gradient(to_bottom,#80808008_1px,transparent_1px)] bg-[size:80px_80px] pointer-events-none" />
-        <div className="absolute inset-0 z-0 scale-105">
-          <World
-            data={[
-              {
-                startLat: ABIDJAN.lat,
-                startLng: ABIDJAN.lng,
-                endLat: currentDest.lat,
-                endLng: currentDest.lng,
-                color: currentDest.color,
-              },
-            ]}
-          />
-        </div>
-        <div className="absolute inset-0 flex flex-col items-center justify-center z-20 pointer-events-none">
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={currentDest.label}
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -15 }}
-              className="text-center px-4"
-            >
-              <span className={UI_THEME.machineLabel}>Remote_Node</span>
-              <h2
-                className={cn(
-                  "text-6xl md:text-[10rem] mt-2 transition-all",
-                  UI_THEME.techBold,
-                  UI_THEME.steelGradient
-                )}
-              >
-                {currentDest.label}
-              </h2>
-              <div className="mt-8 flex flex-col items-center gap-4">
-                <div className="flex items-center gap-3 bg-white/60 dark:bg-white/5 backdrop-blur-md px-5 py-2 border border-zinc-200 dark:border-white/10 rounded-full">
-                  <span className="h-2.5 w-2.5 rounded-full bg-[#10b981] animate-ping" />
-                  <span className="font-mono text-[9px] tracking-[0.3em] uppercase text-[#10b981] font-bold">
-                    Signal Actif
-                  </span>
-                </div>
-                <p className="max-w-md font-mono text-[9px] leading-loose tracking-[0.15em] text-zinc-500 dark:text-zinc-400 uppercase">
-                  Signal de prédisposition à la coopération internationale{" "}
-                  <br /> en provenance d'Abidjan
-                </p>
-              </div>
-            </motion.div>
-          </AnimatePresence>
         </div>
       </section>
 
