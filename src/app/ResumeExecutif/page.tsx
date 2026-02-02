@@ -90,21 +90,30 @@ export default function ResumeExecutifPage() {
     <div className="min-h-screen bg-white dark:bg-[#050505] text-zinc-950 dark:text-zinc-50 transition-colors duration-700">
       <NavbarFront />
 
-      {/* SECTION 1 : LAMP (Ajustée : padding top + Italique) */}
+      {/* SECTION 1 : LAMP (Cycle 7s On / 7s Off pour le flux lumineux uniquement) */}
       <section className="relative z-30 h-screen overflow-hidden pt-20">
-        <LampContainer>
+        {/* On anime l'opacité du LampContainer lui-même pour faire disparaître la lumière */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: [0, 1, 1, 0] }}
+          transition={{
+            duration: 14, // Cycle complet de 14s (7s visible, 7s invisible)
+            times: [0, 0.1, 0.5, 0.6], // Apparaît vite (0.1), reste (0.5), disparaît (0.6)
+            repeat: Infinity,
+            ease: "easeInOut",
+          }}
+          className="absolute inset-0 z-0"
+        >
+          <LampContainer>
+            <div className="h-full w-full" />
+          </LampContainer>
+        </motion.div>
+
+        {/* Le texte reste fixe au-dessus du LampContainer grâce au z-index */}
+        <div className="relative z-10 flex h-full flex-col items-center justify-center">
           <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            animate={{
-              scale: [1, 1.05, 1, 1],
-            }}
-            transition={{
-              duration: 10,
-              times: [0, 0.15, 0.3, 1],
-              ease: "easeInOut",
-              repeat: Infinity,
-            }}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
             className="flex flex-col items-center"
           >
             <div className="mb-8">
@@ -123,11 +132,12 @@ export default function ResumeExecutifPage() {
               </span>
             </h1>
           </motion.div>
-        </LampContainer>
+        </div>
       </section>
 
-      {/* SECTION 2 : HERO TEXTE (Structure préservée) */}
+      {/* RESTE DU FICHIER : Structure strictement préservée */}
       <section className="relative py-24 flex flex-col items-center justify-center border-b border-zinc-100 dark:border-white/5 overflow-hidden">
+        {/* ... Hero Texte ... */}
         <div className="absolute inset-0 z-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:40px_40px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_50%,#000_70%,transparent_100%)]" />
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -152,7 +162,7 @@ export default function ResumeExecutifPage() {
         </motion.div>
       </section>
 
-      {/* SECTIONS SUIVANTES (Analyse & Globe) : Structure strictement préservée */}
+      {/* SECTIONS SUIVANTES (Analyse & Globe) : Strictement préservées */}
       <section className="relative z-20 py-32 px-6 bg-zinc-50/50 dark:bg-[#070707] border-b border-zinc-100 dark:border-white/5">
         <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-20 items-center">
           <div className="space-y-6">
