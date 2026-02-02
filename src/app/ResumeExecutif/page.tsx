@@ -10,7 +10,6 @@ import { ScrollToTop } from "@/components/frontendkit/ScrollToTop";
 import { LogicBadge } from "@/components/frontendkit/LogicBadge";
 import { WordRotate } from "@/components/frontendkit/word-rotate";
 import { cn } from "@/lib/utils";
-// AJOUT : Import du conteneur de lampe pour la nouvelle section
 import { LampContainer } from "@/components/ui/lamp";
 
 const UI_THEME = {
@@ -36,9 +35,9 @@ export default function ResumeExecutifPage() {
 
   const destinations = useMemo(
     () => [
-      { label: "SÃ‰NÃ‰GAL", lat: 14.49, lng: -14.45, color: "#10b981" },
+      { label: "SÉNÉGAL", lat: 14.49, lng: -14.45, color: "#10b981" },
       { label: "CENTRAFRIQUE", lat: 4.36, lng: 18.55, color: "#10b981" },
-      { label: "NIGÃ‰RIA", lat: 9.08, lng: 8.67, color: "#10b981" },
+      { label: "NIGÉRIA", lat: 9.08, lng: 8.67, color: "#10b981" },
       { label: "MAROC", lat: 31.79, lng: -7.09, color: "#f97316" },
       { label: "CHINE", lat: 35.86, lng: 104.19, color: "#ef4444" },
       { label: "USA", lat: 37.09, lng: -95.71, color: "#3b82f6" },
@@ -52,27 +51,26 @@ export default function ResumeExecutifPage() {
       id: 1,
       name: "FLUX ALPHA",
       designation: "LIVE",
-      content: "Analyse des signaux entrants en temps rÃ©el via Node_01.",
+      content: "Analyse des signaux entrants en temps réel via Node_01.",
     },
     {
       id: 2,
       name: "CORE_DATA",
       designation: "SYNC",
       content:
-        "IntÃ©gritÃ© des protocoles de coopÃ©ration internationale vÃ©rifiÃ©e.",
+        "Intégrité des protocoles de coopération internationale vérifiée.",
     },
     {
       id: 3,
       name: "HUB_ABIDJAN",
       designation: "ACTIVE",
-      content:
-        "Point de sortie primaire vers les nÅ“uds stratÃ©giques mondiaux.",
+      content: "Point de sortie primaire vers les nœuds stratégiques mondiaux.",
     },
     {
       id: 4,
       name: "RESILIENCE",
       designation: "SECURE",
-      content: "Architecture de protection des donnÃ©es Ã  zÃ©ro latence.",
+      content: "Architecture de protection des données à zéro latence.",
     },
   ];
 
@@ -92,48 +90,68 @@ export default function ResumeExecutifPage() {
     <div className="min-h-screen bg-white dark:bg-[#050505] text-zinc-950 dark:text-zinc-50 transition-colors duration-700">
       <NavbarFront />
 
-      {/* SECTION 1 : HERO */}
-      <section className="relative h-[80vh] flex flex-col items-center justify-center border-b border-zinc-100 dark:border-white/5 overflow-hidden">
+      {/* SECTION 1 : LAMP */}
+      <section className="relative z-30 h-screen overflow-hidden">
+        <LampContainer>
+          <motion.div
+            initial={{ opacity: 0.5, y: 100 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            animate={{
+              opacity: [0.5, 1, 0.5],
+              y: [100, 0, 0],
+            }}
+            transition={{
+              duration: 7,
+              ease: "easeInOut",
+              repeat: Infinity,
+            }}
+            className="flex flex-col items-center"
+          >
+            <div className="mb-8">
+              <LogicBadge text="Nonnzytransformium" />
+            </div>
+            <h1
+              className={cn(
+                "bg-gradient-to-br from-slate-300 to-slate-500 py-4 bg-clip-text text-center text-4xl font-medium tracking-tight text-transparent md:text-7xl",
+                UI_THEME.techBold
+              )}
+            >
+              ZY FONCE <br />
+              <span className="text-xl md:text-2xl font-light tracking-[0.4em] text-emerald-500 uppercase">
+                Ivory coast global networking
+              </span>
+            </h1>
+          </motion.div>
+        </LampContainer>
+      </section>
+
+      {/* SECTION 2 : HERO TEXTE */}
+      <section className="relative py-24 flex flex-col items-center justify-center border-b border-zinc-100 dark:border-white/5 overflow-hidden">
         <div className="absolute inset-0 z-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:40px_40px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_50%,#000_70%,transparent_100%)]" />
         <motion.div
           initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
+          whileInView={{ opacity: 1, y: 0 }}
           className="relative z-10 text-center px-6 max-w-5xl w-full"
         >
-          <div className="mb-10">
-            <LogicBadge text="Nonnzytransformium" />
-          </div>
-          <h1
-            className={cn(
-              "text-6xl md:text-8xl tracking-tighter uppercase",
-              UI_THEME.techBold
-            )}
-          >
-            <span className="text-zinc-900 dark:text-white">Data-Driven</span>
-            <br />
-            <span className="text-zinc-600 font-light italic text-2xl md:text-4xl tracking-widest block mt-4 uppercase">
-              Ivory coast global networking data driven
-            </span>
-          </h1>
-          <div className="mt-16 space-y-6">
+          <div className="mt-8 space-y-6">
             <p className={UI_THEME.narrative}>
-              Nous opÃ©rons lÃ  oÃ¹ la dÃ©cision devient instable.
+              Nous opérons là où la décision devient instable.
             </p>
             <WordRotate
               duration={ROTATION_DURATION}
               className="text-sm md:text-base font-mono text-emerald-600 dark:text-emerald-400 tracking-[0.1em] leading-relaxed text-center block"
               words={[
-                "Lorsque vous commencez Ã  sentir votre investissement menacÃ© par l'intuition, la CÃ´te d'Ivoire rÃ©duit votre charge mentale de par le vectoring Ã  la transparence quant Ã  la valeur attendue.",
-                "DÃ©cider n'est plus un pari. C'est un transfert de charge entre scÃ©narios.",
-                "Nous mesurons pour vous : le risque, le potentiel, le coÃ»t d'erreur et la valeur espÃ©rÃ©e.",
-                "Une architecture de dÃ©cision transformÃ©e en vecteurs a la certitude via l'analyse de donnÃ©es stratÃ©giques.",
+                "Lorsque vous commencez à sentir votre investissement menacé par l'intuition, la Côte d'Ivoire réduit votre charge mentale de par le vectoring à la transparence quant à la valeur attendue.",
+                "Décider n'est plus un pari. C'est un transfert de charge entre scénarios.",
+                "Nous mesurons pour vous : le risque, le potentiel, le coût d'erreur et la valeur espérée.",
+                "Une architecture de décision transformée en vecteurs a la certitude via l'analyse de données stratégiques.",
               ]}
             />
           </div>
         </motion.div>
       </section>
 
-      {/* SECTION 2 : ANALYSE */}
+      {/* SECTION 3 : ANALYSE */}
       <section className="relative z-20 py-32 px-6 bg-zinc-50/50 dark:bg-[#070707] border-b border-zinc-100 dark:border-white/5">
         <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-20 items-center">
           <div className="space-y-6">
@@ -147,7 +165,7 @@ export default function ResumeExecutifPage() {
               Analyse des Flux
             </h2>
             <p className={cn("max-w-sm opacity-70", UI_THEME.narrative)}>
-              Interconnexion sÃ©curisÃ©e des nÅ“uds mondiaux.
+              Interconnexion sécurisée des nœuds mondiaux.
             </p>
           </div>
           <div className="flex justify-center h-[350px] items-center">
@@ -156,7 +174,7 @@ export default function ResumeExecutifPage() {
         </div>
       </section>
 
-      {/* SECTION 3 : GLOBE */}
+      {/* SECTION 4 : GLOBE */}
       <section className="relative h-[90vh] w-full bg-white dark:bg-[#050505] overflow-hidden">
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808008_1px,transparent_1px),linear-gradient(to_bottom,#80808008_1px,transparent_1px)] bg-[size:80px_80px] pointer-events-none" />
         <div className="absolute inset-0 z-0 scale-105">
@@ -199,41 +217,13 @@ export default function ResumeExecutifPage() {
                   </span>
                 </div>
                 <p className="max-w-md font-mono text-[9px] leading-loose tracking-[0.15em] text-zinc-500 dark:text-zinc-400 uppercase">
-                  Signal de prÃ©disposition Ã  la coopÃ©ration internationale{" "}
+                  Signal de prédisposition à la coopération internationale{" "}
                   <br /> en provenance d'Abidjan
                 </p>
               </div>
             </motion.div>
           </AnimatePresence>
         </div>
-      </section>
-
-      {/* SECTION 4 : CONCLUSION (L'EFFET LAMP) */}
-      <section className="relative z-30">
-        <LampContainer>
-          <motion.div
-            initial={{ opacity: 0.5, y: 100 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{
-              delay: 0.3,
-              duration: 0.8,
-              ease: "easeInOut",
-            }}
-            className="flex flex-col items-center"
-          >
-            <h1
-              className={cn(
-                "bg-gradient-to-br from-slate-300 to-slate-500 py-4 bg-clip-text text-center text-4xl font-medium tracking-tight text-transparent md:text-7xl",
-                UI_THEME.techBold
-              )}
-            >
-              ZY FONCE <br />
-              <span className="text-xl md:text-2xl font-light tracking-[0.4em] text-emerald-500">
-                CONSTRUIRE LE FUTUR
-              </span>
-            </h1>
-          </motion.div>
-        </LampContainer>
       </section>
 
       <footer className="py-20 border-t border-zinc-100 dark:border-white/5 bg-zinc-50 dark:bg-[#050505] text-center">
