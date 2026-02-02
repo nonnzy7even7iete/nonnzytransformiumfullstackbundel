@@ -90,14 +90,16 @@ export default function ResumeExecutifPage() {
     <div className="min-h-screen bg-white dark:bg-[#050505] text-zinc-950 dark:text-zinc-50 transition-colors duration-700">
       <NavbarFront />
 
-      {/* SECTION 1 : LAMP (Rapprochée & Marges Immergées) */}
+      {/* SECTION 1 : LAMP (Timing 14s & Marges Immergées) */}
       <section className="relative z-30 h-screen overflow-hidden -mt-24 md:-mt-32">
         <motion.div
+          initial={{ opacity: 0 }}
           animate={{ opacity: [0, 1, 1, 0] }}
           transition={{
             duration: 14,
             times: [0, 0.1, 0.5, 0.6],
             repeat: Infinity,
+            ease: "easeInOut",
           }}
           className="absolute inset-0 z-0"
         >
@@ -106,28 +108,32 @@ export default function ResumeExecutifPage() {
           </LampContainer>
         </motion.div>
 
-        <div className="relative z-10 flex h-full flex-col items-center justify-center pt-20 px-10 md:px-32 text-center">
-          <div className="mb-8">
-            <LogicBadge text="Nonnzytransformium" />
-          </div>
-          <h1
-            className={cn(
-              "text-3xl md:text-7xl italic leading-[1.1] bg-gradient-to-b from-white to-zinc-500 bg-clip-text text-transparent",
-              UI_THEME.techBold
-            )}
+        <div className="relative z-10 flex h-full flex-col items-center justify-center pt-20 px-10 md:px-32">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="flex flex-col items-center text-center"
           >
-            ALGORITHMIC_SOVEREIGNTY
-          </h1>
-          <div className="mt-8 max-w-2xl border-t border-emerald-500/20 pt-8">
-            <p className="text-sm md:text-xl font-light tracking-[0.2em] text-emerald-400 normal-case not-italic">
-              "L'intuition est un luxe que nous avons remplacé par la
-              certitude."
-            </p>
-          </div>
+            <div className="mb-10">
+              <LogicBadge text="Nonnzytransformium" />
+            </div>
+            <h1
+              className={cn(
+                "bg-gradient-to-br from-slate-100 to-slate-500 py-4 bg-clip-text text-3xl md:text-7xl italic",
+                UI_THEME.techBold
+              )}
+            >
+              ALGORITHMIC_SOVEREIGNTY <br />
+              <span className="text-sm md:text-xl font-light tracking-[0.2em] text-emerald-400 block mt-4 normal-case not-italic px-6 border-t border-emerald-500/10 pt-6">
+                "L'intuition est un luxe que nous avons remplacé par la
+                certitude."
+              </span>
+            </h1>
+          </motion.div>
         </div>
       </section>
 
-      {/* SECTION 2 : DATA-DRIVEN (Structure Initiale Rétablie) */}
+      {/* SECTION 2 : DATA-DRIVEN (Rétablie Intégralement sans Badge) */}
       <section className="relative h-[80vh] flex flex-col items-center justify-center border-b border-zinc-100 dark:border-white/5 overflow-hidden">
         <div className="absolute inset-0 z-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:40px_40px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_50%,#000_70%,transparent_100%)]" />
         <motion.div
@@ -135,7 +141,6 @@ export default function ResumeExecutifPage() {
           whileInView={{ opacity: 1, y: 0 }}
           className="relative z-10 text-center px-6 max-w-5xl w-full"
         >
-          {/* Badge supprimé ici pour éviter la redondance */}
           <h1
             className={cn(
               "text-6xl md:text-8xl tracking-tighter uppercase",
@@ -166,7 +171,7 @@ export default function ResumeExecutifPage() {
         </motion.div>
       </section>
 
-      {/* SECTION 3 : ANALYSE (Détails CardStack Rétablis) */}
+      {/* SECTION 3 : ANALYSE (Structure Senior avec props CardStack) */}
       <section className="relative z-20 py-32 px-6 bg-zinc-50/50 dark:bg-[#070707] border-b border-zinc-100 dark:border-white/5">
         <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-20 items-center">
           <div className="space-y-6">
@@ -189,7 +194,7 @@ export default function ResumeExecutifPage() {
         </div>
       </section>
 
-      {/* SECTION 4 : GLOBE (Détails World Rétablis) */}
+      {/* SECTION 4 : GLOBE (Stricte Préservation des Détails) */}
       <section className="relative h-[90vh] w-full bg-white dark:bg-[#050505] overflow-hidden">
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808008_1px,transparent_1px),linear-gradient(to_bottom,#80808008_1px,transparent_1px)] bg-[size:80px_80px] pointer-events-none" />
         <div className="absolute inset-0 z-0 scale-105">
