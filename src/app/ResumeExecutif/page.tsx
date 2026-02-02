@@ -51,25 +51,26 @@ export default function ResumeExecutifPage() {
       id: 1,
       name: "FLUX ALPHA",
       designation: "LIVE",
-      content: "Analyse des signaux entrants en temps réel.",
+      content: "Analyse des signaux entrants en temps réel via Node_01.",
     },
     {
       id: 2,
       name: "CORE_DATA",
       designation: "SYNC",
-      content: "Intégrité des protocoles de coopération.",
+      content:
+        "Intégrité des protocoles de coopération internationale vérifiée.",
     },
     {
       id: 3,
       name: "HUB_ABIDJAN",
       designation: "ACTIVE",
-      content: "Point de sortie primaire mondial.",
+      content: "Point de sortie primaire vers les nœuds stratégiques mondiaux.",
     },
     {
       id: 4,
       name: "RESILIENCE",
       designation: "SECURE",
-      content: "Architecture de protection à zéro latence.",
+      content: "Architecture de protection des données à zéro latence.",
     },
   ];
 
@@ -89,7 +90,7 @@ export default function ResumeExecutifPage() {
     <div className="min-h-screen bg-white dark:bg-[#050505] text-zinc-950 dark:text-zinc-50 transition-colors duration-700">
       <NavbarFront />
 
-      {/* SECTION 1 : LAMP & ALGORITHMIC_SOVEREIGNTY */}
+      {/* SECTION 1 : LAMP (Rapprochée & Marges Immergées) */}
       <section className="relative z-30 h-screen overflow-hidden -mt-24 md:-mt-32">
         <motion.div
           animate={{ opacity: [0, 1, 1, 0] }}
@@ -105,80 +106,93 @@ export default function ResumeExecutifPage() {
           </LampContainer>
         </motion.div>
 
-        <div className="relative z-10 flex h-full flex-col items-center justify-center pt-20 px-6 md:px-24 text-center">
+        <div className="relative z-10 flex h-full flex-col items-center justify-center pt-20 px-10 md:px-32 text-center">
           <div className="mb-8">
             <LogicBadge text="Nonnzytransformium" />
           </div>
           <h1
             className={cn(
-              "text-3xl md:text-7xl italic leading-none bg-gradient-to-b from-white to-zinc-500 bg-clip-text text-transparent",
+              "text-3xl md:text-7xl italic leading-[1.1] bg-gradient-to-b from-white to-zinc-500 bg-clip-text text-transparent",
               UI_THEME.techBold
             )}
           >
             ALGORITHMIC_SOVEREIGNTY
           </h1>
-          <p className="mt-6 text-sm md:text-xl font-light tracking-[0.2em] text-emerald-400 max-w-2xl border-t border-emerald-500/20 pt-6">
-            "L'intuition est un luxe que nous avons remplacé par la certitude."
-          </p>
-        </div>
-      </section>
-
-      {/* SECTION 2 : DATA-DRIVEN (Zéro Redondance) */}
-      <section className="relative py-32 flex flex-col items-center justify-center border-y border-zinc-100 dark:border-white/5 bg-zinc-50/30 dark:bg-transparent">
-        <div className="absolute inset-0 z-0 bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] dark:bg-[radial-gradient(#ffffff05_1px,transparent_1px)] [bg-size:20px_20px]" />
-
-        <div className="relative z-10 w-full max-w-5xl px-8 md:px-20 text-center">
-          <h2
-            className={cn("text-5xl md:text-[6rem] mb-12", UI_THEME.techBold)}
-          >
-            <span className="text-zinc-950 dark:text-white">Data-Driven</span>
-            <br />
-            <span className="text-zinc-500 text-lg md:text-2xl font-light tracking-[0.3em] uppercase block mt-4 italic">
-              Ivory Coast Global Networking
-            </span>
-          </h2>
-
-          <div className="space-y-10 mt-16 max-w-3xl mx-auto">
-            <p className={UI_THEME.narrative}>
-              Opérations en zone de haute instabilité décisionnelle
+          <div className="mt-8 max-w-2xl border-t border-emerald-500/20 pt-8">
+            <p className="text-sm md:text-xl font-light tracking-[0.2em] text-emerald-400 normal-case not-italic">
+              "L'intuition est un luxe que nous avons remplacé par la
+              certitude."
             </p>
-            <div className="py-8 px-6 md:px-12 bg-white/5 backdrop-blur-sm border border-zinc-200 dark:border-white/5 rounded-sm">
-              <WordRotate
-                duration={ROTATION_DURATION}
-                className="text-sm md:text-base font-mono text-emerald-600 dark:text-emerald-400 tracking-wide"
-                words={[
-                  "Optimisation de la charge mentale par vectorisation de l'investissement.",
-                  "Décider n'est plus un pari. C'est un transfert de charge scénaristique.",
-                  "Mesure quantitative : Risque, Potentiel et Valeur Espérée.",
-                  "Architecture décisionnelle certifiée par analyse de flux stratégiques.",
-                ]}
-              />
-            </div>
           </div>
         </div>
       </section>
 
-      {/* SECTION 3 : ANALYSE (Structure Préservée) */}
-      <section className="relative py-32 px-6">
-        <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
-          <div className="space-y-4">
+      {/* SECTION 2 : DATA-DRIVEN (Structure Initiale Rétablie) */}
+      <section className="relative h-[80vh] flex flex-col items-center justify-center border-b border-zinc-100 dark:border-white/5 overflow-hidden">
+        <div className="absolute inset-0 z-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:40px_40px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_50%,#000_70%,transparent_100%)]" />
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          className="relative z-10 text-center px-6 max-w-5xl w-full"
+        >
+          {/* Badge supprimé ici pour éviter la redondance */}
+          <h1
+            className={cn(
+              "text-6xl md:text-8xl tracking-tighter uppercase",
+              UI_THEME.techBold
+            )}
+          >
+            <span className="text-zinc-900 dark:text-white">Data-Driven</span>
+            <br />
+            <span className="text-zinc-600 font-light italic text-2xl md:text-4xl tracking-widest block mt-4 uppercase">
+              Ivory coast global networking
+            </span>
+          </h1>
+          <div className="mt-16 space-y-6">
+            <p className={UI_THEME.narrative}>
+              Nous opérons là où la décision devient instable.
+            </p>
+            <WordRotate
+              duration={ROTATION_DURATION}
+              className="text-sm md:text-base font-mono text-emerald-600 dark:text-emerald-400 tracking-[0.1em] leading-relaxed text-center block"
+              words={[
+                "Lorsque vous commencez à sentir votre investissement menacé par l'intuition, la Côte d'Ivoire réduit votre charge mentale de par le vectoring à la transparence quant à la valeur attendue.",
+                "Décider n'est plus un pari. C'est un transfert de charge entre scénarios.",
+                "Nous mesurons pour vous : le risque, le potentiel, le coût d'erreur et la valeur espérée.",
+                "Une architecture de décision transformée en vecteurs a la certitude via l'analyse de données stratégiques.",
+              ]}
+            />
+          </div>
+        </motion.div>
+      </section>
+
+      {/* SECTION 3 : ANALYSE (Détails CardStack Rétablis) */}
+      <section className="relative z-20 py-32 px-6 bg-zinc-50/50 dark:bg-[#070707] border-b border-zinc-100 dark:border-white/5">
+        <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-20 items-center">
+          <div className="space-y-6">
             <span className={UI_THEME.machineLabel}>02 // Stream_Analysis</span>
-            <h3 className={cn("text-4xl md:text-5xl", UI_THEME.techBold)}>
-              ANALYSE DES FLUX
-            </h3>
-            <p className={cn("opacity-60", UI_THEME.narrative)}>
+            <h2
+              className={cn(
+                "text-4xl md:text-5xl uppercase",
+                UI_THEME.techBold
+              )}
+            >
+              Analyse des Flux
+            </h2>
+            <p className={cn("max-w-sm opacity-70", UI_THEME.narrative)}>
               Interconnexion sécurisée des nœuds mondiaux.
             </p>
           </div>
-          <div className="flex justify-center h-[300px]">
-            <CardStack items={flowCards} offset={10} scaleFactor={0.05} />
+          <div className="flex justify-center h-[350px] items-center">
+            <CardStack items={flowCards} offset={12} scaleFactor={0.06} />
           </div>
         </div>
       </section>
 
-      {/* SECTION 4 : GLOBE (Structure Préservée) */}
-      <section className="relative h-[80vh] w-full overflow-hidden border-t border-white/5">
-        <div className="absolute inset-0 z-0 scale-110">
+      {/* SECTION 4 : GLOBE (Détails World Rétablis) */}
+      <section className="relative h-[90vh] w-full bg-white dark:bg-[#050505] overflow-hidden">
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808008_1px,transparent_1px),linear-gradient(to_bottom,#80808008_1px,transparent_1px)] bg-[size:80px_80px] pointer-events-none" />
+        <div className="absolute inset-0 z-0 scale-105">
           <World
             data={[
               {
@@ -191,30 +205,43 @@ export default function ResumeExecutifPage() {
             ]}
           />
         </div>
-        <div className="absolute inset-0 flex flex-col items-center justify-center z-20 pointer-events-none text-center">
+        <div className="absolute inset-0 flex flex-col items-center justify-center z-20 pointer-events-none">
           <AnimatePresence mode="wait">
             <motion.div
               key={currentDest.label}
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 1.1 }}
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -15 }}
+              className="text-center px-4"
             >
-              <span className={UI_THEME.machineLabel}>Remote_Node_Active</span>
+              <span className={UI_THEME.machineLabel}>Remote_Node</span>
               <h2
                 className={cn(
-                  "text-6xl md:text-[9rem]",
+                  "text-6xl md:text-[10rem] mt-2 transition-all",
                   UI_THEME.techBold,
                   UI_THEME.steelGradient
                 )}
               >
                 {currentDest.label}
               </h2>
+              <div className="mt-8 flex flex-col items-center gap-4">
+                <div className="flex items-center gap-3 bg-white/60 dark:bg-white/5 backdrop-blur-md px-5 py-2 border border-zinc-200 dark:border-white/10 rounded-full">
+                  <span className="h-2.5 w-2.5 rounded-full bg-[#10b981] animate-ping" />
+                  <span className="font-mono text-[9px] tracking-[0.3em] uppercase text-[#10b981] font-bold">
+                    Signal Actif
+                  </span>
+                </div>
+                <p className="max-w-md font-mono text-[9px] leading-loose tracking-[0.15em] text-zinc-500 dark:text-zinc-400 uppercase">
+                  Signal de prédisposition à la coopération internationale{" "}
+                  <br /> en provenance d'Abidjan
+                </p>
+              </div>
             </motion.div>
           </AnimatePresence>
         </div>
       </section>
 
-      <footer className="py-12 border-t border-white/5 text-center bg-[#050505]">
+      <footer className="py-20 border-t border-zinc-100 dark:border-white/5 bg-zinc-50 dark:bg-[#050505] text-center">
         <p className={UI_THEME.machineLabel}>Abidjan Data Center // 2026</p>
       </footer>
       <ScrollToTop />
