@@ -90,8 +90,8 @@ export default function ResumeExecutifPage() {
     <div className="min-h-screen bg-white dark:bg-[#050505] text-zinc-950 dark:text-zinc-50 transition-colors duration-700">
       <NavbarFront />
 
-      {/* SECTION 1 : LAMP (Plein écran mobile, sans effet "card") */}
-      <section className="relative h-[80vh] md:h-screen w-full overflow-hidden -mt-24 md:-mt-20">
+      {/* SECTION 1 : LAMP (Cycle d'animation 7s/7s rétabli) */}
+      <section className="relative z-30 h-screen overflow-hidden pt-20">
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: [0, 1, 1, 0] }}
@@ -101,33 +101,30 @@ export default function ResumeExecutifPage() {
             repeat: Infinity,
             ease: "easeInOut",
           }}
-          className="absolute inset-0 z-0 flex justify-center"
+          className="absolute inset-0 z-0"
         >
-          {/* On force la largeur à 100vw pour briser toute contrainte de parent sur mobile */}
-          <div className="w-[120vw] md:w-full flex justify-center scale-90 md:scale-100 translate-y-[-15%] md:translate-y-0">
-            <LampContainer className="w-full bg-transparent">
-              <div />
-            </LampContainer>
-          </div>
+          <LampContainer>
+            <div className="h-full w-full" />
+          </LampContainer>
         </motion.div>
 
-        <div className="relative z-10 flex h-full flex-col items-center justify-center px-4 pt-10">
+        <div className="relative z-10 flex h-full flex-col items-center justify-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="flex flex-col items-center w-full max-w-4xl"
+            className="flex flex-col items-center"
           >
-            <div className="mb-6 md:mb-10">
+            <div className="mb-8">
               <LogicBadge text="Nonnzytransformium" />
             </div>
             <h1
               className={cn(
-                "bg-gradient-to-br from-slate-100 to-slate-500 py-4 bg-clip-text text-center text-4xl md:text-7xl italic px-2",
+                "bg-gradient-to-br from-slate-100 to-slate-500 py-4 bg-clip-text text-center text-4xl md:text-7xl italic",
                 UI_THEME.techBold
               )}
             >
               ALGORITHMIC_SOVEREIGNTY <br />
-              <span className="text-base md:text-xl font-light tracking-[0.15em] md:tracking-[0.2em] text-emerald-400 block mt-4 normal-case not-italic px-4">
+              <span className="text-lg md:text-xl font-light tracking-[0.2em] text-emerald-400 block mt-4 normal-case not-italic px-4">
                 "L'intuition est un luxe que nous avons remplacé par la
                 certitude."
               </span>
@@ -136,7 +133,7 @@ export default function ResumeExecutifPage() {
         </div>
       </section>
 
-      {/* SECTION 2 : HERO TEXTE (Structure préservée intégralement) */}
+      {/* SECTION 2 : HERO TEXTE (Structure préservée) */}
       <section className="relative h-[80vh] flex flex-col items-center justify-center border-b border-zinc-100 dark:border-white/5 overflow-hidden">
         <div className="absolute inset-0 z-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:40px_40px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_50%,#000_70%,transparent_100%)]" />
         <motion.div
