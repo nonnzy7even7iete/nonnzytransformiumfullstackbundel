@@ -90,15 +90,14 @@ export default function ResumeExecutifPage() {
     <div className="min-h-screen bg-white dark:bg-[#050505] text-zinc-950 dark:text-zinc-50 transition-colors duration-700">
       <NavbarFront />
 
-      {/* SECTION 1 : LAMP */}
+      {/* SECTION 1 : LAMP (Animation stabilisée) */}
       <section className="relative z-30 h-screen overflow-hidden">
         <LampContainer>
           <motion.div
-            initial={{ opacity: 0.5, y: 100 }}
+            initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
             animate={{
-              opacity: [0.5, 1, 0.5],
-              y: [100, 0, 0],
+              scale: [1, 1.02, 1], // Pulsation discrète de taille plutôt que d'opacité
             }}
             transition={{
               duration: 7,
@@ -125,7 +124,7 @@ export default function ResumeExecutifPage() {
         </LampContainer>
       </section>
 
-      {/* SECTION 2 : HERO TEXTE */}
+      {/* SECTION 2 : HERO TEXTE (Structure préservée) */}
       <section className="relative py-24 flex flex-col items-center justify-center border-b border-zinc-100 dark:border-white/5 overflow-hidden">
         <div className="absolute inset-0 z-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:40px_40px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_50%,#000_70%,transparent_100%)]" />
         <motion.div
@@ -151,7 +150,7 @@ export default function ResumeExecutifPage() {
         </motion.div>
       </section>
 
-      {/* SECTION 3 : ANALYSE */}
+      {/* SECTION 3 : ANALYSE (Structure préservée) */}
       <section className="relative z-20 py-32 px-6 bg-zinc-50/50 dark:bg-[#070707] border-b border-zinc-100 dark:border-white/5">
         <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-20 items-center">
           <div className="space-y-6">
@@ -174,7 +173,7 @@ export default function ResumeExecutifPage() {
         </div>
       </section>
 
-      {/* SECTION 4 : GLOBE */}
+      {/* SECTION 4 : GLOBE (Structure préservée) */}
       <section className="relative h-[90vh] w-full bg-white dark:bg-[#050505] overflow-hidden">
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808008_1px,transparent_1px),linear-gradient(to_bottom,#80808008_1px,transparent_1px)] bg-[size:80px_80px] pointer-events-none" />
         <div className="absolute inset-0 z-0 scale-105">
@@ -199,7 +198,9 @@ export default function ResumeExecutifPage() {
               exit={{ opacity: 0, y: -15 }}
               className="text-center px-4"
             >
-              <span className={UI_THEME.machineLabel}>Remote_Node</span>
+              <span className={UI_THEME.machineLabel}>
+                En provenance d abidjan
+              </span>
               <h2
                 className={cn(
                   "text-6xl md:text-[10rem] mt-2 transition-all",
@@ -227,7 +228,7 @@ export default function ResumeExecutifPage() {
       </section>
 
       <footer className="py-20 border-t border-zinc-100 dark:border-white/5 bg-zinc-50 dark:bg-[#050505] text-center">
-        <p className={UI_THEME.machineLabel}>Abidjan Data Center // 2026</p>
+        <p className={UI_THEME.machineLabel}>Abidjan Data dr\iven // 2026</p>
       </footer>
       <ScrollToTop />
     </div>
