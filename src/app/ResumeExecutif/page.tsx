@@ -98,7 +98,7 @@ export default function ResumeExecutifPage() {
           className="relative z-10 text-center px-6 max-w-5xl w-full"
         >
           <div className="mb-10">
-            <LogicBadge text="Node_01 // Stable" />
+            <LogicBadge text="Nonnzytransformium" />
           </div>
           <h1
             className={cn(
