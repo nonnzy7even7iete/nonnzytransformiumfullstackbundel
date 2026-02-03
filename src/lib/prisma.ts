@@ -1,17 +1,9 @@
 import { PrismaClient } from "@prisma/client";
 
 const prismaClientSingleton = () => {
-  const url = process.env.DATABASE_URL;
-
-  // On passe l'URL via 'datasourceUrl' (standard Prisma 7)
-  // On ajoute un log pour vérifier sur Vercel si l'URL est bien là
-  if (!url) {
-    console.warn("⚠️ DATABASE_URL is missing during Prisma instantiation");
-  }
-
-  return new PrismaClient({
-    datasourceUrl: url,
-  } as any);
+  // On laisse Prisma gérer l'URL tout seul via le fichier schema.prisma
+  // C'est la méthode la plus compatible qui évite les erreurs de "Unknown property"
+  return new PrismaClient();
 };
 
 const globalForPrisma = globalThis as unknown as {
