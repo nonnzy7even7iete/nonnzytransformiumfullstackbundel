@@ -1,20 +1,17 @@
 import { PrismaClient } from "@prisma/client";
 
 const prismaClientSingleton = () => {
+  // 1. On crée le client totalement VIDE pour satisfaire le validateur
+  const client = new PrismaClient();
+
+  // 2. On injecte l'URL de force dans la propriété interne utilisée par Prisma
+  // Cela permet de passer outre la validation du constructeur
   const url = process.env.DATABASE_URL;
+  if (url) {
+    (client as any)._datasourceUrl = url;
+  }
 
-  // Si l'URL est absente (pendant le build), on met une URL bidon
-  // pour que le constructeur ne soit jamais vide.
-  const effectiveUrl = url || "mongodb://build:timeout@localhost:27017/db";
-
-  return new PrismaClient({
-    // @ts-ignore - On utilise datasourceUrl pour Prisma 7
-    datasourceUrl: effectiveUrl,
-    // On force l'objet pour éviter l'erreur "non-empty options"
-    __internal: {
-      useConfig: true,
-    },
-  } as any);
+  return client;
 };
 
 const globalForPrisma = globalThis as unknown as {
