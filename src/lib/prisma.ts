@@ -1,16 +1,17 @@
 import { PrismaClient } from "@prisma/client";
 
-// Utilisation du pattern Singleton pour éviter d'épuiser les connexions MongoDB
 const prismaClientSingleton = () => {
+  // On ne passe pas d'objet de configuration si on n'en a pas besoin,
+  // Prisma lira automatiquement DATABASE_URL depuis process.env
   return new PrismaClient();
 };
 
-declare global {
-  var prisma: undefined | ReturnType<typeof prismaClientSingleton>;
-}
+type PrismaClientSingleton = ReturnType<typeof prismaClientSingleton>;
 
-const prisma = globalThis.prisma ?? prismaClientSingleton();
+const globalForPrisma = globalThis as unknown as {
+  prisma: PrismaClientSingleton | undefined;
+};
 
-export default prisma;
+export const prisma = globalForPrisma.prisma ?? prismaClientSingleton();
 
-if (process.env.NODE_ENV !== "production") globalThis.prisma = prisma;
+if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = prisma;
