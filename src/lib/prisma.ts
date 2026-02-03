@@ -2,8 +2,13 @@ import { PrismaClient } from "@prisma/client";
 
 const prismaClientSingleton = () => {
   return new PrismaClient({
-    datasourceUrl: process.env.DATABASE_URL,
-  } as any);
+    // @ts-ignore - On force cette syntaxe pour le build Vercel
+    datasources: {
+      db: {
+        url: process.env.DATABASE_URL,
+      },
+    },
+  });
 };
 
 const globalForPrisma = globalThis as unknown as {
