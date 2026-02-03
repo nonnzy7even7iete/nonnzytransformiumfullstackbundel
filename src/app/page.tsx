@@ -1,5 +1,5 @@
 "use client";
-
+export const dynamic = "force-dynamic"; // <--- AJOUTE CETTE LIGNE ICI
 import React, { useEffect, useMemo } from "react";
 import { signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
