@@ -1,14 +1,18 @@
 import { PrismaClient } from "@prisma/client";
 
 const prismaClientSingleton = () => {
-  // On s'assure que l'URL est bien dans l'environnement avant l'instanciation
-  if (!process.env.DATABASE_URL) {
-    process.env.DATABASE_URL = "mongodb://unused:unused@localhost:27017/unused";
-  }
+  // On récupère l'URL
+  const url = process.env.DATABASE_URL;
 
-  // ON NE MET RIEN DANS LE CONSTRUCTEUR
-  // Prisma 7 va lire tout seul le fichier prisma.config.ts
-  return new PrismaClient();
+  // HACK DE SURVIE : Si l'URL est vide pendant le build, on donne une URL MongoDB
+  // valide syntaxiquement pour que Prisma ne plante pas le build.
+  const effectiveUrl =
+    url ||
+    "mongodb+srv://build-user:pass@localhost/temporary?retryWrites=true&w=majority";
+
+  return new PrismaClient({
+    datasourceUrl: effectiveUrl,
+  } as any);
 };
 
 const globalForPrisma = globalThis as unknown as {
