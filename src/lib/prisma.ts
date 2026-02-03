@@ -1,17 +1,17 @@
 import { PrismaClient } from "@prisma/client";
 
 const prismaClientSingleton = () => {
-  // 1. On crée le client totalement VIDE pour satisfaire le validateur
-  const client = new PrismaClient();
-
-  // 2. On injecte l'URL de force dans la propriété interne utilisée par Prisma
-  // Cela permet de passer outre la validation du constructeur
   const url = process.env.DATABASE_URL;
-  if (url) {
-    (client as any)._datasourceUrl = url;
+
+  // On passe l'URL via 'datasourceUrl' (standard Prisma 7)
+  // On ajoute un log pour vérifier sur Vercel si l'URL est bien là
+  if (!url) {
+    console.warn("⚠️ DATABASE_URL is missing during Prisma instantiation");
   }
 
-  return client;
+  return new PrismaClient({
+    datasourceUrl: url,
+  } as any);
 };
 
 const globalForPrisma = globalThis as unknown as {
