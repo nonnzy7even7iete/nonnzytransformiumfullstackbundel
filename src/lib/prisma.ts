@@ -1,22 +1,18 @@
 import { PrismaClient } from "@prisma/client";
 
-const prismaClientSingleton = () => {
-  // On récupère l'URL
-  const url =
-    process.env.DATABASE_URL ||
-    "mongodb://unused:unused@localhost:27017/unused";
-
-  // On utilise 'as any' pour que VS Code arrête de souligner 'datasourceUrl' en rouge
-  // C'est la solution pour contourner les types qui ne sont pas à jour
-  return new PrismaClient({
-    datasourceUrl: url,
-  } as any);
+// Cette fonction garantit que DATABASE_URL est définie pour Prisma
+// même si elle est absente de ton système (pendant le build Vercel)
+const getPrismaClient = () => {
+  if (!process.env.DATABASE_URL) {
+    process.env.DATABASE_URL = "mongodb://unused:unused@localhost:27017/unused";
+  }
+  return new PrismaClient();
 };
 
 const globalForPrisma = globalThis as unknown as {
   prisma: PrismaClient | undefined;
 };
 
-export const prisma = globalForPrisma.prisma ?? prismaClientSingleton();
+export const prisma = globalForPrisma.prisma ?? getPrismaClient();
 
 if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = prisma;
