@@ -2,15 +2,13 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   typescript: {
-    // Cela empêche le build d'échouer à cause des erreurs de types Prisma/TypeScript
+    // Ignore les erreurs de type pendant le build pour forcer le passage
     ignoreBuildErrors: true,
   },
   eslint: {
-    // On ignore ESLint pour éviter que le build s'arrête pour un point-virgule mal placé
+    // Ignore lint pendant le build
     ignoreDuringBuilds: true,
   },
-  // Cette option aide à stabiliser les polices Geist qui font des warnings dans tes logs
-  optimizeFonts: false,
 };
 
 export default nextConfig;

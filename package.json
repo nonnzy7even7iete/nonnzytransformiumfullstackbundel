@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "DATABASE_URL=\"mongodb://localhost:27017/unused\" prisma generate && next build",
+    "build": "prisma generate && next build",
     "start": "next start",
     "lint": "biome check",
     "format": "biome format --write",
