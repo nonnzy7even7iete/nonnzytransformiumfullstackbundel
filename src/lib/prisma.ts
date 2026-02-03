@@ -1,11 +1,12 @@
 import { PrismaClient } from "@prisma/client";
 
 const prismaClientSingleton = () => {
-  return new PrismaClient({
-    datasourceUrl:
-      process.env.DATABASE_URL ||
-      "mongodb://unused:unused@localhost:27017/unused",
-  });
+  // Si on est en plein build Vercel et que DATABASE_URL est vide
+  if (!process.env.DATABASE_URL) {
+    process.env.DATABASE_URL = "mongodb://unused:unused@localhost:27017/unused";
+  }
+
+  return new PrismaClient();
 };
 
 type PrismaClientSingleton = ReturnType<typeof prismaClientSingleton>;
