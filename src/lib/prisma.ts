@@ -1,8 +1,8 @@
 import { PrismaClient } from "@prisma/client";
 
 const prismaClientSingleton = () => {
-  // On laisse Prisma gérer l'URL tout seul via le fichier schema.prisma
-  // C'est la méthode la plus compatible qui évite les erreurs de "Unknown property"
+  // On ne passe aucune option.
+  // Prisma lira automatiquement ta variable DATABASE_URL.
   return new PrismaClient();
 };
 
