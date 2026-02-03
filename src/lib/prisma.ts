@@ -1,14 +1,18 @@
 import { PrismaClient } from "@prisma/client";
 
 const prismaClientSingleton = () => {
-  // On récupère l'URL ou on met une URL bidon pour le build
   const url =
     process.env.DATABASE_URL ||
     "mongodb://unused:unused@localhost:27017/unused";
 
-  // On passe datasourceUrl explicitement. C'est CA qui manque dans ton log.
+  // On utilise 'as any' pour bypasser la vérification de TypeScript.
+  // Cela enlève le rouge dans VS Code immédiatement.
   return new PrismaClient({
-    datasourceUrl: url,
+    datasources: {
+      db: {
+        url: url,
+      },
+    },
   } as any);
 };
 
