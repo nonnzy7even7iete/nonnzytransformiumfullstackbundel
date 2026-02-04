@@ -1,12 +1,14 @@
 import { PrismaClient } from "@prisma/client";
 
 const prismaClientSingleton = () => {
-  // Le bouclier pour Vercel Build
-  if (process.env.NEXT_PHASE === "phase-production-build") {
+  // On n'active le "bouclier" QUE si on est vraiment côté serveur ET en phase de build
+  if (
+    typeof window === "undefined" &&
+    process.env.NEXT_PHASE === "phase-production-build"
+  ) {
     return {} as PrismaClient;
   }
 
-  // On laisse Prisma chercher DATABASE_URL tout seul dans le .env
   return new PrismaClient();
 };
 
