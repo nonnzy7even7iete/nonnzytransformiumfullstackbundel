@@ -1,6 +1,6 @@
 "use client";
-import React, { useRef, useEffect, useState } from "react";
-import { motion } from "framer-motion";
+import React, { useMemo } from "react";
+import { motion, useTime, useTransform } from "framer-motion";
 
 export const TextHoverEffect = ({
   text,
@@ -11,24 +11,19 @@ export const TextHoverEffect = ({
   duration?: number;
   style?: React.CSSProperties;
 }) => {
-  const [maskPosition, setMaskPosition] = useState({ cx: "50%", cy: "50%" });
+  // Utilisation du moteur de temps natif de Framer Motion (plus performant qu'un setInterval)
+  const time = useTime();
 
-  useEffect(() => {
-    let angle = 0;
-    const interval = setInterval(() => {
-      angle += 2;
-      const cx = 50 + 35 * Math.cos((angle * Math.PI) / 180);
-      const cy = 50 + 35 * Math.sin((angle * Math.PI) / 180);
-      setMaskPosition({ cx: `${cx}%`, cy: `${cy}%` });
-    }, 50);
-    return () => clearInterval(interval);
-  }, []);
+  // On calcule les positions cx et cy de manière fluide
+  // Ces valeurs ne seront JAMAIS undefined car elles sont calculées à la volée
+  const cx = useTransform(time, (t) => `${50 + 35 * Math.cos(t / 500)}%`);
+  const cy = useTransform(time, (t) => `${50 + 35 * Math.sin(t / 500)}%`);
 
   return (
     <svg
       width={style?.width || "100%"}
       height={style?.height || "100%"}
-      viewBox="0 0 1800 900" // Hauteur augmentée pour le padding interne
+      viewBox="0 0 1800 900"
       preserveAspectRatio="xMidYMid meet"
       className="select-none overflow-visible"
     >
@@ -48,8 +43,9 @@ export const TextHoverEffect = ({
           id="revealMask"
           gradientUnits="userSpaceOnUse"
           r="45%"
-          animate={maskPosition}
-          transition={{ duration, ease: "easeOut" }}
+          // On lie directement les motion values ici
+          cx={cx}
+          cy={cy}
         >
           <stop offset="0%" stopColor="white" stopOpacity="1" />
           <stop offset="100%" stopColor="black" />
