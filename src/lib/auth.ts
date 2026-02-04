@@ -1,10 +1,10 @@
 import { NextAuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
-import { PrismaAdapter } from "@next-auth/prisma-adapter"; // Utilisation de la version stable pour v4
+import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { prisma } from "@/lib/prisma";
 
 export const authOptions: NextAuthOptions = {
-  // On ne charge l'adapter que si prisma est disponible pour éviter le crash au build
+  // Structure maintenue : l'Adapter Prisma pour l'enregistrement en DB
   adapter: PrismaAdapter(prisma),
   providers: [
     GoogleProvider({
@@ -12,10 +12,10 @@ export const authOptions: NextAuthOptions = {
       clientSecret: process.env.GOOGLE_CLIENT_SECRET ?? "",
     }),
   ],
+  // Le secret est lu depuis Vercel (indispensable pour chiffrer les tokens)
   secret: process.env.NEXTAUTH_SECRET,
   session: {
-    // Le mode JWT est le plus stable pour Next.js 15 sur Vercel
-    strategy: "jwt",
+    strategy: "jwt", // Stratégie recommandée pour la stabilité sur Vercel
   },
   callbacks: {
     async jwt({ token, user }) {
@@ -31,15 +31,23 @@ export const authOptions: NextAuthOptions = {
       return session;
     },
     async redirect({ url, baseUrl }) {
+      // Version sécurisée pour éviter le crash "Unexpected token <"
+      // Si l'URL est interne, on l'autorise
       if (url.startsWith("/")) return `${baseUrl}${url}`;
-      const urlObj = new URL(url, baseUrl);
-      if (urlObj.origin === baseUrl) return url;
+      // Si l'URL appartient au même domaine, on l'autorise
+      try {
+        const urlObj = new URL(url);
+        if (urlObj.origin === baseUrl) return url;
+      } catch (e) {
+        // En cas d'erreur de parsing d'URL, on redirige par défaut
+        return `${baseUrl}/dashboard`;
+      }
       return `${baseUrl}/dashboard`;
     },
   },
   pages: {
     signIn: "/",
   },
-  // Désactive le debug en production pour gagner en performance
+  // Active le mode debug uniquement en local pour ne pas polluer les logs Vercel
   debug: process.env.NODE_ENV === "development",
 };
