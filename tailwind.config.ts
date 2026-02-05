@@ -2,25 +2,27 @@ import type { Config } from "tailwindcss";
 import tailwindcssAnimate from "tailwindcss-animate";
 
 const config: Config = {
-  // Garde le contrôle total du Dark Mode pour ton SaaS
+  // Indispensable pour ton switch de thèmes
   darkMode: "class",
 
+  // On scanne tout le projet pour ne perdre aucune classe utilitaire
   content: [
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/**/*.{js,ts,jsx,tsx,mdx}",
   ],
+
   theme: {
     extend: {
-      // 1. TYPOGRAPHIE : Tes fondations Geist & Oswald
+      // 1. TYPOGRAPHIE : Tes polices identitaires
       fontFamily: {
         sans: ["var(--font-geist-sans)", "Inter", "sans-serif"],
         oswald: ["var(--font-oswald)", "sans-serif"],
         "mono-tech": ["var(--font-mono-tech)", "monospace"],
       },
 
-      // 2. COULEURS SÉMANTIQUES : Ta logique SaaS (HSL)
+      // 2. COULEURS : Mapping HSL pour la cohérence UI/UX
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
@@ -43,14 +45,17 @@ const config: Config = {
           DEFAULT: "hsl(var(--accent))",
           foreground: "hsl(var(--accent-foreground))",
         },
+        // Classes spécifiques utilisées dans ton HomePage.tsx
+        "glass-dual": "var(--glass-dual)",
+        "border-dual": "var(--border-dual)",
       },
 
-      // 3. EFFETS SPECIFIQUES : Ton Flou XXL identitaire
+      // 3. EFFETS : Ton flou signature
       backdropBlur: {
         xxl: "777px",
       },
 
-      // 4. ANIMATIONS & KEYFRAMES : Le dynamisme de ton interface
+      // 4. ANIMATIONS : Le dynamisme de ton Workflow
       animation: {
         "card-stack": "stack-move 0.5s ease-out forwards",
         shimmer: "shimmer 2s linear infinite",
@@ -75,7 +80,7 @@ const config: Config = {
         },
       },
 
-      // 5. RADIUS LOGIC : La cohérence visuelle
+      // 5. RADIUS : La précision chirurgicale des arrondis
       borderRadius: {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
@@ -83,7 +88,8 @@ const config: Config = {
       },
     },
   },
-  // Utilisation de l'import au lieu du require pour éviter le crash Vercel
+
+  // 6. PLUGINS : On garde tailwindcss-animate pour tes transitions
   plugins: [tailwindcssAnimate],
 } satisfies Config;
 

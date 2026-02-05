@@ -2,58 +2,42 @@
 @tailwind components;
 @tailwind utilities;
 
-/* 🔹 RESET & GLOBAL */
 @layer base {
-
-  *,
-  *::before,
-  *::after {
-    margin: 0;
-    box-sizing: border-box;
-    border-color: var(--border);
-    /* Applique la variable de bordure par défaut */
-  }
-
   :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+    --border: 214.3 31.8% 91.4%;
     --radius: 0.625rem;
-    color-scheme: light dark;
-    --background: 1 0 0;
-    /* Format pour oklch ou hsl selon ton setup */
-    --foreground: 0 0 0;
-    --border: 0.837 0.01 254.12;
-
-    /* Gradients et Glassmorphism en variables standard */
-    --app-gradient: linear-gradient(to bottom right, #f8fafc, #ffffff, #e2e8f0);
-    --glass-dual: transparent;
-    --border-dual: #d1d5db;
+    /* On restaure tes gradients spécifiques */
+    --background-image-app-gradient: linear-gradient(to bottom right, #f8fafc, #ffffff, #e2e8f0);
   }
 
   .dark {
-    color-scheme: dark;
-    --background: 0.1 0 0;
-    --foreground: 0.985 0 0;
-    --border: 1 0 0 / 10%;
-
-    --app-gradient: linear-gradient(to bottom right, #0a0a0a, #000000, #171717);
-    --glass-dual: rgba(0, 0, 0, 0.6);
-    --border-dual: rgba(255, 255, 255, 0.1);
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+    --border: 217.2 32.6% 17.5%;
+    --background-image-app-gradient: linear-gradient(to bottom right, #0a0a0a, #000000, #171717);
   }
 
   body {
-    background-image: var(--app-gradient);
-    color: oklch(var(--foreground));
-    background-color: oklch(var(--background));
-    transition: color 0.3s, background-color 0.3s;
-    -webkit-font-smoothing: antialiased;
+    background-image: var(--background-image-app-gradient);
+    @apply bg-background text-foreground antialiased;
+    min-height: 100vh;
+  }
+}
+
+@layer components {
+
+  /* C'est ici qu'on répare ton bloc central */
+  .bg-glass-dual {
+    @apply bg-white/10 backdrop-blur-3xl border border-black/10;
   }
 
-  /* 💡 FORCE LA TRANSPARENCE EN MODE LIGHT */
-  :root:not(.dark) .bg-glass-dual,
-  :root:not(.dark) .backdrop-blur-xl,
-  :root:not(.dark) .backdrop-blur-md {
-    background-color: transparent !important;
-    backdrop-filter: none !important;
-    border-color: #d1d5db !important;
-    border-width: 1px !important;
+  .dark .bg-glass-dual {
+    @apply bg-black/60 backdrop-blur-3xl border border-white/10;
+  }
+
+  .border-border-dual {
+    @apply border-black/10 dark:border-white/10;
   }
 }
