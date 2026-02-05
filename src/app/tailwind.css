@@ -4,40 +4,46 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
-    --border: 214.3 31.8% 91.4%;
+    /* Format RGB simple: R G B */
+    --background: 255 255 255;
+    --foreground: 10 10 10;
+    --border: 220 220 220;
+    --primary: 34 197 94;
+    --primary-foreground: 255 255 255;
+
     --radius: 0.625rem;
-    /* On restaure tes gradients spécifiques */
-    --background-image-app-gradient: linear-gradient(to bottom right, #f8fafc, #ffffff, #e2e8f0);
+    --app-gradient: linear-gradient(to bottom right, #f8fafc, #ffffff, #e2e8f0);
+    --glass-dual: rgba(255, 255, 255, 0.05);
+    --border-dual: rgba(0, 0, 0, 0.1);
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
-    --border: 217.2 32.6% 17.5%;
-    --background-image-app-gradient: linear-gradient(to bottom right, #0a0a0a, #000000, #171717);
+    --background: 0 0 0;
+    --foreground: 250 250 250;
+    --border: 40 40 40;
+    --primary: 34 197 94;
+    --primary-foreground: 0 0 0;
+
+    --app-gradient: linear-gradient(to bottom right, #0a0a0a, #000000, #171717);
+    --glass-dual: rgba(0, 0, 0, 0.6);
+    --border-dual: rgba(255, 255, 255, 0.1);
   }
 
   body {
-    background-image: var(--background-image-app-gradient);
-    @apply bg-background text-foreground antialiased;
+    background-image: var(--app-gradient);
+    color: rgb(var(--foreground));
+    background-color: rgb(var(--background));
     min-height: 100vh;
+    @apply antialiased;
   }
 }
 
 @layer components {
 
-  /* C'est ici qu'on répare ton bloc central */
+  /* On force le rendu des composants orphelins de ton HomePage */
   .bg-glass-dual {
-    @apply bg-white/10 backdrop-blur-3xl border border-black/10;
-  }
-
-  .dark .bg-glass-dual {
-    @apply bg-black/60 backdrop-blur-3xl border border-white/10;
-  }
-
-  .border-border-dual {
-    @apply border-black/10 dark:border-white/10;
+    background-color: var(--glass-dual) !important;
+    backdrop-filter: blur(40px) !important;
+    -webkit-backdrop-filter: blur(40px) !important;
   }
 }
