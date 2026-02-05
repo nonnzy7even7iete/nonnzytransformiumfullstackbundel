@@ -1,52 +1,50 @@
-@import "tailwindcss";
-@plugin "tailwindcss-animate";
-
-@custom-variant dark (&:is(.dark *));
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 /* 🔹 RESET & GLOBAL */
-*,
-*::before,
-*::after {
-  margin: 0;
-  box-sizing: border-box;
-}
-
-html,
-body {
-  height: 100%;
-  width: 100%;
-}
-
-/* 🔹 CONFIGURATION DU THÈME DYNAMIQUE (Syntaxe v4) */
-@theme inline {
-  --background-image-app-gradient: light-dark(linear-gradient(to bottom right, #f8fafc, #ffffff, #e2e8f0),
-      linear-gradient(to bottom right, #0a0a0a, #000000, #171717));
-
-  --color-glass-dual: light-dark(transparent, rgba(0, 0, 0, 0.6));
-  --color-border-dual: light-dark(#d1d5db, rgba(255, 255, 255, 0.1));
-
-  --color-card: var(--color-glass-dual);
-  --color-border: var(--color-border-dual);
-}
-
-:root {
-  --radius: 0.625rem;
-  color-scheme: light dark;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0 0 0);
-  --border: oklch(0.837 0.01 254.12);
-}
-
-.dark {
-  color-scheme: dark;
-  --background: oklch(0.1 0 0);
-  --foreground: oklch(0.985 0 0);
-  --border: oklch(1 0 0 / 10%);
-}
-
 @layer base {
-  * {
+
+  *,
+  *::before,
+  *::after {
+    margin: 0;
+    box-sizing: border-box;
     border-color: var(--border);
+    /* Applique la variable de bordure par défaut */
+  }
+
+  :root {
+    --radius: 0.625rem;
+    color-scheme: light dark;
+    --background: 1 0 0;
+    /* Format pour oklch ou hsl selon ton setup */
+    --foreground: 0 0 0;
+    --border: 0.837 0.01 254.12;
+
+    /* Gradients et Glassmorphism en variables standard */
+    --app-gradient: linear-gradient(to bottom right, #f8fafc, #ffffff, #e2e8f0);
+    --glass-dual: transparent;
+    --border-dual: #d1d5db;
+  }
+
+  .dark {
+    color-scheme: dark;
+    --background: 0.1 0 0;
+    --foreground: 0.985 0 0;
+    --border: 1 0 0 / 10%;
+
+    --app-gradient: linear-gradient(to bottom right, #0a0a0a, #000000, #171717);
+    --glass-dual: rgba(0, 0, 0, 0.6);
+    --border-dual: rgba(255, 255, 255, 0.1);
+  }
+
+  body {
+    background-image: var(--app-gradient);
+    color: oklch(var(--foreground));
+    background-color: oklch(var(--background));
+    transition: color 0.3s, background-color 0.3s;
+    -webkit-font-smoothing: antialiased;
   }
 
   /* 💡 FORCE LA TRANSPARENCE EN MODE LIGHT */
@@ -57,22 +55,5 @@ body {
     backdrop-filter: none !important;
     border-color: #d1d5db !important;
     border-width: 1px !important;
-  }
-
-  body {
-    background-image: var(--background-image-app-gradient);
-    color: var(--foreground);
-    transition-property: color, background-color;
-    transition-duration: 300ms;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-  }
-
-  html {
-    background-color: #ffffff;
-  }
-
-  html.dark {
-    background-color: #000000;
   }
 }

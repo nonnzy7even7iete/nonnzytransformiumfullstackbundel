@@ -1,7 +1,8 @@
 import type { Config } from "tailwindcss";
+import tailwindcssAnimate from "tailwindcss-animate";
 
 const config: Config = {
-  // Mode classe pour le contrôle du Dark Mode
+  // Garde le contrôle total du Dark Mode pour ton SaaS
   darkMode: "class",
 
   content: [
@@ -12,14 +13,14 @@ const config: Config = {
   ],
   theme: {
     extend: {
-      // 1. TYPOGRAPHIE : Mix entre Geist (Sans) et Oswald (Tech)
+      // 1. TYPOGRAPHIE : Tes fondations Geist & Oswald
       fontFamily: {
         sans: ["var(--font-geist-sans)", "Inter", "sans-serif"],
         oswald: ["var(--font-oswald)", "sans-serif"],
         "mono-tech": ["var(--font-mono-tech)", "monospace"],
       },
 
-      // 2. COULEURS SÉMANTIQUES (HSL Variables)
+      // 2. COULEURS SÉMANTIQUES : Ta logique SaaS (HSL)
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
@@ -44,12 +45,12 @@ const config: Config = {
         },
       },
 
-      // 3. EFFETS SPECIFIQUES
+      // 3. EFFETS SPECIFIQUES : Ton Flou XXL identitaire
       backdropBlur: {
-        xxl: "777px", // Ton réglage spécifique
+        xxl: "777px",
       },
 
-      // 4. ANIMATIONS & KEYFRAMES
+      // 4. ANIMATIONS & KEYFRAMES : Le dynamisme de ton interface
       animation: {
         "card-stack": "stack-move 0.5s ease-out forwards",
         shimmer: "shimmer 2s linear infinite",
@@ -66,15 +67,15 @@ const config: Config = {
           "100%": { transform: "translateY(0)", opacity: "1" },
         },
         glow: {
-          "0%": { "text-shadow": "0 0 5px rgba(34, 197, 94, 0.1)" },
+          "0%": { textShadow: "0 0 5px rgba(34, 197, 94, 0.1)" },
           "100%": {
-            "text-shadow":
+            textShadow:
               "0 0 15px rgba(34, 197, 94, 0.5), 0 0 25px rgba(34, 197, 94, 0.3)",
           },
         },
       },
 
-      // 5. RADIUS LOGIC
+      // 5. RADIUS LOGIC : La cohérence visuelle
       borderRadius: {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
@@ -82,7 +83,8 @@ const config: Config = {
       },
     },
   },
-  plugins: [require("tailwindcss-animate")],
-};
+  // Utilisation de l'import au lieu du require pour éviter le crash Vercel
+  plugins: [tailwindcssAnimate],
+} satisfies Config;
 
 export default config;
