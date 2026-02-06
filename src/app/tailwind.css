@@ -1,21 +1,56 @@
+@import "tailwindcss";
+@plugin "tailwindcss-animate";
+
+/* 1. CONFIGURATION DU THÈME (SANS @apply ici) */
 @theme {
-  /* ... tes fonts ... */
+  --font-sans: var(--font-geist-sans);
+  --font-oswald: var(--font-oswald);
+  --font-mono: var(--font-mono-tech);
 
-  /* Couleurs de fond dynamiques */
-  --bg-app: light-dark(#f8fafc, #030303);
-  /* Noir pur en dark pour la profondeur */
+  /* Noir profond pour ton mode sombre abyssal */
+  --color-abyss: #030303;
 
-  /* Glassmorphism Ultra-Sombre */
-  --glass-bg: light-dark(rgba(255, 255, 255, 0.4), rgba(5, 5, 5, 0.8));
-  --glass-border: light-dark(rgba(0, 0, 0, 0.1), rgba(255, 255, 255, 0.05));
-
-  /* Effets */
-  --shadow-glass: 0 8px 32px 0 rgba(0, 0, 0, 0.8);
+  /* Variables pour le Glassmorphism */
+  --glass-light: rgba(255, 255, 255, 0.4);
+  --glass-dark: rgba(5, 5, 5, 0.8);
+  --glass-border-light: rgba(0, 0, 0, 0.1);
+  --glass-border-dark: rgba(255, 255, 255, 0.05);
 }
 
+/* 2. FORCE LE SCAN DES FICHIERS */
+@source "../../src/**/*.{ts,tsx}";
+
+/* 3. VARIABLES DE BASE & MODE DARK */
+:root {
+  --background: #f8fafc;
+  --foreground: #0f172a;
+  --glass-bg: var(--glass-light);
+  --glass-border: var(--glass-border-light);
+}
+
+.dark {
+  --background: var(--color-abyss);
+  --foreground: #f8fafc;
+  --glass-bg: var(--glass-dark);
+  --glass-border: var(--glass-border-dark);
+}
+
+/* 4. DÉFINITION DES COMPOSANTS (APRÈS LE THÈME) */
 @layer components {
   .glass-card {
-    @apply bg-[var(--glass-bg)] border border-[var(--glass-border)] backdrop-blur-xl;
-    box-shadow: var(--shadow-glass);
+    background-color: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    /* On utilise les propriétés CSS standards ici pour éviter le bug de build */
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+  }
+}
+
+@layer base {
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+    min-height: 100vh;
   }
 }
