@@ -13,6 +13,7 @@ export default function NavbarFront() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false); // État pour le mobile
   const { data: session } = useSession();
 
   useEffect(() => {
@@ -39,8 +40,8 @@ export default function NavbarFront() {
           isVisible ? "translate-y-0" : "-translate-y-full"
         } ${
           isScrolled
-            ? "bg-black/95 backdrop-blur-[32px] border-b border-zinc-800/30"
-            : "bg-black backdrop-blur-[12px] border-b border-transparent"
+            ? "bg-white/80 dark:bg-black/90 backdrop-blur-[24px] border-b border-zinc-200 dark:border-zinc-800 shadow-sm"
+            : "bg-transparent border-b border-transparent"
         }`}
       >
         <div className="flex w-full h-full items-center px-6 lg:px-10 relative">
@@ -51,15 +52,17 @@ export default function NavbarFront() {
             </Link>
           </div>
 
-          {/* MENU CENTRAL */}
+          {/* MENU DESKTOP - Zinc 700 & Radius 7px */}
           <div className="flex-1 hidden md:flex justify-center items-center z-[80]">
-            <Menubar className="h-11 bg-zinc-950/50 border border-zinc-700 rounded-[7px] p-1.5 gap-2 backdrop-blur-md">
+            <Menubar className="h-11 bg-zinc-100/50 dark:bg-zinc-900/50 border border-zinc-300 dark:border-zinc-700 rounded-[7px] p-1.5 gap-2 backdrop-blur-md">
               {navLinks.map((link) => (
                 <MenubarMenu key={link.href}>
                   <Link href={link.href} className="no-underline">
                     <MenubarTrigger
-                      className="cursor-pointer px-4 h-full text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-500 transition-all duration-300 rounded-[7px] border border-zinc-700/50 bg-transparent
-                        hover:text-emerald-400 hover:bg-emerald-500/10 hover:border-emerald-500/30
+                      className="cursor-pointer px-4 h-full text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-600 dark:text-zinc-400 transition-all duration-300 rounded-[7px] border border-zinc-300/50 dark:border-zinc-700/50 bg-transparent
+                        hover:text-emerald-600 dark:hover:text-emerald-400 
+                        hover:bg-emerald-500/10 dark:hover:bg-emerald-500/5 
+                        hover:border-emerald-500/30
                         focus:bg-transparent"
                     >
                       {link.label}
@@ -70,78 +73,32 @@ export default function NavbarFront() {
             </Menubar>
           </div>
 
-          {/* ACTIONS */}
-          <div className="w-40 lg:w-56 flex justify-end items-center gap-4 lg:gap-8 z-[60]">
+          {/* ACTIONS DROITE */}
+          <div className="w-40 lg:w-56 flex justify-end items-center gap-4 lg:gap-6 z-[60]">
             <AnimatedThemeToggler />
-            <div className="md:hidden">
-              <MobileMenu
-                links={navLinks}
-                session={session}
-                triggerIcon={
-                  <HiOutlineMenuAlt4 className="w-8 h-8 text-zinc-500 hover:text-emerald-400 transition-colors cursor-pointer" />
-                }
-              />
-            </div>
+
+            {/* BOUTON MOBILE - HiOutlineMenuAlt4 */}
+            <button
+              onClick={() => setIsMobileMenuOpen(true)}
+              className="md:hidden p-2 text-zinc-600 dark:text-zinc-400 hover:text-emerald-500 transition-colors"
+            >
+              <HiOutlineMenuAlt4 className="w-8 h-8" />
+            </button>
           </div>
-        </div>
-
-        {/* --- LA STRUCTURE DE BORDURE "AWWWARDS" EN 3 COUCHES --- */}
-        <div className="absolute bottom-0 w-full h-[2px] overflow-hidden flex">
-          {/* COUCHE 1 : EXTRÉMITÉ GAUCHE (NOIR PUR) */}
-          <div className="w-[15%] h-full bg-black z-30" />
-          <div className="w-[10%] h-full bg-gradient-to-r from-black to-transparent z-20" />
-
-          {/* COUCHE 2 : LE FLUX CENTRAL (L'INTERACTION) */}
-          <div className="flex-1 h-full relative z-10">
-            <div className="absolute inset-0 magic-interaction-flow" />
-          </div>
-
-          {/* COUCHE 3 : EXTRÉMITÉ DROITE (NOIR PUR) */}
-          <div className="w-[10%] h-full bg-gradient-to-l from-black to-transparent z-20" />
-          <div className="w-[15%] h-full bg-black z-30" />
         </div>
       </nav>
 
+      {/* COMPOSANT MENU MOBILE DÉPORTÉ */}
+      <MobileMenu
+        isOpen={isMobileMenuOpen}
+        onClose={() => setIsMobileMenuOpen(false)}
+        links={navLinks}
+        session={session}
+      />
+
       <style jsx global>{`
-        @keyframes google-magic-flow {
-          0% {
-            opacity: 0;
-            transform: scaleX(0.7);
-            filter: blur(10px);
-            background-position: 0% 50%;
-          }
-          10% {
-            opacity: 1;
-            transform: scaleX(1);
-            filter: blur(2px);
-          }
-          25% {
-            background-position: 100% 50%;
-          }
-          33.33% {
-            opacity: 0;
-            transform: scaleX(1.1);
-            filter: blur(15px);
-          }
-          100% {
-            opacity: 0;
-          }
-        }
-
-        .magic-interaction-flow {
-          animation: google-magic-flow 21s ease-in-out infinite;
-          background: linear-gradient(
-            90deg,
-            #000000,
-            #f97316,
-            /* Orange Google */ #10b981,
-            /* Vert Logic */ #3b82f6,
-            /* Bleu Magic */ #000000
-          );
-          background-size: 300% 100%;
-        }
-
-        .bg-black {
+        /* Suppression du noir forcé pour laisser place à la réactivité du thème */
+        .dark .bg-black {
           background-color: #000000 !important;
         }
       `}</style>
