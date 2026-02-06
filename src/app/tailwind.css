@@ -1,49 +1,64 @@
 @import "tailwindcss";
 @plugin "tailwindcss-animate";
 
-/* 1. CONFIGURATION DU THÈME (SANS @apply ici) */
 @theme {
+  /* Fonts Identitaires */
   --font-sans: var(--font-geist-sans);
   --font-oswald: var(--font-oswald);
   --font-mono: var(--font-mono-tech);
 
-  /* Noir profond pour ton mode sombre abyssal */
-  --color-abyss: #030303;
-
-  /* Variables pour le Glassmorphism */
-  --glass-light: rgba(255, 255, 255, 0.4);
-  --glass-dark: rgba(5, 5, 5, 0.8);
-  --glass-border-light: rgba(0, 0, 0, 0.1);
-  --glass-border-dark: rgba(255, 255, 255, 0.05);
+  /* Palette de Précision */
+  --color-abyss: #020202;
+  --color-protocol-blue: #0070f3;
+  --color-neon-cyan: #00d4ff;
 }
 
-/* 2. FORCE LE SCAN DES FICHIERS */
 @source "../../src/**/*.{ts,tsx}";
 
-/* 3. VARIABLES DE BASE & MODE DARK */
 :root {
   --background: #f8fafc;
-  --foreground: #0f172a;
-  --glass-bg: var(--glass-light);
-  --glass-border: var(--glass-border-light);
+  --foreground: #020202;
+  --glass-bg: rgba(255, 255, 255, 0.6);
+  --glass-border: rgba(0, 0, 0, 0.08);
 }
 
 .dark {
   --background: var(--color-abyss);
-  --foreground: #f8fafc;
-  --glass-bg: var(--glass-dark);
-  --glass-border: var(--glass-border-dark);
+  --foreground: #f5f5f5;
+  --glass-bg: rgba(5, 5, 5, 0.75);
+  --glass-border: rgba(255, 255, 255, 0.05);
 }
 
-/* 4. DÉFINITION DES COMPOSANTS (APRÈS LE THÈME) */
 @layer components {
-  .glass-card {
-    background-color: var(--glass-bg);
+
+  /* Logique de tes blocs de 450px/350px */
+  .saas-layout-card {
+    background: var(--glass-bg);
     border: 1px solid var(--glass-border);
-    /* On utilise les propriétés CSS standards ici pour éviter le bug de build */
-    backdrop-filter: blur(24px);
-    -webkit-backdrop-filter: blur(24px);
-    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(20px) saturate(160%);
+    -webkit-backdrop-filter: blur(20px) saturate(160%);
+    border-radius: 1.5rem;
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  /* L'effet de focus sur le bloc central */
+  .saas-layout-card:hover {
+    border-color: var(--color-protocol-blue);
+    box-shadow: 0 0 50px -12px rgba(0, 112, 243, 0.3);
+    transform: translateY(-4px);
+  }
+
+  /* Bouton d'action Google Premium */
+  .btn-protocol {
+    @apply flex items-center justify-center gap-3 font-black transition-all duration-300;
+    background: var(--foreground);
+    color: var(--background);
+    box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.2);
+  }
+
+  .btn-protocol:hover {
+    @apply scale-[1.03] shadow-2xl;
+    filter: brightness(1.2);
   }
 }
 
@@ -51,6 +66,9 @@
   body {
     background-color: var(--background);
     color: var(--foreground);
-    min-height: 100vh;
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    /* On force l'Abysse sur le body */
+    @apply min-h-screen selection:bg-protocol-blue/30;
   }
 }
