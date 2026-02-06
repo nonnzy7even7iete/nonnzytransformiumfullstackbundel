@@ -3,7 +3,9 @@
 
 @theme {
   --font-sans: var(--font-geist-sans);
-  --radius-vercel: 7px;
+  --radius-vercel: 14px;
+  --radius-vercel-zy: 7px;
+
 }
 
 @source "../../src/**/*.{ts,tsx}";
