@@ -12,6 +12,7 @@ import DataCard from "@/components/frontendkit/DataCard";
 import Navbar from "@/components/frontendkit/NavbarFront";
 import LoginCard from "@/components/frontendkit/LoginCard";
 import { Dock, type DockItem } from "@/components/ui/dock";
+import { cn } from "@/lib/utils";
 
 export default function HomePage() {
   const { status } = useSession();
@@ -36,15 +37,18 @@ export default function HomePage() {
     <div className="relative min-h-screen flex flex-col bg-[var(--background)] overflow-x-hidden">
       <Navbar />
 
+      {/* BACKGROUND LAYER */}
       <div className="fixed inset-0 z-0 pointer-events-none">
         <MasterAuroraBackground />
       </div>
 
-      <main className="relative z-10 flex-1 flex flex-col lg:flex-row items-center lg:justify-between px-4 lg:px-0 gap-10 pt-32 pb-44 w-[97vw] lg:w-[90vw] mx-auto">
+      {/* MAIN LAYOUT : Optimisé pour écran 1250px */}
+      <main className="relative z-10 flex-1 flex flex-col lg:flex-row items-center lg:justify-center px-4 lg:px-2 gap-6 pt-32 pb-44 w-full max-w-[1280px] mx-auto">
         {/* BLOC GAUCHE - DATA CARD */}
-        <div className="w-full max-w-[350px] lg:w-[350px] h-[450px] flex flex-col shrink-0 order-2 lg:order-1">
+        <div className="order-2 lg:order-1 w-full max-w-[360px] h-[450px] shrink-0">
           <DataCard
             height={450}
+            className="!w-full !max-w-none !min-w-0 h-full"
             title={
               <div className="flex items-center gap-2 text-[var(--foreground)]">
                 <Info className="w-4 h-4 text-blue-400 shrink-0" />
@@ -109,11 +113,14 @@ export default function HomePage() {
         </div>
 
         {/* BLOC CENTRAL - LOGIN CARD */}
-        <LoginCard className="order-1 lg:order-2" />
+        <div className="order-1 lg:order-2 w-full max-w-[440px] h-[450px] shrink-0">
+          <LoginCard className="!w-full !max-w-none !min-w-0 h-full" />
+        </div>
 
         {/* BLOC DROIT - SIDE CARD */}
-        <div className="w-full max-w-[350px] lg:w-[350px] h-[450px] flex shrink-0 justify-center lg:justify-end order-3">
+        <div className="order-3 w-full max-w-[360px] h-[450px] shrink-0">
           <SideCard
+            className="!w-full !max-w-none !min-w-0 h-full"
             imageSrc="/zyy.png"
             title="Zy recherche un financement orienté workspace & Workflow"
             description="Exécution de la logique métier et serveur en burn out."
