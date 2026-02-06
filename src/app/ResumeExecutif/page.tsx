@@ -12,6 +12,7 @@ import { WordRotate } from "@/components/frontendkit/word-rotate";
 import { cn } from "@/lib/utils";
 import { LampContainer } from "@/components/ui/lamp";
 
+// THEME SÉMANTIQUE : Centralisation pour cohérence Senior
 const UI_THEME = {
   techBold: "font-oswald font-bold tracking-tight leading-[0.95]",
   steelGradient:
@@ -87,10 +88,10 @@ export default function ResumeExecutifPage() {
   const currentDest = destinations[index];
 
   return (
-    <div className="min-h-screen bg-white dark:bg-[#050505] text-zinc-950 dark:text-zinc-50 transition-colors duration-700">
+    <div className="min-h-screen bg-background text-foreground transition-colors duration-500">
       <NavbarFront />
 
-      {/* SECTION 1 : LAMP (Timing 14s & Marges Immergées) */}
+      {/* SECTION 1 : LAMP (Réactive au Design System) */}
       <section className="relative z-30 h-screen overflow-hidden -mt-24 md:-mt-32">
         <motion.div
           initial={{ opacity: 0 }}
@@ -104,6 +105,7 @@ export default function ResumeExecutifPage() {
           className="absolute inset-0 z-0"
         >
           <LampContainer>
+            {/* Le container s'adapte via le thème dark: localisé */}
             <div className="h-full w-full" />
           </LampContainer>
         </motion.div>
@@ -119,12 +121,12 @@ export default function ResumeExecutifPage() {
             </div>
             <h1
               className={cn(
-                "bg-gradient-to-br from-slate-100 to-slate-500 py-4 bg-clip-text text-3xl md:text-7xl italic",
+                "bg-gradient-to-br from-foreground to-foreground/40 py-4 bg-clip-text text-3xl md:text-7xl italic",
                 UI_THEME.techBold
               )}
             >
               ALGORITHMIC_SOVEREIGNTY <br />
-              <span className="text-sm md:text-xl font-light tracking-[0.2em] text-emerald-400 block mt-4 normal-case not-italic px-6 border-t border-emerald-500/10 pt-6">
+              <span className="text-sm md:text-xl font-light tracking-[0.2em] text-emerald-500 block mt-4 normal-case not-italic px-6 border-t border-emerald-500/20 pt-6">
                 "L'intuition est un luxe que nous avons remplacé par la
                 certitude."
               </span>
@@ -133,8 +135,8 @@ export default function ResumeExecutifPage() {
         </div>
       </section>
 
-      {/* SECTION 2 : DATA-DRIVEN (Rétablie Intégralement sans Badge) */}
-      <section className="relative h-[80vh] flex flex-col items-center justify-center border-b border-zinc-100 dark:border-white/5 overflow-hidden">
+      {/* SECTION 2 : DATA-DRIVEN */}
+      <section className="relative h-[80vh] flex flex-col items-center justify-center border-b border-border-color overflow-hidden">
         <div className="absolute inset-0 z-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:40px_40px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_50%,#000_70%,transparent_100%)]" />
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -143,13 +145,13 @@ export default function ResumeExecutifPage() {
         >
           <h1
             className={cn(
-              "text-6xl md:text-8xl tracking-tighter uppercase",
+              "text-6xl md:text-8xl tracking-tighter uppercase text-foreground",
               UI_THEME.techBold
             )}
           >
-            <span className="text-zinc-900 dark:text-white">Data-Driven</span>
+            <span>Data-Driven</span>
             <br />
-            <span className="text-zinc-600 font-light italic text-2xl md:text-4xl tracking-widest block mt-4 uppercase">
+            <span className="text-foreground/40 font-light italic text-2xl md:text-4xl tracking-widest block mt-4 uppercase">
               Ivory coast global networking
             </span>
           </h1>
@@ -171,20 +173,25 @@ export default function ResumeExecutifPage() {
         </motion.div>
       </section>
 
-      {/* SECTION 3 : ANALYSE (Structure Senior avec props CardStack) */}
-      <section className="relative z-20 py-32 px-6 bg-zinc-50/50 dark:bg-[#070707] border-b border-zinc-100 dark:border-white/5">
+      {/* SECTION 3 : ANALYSE (CardStack réactive) */}
+      <section className="relative z-20 py-32 px-6 bg-accents-1 border-b border-border-color">
         <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-20 items-center">
           <div className="space-y-6">
             <span className={UI_THEME.machineLabel}>02 // Stream_Analysis</span>
             <h2
               className={cn(
-                "text-4xl md:text-5xl uppercase",
+                "text-4xl md:text-5xl uppercase text-foreground",
                 UI_THEME.techBold
               )}
             >
               Analyse des Flux
             </h2>
-            <p className={cn("max-w-sm opacity-70", UI_THEME.narrative)}>
+            <p
+              className={cn(
+                "max-w-sm opacity-70 text-foreground/60",
+                UI_THEME.narrative
+              )}
+            >
               Interconnexion sécurisée des nœuds mondiaux.
             </p>
           </div>
@@ -194,8 +201,8 @@ export default function ResumeExecutifPage() {
         </div>
       </section>
 
-      {/* SECTION 4 : GLOBE (Stricte Préservation des Détails) */}
-      <section className="relative h-[90vh] w-full bg-white dark:bg-[#050505] overflow-hidden">
+      {/* SECTION 4 : GLOBE (Architecture Vercel Card) */}
+      <section className="relative h-[90vh] w-full bg-background overflow-hidden">
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808008_1px,transparent_1px),linear-gradient(to_bottom,#80808008_1px,transparent_1px)] bg-[size:80px_80px] pointer-events-none" />
         <div className="absolute inset-0 z-0 scale-105">
           <World
@@ -230,13 +237,13 @@ export default function ResumeExecutifPage() {
                 {currentDest.label}
               </h2>
               <div className="mt-8 flex flex-col items-center gap-4">
-                <div className="flex items-center gap-3 bg-white/60 dark:bg-white/5 backdrop-blur-md px-5 py-2 border border-zinc-200 dark:border-white/10 rounded-full">
+                <div className="flex items-center gap-3 bg-background/60 backdrop-blur-md px-5 py-2 border border-border-color rounded-full">
                   <span className="h-2.5 w-2.5 rounded-full bg-[#10b981] animate-ping" />
                   <span className="font-mono text-[9px] tracking-[0.3em] uppercase text-[#10b981] font-bold">
                     Signal Actif
                   </span>
                 </div>
-                <p className="max-w-md font-mono text-[9px] leading-loose tracking-[0.15em] text-zinc-500 dark:text-zinc-400 uppercase">
+                <p className="max-w-md font-mono text-[9px] leading-loose tracking-[0.15em] text-foreground/50 uppercase">
                   Signal de prédisposition à la coopération internationale{" "}
                   <br /> en provenance d'Abidjan
                 </p>
@@ -246,7 +253,7 @@ export default function ResumeExecutifPage() {
         </div>
       </section>
 
-      <footer className="py-20 border-t border-zinc-100 dark:border-white/5 bg-zinc-50 dark:bg-[#050505] text-center">
+      <footer className="py-20 border-t border-border-color bg-accents-1 text-center">
         <p className={UI_THEME.machineLabel}>Abidjan Data Center // 2026</p>
       </footer>
       <ScrollToTop />

@@ -52,38 +52,38 @@ export default function NavbarFront() {
   return (
     <>
       <nav
-        className={`fixed top-0 w-full z-50 transition-all duration-700 h-20 flex items-center ${
+        className={`fixed top-0 w-full z-50 transition-all duration-500 h-20 flex items-center ${
           isVisible ? "translate-y-0" : "-translate-y-full"
         } ${
           isScrolled
-            ? "bg-glass-dual border-b border-border-dual shadow-2xl"
-            : "bg-background border-b border-transparent"
+            ? "bg-background/80 backdrop-blur-md border-b border-border-color shadow-sm"
+            : "bg-transparent border-b border-transparent"
         }`}
       >
         <div className="flex w-full h-full items-center px-6 lg:px-10 relative">
-          {/* LOGO */}
+          {/* LOGO SECTION */}
           <div className="flex items-center w-40 lg:w-56 h-full z-[60]">
             <Link href="/" className="block w-full h-full flex items-center">
               <TextHoverEffect text="Nonnzytr" />
             </Link>
           </div>
 
-          {/* MENU CENTRAL - Adapté Radius 2px */}
+          {/* CENTRAL NAVIGATION - Vercel Design (Radius 7px) */}
           <div className="flex-1 hidden md:flex justify-center items-center z-[80]">
             <Menubar
               className="
-              h-12 
-              bg-transparent
-              border border-border-dual 
-              rounded-[2px] 
-              p-[6px] 
-              gap-2 
-              backdrop-blur-3xl"
+              h-11 
+              bg-accents-1/50
+              border border-border-color 
+              rounded-[7px] 
+              p-[4px] 
+              gap-1 
+              backdrop-blur-xl"
             >
               {navLinks.map((link) => (
                 <MenubarMenu key={link.href}>
                   <Link href={link.href} className="no-underline">
-                    <MenubarTrigger className="cursor-pointer px-5 py-2 text-[10px] font-black uppercase tracking-[0.25em] text-foreground opacity-70 hover:opacity-100 hover:text-blue-500 transition-all rounded-[2px] border border-transparent hover:border-border-dual">
+                    <MenubarTrigger className="cursor-pointer px-4 py-2 text-[10px] font-bold uppercase tracking-[0.2em] text-foreground/60 hover:text-foreground hover:bg-accents-2 transition-all rounded-[5px] border border-transparent focus:bg-accents-2 data-[state=open]:bg-accents-2">
                       {link.label}
                     </MenubarTrigger>
                   </Link>
@@ -92,7 +92,7 @@ export default function NavbarFront() {
             </Menubar>
           </div>
 
-          {/* ACTIONS DROITE */}
+          {/* ACTION BUTTONS */}
           <div className="w-40 lg:w-56 flex justify-end items-center gap-4 lg:gap-6 z-[60]">
             <AnimatedThemeToggler />
 
@@ -102,9 +102,9 @@ export default function NavbarFront() {
           </div>
         </div>
 
-        {/* SCANNER LINE */}
+        {/* SCANNER LINE INDICATOR */}
         <div
-          className={`absolute bottom-0 h-[1px] w-full transition-opacity duration-1000 bg-gradient-to-r from-transparent via-blue-500/40 to-transparent ${
+          className={`absolute bottom-0 h-[1px] w-full transition-opacity duration-1000 bg-gradient-to-r from-transparent via-foreground/20 to-transparent ${
             showBorder ? "opacity-100" : "opacity-0"
           }`}
         />

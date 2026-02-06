@@ -3,64 +3,30 @@
 
 @theme {
   --font-sans: var(--font-geist-sans);
-  --font-oswald: var(--font-oswald);
-  --font-mono: var(--font-mono-tech);
+  --radius-vercel: 7px;
 }
 
 @source "../../src/**/*.{ts,tsx}";
 
-/* -----------------------------------------------------------
-   REGLES DU JEU : DICHOTOMIE NOIR/BLANC & RADIUS 2PX
-   ----------------------------------------------------------- */
 :root {
-  /* LIGHT MODE : Pur & Chirurgical */
+  /* Mode Light : Design épuré, cartes blanches */
   --background: #ffffff;
   --foreground: #000000;
-
-  --glass-bg: rgba(255, 255, 255, 0.85);
-  --glass-border: #000000;
-  /* Bordure noire fine en light pour le contraste */
-  --radius-protocol: 2px;
-  --blur-intensity: 40px;
+  --accents-1: #fafafa;
+  --accents-2: #eaeaea;
+  --border-color: #eaeaea;
+  --card-bg: #ffffff;
 }
 
 .dark {
-  /* DARK MODE : Abysse & Box Noir */
+  /* Mode Dark : "The Vercel Way" - Noir Pur et Bordures Chirurgicales */
   --background: #000000;
   --foreground: #ffffff;
-
-  --glass-bg: rgba(0, 0, 0, 0.95);
-  /* Box Noir quasi-opaque */
-  --glass-border: rgba(255, 255, 255, 0.2);
-  /* Bordure grise fine */
-  --radius-protocol: 2px;
-  --blur-intensity: 64px;
-}
-
-/* -----------------------------------------------------------
-   SUTURE TECHNIQUE : On lie tes classes existantes aux variables
-   ----------------------------------------------------------- */
-@layer utilities {
-
-  /* On redéfinit bg-glass-dual pour qu'il suive tes règles */
-  .bg-glass-dual {
-    background-color: var(--glass-bg) !important;
-    backdrop-filter: blur(var(--blur-intensity)) !important;
-    -webkit-backdrop-filter: blur(var(--blur-intensity)) !important;
-    border-radius: var(--radius-protocol) !important;
-  }
-
-  /* On redéfinit border-border-dual */
-  .border-border-dual {
-    border-color: var(--glass-border) !important;
-    border-width: 1px !important;
-  }
-
-  /* On écrase les arrondis par défaut (rounded-2xl dans ton code) par tes 2px */
-  .rounded-2xl,
-  .rounded-xl {
-    border-radius: var(--radius-protocol) !important;
-  }
+  --accents-1: #111111;
+  --accents-2: #333333;
+  --border-color: #333333;
+  --card-bg: #000000;
+  /* Noir pur comme demandé */
 }
 
 @layer base {
@@ -68,22 +34,21 @@
     background-color: var(--background);
     color: var(--foreground);
     font-family: var(--font-sans);
-    -webkit-font-smoothing: antialiased;
+    transition: background-color 0.2s ease;
+  }
+}
+
+@layer components {
+
+  /* La "Vercel Card" réactive */
+  .v-card {
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-vercel);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
   }
 
-  /* Force le texte noir sur blanc / blanc sur noir partout */
-  .text-foreground,
-  .text-foreground\/90,
-  .text-foreground\/80 {
-    color: var(--foreground) !important;
-  }
-
-  /* Les fonds des boutons (bg-foreground) s'inversent automatiquement */
-  .bg-foreground {
-    background-color: var(--foreground) !important;
-  }
-
-  .text-background {
-    color: var(--background) !important;
+  .v-card:hover {
+    border-color: var(--foreground);
   }
 }

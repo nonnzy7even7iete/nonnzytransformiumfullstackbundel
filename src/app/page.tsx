@@ -88,7 +88,7 @@ export default function HomePage() {
                 </div>
 
                 {/* Bouton d'action ancré au bas du container interne */}
-                <div className="mt-auto pt-4 border-t border-border-dual">
+                <div className="mt-auto pt-4 border-t border-border-color">
                   <span className="text-xs font-bold uppercase tracking-[0.2em] opacity-80">
                     Explorer la data
                   </span>
@@ -125,8 +125,8 @@ export default function HomePage() {
           />
         </div>
 
-        {/* BLOC CENTRAL - LOGIN CARD (L'IMPACT VISUEL) */}
-        <div className="w-full max-w-[450px] lg:w-[450px] h-[450px] p-8 lg:p-10 rounded-[2px] bg-glass-dual border border-border-dual flex flex-col items-center justify-center shadow-2xl shrink-0 order-1 lg:order-2">
+        {/* BLOC CENTRAL - LOGIN CARD (LOGIQUE VERCEL v-card) */}
+        <div className="v-card w-full max-w-[450px] lg:w-[450px] h-[450px] p-8 lg:p-10 flex flex-col items-center justify-center shadow-2xl shrink-0 order-1 lg:order-2">
           {/* Logo avec Padding interne via le composant TextHoverEffect */}
           <div className="w-full flex-1 flex items-center justify-center overflow-visible">
             <TextHoverEffect
@@ -142,13 +142,13 @@ export default function HomePage() {
 
           {/* Groupe Action bien centré et ancré bas */}
           <div className="w-full flex flex-col items-center justify-center gap-6 mt-4">
-            <p className="text-foreground text-[13px] tracking-[0.4em] uppercase font-medium text-center">
+            <p className="text-foreground/80 text-[13px] tracking-[0.4em] uppercase font-medium text-center">
               Votre aventure commence ici
             </p>
 
             <button
               onClick={() => signIn("google", { callbackUrl: "/dashboard" })}
-              className="w-full max-w-[320px] py-4.5 flex items-center justify-center gap-3 bg-foreground text-background font-bold rounded-[2px] hover:scale-[1.02] active:scale-95 transition-all duration-300 shadow-xl"
+              className="w-full max-w-[320px] py-4.5 flex items-center justify-center gap-3 bg-foreground text-background font-bold rounded-[7px] hover:opacity-90 active:scale-95 transition-all duration-300 shadow-xl"
             >
               <FcGoogle className="text-2xl shrink-0" />
               <span className="text-xs tracking-widest uppercase font-black">
@@ -183,7 +183,7 @@ export default function HomePage() {
             iconSize={16}
             magnification={24}
             distance={80}
-            className="bg-glass-dual border border-border-dual shadow-none h-[46px] px-6 rounded-full"
+            className="bg-background border border-border-color shadow-xl h-[46px] px-6 rounded-full"
           />
         </div>
       </footer>
