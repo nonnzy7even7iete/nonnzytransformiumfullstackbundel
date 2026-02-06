@@ -30,16 +30,13 @@ export default function NavbarFront() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [lastScrollY]);
 
+  // ANIMATION SCANNER : Transition fluide
   useEffect(() => {
     const cycle = () => {
-      setShowBorder(false);
-      setTimeout(() => {
-        setShowBorder(true);
-        setTimeout(() => setShowBorder(false), 5000);
-      }, 7000);
+      setShowBorder(true);
+      setTimeout(() => setShowBorder(false), 4000);
     };
-    cycle();
-    const interval = setInterval(cycle, 12000);
+    const interval = setInterval(cycle, 9000);
     return () => clearInterval(interval);
   }, []);
 
@@ -61,19 +58,19 @@ export default function NavbarFront() {
         }`}
       >
         <div className="flex w-full h-full items-center px-6 lg:px-10 relative">
-          {/* LOGO SECTION */}
+          {/* LOGO */}
           <div className="flex items-center w-40 lg:w-56 h-full z-[60]">
             <Link href="/" className="block w-full h-full flex items-center">
               <TextHoverEffect text="Nonnzytr" />
             </Link>
           </div>
 
-          {/* CENTRAL NAVIGATION - Vercel Design (Radius 7px) */}
+          {/* MENU CENTRAL - Hover Vert Transparent & Radius 7px */}
           <div className="flex-1 hidden md:flex justify-center items-center z-[80]">
             <Menubar
               className="
               h-11 
-              bg-accents-1/50
+              bg-accents-1/30
               border border-border-color 
               rounded-[7px] 
               p-[4px] 
@@ -83,7 +80,21 @@ export default function NavbarFront() {
               {navLinks.map((link) => (
                 <MenubarMenu key={link.href}>
                   <Link href={link.href} className="no-underline">
-                    <MenubarTrigger className="cursor-pointer px-4 py-2 text-[10px] font-bold uppercase tracking-[0.2em] text-foreground/60 hover:text-foreground hover:bg-accents-2 transition-all rounded-[5px] border border-transparent focus:bg-accents-2 data-[state=open]:bg-accents-2">
+                    <MenubarTrigger
+                      className="
+                        cursor-pointer px-4 h-full 
+                        text-[10px] font-bold uppercase tracking-[0.2em] 
+                        text-foreground/50 
+                        transition-all duration-300 
+                        rounded-[7px] border-none outline-none 
+                        /* HOVER VERT TRANSPARENT */
+                        hover:text-emerald-500 
+                        hover:bg-emerald-500/10 
+                        /* ACTIVE / OPEN STATES */
+                        data-[state=open]:bg-emerald-500/15 
+                        data-[state=open]:text-emerald-500
+                        focus:bg-emerald-500/10"
+                    >
                       {link.label}
                     </MenubarTrigger>
                   </Link>
@@ -92,20 +103,21 @@ export default function NavbarFront() {
             </Menubar>
           </div>
 
-          {/* ACTION BUTTONS */}
+          {/* ACTIONS */}
           <div className="w-40 lg:w-56 flex justify-end items-center gap-4 lg:gap-6 z-[60]">
             <AnimatedThemeToggler />
-
             <div className="md:hidden text-foreground">
               <MobileMenu links={navLinks} session={session} />
             </div>
           </div>
         </div>
 
-        {/* SCANNER LINE INDICATOR */}
+        {/* SCANNER LINE INDICATOR : Emerald / Blue Pulse */}
         <div
-          className={`absolute bottom-0 h-[1px] w-full transition-opacity duration-1000 bg-gradient-to-r from-transparent via-foreground/20 to-transparent ${
-            showBorder ? "opacity-100" : "opacity-0"
+          className={`absolute bottom-0 h-[1px] w-full transition-all duration-[3000ms] ease-in-out ${
+            showBorder
+              ? "bg-gradient-to-r from-transparent via-emerald-500/40 to-transparent opacity-100 scale-x-100"
+              : "opacity-0 scale-x-0"
           }`}
         />
       </nav>
