@@ -10,43 +10,56 @@
 @source "../../src/**/*.{ts,tsx}";
 
 /* -----------------------------------------------------------
-   LOGIQUE DE VARIABLES (Synchronisée avec ThemeWatcher)
+   REGLES DU JEU : DICHOTOMIE NOIR/BLANC & RADIUS 2PX
    ----------------------------------------------------------- */
 :root {
+  /* LIGHT MODE : Pur & Chirurgical */
   --background: #ffffff;
-  --foreground: #020202;
+  --foreground: #000000;
 
-  /* Ton Design System en mode Light */
-  --border-dual: rgba(0, 0, 0, 0.1);
-  --bg-glass-dual: rgba(255, 255, 255, 0.6);
-  --accent-glow: rgba(0, 112, 243, 0.1);
+  --glass-bg: rgba(255, 255, 255, 0.85);
+  --glass-border: #000000;
+  /* Bordure noire fine en light pour le contraste */
+  --radius-protocol: 2px;
+  --blur-intensity: 40px;
 }
 
 .dark {
+  /* DARK MODE : Abysse & Box Noir */
   --background: #000000;
-  /* Match parfait avec ton ThemeWatcher color #000000 */
-  --foreground: #f5f5f5;
+  --foreground: #ffffff;
 
-  /* Ton Design System en mode Dark Abyssal */
-  --border-dual: rgba(255, 255, 255, 0.05);
-  --bg-glass-dual: rgba(8, 8, 8, 0.75);
-  --accent-glow: rgba(0, 212, 255, 0.2);
+  --glass-bg: rgba(0, 0, 0, 0.95);
+  /* Box Noir quasi-opaque */
+  --glass-border: rgba(255, 255, 255, 0.2);
+  /* Bordure grise fine */
+  --radius-protocol: 2px;
+  --blur-intensity: 64px;
 }
 
 /* -----------------------------------------------------------
-   MAP DES CLASSES (C'est ici que le lien se fait)
+   SUTURE TECHNIQUE : On lie tes classes existantes aux variables
    ----------------------------------------------------------- */
 @layer utilities {
 
-  /* Ces classes sont celles utilisées dans ta HomePage.tsx */
+  /* On redéfinit bg-glass-dual pour qu'il suive tes règles */
   .bg-glass-dual {
-    background-color: var(--bg-glass-dual) !important;
-    backdrop-filter: blur(20px) saturate(180%);
-    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    background-color: var(--glass-bg) !important;
+    backdrop-filter: blur(var(--blur-intensity)) !important;
+    -webkit-backdrop-filter: blur(var(--blur-intensity)) !important;
+    border-radius: var(--radius-protocol) !important;
   }
 
+  /* On redéfinit border-border-dual */
   .border-border-dual {
-    border-color: var(--border-dual) !important;
+    border-color: var(--glass-border) !important;
+    border-width: 1px !important;
+  }
+
+  /* On écrase les arrondis par défaut (rounded-2xl dans ton code) par tes 2px */
+  .rounded-2xl,
+  .rounded-xl {
+    border-radius: var(--radius-protocol) !important;
   }
 }
 
@@ -54,7 +67,23 @@
   body {
     background-color: var(--background);
     color: var(--foreground);
-    /* On force la transition pour un effet fluide lors du switch */
-    transition: background-color 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Force le texte noir sur blanc / blanc sur noir partout */
+  .text-foreground,
+  .text-foreground\/90,
+  .text-foreground\/80 {
+    color: var(--foreground) !important;
+  }
+
+  /* Les fonds des boutons (bg-foreground) s'inversent automatiquement */
+  .bg-foreground {
+    background-color: var(--foreground) !important;
+  }
+
+  .text-background {
+    color: var(--background) !important;
   }
 }

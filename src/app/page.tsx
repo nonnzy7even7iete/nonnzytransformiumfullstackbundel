@@ -60,7 +60,7 @@ export default function HomePage() {
               <div className="flex flex-col h-[350px] text-left">
                 {/* Zone de texte avec scrolling discret */}
                 <div className="flex-grow overflow-y-auto pr-2 scrollbar-hide">
-                  <div className="flex flex-col gap-4 text-foreground/90 text-[14px] leading-relaxed">
+                  <div className="flex flex-col gap-4 text-foreground text-[14px] leading-relaxed">
                     <p>
                       Les métriques d'attractivité et les flux d'investissement
                       convergent vers une réalité : le vrai potentiel se mesure
@@ -88,7 +88,7 @@ export default function HomePage() {
                 </div>
 
                 {/* Bouton d'action ancré au bas du container interne */}
-                <div className="mt-auto pt-4 border-t border-white/5">
+                <div className="mt-auto pt-4 border-t border-border-dual">
                   <span className="text-xs font-bold uppercase tracking-[0.2em] opacity-80">
                     Explorer la data
                   </span>
@@ -96,7 +96,7 @@ export default function HomePage() {
               </div>
             }
             modalContent={
-              <div className="flex flex-col h-full justify-between gap-6 text-sm leading-relaxed text-foreground/90">
+              <div className="flex flex-col h-full justify-between gap-6 text-sm leading-relaxed text-foreground">
                 <div className="space-y-4">
                   <p className="font-bold text-blue-400 uppercase tracking-widest text-[10px]">
                     Argumentaire Financement
@@ -126,7 +126,7 @@ export default function HomePage() {
         </div>
 
         {/* BLOC CENTRAL - LOGIN CARD (L'IMPACT VISUEL) */}
-        <div className="w-full max-w-[450px] lg:w-[450px] h-[450px] p-8 lg:p-10 backdrop-blur-3xl rounded-2xl bg-glass-dual border border-border-dual flex flex-col items-center justify-center shadow-2xl shrink-0 order-1 lg:order-2">
+        <div className="w-full max-w-[450px] lg:w-[450px] h-[450px] p-8 lg:p-10 rounded-[2px] bg-glass-dual border border-border-dual flex flex-col items-center justify-center shadow-2xl shrink-0 order-1 lg:order-2">
           {/* Logo avec Padding interne via le composant TextHoverEffect */}
           <div className="w-full flex-1 flex items-center justify-center overflow-visible">
             <TextHoverEffect
@@ -142,13 +142,13 @@ export default function HomePage() {
 
           {/* Groupe Action bien centré et ancré bas */}
           <div className="w-full flex flex-col items-center justify-center gap-6 mt-4">
-            <p className="text-foreground/80 text-[13px] tracking-[0.4em] uppercase font-medium text-center">
+            <p className="text-foreground text-[13px] tracking-[0.4em] uppercase font-medium text-center">
               Votre aventure commence ici
             </p>
 
             <button
               onClick={() => signIn("google", { callbackUrl: "/dashboard" })}
-              className="w-full max-w-[320px] py-4.5 flex items-center justify-center gap-3 bg-foreground text-background font-bold rounded-xl hover:scale-[1.02] active:scale-95 transition-all duration-300 shadow-xl"
+              className="w-full max-w-[320px] py-4.5 flex items-center justify-center gap-3 bg-foreground text-background font-bold rounded-[2px] hover:scale-[1.02] active:scale-95 transition-all duration-300 shadow-xl"
             >
               <FcGoogle className="text-2xl shrink-0" />
               <span className="text-xs tracking-widest uppercase font-black">
@@ -175,7 +175,7 @@ export default function HomePage() {
 
       {/* FOOTER FIXED WITH DOCK */}
       <footer className="fixed bottom-0 left-0 right-0 z-[100] h-28 flex items-center justify-center pointer-events-none">
-        <div className="absolute inset-x-0 bottom-0 h-full bg-gradient-to-t from-background via-background/60 to-transparent dark:from-black dark:via-black/40 z-[-1]" />
+        <div className="absolute inset-x-0 bottom-0 h-full bg-gradient-to-t from-background via-background/60 to-transparent z-[-1]" />
 
         <div className="relative pointer-events-auto">
           <Dock
@@ -183,7 +183,7 @@ export default function HomePage() {
             iconSize={16}
             magnification={24}
             distance={80}
-            className="bg-background/40 dark:bg-black/40 border border-white/10 shadow-none backdrop-blur-2xl h-[46px] px-6 rounded-full"
+            className="bg-glass-dual border border-border-dual shadow-none h-[46px] px-6 rounded-full"
           />
         </div>
       </footer>
