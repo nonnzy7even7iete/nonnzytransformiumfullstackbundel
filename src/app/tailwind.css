@@ -2,63 +2,51 @@
 @plugin "tailwindcss-animate";
 
 @theme {
-  /* Fonts Identitaires */
   --font-sans: var(--font-geist-sans);
   --font-oswald: var(--font-oswald);
   --font-mono: var(--font-mono-tech);
-
-  /* Palette de Précision */
-  --color-abyss: #020202;
-  --color-protocol-blue: #0070f3;
-  --color-neon-cyan: #00d4ff;
 }
 
 @source "../../src/**/*.{ts,tsx}";
 
+/* -----------------------------------------------------------
+   LOGIQUE DE VARIABLES (Synchronisée avec ThemeWatcher)
+   ----------------------------------------------------------- */
 :root {
-  --background: #f8fafc;
+  --background: #ffffff;
   --foreground: #020202;
-  --glass-bg: rgba(255, 255, 255, 0.6);
-  --glass-border: rgba(0, 0, 0, 0.08);
+
+  /* Ton Design System en mode Light */
+  --border-dual: rgba(0, 0, 0, 0.1);
+  --bg-glass-dual: rgba(255, 255, 255, 0.6);
+  --accent-glow: rgba(0, 112, 243, 0.1);
 }
 
 .dark {
-  --background: var(--color-abyss);
+  --background: #000000;
+  /* Match parfait avec ton ThemeWatcher color #000000 */
   --foreground: #f5f5f5;
-  --glass-bg: rgba(5, 5, 5, 0.75);
-  --glass-border: rgba(255, 255, 255, 0.05);
+
+  /* Ton Design System en mode Dark Abyssal */
+  --border-dual: rgba(255, 255, 255, 0.05);
+  --bg-glass-dual: rgba(8, 8, 8, 0.75);
+  --accent-glow: rgba(0, 212, 255, 0.2);
 }
 
-@layer components {
+/* -----------------------------------------------------------
+   MAP DES CLASSES (C'est ici que le lien se fait)
+   ----------------------------------------------------------- */
+@layer utilities {
 
-  /* Logique de tes blocs de 450px/350px */
-  .saas-layout-card {
-    background: var(--glass-bg);
-    border: 1px solid var(--glass-border);
-    backdrop-filter: blur(20px) saturate(160%);
-    -webkit-backdrop-filter: blur(20px) saturate(160%);
-    border-radius: 1.5rem;
-    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  /* Ces classes sont celles utilisées dans ta HomePage.tsx */
+  .bg-glass-dual {
+    background-color: var(--bg-glass-dual) !important;
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
   }
 
-  /* L'effet de focus sur le bloc central */
-  .saas-layout-card:hover {
-    border-color: var(--color-protocol-blue);
-    box-shadow: 0 0 50px -12px rgba(0, 112, 243, 0.3);
-    transform: translateY(-4px);
-  }
-
-  /* Bouton d'action Google Premium */
-  .btn-protocol {
-    @apply flex items-center justify-center gap-3 font-black transition-all duration-300;
-    background: var(--foreground);
-    color: var(--background);
-    box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.2);
-  }
-
-  .btn-protocol:hover {
-    @apply scale-[1.03] shadow-2xl;
-    filter: brightness(1.2);
+  .border-border-dual {
+    border-color: var(--border-dual) !important;
   }
 }
 
@@ -66,9 +54,7 @@
   body {
     background-color: var(--background);
     color: var(--foreground);
-    font-family: var(--font-sans);
-    -webkit-font-smoothing: antialiased;
-    /* On force l'Abysse sur le body */
-    @apply min-h-screen selection:bg-protocol-blue/30;
+    /* On force la transition pour un effet fluide lors du switch */
+    transition: background-color 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   }
 }
