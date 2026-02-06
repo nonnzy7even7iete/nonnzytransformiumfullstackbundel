@@ -2,55 +2,48 @@
 
 import React from "react";
 import Link from "next/link";
-import {
-  Sheet,
-  SheetContent,
-  SheetTrigger,
-  SheetClose,
-} from "@/components/ui/sheet";
+import { Sheet, SheetContent, SheetClose } from "@/components/ui/sheet";
 import { NoiseBackground } from "@/components/frontendkit/NoiseBackground";
 
-export default function MobileMenu({ links, session }: any) {
+// On reçoit isOpen et onClose de la Navbar
+export default function MobileMenu({ links, session, isOpen, onClose }: any) {
   return (
-    <Sheet>
+    <Sheet open={isOpen} onOpenChange={onClose}>
       <style>{StaticMobileStyles}</style>
-
-      <SheetTrigger className="group flex flex-col items-end gap-[6px] p-2 outline-none border-none bg-transparent cursor-pointer">
-        <div className="h-[1.5px] w-6 bg-foreground transition-all duration-300 group-hover:w-4" />
-        <div className="h-[1.5px] w-4 bg-foreground transition-all duration-300 group-hover:w-6" />
-      </SheetTrigger>
 
       <SheetContent
         side="right"
-        className="flex flex-col p-0 w-[85%] sm:w-[350px] bg-background border-l border-border-dual outline-none shadow-2xl transition-colors duration-500 rounded-none"
+        className="flex flex-col p-0 w-[85%] sm:w-[350px] bg-[var(--background)] border-l border-[var(--border-color)] outline-none shadow-2xl transition-colors duration-500 rounded-none z-[150]"
       >
         {/* Header */}
         <div className="flex justify-end p-6">
           <SheetClose className="group outline-none border-none bg-transparent cursor-pointer">
-            <div className="h-[1.5px] w-8 bg-foreground/20 group-hover:bg-foreground transition-colors" />
+            <div className="h-[1.5px] w-8 bg-[var(--foreground)]/20 group-hover:bg-[var(--foreground)] transition-colors" />
           </SheetClose>
         </div>
 
+        {/* User Profile Info */}
         <div className="px-8 pb-8 space-y-1">
-          <h2 className="text-[18px] font-black italic tracking-tighter text-foreground uppercase">
+          <h2 className="text-[18px] font-black italic tracking-tighter text-[var(--foreground)] uppercase">
             {session?.user?.name || "Global Node"}
           </h2>
-          <p className="text-[12px] text-foreground/40 font-mono font-medium truncate">
+          <p className="text-[12px] text-[var(--foreground)]/40 font-mono font-medium truncate">
             {session?.user?.email || "secure.connection@ivorycoast.io"}
           </p>
         </div>
 
-        <div className="h-[1px] w-full bg-border-dual opacity-50" />
+        <div className="h-[1px] w-full bg-[var(--border-color)] opacity-50" />
 
-        {/* Nav - Adapté au Design System Radius 2px */}
+        {/* Nav - Réalignée sur var(--border-color) */}
         <nav className="flex-grow p-[14px] flex flex-col items-start gap-1">
           {links.map((link: any) => (
             <Link
               key={link.href}
               href={link.href}
-              className="glass-nav-item w-full text-[14px] font-black uppercase tracking-tight text-foreground/70 hover:text-foreground group/item"
+              onClick={onClose} // Ferme le menu au clic sur un lien
+              className="glass-nav-item w-full text-[14px] font-black uppercase tracking-tight text-[var(--foreground)]/70 hover:text-[var(--foreground)] group/item"
             >
-              {link.label}{" "}
+              {link.label}
               <span className="opacity-0 group-hover/item:opacity-100 transition-opacity ml-1">
                 →
               </span>
@@ -58,14 +51,14 @@ export default function MobileMenu({ links, session }: any) {
           ))}
         </nav>
 
-        {/* Footer avec Respiration */}
-        <div className="mt-auto border-t border-border-dual bg-foreground/[0.02] p-6 pt-8 space-y-10">
+        {/* Footer */}
+        <div className="mt-auto border-t border-[var(--border-color)] bg-[var(--foreground)]/[0.02] p-6 pt-8 space-y-10">
           <div className="flex items-center justify-between px-2">
             <div className="space-y-2">
               <p className="raad-effect-pro text-[11px] font-black uppercase tracking-[0.4em]">
                 Ivory Coast
               </p>
-              <p className="text-[8px] uppercase tracking-[0.2em] text-foreground/20 italic font-bold leading-none">
+              <p className="text-[8px] uppercase tracking-[0.2em] text-[var(--foreground)]/20 italic font-bold leading-none">
                 Data Hub Terminal
               </p>
             </div>
@@ -79,12 +72,12 @@ export default function MobileMenu({ links, session }: any) {
 
           <NoiseBackground
             duration={12}
-            containerClassName="rounded-[2px] shadow-2xl border border-border-dual"
+            containerClassName="rounded-[2px] shadow-2xl border border-[var(--border-color)]"
             className="p-0"
           >
             <Link
               href="/upgrade"
-              className="flex items-center justify-center w-full py-4 bg-transparent text-foreground text-[13px] font-black uppercase tracking-[0.1em] rounded-[inherit] transition-all hover:bg-foreground/5 active:scale-[0.98]"
+              className="flex items-center justify-center w-full py-4 bg-transparent text-[var(--foreground)] text-[13px] font-black uppercase tracking-[0.1em] rounded-[inherit] transition-all hover:bg-[var(--foreground)]/5 active:scale-[0.98]"
             >
               Upgrade to Pro
             </Link>
@@ -103,11 +96,11 @@ const StaticMobileStyles = `
     display: flex; 
     align-items: center; 
     gap: 12px; 
-    border-radius: 2px !important;
+    border-radius: var(--radius-vercel) !important; /* Utilisation de ta variable */
   }
   .glass-nav-item:hover {
-    background: var(--glass-bg);
-    border-color: var(--glass-border);
+    background: var(--accents-1);
+    border-color: var(--border-color);
     transform: translateX(4px);
   }
   @keyframes raad-shine-linear {
@@ -122,5 +115,4 @@ const StaticMobileStyles = `
     -webkit-background-clip: text; background-clip: text;
     animation: raad-shine-linear 12s cubic-bezier(0.4, 0, 0.2, 1) infinite;
   }
-  [data-state="open"] > .absolute.right-4.top-4 { display: none !important; }
 `;

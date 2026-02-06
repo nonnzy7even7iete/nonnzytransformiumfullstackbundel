@@ -19,7 +19,6 @@ interface DataCardProps {
 export default function DataCard({
   title,
   content,
-  width = 270,
   height = 270,
   buttonContent,
   modalContent,
@@ -29,52 +28,52 @@ export default function DataCard({
 
   return (
     <>
-      {/* Card principale - Inchangée pour ne pas casser ton design sombre habituel */}
+      {/* Card principale - Totalement réactive au thème */}
       <Card
         className={cn(
-          "relative flex flex-col items-center justify-start p-4 gap-4 bg-black/30 backdrop-blur-xl border border-white/10 rounded-2xl shadow-lg",
+          "relative flex flex-col items-center justify-start p-4 gap-4 bg-[var(--card-bg)] backdrop-blur-xl border border-[var(--border-color)] rounded-[var(--radius-vercel)] shadow-lg transition-colors duration-300",
           "w-[90vw] md:w-[300px] md:min-w-[300px] md:max-w-[300px]",
           className
         )}
         style={{ minHeight: height }}
       >
         {title && (
-          <Card className="w-full bg-black/30 backdrop-blur-xl rounded-xl p-2 border border-white/10">
+          <div className="w-full bg-[var(--accents-1)] rounded-[var(--radius-vercel)] p-2 border border-[var(--border-color)] text-[var(--foreground)] text-sm font-bold italic tracking-tighter uppercase">
             {title}
-          </Card>
+          </div>
         )}
 
         {content && (
-          <Card className="w-full bg-black/30 backdrop-blur-xl rounded-xl p-2 border border-white/10 flex flex-col gap-1 overflow-auto">
+          <div className="w-full bg-[var(--accents-1)] rounded-[var(--radius-vercel)] p-3 border border-[var(--border-color)] flex flex-col gap-1 overflow-auto text-[var(--foreground)]/80 text-xs leading-relaxed">
             {content}
-          </Card>
+          </div>
         )}
 
         <Button
           variant="secondary"
-          className="mt-auto w-full flex items-center justify-center gap-2"
+          className="mt-auto w-full flex items-center justify-center gap-2 bg-[var(--foreground)] text-[var(--background)] hover:opacity-90 transition-all outline-none border-none"
           onClick={() => setModalOpen(true)}
         >
           <ChevronRight className="w-4 h-4" />
-          {buttonContent || "Comprendre"}
+          <span className="text-[10px] font-black uppercase tracking-widest">
+            {buttonContent || "Comprendre"}
+          </span>
         </Button>
       </Card>
 
-      {/* Modal overlay - REFACTO LIGHT MODE */}
+      {/* Modal overlay - Design System Sync */}
       {modalOpen && (
-        <div className="fixed inset-0 z-[100] flex flex-col items-center justify-center p-4 transition-all duration-300">
-          {/* BACKGROUND OVERLAY : C'est ici qu'on gère l'opacité pour bloquer le texte arrière */}
-          <div className="absolute inset-0 bg-white/80 dark:bg-black/60 backdrop-blur-[40px]" />
-
-          <div className="h-20 w-full flex-shrink-0 z-[101]" />
+        <div className="fixed inset-0 z-[200] flex flex-col items-center justify-center p-4">
+          {/* Overlay avec le même flou que la Navbar */}
+          <div
+            className="absolute inset-0 bg-[var(--background)]/80 backdrop-blur-[20px] transition-opacity duration-500"
+            onClick={() => setModalOpen(false)}
+          />
 
           <Card
             className={cn(
-              "relative flex flex-col items-center justify-start z-[101] p-6 gap-4 rounded-2xl shadow-2xl overflow-auto border transition-colors",
-              /* LIGHT MODE : Fond blanc cassé presque opaque pour bloquer le texte de fond */
-              "bg-[#fdfdfd] border-gray-200 text-black",
-              /* DARK MODE : On garde ton style actuel */
-              "dark:bg-black/40 dark:border-white/10 dark:text-white"
+              "relative flex flex-col items-center justify-start z-[201] p-6 gap-4 rounded-[var(--radius-vercel)] shadow-2xl overflow-auto border transition-all duration-300",
+              "bg-[var(--background)] border-[var(--border-color)] text-[var(--foreground)]"
             )}
             style={{
               width: "min(90vw, 400px)",
@@ -84,30 +83,32 @@ export default function DataCard({
           >
             {/* Modal Titre */}
             {title && (
-              <Card className="w-full bg-gray-100/50 dark:bg-black/30 rounded-xl p-3 border border-gray-200 dark:border-white/10">
-                <div className="font-bold text-center">{title}</div>
-              </Card>
+              <div className="w-full bg-[var(--accents-1)] rounded-[var(--radius-vercel)] p-4 border border-[var(--border-color)]">
+                <div className="font-black italic uppercase tracking-tighter text-center">
+                  {title}
+                </div>
+              </div>
             )}
 
-            {/* Modal Contenu - Background neutre pour lisibilité maximale */}
+            {/* Modal Contenu */}
             {modalContent && (
-              <Card className="w-full bg-white/50 dark:bg-black/30 rounded-xl p-4 border border-gray-200 dark:border-white/10 flex flex-col gap-2 overflow-auto">
-                <div className="text-sm leading-relaxed">{modalContent}</div>
-              </Card>
+              <div className="w-full bg-[var(--accents-1)]/50 rounded-[var(--radius-vercel)] p-5 border border-[var(--border-color)] flex flex-col gap-2 overflow-auto">
+                <div className="text-xs leading-relaxed opacity-80 font-medium font-mono uppercase tracking-tight">
+                  {modalContent}
+                </div>
+              </div>
             )}
 
-            {/* Bouton fermeture */}
+            {/* Bouton fermeture - Style Industriel */}
             <Button
               variant="destructive"
-              className="mt-6 w-full flex items-center justify-center gap-2 font-bold shadow-md"
+              className="mt-6 w-full flex items-center justify-center gap-2 font-black text-[10px] uppercase tracking-[0.2em] shadow-lg rounded-[var(--radius-vercel)]"
               onClick={() => setModalOpen(false)}
             >
               <XCircle className="w-4 h-4" />
-              Fermer
+              Fermer l'accès
             </Button>
           </Card>
-
-          <div className="flex-grow z-[101]" />
         </div>
       )}
     </>
