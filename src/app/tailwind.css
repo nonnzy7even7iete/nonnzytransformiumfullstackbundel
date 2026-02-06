@@ -1,23 +1,20 @@
 @import "tailwindcss";
 @plugin "tailwindcss-animate";
 
-/* 1. On définit le thème SANS 'inline' pour forcer la priorité */
 @theme {
-  --background-image-app-gradient: linear-gradient(to bottom right, var(--bg-from), var(--bg-to));
+  /* On lie les variables Google Fonts de ton layout.tsx */
+  --font-sans: var(--font-geist-sans);
+  --font-oswald: var(--font-oswald);
+  --font-mono: var(--font-mono-tech);
 
-  /* On définit les couleurs comme des variables réelles */
+  /* Tes variables de design Protocol 2026 */
+  --background-image-app-gradient: linear-gradient(to bottom right, var(--bg-from), var(--bg-to));
   --color-glass: var(--glass-bg);
   --color-border-dual: var(--border-color);
-
-  /* On réaligne Shadcn sur tes variables */
-  --color-border: var(--border-color);
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-
-  --radius-lg: var(--radius);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-sm: calc(var(--radius) - 4px);
 }
+
+/* ⚠️ FORCE LE SCAN : Si Tailwind ne trouve pas tes classes, le front est cassé */
+@source "../../src/**/*.{ts,tsx}";
 
 :root {
   --radius: 0.625rem;
@@ -46,24 +43,13 @@
   ::after,
   ::before {
     border-color: var(--border-color);
-    box-sizing: border-box;
   }
 
   body {
     background-image: var(--background-image-app-gradient);
     background-attachment: fixed;
-    /* Important pour les grands layouts */
     color: var(--foreground);
     min-height: 100vh;
-    -webkit-font-smoothing: antialiased;
-  }
-}
-
-/* 2. Tes utilitaires spécifiques (Glassmorphism) */
-@layer components {
-  .bg-glass-dual {
-    background-color: var(--glass-bg);
-    backdrop-filter: blur(12px);
-    border: 1px solid var(--border-color);
+    font-family: var(--font-geist-sans);
   }
 }
