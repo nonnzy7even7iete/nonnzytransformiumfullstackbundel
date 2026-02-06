@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
+import { HiOutlineMenuAlt4 } from "react-icons/hi";
 import { TextHoverEffect } from "../ui/TextHoverEffect";
 import { AnimatedThemeToggler } from "@/components/frontendkit/AnimatedThemeToggler";
 import { Menubar, MenubarMenu, MenubarTrigger } from "@/components/ui/menubar";
@@ -38,30 +39,27 @@ export default function NavbarFront() {
           isVisible ? "translate-y-0" : "-translate-y-full"
         } ${
           isScrolled
-            ? "bg-background/80 backdrop-blur-md border-b border-zinc-200 dark:border-zinc-800 shadow-sm"
-            : "bg-transparent border-b border-transparent"
+            ? "bg-black/95 backdrop-blur-[32px] border-b border-zinc-800/30"
+            : "bg-black backdrop-blur-[12px] border-b border-transparent"
         }`}
       >
         <div className="flex w-full h-full items-center px-6 lg:px-10 relative">
-          {/* LOGO SECTION */}
+          {/* LOGO */}
           <div className="flex items-center w-40 lg:w-56 h-full z-[60]">
             <Link href="/" className="block w-full h-full flex items-center">
               <TextHoverEffect text="Nonnzytr" />
             </Link>
           </div>
 
-          {/* MENU CENTRAL - Zinc 700 & Gutter Padding */}
+          {/* MENU CENTRAL */}
           <div className="flex-1 hidden md:flex justify-center items-center z-[80]">
-            <Menubar className="h-11 bg-accents-1/20 border border-zinc-300 dark:border-zinc-700 rounded-[7px] p-1.5 gap-2 backdrop-blur-xl">
+            <Menubar className="h-11 bg-zinc-950/50 border border-zinc-700 rounded-[7px] p-1.5 gap-2 backdrop-blur-md">
               {navLinks.map((link) => (
                 <MenubarMenu key={link.href}>
                   <Link href={link.href} className="no-underline">
                     <MenubarTrigger
-                      className="cursor-pointer px-4 h-full text-[10px] font-bold uppercase tracking-[0.2em] text-foreground/50 transition-all duration-300 rounded-[7px] border border-zinc-300 dark:border-zinc-700 bg-transparent
-                        /* HOVER LOGIC : Magie Verte & Transparence */
-                        hover:text-emerald-600 dark:hover:text-emerald-400
-                        hover:bg-emerald-500/10 dark:hover:bg-emerald-500/5
-                        hover:border-emerald-500/30
+                      className="cursor-pointer px-4 h-full text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-500 transition-all duration-300 rounded-[7px] border border-zinc-700/50 bg-transparent
+                        hover:text-emerald-400 hover:bg-emerald-500/10 hover:border-emerald-500/30
                         focus:bg-transparent"
                     >
                       {link.label}
@@ -72,73 +70,79 @@ export default function NavbarFront() {
             </Menubar>
           </div>
 
-          {/* ACTIONS DROITE */}
-          <div className="w-40 lg:w-56 flex justify-end items-center gap-4 lg:gap-6 z-[60]">
-            <div className="border-none bg-transparent outline-none ring-0">
-              <AnimatedThemeToggler />
-            </div>
-            <div className="md:hidden text-foreground">
-              <MobileMenu links={navLinks} session={session} />
+          {/* ACTIONS */}
+          <div className="w-40 lg:w-56 flex justify-end items-center gap-4 lg:gap-8 z-[60]">
+            <AnimatedThemeToggler />
+            <div className="md:hidden">
+              <MobileMenu
+                links={navLinks}
+                session={session}
+                triggerIcon={
+                  <HiOutlineMenuAlt4 className="w-8 h-8 text-zinc-500 hover:text-emerald-400 transition-colors cursor-pointer" />
+                }
+              />
             </div>
           </div>
         </div>
 
-        {/* SCANNER LINE - La couche magique orange/verte */}
-        <div className="absolute bottom-0 h-[2.5px] w-full magic-scanner" />
+        {/* --- LA STRUCTURE DE BORDURE "AWWWARDS" EN 3 COUCHES --- */}
+        <div className="absolute bottom-0 w-full h-[2px] overflow-hidden flex">
+          {/* COUCHE 1 : EXTRÉMITÉ GAUCHE (NOIR PUR) */}
+          <div className="w-[15%] h-full bg-black z-30" />
+          <div className="w-[10%] h-full bg-gradient-to-r from-black to-transparent z-20" />
+
+          {/* COUCHE 2 : LE FLUX CENTRAL (L'INTERACTION) */}
+          <div className="flex-1 h-full relative z-10">
+            <div className="absolute inset-0 magic-interaction-flow" />
+          </div>
+
+          {/* COUCHE 3 : EXTRÉMITÉ DROITE (NOIR PUR) */}
+          <div className="w-[10%] h-full bg-gradient-to-l from-black to-transparent z-20" />
+          <div className="w-[15%] h-full bg-black z-30" />
+        </div>
       </nav>
 
-      {/* PIED DE PAGE : STYLES & ANIMATIONS */}
       <style jsx global>{`
-        @keyframes awwwards-scanner-flow {
-          /* 0s à 7s : APPARITION (33.3% de 21s) */
+        @keyframes google-magic-flow {
           0% {
             opacity: 0;
-            transform: scaleX(0);
+            transform: scaleX(0.7);
+            filter: blur(10px);
             background-position: 0% 50%;
           }
-          5% {
+          10% {
             opacity: 1;
             transform: scaleX(1);
+            filter: blur(2px);
           }
-          30% {
-            opacity: 1;
-            transform: scaleX(1);
+          25% {
             background-position: 100% 50%;
           }
           33.33% {
             opacity: 0;
-            transform: scaleX(0);
+            transform: scaleX(1.1);
+            filter: blur(15px);
           }
-          /* 7s à 21s : INVISIBILITÉ (66.6% de 21s) */
           100% {
             opacity: 0;
-            transform: scaleX(0);
           }
         }
 
-        .magic-scanner {
-          animation: awwwards-scanner-flow 21s cubic-bezier(0.4, 0, 0.2, 1)
-            infinite;
-          background-size: 200% 100%;
-          /* Gradient Orange/Vert entre deux extrémités Noires Absolues */
-          background-image: linear-gradient(
-            to right,
-            #000000 0%,
-            #f97316 35%,
-            #10b981 65%,
-            #000000 100%
+        .magic-interaction-flow {
+          animation: google-magic-flow 21s ease-in-out infinite;
+          background: linear-gradient(
+            90deg,
+            #000000,
+            #f97316,
+            /* Orange Google */ #10b981,
+            /* Vert Logic */ #3b82f6,
+            /* Bleu Magic */ #000000
           );
+          background-size: 300% 100%;
         }
 
-        /* Support Dark Mode pour le gradient si nécessaire */
-        .dark .magic-scanner {
-          background-image: linear-gradient(
-            to right,
-            #000000 0%,
-            #ea580c 35%,
-            #059669 65%,
-            #000000 100%
-          );
+        .bg-black {
+          background-color: #000000 !important;
         }
       `}</style>
     </>
