@@ -4,7 +4,6 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { TextHoverEffect } from "../ui/TextHoverEffect";
-/* MODIFICATION : Import du nouveau Toggler Glassmorphism */
 import { AnimatedThemeToggler } from "@/components/frontendkit/AnimatedThemeToggler";
 import { Menubar, MenubarMenu, MenubarTrigger } from "@/components/ui/menubar";
 import MobileMenu from "@/components/frontendkit/MobileMenu";
@@ -52,56 +51,31 @@ export default function NavbarFront() {
 
   return (
     <>
-      <style>{`
-        .expert-item-border {
-          transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
-          border: 1px solid light-dark(rgba(0,0,0,0.1), rgba(255,255,255,0.08)) !important;
-          border-radius: 7px !important;
-          background: light-dark(rgba(0,0,0,0.02), rgba(255,255,255,0.02));
-        }
-
-        .expert-item-border:hover {
-          border-color: light-dark(rgba(34, 197, 94, 0.4), rgba(34, 197, 94, 0.5)) !important;
-          background: light-dark(rgba(34, 197, 94, 0.05), rgba(34, 197, 94, 0.08)) !important;
-          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-          transform: translateY(-1px);
-        }
-
-        .nav-surface-glint {
-          position: absolute;
-          inset: 0;
-          background: linear-gradient(to bottom, light-dark(rgba(255,255,255,0.15), rgba(255,255,255,0.05)), transparent);
-          pointer-events: none;
-        }
-
-        *:focus { outline: none !important; }
-      `}</style>
-
       <nav
         className={`fixed top-0 w-full z-50 transition-all duration-700 h-20 flex items-center ${
           isVisible ? "translate-y-0" : "-translate-y-full"
         } ${
           isScrolled
-            ? "bg-white/80 dark:bg-black/85 backdrop-blur-[50px] border-b border-black/5 dark:border-white/10 shadow-2xl"
-            : "bg-white/95 dark:bg-black/95 backdrop-blur-[30px] border-b border-transparent"
+            ? "bg-glass-dual border-b border-border-dual shadow-2xl"
+            : "bg-background border-b border-transparent"
         }`}
       >
-        <div className="nav-surface-glint" />
-
-        <div className="flex w-full h-full items-center px-10 relative">
-          <div className="flex items-center w-56 h-full z-[60]">
+        <div className="flex w-full h-full items-center px-6 lg:px-10 relative">
+          {/* LOGO */}
+          <div className="flex items-center w-40 lg:w-56 h-full z-[60]">
             <Link href="/" className="block w-full h-full flex items-center">
               <TextHoverEffect text="Nonnzytr" />
             </Link>
           </div>
 
+          {/* MENU CENTRAL - Adapté Radius 2px */}
           <div className="flex-1 hidden md:flex justify-center items-center z-[80]">
             <Menubar
               className="
               h-12 
-              bg-black/5 dark:bg-black/40 
-              border border-black/10 dark:border-white/10 
-              rounded-[7px] 
+              bg-transparent
+              border border-border-dual 
+              rounded-[2px] 
               p-[6px] 
               gap-2 
               backdrop-blur-3xl"
@@ -109,7 +83,7 @@ export default function NavbarFront() {
               {navLinks.map((link) => (
                 <MenubarMenu key={link.href}>
                   <Link href={link.href} className="no-underline">
-                    <MenubarTrigger className="expert-item-border cursor-pointer px-5 py-2 text-[10px] font-black uppercase tracking-[0.25em] text-black/60 dark:text-white/50 hover:text-emerald-500 transition-all">
+                    <MenubarTrigger className="cursor-pointer px-5 py-2 text-[10px] font-black uppercase tracking-[0.25em] text-foreground opacity-70 hover:opacity-100 hover:text-blue-500 transition-all rounded-[2px] border border-transparent hover:border-border-dual">
                       {link.label}
                     </MenubarTrigger>
                   </Link>
@@ -118,18 +92,19 @@ export default function NavbarFront() {
             </Menubar>
           </div>
 
-          <div className="w-56 flex justify-end items-center gap-6 z-[60]">
-            {/* REMPLACEMENT ICI : Nouveau Toggler avec animations Magic UI */}
+          {/* ACTIONS DROITE */}
+          <div className="w-40 lg:w-56 flex justify-end items-center gap-4 lg:gap-6 z-[60]">
             <AnimatedThemeToggler />
 
-            <div className="md:hidden text-black dark:text-white">
+            <div className="md:hidden text-foreground">
               <MobileMenu links={navLinks} session={session} />
             </div>
           </div>
         </div>
 
+        {/* SCANNER LINE */}
         <div
-          className={`absolute bottom-0 h-[1px] w-full transition-opacity duration-1000 bg-gradient-to-r from-transparent via-emerald-500/40 to-transparent ${
+          className={`absolute bottom-0 h-[1px] w-full transition-opacity duration-1000 bg-gradient-to-r from-transparent via-blue-500/40 to-transparent ${
             showBorder ? "opacity-100" : "opacity-0"
           }`}
         />
