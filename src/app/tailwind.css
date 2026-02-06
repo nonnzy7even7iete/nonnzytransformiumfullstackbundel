@@ -1,55 +1,21 @@
-@import "tailwindcss";
-@plugin "tailwindcss-animate";
-
 @theme {
-  /* On lie les variables Google Fonts de ton layout.tsx */
-  --font-sans: var(--font-geist-sans);
-  --font-oswald: var(--font-oswald);
-  --font-mono: var(--font-mono-tech);
+  /* ... tes fonts ... */
 
-  /* Tes variables de design Protocol 2026 */
-  --background-image-app-gradient: linear-gradient(to bottom right, var(--bg-from), var(--bg-to));
-  --color-glass: var(--glass-bg);
-  --color-border-dual: var(--border-color);
+  /* Couleurs de fond dynamiques */
+  --bg-app: light-dark(#f8fafc, #030303);
+  /* Noir pur en dark pour la profondeur */
+
+  /* Glassmorphism Ultra-Sombre */
+  --glass-bg: light-dark(rgba(255, 255, 255, 0.4), rgba(5, 5, 5, 0.8));
+  --glass-border: light-dark(rgba(0, 0, 0, 0.1), rgba(255, 255, 255, 0.05));
+
+  /* Effets */
+  --shadow-glass: 0 8px 32px 0 rgba(0, 0, 0, 0.8);
 }
 
-/* ⚠️ FORCE LE SCAN : Si Tailwind ne trouve pas tes classes, le front est cassé */
-@source "../../src/**/*.{ts,tsx}";
-
-:root {
-  --radius: 0.625rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --border-color: #d1d5db;
-  --glass-bg: transparent;
-  --bg-from: #f8fafc;
-  --bg-to: #e2e8f0;
-  color-scheme: light;
-}
-
-.dark {
-  --background: oklch(0.1 0 0);
-  --foreground: oklch(0.985 0 0);
-  --border-color: rgba(255, 255, 255, 0.1);
-  --glass-bg: rgba(0, 0, 0, 0.6);
-  --bg-from: #0a0a0a;
-  --bg-to: #171717;
-  color-scheme: dark;
-}
-
-@layer base {
-
-  *,
-  ::after,
-  ::before {
-    border-color: var(--border-color);
-  }
-
-  body {
-    background-image: var(--background-image-app-gradient);
-    background-attachment: fixed;
-    color: var(--foreground);
-    min-height: 100vh;
-    font-family: var(--font-geist-sans);
+@layer components {
+  .glass-card {
+    @apply bg-[var(--glass-bg)] border border-[var(--glass-border)] backdrop-blur-xl;
+    box-shadow: var(--shadow-glass);
   }
 }
