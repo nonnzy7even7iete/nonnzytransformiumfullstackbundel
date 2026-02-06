@@ -19,24 +19,18 @@ export default function NavbarFront() {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
       setIsScrolled(currentScrollY > 10);
-      if (currentScrollY > lastScrollY && currentScrollY > 100) {
-        setIsVisible(false);
-      } else {
-        setIsVisible(true);
-      }
+      setIsVisible(currentScrollY <= lastScrollY || currentScrollY <= 100);
       setLastScrollY(currentScrollY);
     };
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, [lastScrollY]);
 
-  // ANIMATION SCANNER : Transition fluide
   useEffect(() => {
-    const cycle = () => {
+    const interval = setInterval(() => {
       setShowBorder(true);
-      setTimeout(() => setShowBorder(false), 4000);
-    };
-    const interval = setInterval(cycle, 9000);
+      setTimeout(() => setShowBorder(false), 3000);
+    }, 8000);
     return () => clearInterval(interval);
   }, []);
 
@@ -65,7 +59,7 @@ export default function NavbarFront() {
             </Link>
           </div>
 
-          {/* MENU CENTRAL - Hover Vert Transparent & Radius 7px */}
+          {/* MENU CENTRAL - Border Gray Fine & Radius 7px Unifié */}
           <div className="flex-1 hidden md:flex justify-center items-center z-[80]">
             <Menubar
               className="
@@ -86,14 +80,18 @@ export default function NavbarFront() {
                         text-[10px] font-bold uppercase tracking-[0.2em] 
                         text-foreground/50 
                         transition-all duration-300 
-                        rounded-[7px] border-none outline-none 
-                        /* HOVER VERT TRANSPARENT */
+                        /* RADIUS 7PX PARTOUT */
+                        rounded-[7px] 
+                        /* BORDER GRAY FINE PAR DEFAUT */
+                        border border-border-color/50
+                        bg-transparent
+                        /* HOVER STATE */
                         hover:text-emerald-500 
                         hover:bg-emerald-500/10 
-                        /* ACTIVE / OPEN STATES */
-                        data-[state=open]:bg-emerald-500/15 
-                        data-[state=open]:text-emerald-500
-                        focus:bg-emerald-500/10"
+                        hover:border-emerald-500/20
+                        /* RESET RADIX DEFAULTS */
+                        focus:bg-emerald-500/10 focus:text-emerald-500
+                        data-[state=open]:bg-emerald-500/10"
                     >
                       {link.label}
                     </MenubarTrigger>
@@ -103,21 +101,24 @@ export default function NavbarFront() {
             </Menubar>
           </div>
 
-          {/* ACTIONS */}
+          {/* ACTIONS - TOGGLER NEUTRALISÉ */}
           <div className="w-40 lg:w-56 flex justify-end items-center gap-4 lg:gap-6 z-[60]">
-            <AnimatedThemeToggler />
+            <div className="border-none bg-transparent outline-none ring-0 focus:ring-0 focus:outline-none p-0">
+              <AnimatedThemeToggler />
+            </div>
+
             <div className="md:hidden text-foreground">
               <MobileMenu links={navLinks} session={session} />
             </div>
           </div>
         </div>
 
-        {/* SCANNER LINE INDICATOR : Emerald / Blue Pulse */}
+        {/* SCANNER LINE - Gris Cassé / Emerald discret */}
         <div
-          className={`absolute bottom-0 h-[1px] w-full transition-all duration-[3000ms] ease-in-out ${
+          className={`absolute bottom-0 h-[1px] w-full transition-all duration-[3000ms] ${
             showBorder
-              ? "bg-gradient-to-r from-transparent via-emerald-500/40 to-transparent opacity-100 scale-x-100"
-              : "opacity-0 scale-x-0"
+              ? "bg-gradient-to-r from-transparent via-emerald-500/30 to-transparent opacity-100"
+              : "opacity-0"
           }`}
         />
       </nav>
