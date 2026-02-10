@@ -1,13 +1,7 @@
 "use client";
 
-import React, { useRef, useState, useEffect } from "react";
-import {
-  motion,
-  useScroll,
-  useTransform,
-  useSpring,
-  MotionValue,
-} from "framer-motion";
+import React, { useState, useEffect } from "react";
+import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { cn } from "@/lib/utils";
 
 interface InsightData {
@@ -26,70 +20,42 @@ const initialInsights: InsightData[] = [
 ];
 
 export default function InsightCarousel() {
-  const [data, setData] = useState<InsightData[]>(initialInsights);
-  const [radius, setRadius] = useState(-500); // Rayon dynamique
-  const containerRef = useRef<HTMLDivElement>(null);
+  const [data] = useState<InsightData[]>(initialInsights);
 
-  // Gestion du responsive pour le rayon du cercle
-  useEffect(() => {
-    const handleResize = () => {
-      if (window.innerWidth < 768) {
-        setRadius(-280); // Rayon serré pour mobile
-      } else {
-        setRadius(-500); // Rayon large pour desktop
-      }
-    };
-    handleResize();
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
+  // X est la position du "drag", qu'on transforme en rotation
+  const x = useMotionValue(0);
+  const rotateX = useSpring(x, { stiffness: 60, damping: 20 });
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setData((prevData) =>
-        prevData.map((item) => ({
-          ...item,
-          value:
-            (
-              parseFloat(item.value.replace(/[^0-9.]/g, "")) +
-              (Math.random() - 0.5) * 2
-            ).toFixed(1) + item.value.replace(/[0-9.]/g, ""),
-        }))
-      );
-    }, 7000);
-    return () => clearInterval(interval);
-  }, []);
-
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start end", "end start"],
-  });
-
-  const smoothRotation = useSpring(scrollYProgress, {
-    stiffness: 80,
-    damping: 25,
-  });
+  // On multiplie la valeur pour que le mouvement soit sensible
+  const rotation = useTransform(rotateX, (latest) => latest / 2);
 
   return (
-    <div
-      ref={containerRef}
-      className="relative h-[250vh] w-full bg-background/50"
-    >
-      <div
-        className="sticky top-0 h-screen w-full flex items-center justify-center overflow-hidden"
-        style={{ perspective: "1200px" }}
-      >
-        {/* Label de flux visible */}
-        <div className="absolute top-20 left-1/2 -translate-x-1/2 z-50 text-center">
-          <span className="font-mono text-[10px] uppercase tracking-[0.5em] text-emerald-500/50 block mb-2">
-            System_Analysis
-          </span>
-          <div className="h-px w-12 bg-emerald-500/20 mx-auto" />
-        </div>
+    <div className="relative h-screen w-full flex items-center justify-center bg-black overflow-hidden touch-none">
+      {/* Overlay d'instruction */}
+      <div className="absolute top-10 pointer-events-none text-center">
+        <p className="font-mono text-[10px] tracking-[0.4em] text-emerald-500/40 uppercase">
+          Drag to Rotate _ Manipulate Nodes
+        </p>
+      </div>
 
-        <div
-          className="relative w-full flex items-center justify-center"
-          style={{ transformStyle: "preserve-3d" }}
+      {/* Zone de capture du Drag (Invisible mais couvre tout) */}
+      <motion.div
+        drag="x"
+        style={{ x }}
+        className="absolute inset-0 z-50 cursor-grab active:cursor-grabbing"
+      />
+
+      {/* Scene 3D */}
+      <div
+        className="relative flex items-center justify-center"
+        style={{ perspective: "1800px" }}
+      >
+        <motion.div
+          style={{
+            rotateY: rotation,
+            transformStyle: "preserve-3d",
+          }}
+          className="relative flex items-center justify-center w-[350px] md:w-[450px]"
         >
           {data.map((item, i) => (
             <Card
@@ -97,79 +63,70 @@ export default function InsightCarousel() {
               item={item}
               index={i}
               total={data.length}
-              progress={smoothRotation}
-              radius={radius}
+              rotation={rotation}
             />
           ))}
-        </div>
+        </motion.div>
       </div>
+
+      {/* Effet de Halo en arrière plan */}
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(16,185,129,0.05)_0%,transparent_70%)] pointer-events-none" />
     </div>
   );
 }
 
-interface CardProps {
-  item: InsightData;
-  index: number;
-  total: number;
-  progress: MotionValue<number>;
-  radius: number;
-}
-
-function Card({ item, index, total, progress, radius }: CardProps) {
+function Card({ item, index, total, rotation }: any) {
   const angleStep = 360 / total;
-  const startAngle = index * angleStep;
+  const cardAngle = index * angleStep;
 
-  const rotation = useTransform(
-    progress,
-    [0, 1],
-    [startAngle, startAngle + 360]
-  );
-
-  // Adaptabilité des échelles selon l'angle
-  const scale = useTransform(
-    rotation,
-    [startAngle - 60, startAngle, startAngle + 60],
-    [0.8, 1.1, 0.8]
-  );
-  const opacity = useTransform(
-    rotation,
-    [startAngle - 90, startAngle, startAngle + 90],
-    [0, 1, 0]
-  );
+  // Rayon de 500px pour que les cartes soient imposantes
+  const radius = 500;
 
   return (
     <motion.div
       style={{
-        rotateY: rotation,
-        transformOrigin: `center center ${radius}px`,
-        opacity,
-        scale,
+        position: "absolute",
+        width: "320px",
+        height: "220px",
         transformStyle: "preserve-3d",
+        // Positionnement en cercle parfait
+        rotateY: cardAngle,
+        transformOrigin: `center center -${radius}px`,
       }}
       className={cn(
-        "absolute w-[260px] md:w-[300px] h-[160px] md:h-[180px] p-6 rounded-2xl",
-        "bg-zinc-950/80 backdrop-blur-xl border border-white/10 shadow-2xl",
-        "flex flex-col justify-between"
+        "p-8 rounded-[32px] transition-colors duration-500",
+        "bg-zinc-900/90 backdrop-blur-3xl border border-white/5 shadow-[0_0_50px_rgba(0,0,0,0.8)]",
+        "flex flex-col justify-between group select-none"
       )}
     >
-      <div className="flex justify-between items-center">
-        <span className="text-[9px] font-mono text-emerald-500 font-bold tracking-[0.2em]">
-          NODE_0{index + 1}
-        </span>
-        <div className="h-1.5 w-1.5 rounded-full bg-emerald-500 shadow-[0_0_10px_#10b981]" />
+      <div className="flex justify-between items-start">
+        <div className="space-y-1">
+          <span className="block font-mono text-[10px] text-emerald-500 font-black tracking-widest uppercase">
+            Node_0{index + 1}
+          </span>
+          <div className="h-0.5 w-6 bg-emerald-500/30" />
+        </div>
+        <div className="h-3 w-3 rounded-full bg-emerald-500 shadow-[0_0_15px_#10b981]" />
       </div>
 
       <div>
-        <h3 className="text-white/40 text-[8px] md:text-[9px] uppercase tracking-[0.3em] mb-1">
+        <h3 className="text-white/30 text-[10px] uppercase tracking-[0.4em] font-bold mb-2">
           {item.title}
         </h3>
-        <div className="text-2xl md:text-3xl font-black italic text-white tracking-tighter tabular-nums">
+        <div className="text-5xl font-black italic text-white tracking-tighter leading-none">
           {item.value}
         </div>
       </div>
 
-      <div className="text-[8px] text-white/20 font-mono uppercase tracking-widest border-t border-white/5 pt-3">
-        {item.desc}
+      <div className="flex items-center gap-4 border-t border-white/5 pt-6">
+        <div className="flex-1">
+          <p className="text-[9px] text-white/20 uppercase tracking-widest leading-tight">
+            {item.desc}
+          </p>
+        </div>
+        <div className="text-[10px] font-mono text-emerald-500/40">
+          SECURED_V2
+        </div>
       </div>
     </motion.div>
   );
