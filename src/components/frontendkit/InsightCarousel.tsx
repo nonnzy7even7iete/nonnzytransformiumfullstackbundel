@@ -1,9 +1,16 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
-import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
+import React, { useState, useRef } from "react";
+import {
+  motion,
+  useMotionValue,
+  useSpring,
+  useTransform,
+  MotionValue,
+} from "framer-motion";
 import { cn } from "@/lib/utils";
 
+// Interface pour les données
 interface InsightData {
   id: number;
   title: string;
@@ -11,122 +18,137 @@ interface InsightData {
   desc: string;
 }
 
-const initialInsights: InsightData[] = [
-  { id: 1, title: "FLUX ALPHA", value: "84.2%", desc: "Anyama_Node" },
-  { id: 2, title: "CORE_DATA", value: "12.4k", desc: "Sync_Active" },
-  { id: 3, title: "LATENCY", value: "0.4ms", desc: "Ultra_Low" },
-  { id: 4, title: "REVENUE", value: "450k", desc: "Target_Hub" },
-  { id: 5, title: "STABILITY", value: "99.9%", desc: "Protocol_Safe" },
+// Interface pour les Props (C'est ça qui fait taire VS Code)
+interface CardProps {
+  item: InsightData;
+  index: number;
+  total: number;
+  globalRotation: MotionValue<number>;
+}
+
+const DATA: InsightData[] = [
+  { id: 1, title: "FLUX ALPHA", value: "84.2%", desc: "Anyama_Node_Master" },
+  { id: 2, title: "CORE_DATA", value: "12.4k", desc: "Global_Sync_Verified" },
+  { id: 3, title: "LATENCY", value: "0.4ms", desc: "Zero_Point_Protocol" },
+  { id: 4, title: "REVENUE", value: "450k", desc: "Target_Hub_Capital" },
+  { id: 5, title: "STABILITY", value: "99.9%", desc: "Resilience_Active" },
 ];
 
 export default function InsightCarousel() {
-  const [data] = useState<InsightData[]>(initialInsights);
+  const dragX = useMotionValue(0);
 
-  // X est la position du "drag", qu'on transforme en rotation
-  const x = useMotionValue(0);
-  const rotateX = useSpring(x, { stiffness: 60, damping: 20 });
+  const rotationSpring = useSpring(dragX, {
+    stiffness: 35,
+    damping: 20,
+    mass: 1.5,
+  });
 
-  // On multiplie la valeur pour que le mouvement soit sensible
-  const rotation = useTransform(rotateX, (latest) => latest / 2);
+  const rotation = useTransform(rotationSpring, (v) => v / 3.5);
 
   return (
-    <div className="relative h-screen w-full flex items-center justify-center bg-black overflow-hidden touch-none">
-      {/* Overlay d'instruction */}
-      <div className="absolute top-10 pointer-events-none text-center">
-        <p className="font-mono text-[10px] tracking-[0.4em] text-emerald-500/40 uppercase">
-          Drag to Rotate _ Manipulate Nodes
-        </p>
-      </div>
-
-      {/* Zone de capture du Drag (Invisible mais couvre tout) */}
-      <motion.div
-        drag="x"
-        style={{ x }}
-        className="absolute inset-0 z-50 cursor-grab active:cursor-grabbing"
+    <div className="relative h-screen w-full flex items-center justify-center bg-[#050505] overflow-hidden touch-none select-none">
+      <div
+        className="absolute inset-0 z-0 opacity-20 pointer-events-none"
+        style={{
+          backgroundImage: "radial-gradient(#10b981 0.5px, transparent 0.5px)",
+          backgroundSize: "40px 40px",
+        }}
       />
 
-      {/* Scene 3D */}
+      <motion.div
+        drag="x"
+        dragConstraints={{ left: -1000000, right: 1000000 }}
+        dragElastic={0}
+        style={{ x: dragX }}
+        className="absolute inset-0 z-[100] cursor-grab active:cursor-grabbing"
+      />
+
       <div
         className="relative flex items-center justify-center"
-        style={{ perspective: "1800px" }}
+        style={{ perspective: "2500px" }}
       >
         <motion.div
           style={{
             rotateY: rotation,
             transformStyle: "preserve-3d",
           }}
-          className="relative flex items-center justify-center w-[350px] md:w-[450px]"
+          className="relative flex items-center justify-center w-[500px]"
         >
-          {data.map((item, i) => (
+          {DATA.map((item, i) => (
             <Card
               key={item.id}
               item={item}
               index={i}
-              total={data.length}
-              rotation={rotation}
+              total={DATA.length}
+              globalRotation={rotation}
             />
           ))}
         </motion.div>
       </div>
-
-      {/* Effet de Halo en arrière plan */}
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(16,185,129,0.05)_0%,transparent_70%)] pointer-events-none" />
     </div>
   );
 }
 
-function Card({ item, index, total, rotation }: any) {
+function Card({ item, index, total, globalRotation }: CardProps) {
   const angleStep = 360 / total;
-  const cardAngle = index * angleStep;
+  const initialAngle = index * angleStep;
+  const radius = 600;
 
-  // Rayon de 500px pour que les cartes soient imposantes
-  const radius = 500;
+  const distanceToCenter = useTransform(globalRotation, (v) => {
+    const currentPos = (v + initialAngle) % 360;
+    const normalized = ((((currentPos + 180) % 360) + 360) % 360) - 180;
+    return Math.abs(normalized);
+  });
+
+  const blur = useTransform(
+    distanceToCenter,
+    [0, 20, 90],
+    ["blur(0px)", "blur(2px)", "blur(25px)"]
+  );
+  const opacity = useTransform(distanceToCenter, [0, 80, 150], [1, 0.4, 0]);
+  const scale = useTransform(distanceToCenter, [0, 90], [1.15, 0.75]);
+  const z = useTransform(distanceToCenter, [0, 90], [100, -200]);
 
   return (
     <motion.div
       style={{
         position: "absolute",
-        width: "320px",
-        height: "220px",
+        width: "400px",
+        height: "280px",
         transformStyle: "preserve-3d",
-        // Positionnement en cercle parfait
-        rotateY: cardAngle,
-        transformOrigin: `center center -${radius}px`,
+        rotateY: initialAngle,
+        transformOrigin: `center center -${radius}px` as any, // "as any" pour calmer VS Code sur le CSS 3D
+        filter: blur,
+        opacity,
+        scale,
+        z,
       }}
       className={cn(
-        "p-8 rounded-[32px] transition-colors duration-500",
-        "bg-zinc-900/90 backdrop-blur-3xl border border-white/5 shadow-[0_0_50px_rgba(0,0,0,0.8)]",
-        "flex flex-col justify-between group select-none"
+        "p-10 rounded-[48px] border border-white/10 flex flex-col justify-between",
+        "bg-zinc-900/40 backdrop-blur-[40px] shadow-[0_0_80px_rgba(0,0,0,0.6)]"
       )}
     >
-      <div className="flex justify-between items-start">
-        <div className="space-y-1">
-          <span className="block font-mono text-[10px] text-emerald-500 font-black tracking-widest uppercase">
-            Node_0{index + 1}
+      <div className="flex justify-between items-start z-10">
+        <div className="flex flex-col gap-1">
+          <span className="font-mono text-[12px] text-emerald-400 font-black tracking-[0.3em] uppercase">
+            System_Link_0{item.id}
           </span>
-          <div className="h-0.5 w-6 bg-emerald-500/30" />
+          <div className="h-0.5 w-12 bg-emerald-500/40 rounded-full" />
         </div>
-        <div className="h-3 w-3 rounded-full bg-emerald-500 shadow-[0_0_15px_#10b981]" />
+        <div className="h-4 w-4 rounded-full bg-emerald-500 shadow-[0_0_25px_#10b981]" />
       </div>
 
-      <div>
-        <h3 className="text-white/30 text-[10px] uppercase tracking-[0.4em] font-bold mb-2">
+      <div className="z-10">
+        <h3 className="text-white/20 text-[11px] uppercase tracking-[0.5em] font-bold mb-3">
           {item.title}
         </h3>
-        <div className="text-5xl font-black italic text-white tracking-tighter leading-none">
+        <div className="text-7xl font-black italic text-white tracking-[-0.05em] leading-none">
           {item.value}
         </div>
       </div>
 
-      <div className="flex items-center gap-4 border-t border-white/5 pt-6">
-        <div className="flex-1">
-          <p className="text-[9px] text-white/20 uppercase tracking-widest leading-tight">
-            {item.desc}
-          </p>
-        </div>
-        <div className="text-[10px] font-mono text-emerald-500/40">
-          SECURED_V2
-        </div>
+      <div className="flex items-center justify-between border-t border-white/10 pt-8 z-10 text-white/40">
+        {item.desc}
       </div>
     </motion.div>
   );
