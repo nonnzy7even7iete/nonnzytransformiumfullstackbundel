@@ -12,7 +12,25 @@ import { WordRotate } from "@/components/frontendkit/word-rotate";
 import { cn } from "@/lib/utils";
 import { LampContainer } from "@/components/ui/lamp";
 
-// THEME SÉMANTIQUE : Centralisation pour cohérence Senior
+// COMPOSANT DE REVELATION (Flou réactif au scroll)
+const BlurReveal = ({
+  children,
+  className,
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) => (
+  <motion.div
+    initial={{ opacity: 0, filter: "blur(20px)", y: 20 }}
+    whileInView={{ opacity: 1, filter: "blur(0px)", y: 0 }}
+    viewport={{ once: false, amount: 0.2 }}
+    transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+    className={className}
+  >
+    {children}
+  </motion.div>
+);
+
 const UI_THEME = {
   techBold: "font-oswald font-bold tracking-tight leading-[0.95]",
   steelGradient:
@@ -91,31 +109,16 @@ export default function ResumeExecutifPage() {
     <div className="min-h-screen bg-background text-foreground transition-colors duration-500">
       <NavbarFront />
 
-      {/* SECTION 1 : LAMP (Réactive au Design System) */}
+      {/* SECTION 1 : LAMP */}
       <section className="relative z-30 h-screen overflow-hidden -mt-24 md:-mt-32">
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: [0, 1, 1, 0] }}
-          transition={{
-            duration: 14,
-            times: [0, 0.1, 0.5, 0.6],
-            repeat: Infinity,
-            ease: "easeInOut",
-          }}
-          className="absolute inset-0 z-0"
-        >
+        <div className="absolute inset-0 z-0">
           <LampContainer>
-            {/* Le container s'adapte via le thème dark: localisé */}
             <div className="h-full w-full" />
           </LampContainer>
-        </motion.div>
+        </div>
 
         <div className="relative z-10 flex h-full flex-col items-center justify-center pt-20 px-10 md:px-32">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="flex flex-col items-center text-center"
-          >
+          <BlurReveal className="flex flex-col items-center text-center">
             <div className="mb-10">
               <LogicBadge text="Nonnzytransformium" />
             </div>
@@ -126,23 +129,18 @@ export default function ResumeExecutifPage() {
               )}
             >
               ALGORITHMIC_SOVEREIGNTY <br />
-              <span className="text-sm md:text-xl font-light tracking-[0.2em] text-emerald-500 block mt-4 normal-case not-italic px-6 border-t border-emerald-500/20 pt-6">
+              <span className="text-sm md:text-xl font-light tracking-[0.2em] text-emerald-500 block mt-4 normal-case not-italic px-6 pt-6 border-t border-emerald-500/10">
                 "L'intuition est un luxe que nous avons remplacé par la
                 certitude."
               </span>
             </h1>
-          </motion.div>
+          </BlurReveal>
         </div>
       </section>
 
       {/* SECTION 2 : DATA-DRIVEN */}
-      <section className="relative h-[80vh] flex flex-col items-center justify-center border-b border-border-color overflow-hidden">
-        <div className="absolute inset-0 z-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:40px_40px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_50%,#000_70%,transparent_100%)]" />
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          className="relative z-10 text-center px-6 max-w-5xl w-full"
-        >
+      <section className="relative h-[80vh] flex flex-col items-center justify-center overflow-hidden">
+        <BlurReveal className="relative z-10 text-center px-6 max-w-5xl w-full">
           <h1
             className={cn(
               "text-6xl md:text-8xl tracking-tighter uppercase text-foreground",
@@ -163,20 +161,20 @@ export default function ResumeExecutifPage() {
               duration={ROTATION_DURATION}
               className="text-sm md:text-base font-mono text-emerald-600 dark:text-emerald-400 tracking-[0.1em] leading-relaxed text-center block"
               words={[
-                "Lorsque vous commencez à sentir votre investissement menacé par l'intuition, la Côte d'Ivoire réduit votre charge mentale de par le vectoring à la transparence quant à la valeur attendue.",
-                "Décider n'est plus un pari. C'est un transfert de charge entre axe de Probabilité .",
+                "Lorsque vous commencez à sentir votre investissement menacé par l'intuition, la Côte d'Ivoire réduit votre charge mentale.",
+                "Décider n'est plus un pari. C'est un transfert de charge entre axes de Probabilité.",
                 "Nous mesurons pour vous : le risque, le potentiel, le coût d'erreur et la valeur espérée.",
-                "Une architecture de décision transformée en vecteurs a la certitude via l'analyse de données stratégiques.",
+                "Une architecture de décision transformée en vecteurs de certitude via l'analyse stratégique.",
               ]}
             />
           </div>
-        </motion.div>
+        </BlurReveal>
       </section>
 
-      {/* SECTION 3 : ANALYSE (CardStack réactive) */}
-      <section className="relative z-20 py-32 px-6 bg-accents-1 border-b border-border-color">
+      {/* SECTION 3 : ANALYSE */}
+      <section className="relative z-20 py-32 px-6">
         <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-20 items-center">
-          <div className="space-y-6">
+          <BlurReveal className="space-y-6">
             <span className={UI_THEME.machineLabel}>02 // Stream_Analysis</span>
             <h2
               className={cn(
@@ -194,16 +192,15 @@ export default function ResumeExecutifPage() {
             >
               Interconnexion sécurisée des nœuds mondiaux.
             </p>
-          </div>
-          <div className="flex justify-center h-[350px] items-center">
+          </BlurReveal>
+          <BlurReveal className="flex justify-center h-[350px] items-center">
             <CardStack items={flowCards} offset={12} scaleFactor={0.06} />
-          </div>
+          </BlurReveal>
         </div>
       </section>
 
-      {/* SECTION 4 : GLOBE (Architecture Vercel Card) */}
-      <section className="relative h-[90vh] w-full bg-background overflow-hidden">
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808008_1px,transparent_1px),linear-gradient(to_bottom,#80808008_1px,transparent_1px)] bg-[size:80px_80px] pointer-events-none" />
+      {/* SECTION 4 : GLOBE */}
+      <section className="relative h-[90vh] w-full overflow-hidden">
         <div className="absolute inset-0 z-0 scale-105">
           <World
             data={[
@@ -221,25 +218,29 @@ export default function ResumeExecutifPage() {
           <AnimatePresence mode="wait">
             <motion.div
               key={currentDest.label}
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -15 }}
+              initial={{ opacity: 0, filter: "blur(10px)" }}
+              animate={{ opacity: 1, filter: "blur(0px)" }}
+              exit={{ opacity: 0, filter: "blur(10px)" }}
               className="text-center px-4"
             >
               <span className={UI_THEME.machineLabel}>Remote_Node</span>
               <h2
                 className={cn(
-                  "text-6xl md:text-[10rem] mt-2 transition-all",
+                  "text-6xl md:text-[10rem] mt-2",
                   UI_THEME.techBold,
                   UI_THEME.steelGradient
                 )}
               >
                 {currentDest.label}
               </h2>
-              <div className="mt-8 flex flex-col items-center gap-4">
-                <div className="flex items-center gap-3 bg-background/60 backdrop-blur-md px-5 py-2 border border-border-color rounded-full">
-                  <span className="h-2.5 w-2.5 rounded-full bg-[#10b981] animate-ping" />
-                  <span className="font-mono text-[9px] tracking-[0.3em] uppercase text-[#10b981] font-bold">
+
+              <div className="mt-8 flex flex-col items-center gap-4 pointer-events-auto">
+                <div className="flex items-center gap-3 bg-emerald-500/10 backdrop-blur-xl border border-emerald-500/40 px-5 py-2 rounded-full shadow-[0_0_20px_rgba(16,185,129,0.15)]">
+                  <span className="relative flex h-2 w-2">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                  </span>
+                  <span className="font-mono text-[9px] tracking-[0.3em] uppercase text-emerald-400 font-bold">
                     Signal Actif
                   </span>
                 </div>
@@ -253,7 +254,7 @@ export default function ResumeExecutifPage() {
         </div>
       </section>
 
-      <footer className="py-20 border-t border-border-color bg-accents-1 text-center">
+      <footer className="py-20 border-t border-[var(--border-color)]/20 text-center">
         <p className={UI_THEME.machineLabel}>Abidjan Data Center // 2026</p>
       </footer>
       <ScrollToTop />

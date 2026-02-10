@@ -72,7 +72,7 @@ export default function MobileMenu({ links, session, isOpen, onClose }: any) {
 
           <NoiseBackground
             duration={12}
-            containerClassName="rounded-[2px] shadow-2xl border border-[var(--border-color)]"
+            containerClassName="rounded-[14px] shadow-2xl border border-[var(--border-color)]"
             className="p-0"
           >
             <Link

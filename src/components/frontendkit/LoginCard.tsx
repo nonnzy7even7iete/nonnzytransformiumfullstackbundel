@@ -35,7 +35,7 @@ export default function LoginCard({ className }: { className?: string }) {
 
         <button
           onClick={() => signIn("google", { callbackUrl: "/dashboard" })}
-          className="w-full max-w-[320px] py-4.5 flex items-center justify-center gap-3 bg-[var(--foreground)] text-[var(--background)] font-black rounded-[var(--radius-vercel)] hover:opacity-90 active:scale-95 transition-all duration-300 shadow-xl border-none outline-none"
+          className="w-full max-w-[320px] py-4 flex items-center justify-center gap-3 bg-[var(--foreground)] text-[var(--background)] font-black rounded-[var(--radius-vercel)] hover:opacity-90 active:scale-95 transition-all duration-300 shadow-xl border-none outline-none"
         >
           <FcGoogle className="text-2xl shrink-0" />
           <span className="text-[10px] tracking-[0.2em] uppercase">
@@ -44,7 +44,8 @@ export default function LoginCard({ className }: { className?: string }) {
         </button>
 
         <p className="text-[var(--foreground)]/30 text-[9px] italic text-center max-w-[280px] leading-tight uppercase tracking-widest">
-          Connexion sécurisée via Google <br /> Accès Workflow Terminal
+          Connexion sécurisée via Google requise <br /> pour accéder au Workflow
+          Terminal
         </p>
       </div>
     </div>
