@@ -10,7 +10,6 @@ import {
 } from "framer-motion";
 import { cn } from "@/lib/utils";
 
-// 1. Définition du type pour stabiliser TS
 interface InsightData {
   id: number;
   title: string;
@@ -28,7 +27,22 @@ const initialInsights: InsightData[] = [
 
 export default function InsightCarousel() {
   const [data, setData] = useState<InsightData[]>(initialInsights);
+  const [radius, setRadius] = useState(-500); // Rayon dynamique
   const containerRef = useRef<HTMLDivElement>(null);
+
+  // Gestion du responsive pour le rayon du cercle
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 768) {
+        setRadius(-280); // Rayon serré pour mobile
+      } else {
+        setRadius(-500); // Rayon large pour desktop
+      }
+    };
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -57,12 +71,22 @@ export default function InsightCarousel() {
   });
 
   return (
-    <div ref={containerRef} className="relative h-[200vh] w-full">
-      {/* Correction perspective via style direct */}
+    <div
+      ref={containerRef}
+      className="relative h-[250vh] w-full bg-background/50"
+    >
       <div
-        className="sticky top-1/2 -translate-y-1/2 h-[600px] w-full flex items-center justify-center overflow-visible"
-        style={{ perspective: "1500px" }}
+        className="sticky top-0 h-screen w-full flex items-center justify-center overflow-hidden"
+        style={{ perspective: "1200px" }}
       >
+        {/* Label de flux visible */}
+        <div className="absolute top-20 left-1/2 -translate-x-1/2 z-50 text-center">
+          <span className="font-mono text-[10px] uppercase tracking-[0.5em] text-emerald-500/50 block mb-2">
+            System_Analysis
+          </span>
+          <div className="h-px w-12 bg-emerald-500/20 mx-auto" />
+        </div>
+
         <div
           className="relative w-full flex items-center justify-center"
           style={{ transformStyle: "preserve-3d" }}
@@ -74,6 +98,7 @@ export default function InsightCarousel() {
               index={i}
               total={data.length}
               progress={smoothRotation}
+              radius={radius}
             />
           ))}
         </div>
@@ -82,15 +107,15 @@ export default function InsightCarousel() {
   );
 }
 
-// 2. Typage des props de la Card
 interface CardProps {
   item: InsightData;
   index: number;
   total: number;
   progress: MotionValue<number>;
+  radius: number;
 }
 
-function Card({ item, index, total, progress }: CardProps) {
+function Card({ item, index, total, progress, radius }: CardProps) {
   const angleStep = 360 / total;
   const startAngle = index * angleStep;
 
@@ -100,54 +125,45 @@ function Card({ item, index, total, progress }: CardProps) {
     [startAngle, startAngle + 360]
   );
 
+  // Adaptabilité des échelles selon l'angle
   const scale = useTransform(
     rotation,
     [startAngle - 60, startAngle, startAngle + 60],
-    [0.8, 1.2, 0.8]
+    [0.8, 1.1, 0.8]
   );
   const opacity = useTransform(
     rotation,
     [startAngle - 90, startAngle, startAngle + 90],
-    [0.1, 1, 0.1]
-  );
-  const brightness = useTransform(
-    rotation,
-    [startAngle - 60, startAngle, startAngle + 60],
-    [
-      "grayscale(100%) blur(4px)",
-      "grayscale(0%) blur(0px)",
-      "grayscale(100%) blur(4px)",
-    ]
+    [0, 1, 0]
   );
 
   return (
     <motion.div
       style={{
         rotateY: rotation,
-        transformOrigin: "center center -500px", // Rayon du carrousel
+        transformOrigin: `center center ${radius}px`,
         opacity,
         scale,
-        filter: brightness,
         transformStyle: "preserve-3d",
       }}
       className={cn(
-        "absolute w-[280px] h-[180px] p-6 rounded-2xl",
-        "bg-zinc-900/40 backdrop-blur-2xl border border-white/10 shadow-2xl",
+        "absolute w-[260px] md:w-[300px] h-[160px] md:h-[180px] p-6 rounded-2xl",
+        "bg-zinc-950/80 backdrop-blur-xl border border-white/10 shadow-2xl",
         "flex flex-col justify-between"
       )}
     >
       <div className="flex justify-between items-center">
         <span className="text-[9px] font-mono text-emerald-500 font-bold tracking-[0.2em]">
-          LIVE_NODE_0{index + 1}
+          NODE_0{index + 1}
         </span>
-        <div className="h-1.5 w-1.5 rounded-full bg-emerald-500 shadow-[0_0_8px_#10b981]" />
+        <div className="h-1.5 w-1.5 rounded-full bg-emerald-500 shadow-[0_0_10px_#10b981]" />
       </div>
 
       <div>
-        <h3 className="text-white/40 text-[8px] uppercase tracking-[0.3em] mb-1">
+        <h3 className="text-white/40 text-[8px] md:text-[9px] uppercase tracking-[0.3em] mb-1">
           {item.title}
         </h3>
-        <div className="text-3xl font-black italic text-white tracking-tighter">
+        <div className="text-2xl md:text-3xl font-black italic text-white tracking-tighter tabular-nums">
           {item.value}
         </div>
       </div>
