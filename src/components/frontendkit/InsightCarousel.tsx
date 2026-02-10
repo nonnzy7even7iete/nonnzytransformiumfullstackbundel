@@ -10,6 +10,7 @@ import {
 } from "framer-motion";
 import { cn } from "@/lib/utils";
 
+// --- TYPES ---
 interface InsightData {
   id: number;
   title: string;
@@ -26,16 +27,14 @@ const DATA: InsightData[] = [
 ];
 
 export default function InsightCarousel() {
-  // Coordonnées de rotation infinie
-  const rotateX = useMotionValue(0);
+  // On utilise des MotionValues brutes pour la rotation
   const rotateY = useMotionValue(0);
+  const rotateX = useMotionValue(0);
 
-  // Physique lourde pour une sensation Premium
-  const springConfig = { stiffness: 40, damping: 25, mass: 1.2 };
-  const smoothX = useSpring(rotateX, springConfig);
-  const smoothY = useSpring(rotateY, springConfig);
+  // Physique "Zéro Gravité" : mass faible, damping élevé pour un contrôle total
+  const smoothY = useSpring(rotateY, { stiffness: 60, damping: 30, mass: 0.5 });
+  const smoothX = useSpring(rotateX, { stiffness: 60, damping: 30, mass: 0.5 });
 
-  // On détecte la taille de l'écran pour ajuster le Rayon et le Scale
   const [screenSize, setScreenSize] = useState({ width: 1200, height: 800 });
 
   useEffect(() => {
@@ -46,45 +45,33 @@ export default function InsightCarousel() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // Calcul dynamique du rayon : on veut que le carrousel occupe 40% de la largeur
   const radius = useMemo(
-    () => Math.min(screenSize.width * 0.45, 600),
+    () => Math.min(screenSize.width * 0.45, 650),
     [screenSize]
   );
   const globalScale = useMemo(
-    () => Math.min(screenSize.width / 1400, 1),
+    () => (screenSize.width < 768 ? 0.6 : 0.9),
     [screenSize]
   );
 
+  // LA CLÉ : PanHandler personnalisé pour éviter le blocage du drag natif
+  const onPan = (_: any, info: { delta: { x: number; y: number } }) => {
+    rotateY.set(rotateY.get() + info.delta.x * 0.5);
+    rotateX.set(rotateX.get() - info.delta.y * 0.5);
+  };
+
   return (
     <div className="relative h-screen w-full flex items-center justify-center bg-[#050505] overflow-hidden touch-none select-none">
-      {/* HUD : Feedback visuel du mouvement */}
-      <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-20">
-        <div
-          className="w-[80%] h-[80%] border border-emerald-500/10 rounded-full flex items-center justify-center"
-          style={{ perspective: "1000px" }}
-        >
-          <div className="w-full h-px bg-gradient-to-r from-transparent via-emerald-500/20 to-transparent" />
-        </div>
-      </div>
-
-      {/* ZONE DE CAPTURE 360° */}
+      {/* CAPTEUR DE GESTES INFINI (onPan au lieu de drag) */}
       <motion.div
-        drag
-        dragConstraints={{
-          left: -1000000,
-          right: 1000000,
-          top: -1000000,
-          bottom: 1000000,
-        }}
-        onDrag={(_, info) => {
-          rotateY.set(rotateY.get() + info.delta.x * 0.4);
-          rotateX.set(rotateX.get() - info.delta.y * 0.4);
-        }}
+        onPan={onPan}
         className="absolute inset-0 z-[100] cursor-grab active:cursor-grabbing"
       />
 
-      <div className="relative" style={{ perspective: "2500px" }}>
+      <div
+        className="relative flex items-center justify-center"
+        style={{ perspective: "2000px" }}
+      >
         <motion.div
           style={{
             rotateY: smoothY,
@@ -108,9 +95,8 @@ export default function InsightCarousel() {
         </motion.div>
       </div>
 
-      <div className="absolute bottom-10 font-mono text-[9px] tracking-[0.5em] text-emerald-500/30 uppercase">
-        Omnidirectional_Interface_Activated
-      </div>
+      {/* Ambiance Engine */}
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(16,185,129,0.05)_0%,transparent_70%)] pointer-events-none" />
     </div>
   );
 }
@@ -119,27 +105,27 @@ function Card({ item, index, total, radius, globalY, globalX }: any) {
   const angleStep = 360 / total;
   const initialAngle = index * angleStep;
 
-  // Calcul du FOCUS OPTIQUE (Distance par rapport au centre du regard)
+  // Calcul du Focus Dynamique (Distance angulaire)
   const distanceToCenter = useTransform([globalY, globalX], ([y, x]: any) => {
-    const currentAngle = (y + initialAngle) % 360;
-    const normalized = ((((currentAngle + 180) % 360) + 360) % 360) - 180;
-    // On prend en compte l'inclinaison X pour le flou
-    return Math.sqrt(Math.pow(normalized, 2) + Math.pow(x, 2) * 0.1);
+    const currentPos = (y + initialAngle) % 360;
+    const normalized = ((((currentPos + 180) % 360) + 360) % 360) - 180;
+    return Math.sqrt(Math.pow(normalized, 2) + Math.pow(x, 2));
   });
 
+  // Mappage des effets (Award 2026 Focus)
   const blur = useTransform(
     distanceToCenter,
-    [0, 25, 100],
-    ["blur(0px)", "blur(2px)", "blur(30px)"]
+    [0, 30, 120],
+    ["blur(0px)", "blur(4px)", "blur(40px)"]
   );
-  const opacity = useTransform(distanceToCenter, [0, 90, 160], [1, 0.4, 0]);
-  const z = useTransform(distanceToCenter, [0, 90], [150, -300]);
+  const opacity = useTransform(distanceToCenter, [0, 100, 160], [1, 0.3, 0]);
+  const z = useTransform(distanceToCenter, [0, 100], [200, -400]);
 
   return (
     <motion.div
       style={{
         position: "absolute",
-        width: "min(85vw, 420px)",
+        width: "420px",
         height: "280px",
         transformStyle: "preserve-3d",
         rotateY: initialAngle,
@@ -149,36 +135,28 @@ function Card({ item, index, total, radius, globalY, globalX }: any) {
         z,
       }}
       className={cn(
-        "p-10 rounded-[40px] border border-white/10 flex flex-col justify-between",
-        "bg-zinc-900/40 backdrop-blur-[50px] shadow-[0_0_100px_rgba(0,0,0,0.8)]"
+        "p-10 rounded-[50px] border border-white/10 flex flex-col justify-between",
+        "bg-zinc-900/40 backdrop-blur-[60px] shadow-[0_0_100px_rgba(0,0,0,0.9)]"
       )}
     >
       <div className="flex justify-between items-start">
-        <div className="flex flex-col gap-1">
-          <span className="font-mono text-[11px] text-emerald-400 font-black tracking-widest uppercase">
-            S_NODE_0{item.id}
-          </span>
-          <div className="h-0.5 w-8 bg-emerald-500/50 rounded-full" />
-        </div>
+        <span className="font-mono text-[12px] text-emerald-400 font-bold tracking-widest uppercase">
+          NODE_0{item.id}
+        </span>
         <div className="h-3 w-3 rounded-full bg-emerald-500 shadow-[0_0_20px_#10b981]" />
       </div>
 
-      <div className="my-4">
-        <h3 className="text-white/20 text-[10px] uppercase tracking-[0.4em] font-bold mb-2">
+      <div className="my-2">
+        <h3 className="text-white/20 text-[11px] uppercase tracking-[0.6em] font-black mb-2">
           {item.title}
         </h3>
-        <div className="text-[clamp(2.5rem,8vw,4.5rem)] font-black italic text-white tracking-tighter leading-none tabular-nums">
+        <div className="text-7xl font-black italic text-white tracking-tighter leading-none tabular-nums">
           {item.value}
         </div>
       </div>
 
-      <div className="flex items-center justify-between border-t border-white/5 pt-6">
-        <p className="text-[10px] text-white/30 uppercase tracking-[0.2em] font-medium">
-          {item.desc}
-        </p>
-        <div className="text-[8px] font-mono text-emerald-500/40 px-2 py-0.5 border border-emerald-500/20 rounded">
-          ENC_V2
-        </div>
+      <div className="border-t border-white/5 pt-6 text-[11px] text-white/30 uppercase tracking-[0.2em]">
+        {item.desc}
       </div>
     </motion.div>
   );
