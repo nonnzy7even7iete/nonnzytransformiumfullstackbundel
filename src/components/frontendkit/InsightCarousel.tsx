@@ -10,12 +10,20 @@ import {
 } from "framer-motion";
 import { cn } from "@/lib/utils";
 
-// --- TYPES ---
+// 1. Interfaces strictes pour calmer TypeScript
 interface InsightData {
   id: number;
   title: string;
   value: string;
   desc: string;
+}
+
+interface CardProps {
+  item: InsightData;
+  index: number;
+  total: number;
+  radius: number;
+  globalY: MotionValue<number>;
 }
 
 const DATA: InsightData[] = [
@@ -27,42 +35,36 @@ const DATA: InsightData[] = [
 ];
 
 export default function InsightCarousel() {
-  // On utilise des MotionValues brutes pour la rotation
   const rotateY = useMotionValue(0);
-  const rotateX = useMotionValue(0);
 
-  // Physique "Zéro Gravité" : mass faible, damping élevé pour un contrôle total
-  const smoothY = useSpring(rotateY, { stiffness: 60, damping: 30, mass: 0.5 });
-  const smoothX = useSpring(rotateX, { stiffness: 60, damping: 30, mass: 0.5 });
+  // Physique stable et imposante
+  const smoothY = useSpring(rotateY, {
+    stiffness: 45,
+    damping: 25,
+    mass: 1.8,
+  });
 
-  const [screenSize, setScreenSize] = useState({ width: 1200, height: 800 });
+  const [screenSize, setScreenSize] = useState({ width: 1200 });
 
   useEffect(() => {
-    const handleResize = () =>
-      setScreenSize({ width: window.innerWidth, height: window.innerHeight });
+    const handleResize = () => setScreenSize({ width: window.innerWidth });
     window.addEventListener("resize", handleResize);
     handleResize();
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  const radius = useMemo(
-    () => Math.min(screenSize.width * 0.45, 650),
-    [screenSize]
-  );
-  const globalScale = useMemo(
-    () => (screenSize.width < 768 ? 0.6 : 0.9),
-    [screenSize]
-  );
+  const radius = useMemo(() => {
+    return screenSize.width < 768 ? 300 : 600;
+  }, [screenSize]);
 
-  // LA CLÉ : PanHandler personnalisé pour éviter le blocage du drag natif
-  const onPan = (_: any, info: { delta: { x: number; y: number } }) => {
-    rotateY.set(rotateY.get() + info.delta.x * 0.5);
-    rotateX.set(rotateX.get() - info.delta.y * 0.5);
+  // Gestion du Pan (Mouvement)
+  const onPan = (_: any, info: { delta: { x: number } }) => {
+    rotateY.set(rotateY.get() + info.delta.x * 0.6);
   };
 
   return (
     <div className="relative h-screen w-full flex items-center justify-center bg-[#050505] overflow-hidden touch-none select-none">
-      {/* CAPTEUR DE GESTES INFINI (onPan au lieu de drag) */}
+      {/* CAPTEUR DE GESTES */}
       <motion.div
         onPan={onPan}
         className="absolute inset-0 z-[100] cursor-grab active:cursor-grabbing"
@@ -75,8 +77,6 @@ export default function InsightCarousel() {
         <motion.div
           style={{
             rotateY: smoothY,
-            rotateX: smoothX,
-            scale: globalScale,
             transformStyle: "preserve-3d",
           }}
           className="relative flex items-center justify-center"
@@ -89,74 +89,77 @@ export default function InsightCarousel() {
               total={DATA.length}
               radius={radius}
               globalY={smoothY}
-              globalX={smoothX}
             />
           ))}
         </motion.div>
       </div>
 
-      {/* Ambiance Engine */}
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(16,185,129,0.05)_0%,transparent_70%)] pointer-events-none" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,transparent_20%,black_100%)] pointer-events-none" />
     </div>
   );
 }
 
-function Card({ item, index, total, radius, globalY, globalX }: any) {
+function Card({ item, index, total, radius, globalY }: CardProps) {
   const angleStep = 360 / total;
   const initialAngle = index * angleStep;
 
-  // Calcul du Focus Dynamique (Distance angulaire)
-  const distanceToCenter = useTransform([globalY, globalX], ([y, x]: any) => {
+  // Calcul du Focus
+  const distanceToCenter = useTransform(globalY, (y) => {
     const currentPos = (y + initialAngle) % 360;
     const normalized = ((((currentPos + 180) % 360) + 360) % 360) - 180;
-    return Math.sqrt(Math.pow(normalized, 2) + Math.pow(x, 2));
+    return Math.abs(normalized);
   });
 
-  // Mappage des effets (Award 2026 Focus)
+  // Mappage des animations
   const blur = useTransform(
     distanceToCenter,
-    [0, 30, 120],
-    ["blur(0px)", "blur(4px)", "blur(40px)"]
+    [0, 40, 120],
+    ["blur(0px)", "blur(4px)", "blur(25px)"]
   );
-  const opacity = useTransform(distanceToCenter, [0, 100, 160], [1, 0.3, 0]);
-  const z = useTransform(distanceToCenter, [0, 100], [200, -400]);
+  const opacity = useTransform(distanceToCenter, [0, 90, 150], [1, 0.4, 0]);
+  const scale = useTransform(distanceToCenter, [0, 90], [1.1, 0.8]);
+  const z = useTransform(distanceToCenter, [0, 180], [100, -radius]);
 
   return (
     <motion.div
       style={{
         position: "absolute",
-        width: "420px",
-        height: "280px",
+        width: "min(85vw, 450px)",
+        height: "300px",
         transformStyle: "preserve-3d",
         rotateY: initialAngle,
+        // Correction pour VS Code : on utilise template string et on cast en 'any'
         transformOrigin: `center center -${radius}px` as any,
         filter: blur,
         opacity,
-        z,
+        scale,
+        z: z as any,
       }}
       className={cn(
-        "p-10 rounded-[50px] border border-white/10 flex flex-col justify-between",
-        "bg-zinc-900/40 backdrop-blur-[60px] shadow-[0_0_100px_rgba(0,0,0,0.9)]"
+        "p-12 rounded-[56px] border border-white/10 flex flex-col justify-between",
+        "bg-zinc-900/40 backdrop-blur-[60px] shadow-[0_0_120px_rgba(0,0,0,1)]"
       )}
     >
       <div className="flex justify-between items-start">
-        <span className="font-mono text-[12px] text-emerald-400 font-bold tracking-widest uppercase">
-          NODE_0{item.id}
+        <span className="font-mono text-[13px] text-emerald-400 font-black tracking-[0.2em] uppercase">
+          SYSTEM_LINK_0{item.id}
         </span>
-        <div className="h-3 w-3 rounded-full bg-emerald-500 shadow-[0_0_20px_#10b981]" />
+        <div className="h-4 w-4 rounded-full bg-emerald-500 shadow-[0_0_30px_#10b981]" />
       </div>
 
-      <div className="my-2">
-        <h3 className="text-white/20 text-[11px] uppercase tracking-[0.6em] font-black mb-2">
+      <div className="my-4">
+        <h3 className="text-white/20 text-[12px] uppercase tracking-[0.5em] font-bold mb-2">
           {item.title}
         </h3>
-        <div className="text-7xl font-black italic text-white tracking-tighter leading-none tabular-nums">
+        <div className="text-[clamp(3rem,10vw,6rem)] font-black italic text-white tracking-tighter leading-none">
           {item.value}
         </div>
       </div>
 
-      <div className="border-t border-white/5 pt-6 text-[11px] text-white/30 uppercase tracking-[0.2em]">
-        {item.desc}
+      <div className="border-t border-white/5 pt-8">
+        <p className="text-[12px] text-white/30 uppercase tracking-[0.3em] font-medium leading-relaxed">
+          {item.desc}
+        </p>
       </div>
     </motion.div>
   );
