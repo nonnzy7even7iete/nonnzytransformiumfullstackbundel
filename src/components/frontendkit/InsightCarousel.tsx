@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useRef } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import {
   motion,
   useMotionValue,
@@ -10,20 +10,11 @@ import {
 } from "framer-motion";
 import { cn } from "@/lib/utils";
 
-// Interface pour les données
 interface InsightData {
   id: number;
   title: string;
   value: string;
   desc: string;
-}
-
-// Interface pour les Props (C'est ça qui fait taire VS Code)
-interface CardProps {
-  item: InsightData;
-  index: number;
-  total: number;
-  globalRotation: MotionValue<number>;
 }
 
 const DATA: InsightData[] = [
@@ -35,44 +26,73 @@ const DATA: InsightData[] = [
 ];
 
 export default function InsightCarousel() {
-  const dragX = useMotionValue(0);
+  // Coordonnées de rotation infinie
+  const rotateX = useMotionValue(0);
+  const rotateY = useMotionValue(0);
 
-  const rotationSpring = useSpring(dragX, {
-    stiffness: 35,
-    damping: 20,
-    mass: 1.5,
-  });
+  // Physique lourde pour une sensation Premium
+  const springConfig = { stiffness: 40, damping: 25, mass: 1.2 };
+  const smoothX = useSpring(rotateX, springConfig);
+  const smoothY = useSpring(rotateY, springConfig);
 
-  const rotation = useTransform(rotationSpring, (v) => v / 3.5);
+  // On détecte la taille de l'écran pour ajuster le Rayon et le Scale
+  const [screenSize, setScreenSize] = useState({ width: 1200, height: 800 });
+
+  useEffect(() => {
+    const handleResize = () =>
+      setScreenSize({ width: window.innerWidth, height: window.innerHeight });
+    window.addEventListener("resize", handleResize);
+    handleResize();
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  // Calcul dynamique du rayon : on veut que le carrousel occupe 40% de la largeur
+  const radius = useMemo(
+    () => Math.min(screenSize.width * 0.45, 600),
+    [screenSize]
+  );
+  const globalScale = useMemo(
+    () => Math.min(screenSize.width / 1400, 1),
+    [screenSize]
+  );
 
   return (
     <div className="relative h-screen w-full flex items-center justify-center bg-[#050505] overflow-hidden touch-none select-none">
-      <div
-        className="absolute inset-0 z-0 opacity-20 pointer-events-none"
-        style={{
-          backgroundImage: "radial-gradient(#10b981 0.5px, transparent 0.5px)",
-          backgroundSize: "40px 40px",
-        }}
-      />
+      {/* HUD : Feedback visuel du mouvement */}
+      <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-20">
+        <div
+          className="w-[80%] h-[80%] border border-emerald-500/10 rounded-full flex items-center justify-center"
+          style={{ perspective: "1000px" }}
+        >
+          <div className="w-full h-px bg-gradient-to-r from-transparent via-emerald-500/20 to-transparent" />
+        </div>
+      </div>
 
+      {/* ZONE DE CAPTURE 360° */}
       <motion.div
-        drag="x"
-        dragConstraints={{ left: -1000000, right: 1000000 }}
-        dragElastic={0}
-        style={{ x: dragX }}
+        drag
+        dragConstraints={{
+          left: -1000000,
+          right: 1000000,
+          top: -1000000,
+          bottom: 1000000,
+        }}
+        onDrag={(_, info) => {
+          rotateY.set(rotateY.get() + info.delta.x * 0.4);
+          rotateX.set(rotateX.get() - info.delta.y * 0.4);
+        }}
         className="absolute inset-0 z-[100] cursor-grab active:cursor-grabbing"
       />
 
-      <div
-        className="relative flex items-center justify-center"
-        style={{ perspective: "2500px" }}
-      >
+      <div className="relative" style={{ perspective: "2500px" }}>
         <motion.div
           style={{
-            rotateY: rotation,
+            rotateY: smoothY,
+            rotateX: smoothX,
+            scale: globalScale,
             transformStyle: "preserve-3d",
           }}
-          className="relative flex items-center justify-center w-[500px]"
+          className="relative flex items-center justify-center"
         >
           {DATA.map((item, i) => (
             <Card
@@ -80,75 +100,85 @@ export default function InsightCarousel() {
               item={item}
               index={i}
               total={DATA.length}
-              globalRotation={rotation}
+              radius={radius}
+              globalY={smoothY}
+              globalX={smoothX}
             />
           ))}
         </motion.div>
+      </div>
+
+      <div className="absolute bottom-10 font-mono text-[9px] tracking-[0.5em] text-emerald-500/30 uppercase">
+        Omnidirectional_Interface_Activated
       </div>
     </div>
   );
 }
 
-function Card({ item, index, total, globalRotation }: CardProps) {
+function Card({ item, index, total, radius, globalY, globalX }: any) {
   const angleStep = 360 / total;
   const initialAngle = index * angleStep;
-  const radius = 600;
 
-  const distanceToCenter = useTransform(globalRotation, (v) => {
-    const currentPos = (v + initialAngle) % 360;
-    const normalized = ((((currentPos + 180) % 360) + 360) % 360) - 180;
-    return Math.abs(normalized);
+  // Calcul du FOCUS OPTIQUE (Distance par rapport au centre du regard)
+  const distanceToCenter = useTransform([globalY, globalX], ([y, x]: any) => {
+    const currentAngle = (y + initialAngle) % 360;
+    const normalized = ((((currentAngle + 180) % 360) + 360) % 360) - 180;
+    // On prend en compte l'inclinaison X pour le flou
+    return Math.sqrt(Math.pow(normalized, 2) + Math.pow(x, 2) * 0.1);
   });
 
   const blur = useTransform(
     distanceToCenter,
-    [0, 20, 90],
-    ["blur(0px)", "blur(2px)", "blur(25px)"]
+    [0, 25, 100],
+    ["blur(0px)", "blur(2px)", "blur(30px)"]
   );
-  const opacity = useTransform(distanceToCenter, [0, 80, 150], [1, 0.4, 0]);
-  const scale = useTransform(distanceToCenter, [0, 90], [1.15, 0.75]);
-  const z = useTransform(distanceToCenter, [0, 90], [100, -200]);
+  const opacity = useTransform(distanceToCenter, [0, 90, 160], [1, 0.4, 0]);
+  const z = useTransform(distanceToCenter, [0, 90], [150, -300]);
 
   return (
     <motion.div
       style={{
         position: "absolute",
-        width: "400px",
+        width: "min(85vw, 420px)",
         height: "280px",
         transformStyle: "preserve-3d",
         rotateY: initialAngle,
-        transformOrigin: `center center -${radius}px` as any, // "as any" pour calmer VS Code sur le CSS 3D
+        transformOrigin: `center center -${radius}px` as any,
         filter: blur,
         opacity,
-        scale,
         z,
       }}
       className={cn(
-        "p-10 rounded-[48px] border border-white/10 flex flex-col justify-between",
-        "bg-zinc-900/40 backdrop-blur-[40px] shadow-[0_0_80px_rgba(0,0,0,0.6)]"
+        "p-10 rounded-[40px] border border-white/10 flex flex-col justify-between",
+        "bg-zinc-900/40 backdrop-blur-[50px] shadow-[0_0_100px_rgba(0,0,0,0.8)]"
       )}
     >
-      <div className="flex justify-between items-start z-10">
+      <div className="flex justify-between items-start">
         <div className="flex flex-col gap-1">
-          <span className="font-mono text-[12px] text-emerald-400 font-black tracking-[0.3em] uppercase">
-            System_Link_0{item.id}
+          <span className="font-mono text-[11px] text-emerald-400 font-black tracking-widest uppercase">
+            S_NODE_0{item.id}
           </span>
-          <div className="h-0.5 w-12 bg-emerald-500/40 rounded-full" />
+          <div className="h-0.5 w-8 bg-emerald-500/50 rounded-full" />
         </div>
-        <div className="h-4 w-4 rounded-full bg-emerald-500 shadow-[0_0_25px_#10b981]" />
+        <div className="h-3 w-3 rounded-full bg-emerald-500 shadow-[0_0_20px_#10b981]" />
       </div>
 
-      <div className="z-10">
-        <h3 className="text-white/20 text-[11px] uppercase tracking-[0.5em] font-bold mb-3">
+      <div className="my-4">
+        <h3 className="text-white/20 text-[10px] uppercase tracking-[0.4em] font-bold mb-2">
           {item.title}
         </h3>
-        <div className="text-7xl font-black italic text-white tracking-[-0.05em] leading-none">
+        <div className="text-[clamp(2.5rem,8vw,4.5rem)] font-black italic text-white tracking-tighter leading-none tabular-nums">
           {item.value}
         </div>
       </div>
 
-      <div className="flex items-center justify-between border-t border-white/10 pt-8 z-10 text-white/40">
-        {item.desc}
+      <div className="flex items-center justify-between border-t border-white/5 pt-6">
+        <p className="text-[10px] text-white/30 uppercase tracking-[0.2em] font-medium">
+          {item.desc}
+        </p>
+        <div className="text-[8px] font-mono text-emerald-500/40 px-2 py-0.5 border border-emerald-500/20 rounded">
+          ENC_V2
+        </div>
       </div>
     </motion.div>
   );
