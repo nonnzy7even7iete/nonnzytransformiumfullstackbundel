@@ -151,37 +151,34 @@ function Card({ item, position }: { item: any; position: number }) {
       }}
       transition={{ type: "spring", stiffness: 120, damping: 25 }}
       className={cn(
-        "absolute w-[75vw] md:w-[420px] h-auto min-h-[300px] p-10 flex flex-col justify-between overflow-hidden transition-all duration-500",
-        // Zéro trait : on utilise backdrop-blur et une bordure statique ultra-fine (ou rien)
-        "backdrop-blur-[25px] md:backdrop-blur-[40px]",
+        "absolute w-[75vw] md:w-[420px] h-auto min-h-[300px] p-10 flex flex-col justify-between overflow-hidden transition-all duration-700",
+        "backdrop-blur-[25px] md:backdrop-blur-[40px] border border-[var(--foreground)]/5",
+        // Focus "Class" : Lueur interne diffuse et ombre portée élégante
         isActive
-          ? "border border-[var(--foreground)]/10 shadow-[0_40px_100px_rgba(0,0,0,0.5)]"
-          : "border-none"
+          ? "shadow-[0_40px_100px_rgba(0,0,0,0.6),inset_0_0_20px_rgba(16,185,129,0.05)] bg-[var(--foreground)]/[0.02]"
+          : "bg-transparent border-none"
       )}
-      style={
-        {
-          backgroundColor: isActive ? "rgba(255,255,255,0.02)" : "transparent",
-          borderRadius: "var(--radius-vercel, 14px)",
-        } as any
-      }
+      style={{ borderRadius: "var(--radius-vercel, 14px)" }}
     >
+      {/* INDICATEUR VERT : Positionné à 7px top/right du border */}
+      <div
+        className={cn(
+          "absolute top-[7px] right-[7px] h-1.5 w-1.5 rounded-full transition-all duration-1000 ease-in-out",
+          isActive
+            ? "bg-emerald-500 shadow-[0_0_10px_#10b981] opacity-100 scale-100"
+            : "bg-[var(--foreground)] opacity-0 scale-50"
+        )}
+      />
+
       {/* HEADER */}
-      <div className="relative z-10 flex justify-between items-start opacity-30">
+      <div className="relative z-10 flex justify-between items-start opacity-30 mt-[-5px]">
         <p className="text-[10px] font-black tracking-[0.5em] uppercase text-[var(--foreground)]">
           {item.label}
         </p>
-        <div
-          className={cn(
-            "h-1 w-1 rounded-full",
-            isActive
-              ? "bg-emerald-500 shadow-[0_0_15px_#10b981]"
-              : "bg-[var(--foreground)] opacity-20"
-          )}
-        />
       </div>
 
       {/* CONTENT */}
-      <div className="relative z-10 mt-8">
+      <div className="relative z-10 mt-6">
         <h3 className="text-[11px] font-bold opacity-30 uppercase text-[var(--foreground)] tracking-[0.3em] mb-4">
           {item.title}
         </h3>
@@ -197,7 +194,7 @@ function Card({ item, position }: { item: any; position: number }) {
         </div>
       </div>
 
-      {/* COMPTEUR (Seule animation restante) */}
+      {/* COMPTEUR */}
       <div className="relative z-10 flex items-baseline gap-2 mt-auto pt-10">
         <h2
           ref={counterRef}
@@ -212,7 +209,7 @@ function Card({ item, position }: { item: any; position: number }) {
 
       {/* FOOTER */}
       <div className="relative z-10 flex justify-between items-end pt-6 text-[9px] font-mono opacity-10 text-[var(--foreground)] tracking-[0.4em] uppercase">
-        <span>{item.id}_SYS</span>
+        <span>NODE_{item.id}</span>
         <span>V26</span>
       </div>
     </motion.div>
