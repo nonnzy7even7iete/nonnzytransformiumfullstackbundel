@@ -1,12 +1,6 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
-import {
-  motion,
-  useTransform,
-  useScroll,
-  useSpring,
-  MotionValue,
-} from "framer-motion";
+import { motion, useTransform, useScroll, useSpring } from "framer-motion";
 
 interface ZymantraSection {
   badge: string;
@@ -15,21 +9,21 @@ interface ZymantraSection {
   image: string;
 }
 
-// --- CONFIGURATION DES IMAGES ---
-// Note : Si tes images sont dans /public/images, utilise "/images/nom.jpg"
+// --- CONFIGURATION DES IMAGES CORRIGÉE ---
 const ZYMANTRA_CONTENT: ZymantraSection[] = [
   {
     badge: "01_VISION",
     title: "ZYMANTRA_PROTOCOL",
     description:
       "Infrastructure de monitoring sans latence pour l'hyper-réactivité.",
-    image: "/src/public/Nonn.jpg",
+    // ON RETIRE /src/public/ : on pointe directement à la racine de public
+    image: "/Nonn.jpg",
   },
   {
     badge: "02_STRATEGY",
     title: "MARKET_FLOW",
     description: "Standardisation des flux financiers complexes.",
-    image: "/src/public/IMG-20260116-WA0000.jpg",
+    image: "/IMG-20260116-WA0000.jpg",
   },
 ];
 
@@ -49,8 +43,13 @@ export default function Zymantra() {
       if (contentRef.current) setSvgHeight(contentRef.current.offsetHeight);
     };
     update();
+    // Timeout pour laisser le temps au layout de se stabiliser
+    const timer = setTimeout(update, 500);
     window.addEventListener("resize", update);
-    return () => window.removeEventListener("resize", update);
+    return () => {
+      window.removeEventListener("resize", update);
+      clearTimeout(timer);
+    };
   }, []);
 
   const y1 = useSpring(
@@ -65,7 +64,7 @@ export default function Zymantra() {
   return (
     <div
       ref={containerRef}
-      className="relative w-full bg-black py-12 md:py-24 font-sans antialiased overflow-x-hidden text-white"
+      className="relative w-full bg-black py-12 md:py-24 font-sans antialiased overflow-x-hidden text-white selection:bg-emerald-500/30"
     >
       {/* SVG BEAM (Desktop seulement) */}
       <div
@@ -82,7 +81,7 @@ export default function Zymantra() {
             d={`M 10 0 V ${svgHeight}`}
             fill="none"
             stroke="white"
-            strokeOpacity="0.1"
+            strokeOpacity="0.05"
             strokeWidth="1"
           />
           <motion.path
@@ -99,53 +98,59 @@ export default function Zymantra() {
         ref={contentRef}
         className="flex flex-col items-center w-full relative z-10"
       >
-        {ZYMANTRA_CONTENT.map((item, index) => (
-          <motion.div
-            key={index}
-            onMouseEnter={() => setActiveIdx(index)}
-            onMouseLeave={() => setActiveIdx(null)}
-            onTouchStart={() => setActiveIdx(index)}
-            animate={{
-              opacity: activeIdx !== null && activeIdx !== index ? 0.2 : 1,
-              filter:
-                activeIdx !== null && activeIdx !== index
-                  ? "blur(10px)"
-                  : "blur(0px)",
-            }}
-            className="mb-32 flex flex-col items-center w-full px-4"
-          >
-            {/* BADGE AVEC BORDURE ÉMERAUDE */}
-            <span className="text-emerald-500 text-[10px] font-black tracking-[0.5em] uppercase px-4 py-2 border border-emerald-500/20 bg-emerald-500/5 mb-8 rounded-full">
-              {item.badge}
-            </span>
+        {ZYMANTRA_CONTENT.map((item, index) => {
+          const isInactive = activeIdx !== null && activeIdx !== index;
 
-            <h2 className="text-4xl md:text-7xl font-black italic tracking-tighter mb-10 uppercase text-center leading-none">
-              {item.title}
-            </h2>
+          return (
+            <motion.div
+              key={index}
+              onMouseEnter={() => setActiveIdx(index)}
+              onMouseLeave={() => setActiveIdx(null)}
+              onTouchStart={() => setActiveIdx(index)}
+              animate={{
+                opacity: isInactive ? 0.3 : 1,
+                filter: isInactive ? "blur(12px)" : "blur(0px)",
+                scale: isInactive ? 0.98 : 1,
+              }}
+              transition={{ duration: 0.4, ease: "easeInOut" }}
+              className="mb-32 flex flex-col items-center w-full px-4"
+            >
+              {/* BADGE */}
+              <span className="text-emerald-400 text-[10px] font-black tracking-[0.5em] uppercase px-5 py-2 border border-emerald-500/30 bg-emerald-500/10 mb-8 rounded-full shadow-[0_0_15px_rgba(16,185,129,0.1)]">
+                {item.badge}
+              </span>
 
-            {/* CONTAINER IMAGE : 90vw mobile, bordures restaurées */}
-            <div className="relative w-[90vw] md:w-[800px] aspect-video rounded-2xl overflow-hidden border border-white/20 bg-neutral-900 shadow-2xl transition-transform duration-500 group-hover:scale-[1.02]">
-              <img
-                src={item.image}
-                alt="Zymantra Graphic"
-                className="w-full h-full object-cover"
-                onError={(e) => {
-                  // Fallback si l'image ne charge pas
-                  e.currentTarget.src =
-                    "https://placehold.co/800x450/000000/10b981?text=IMAGE_NOT_FOUND";
-                }}
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+              {/* TITRE */}
+              <h2 className="text-4xl md:text-7xl font-black italic tracking-tighter mb-10 uppercase text-center leading-[0.9] drop-shadow-2xl">
+                {item.title}
+              </h2>
 
-              {/* INDICATEUR 7PX interne pour être sûr qu'il soit visible */}
-              <div className="absolute top-[7px] right-[7px] h-2 w-2 bg-emerald-500 rounded-full shadow-[0_0_10px_#10b981]" />
-            </div>
+              {/* CONTAINER IMAGE : 90vw mobile, bordures blanches fines */}
+              <div className="group relative w-[90vw] md:w-[850px] aspect-video rounded-2xl overflow-hidden border border-white/10 bg-neutral-900 shadow-[0_20px_50px_rgba(0,0,0,0.5)] transition-all duration-500">
+                <img
+                  src={item.image}
+                  alt={item.title}
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  onError={(e) => {
+                    e.currentTarget.src =
+                      "https://placehold.co/800x450/000000/10b981?text=CHECK_PATH_IN_PUBLIC";
+                  }}
+                />
 
-            <p className="max-w-xl text-white/60 text-center text-lg md:text-xl mt-10 leading-relaxed">
-              {item.description}
-            </p>
-          </motion.div>
-        ))}
+                {/* Overlay pour lisibilité */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-60" />
+
+                {/* INDICATEUR 7PX : placé en haut à droite de l'image */}
+                <div className="absolute top-[14px] right-[14px] h-2.5 w-2.5 bg-emerald-500 rounded-full shadow-[0_0_15px_#10b981] z-30" />
+              </div>
+
+              {/* DESCRIPTION */}
+              <p className="max-w-xl text-white/50 text-center text-lg md:text-xl mt-10 leading-relaxed font-medium">
+                {item.description}
+              </p>
+            </motion.div>
+          );
+        })}
       </div>
     </div>
   );
