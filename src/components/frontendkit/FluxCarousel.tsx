@@ -1,13 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import {
-  motion,
-  useMotionValue,
-  useSpring,
-  useTransform,
-  animate,
-} from "framer-motion";
+import { motion, useMotionValue, useSpring, animate } from "framer-motion";
 import { cn } from "@/lib/utils";
 
 const DATA = [
@@ -25,7 +19,7 @@ export default function FluxCarousel() {
   useEffect(() => setMounted(true), []);
 
   const handleDragEnd = (_: any, info: any) => {
-    const threshold = 40;
+    const threshold = 30; // Swipe plus sensible pour mobile
     if (info.offset.x < -threshold && index < DATA.length - 1)
       setIndex(index + 1);
     else if (info.offset.x > threshold && index > 0) setIndex(index - 1);
@@ -44,17 +38,15 @@ export default function FluxCarousel() {
 
       <div
         className="relative w-full h-full flex items-center justify-center"
-        style={{ perspective: "1200px" }}
+        style={{ perspective: "1000px" }}
       >
         <motion.div
-          className="relative flex items-center justify-center w-full max-w-[450px] h-[350px]"
+          className="relative flex items-center justify-center w-full max-w-[400px] h-[350px]"
           style={{ transformStyle: "preserve-3d" }}
         >
           {DATA.map((item, i) => {
             const position = i - index;
-            // On garde une fenêtre de 3 cartes pour le flow
             if (Math.abs(position) > 1) return null;
-
             return <Card key={item.id} item={item} position={position} />;
           })}
         </motion.div>
@@ -82,41 +74,37 @@ export default function FluxCarousel() {
 function Card({ item, position }: { item: any; position: number }) {
   const isActive = position === 0;
 
-  // Calcul du décalage X dynamique pour Mobile (plus serré pour voir les bords)
-  // Sur Desktop: 460px | Sur Mobile: ~85vw
+  // Calcul MOBILE : On réduit la largeur à 70vw et le xOffset à 65vw pour "serrer" les cartes
   const xOffset =
     typeof window !== "undefined" && window.innerWidth < 768
-      ? window.innerWidth * 0.75
-      : 460;
+      ? window.innerWidth * 0.65
+      : 440;
 
   return (
     <motion.div
       initial={false}
       animate={{
         x: position * xOffset,
-        rotateY: position * -35,
-        z: isActive ? 0 : -200,
-        opacity: isActive ? 1 : 0.15,
-        scale: isActive ? 1 : 0.8,
+        rotateY: position * -40, // Rotation plus agressive pour voir les tranches
+        z: isActive ? 0 : -250,
+        opacity: isActive ? 1 : 0.2, // Légèrement plus d'opacité pour les cartes floues
+        scale: isActive ? 1 : 0.75,
       }}
-      transition={{ type: "spring", stiffness: 180, damping: 25 }}
+      transition={{ type: "spring", stiffness: 150, damping: 25 }}
       style={
         {
-          // Injection du background vert transparent au focus
           backgroundColor: isActive
-            ? "rgba(16, 185, 129, 0.03)"
+            ? "rgba(16, 185, 129, 0.04)"
             : "var(--card-bg)",
         } as any
       }
       className={cn(
-        "v-card absolute w-[85vw] md:w-[400px] h-[280px] md:h-[300px] p-8 md:p-10 flex flex-col justify-between",
-        isActive
-          ? "border-[var(--foreground)] shadow-[0_0_40px_rgba(16,185,129,0.05)]"
-          : "border-[var(--border-color)]"
+        "v-card absolute w-[70vw] md:w-[400px] h-[260px] md:h-[300px] p-6 md:p-10 flex flex-col justify-between",
+        isActive ? "border-[var(--foreground)]" : "border-[var(--border-color)]"
       )}
     >
       <div className="flex justify-between items-start">
-        <p className="text-[10px] font-black tracking-[0.4em] opacity-30 uppercase text-[var(--foreground)]">
+        <p className="text-[9px] font-black tracking-[0.4em] opacity-30 uppercase text-[var(--foreground)]">
           {item.label}
         </p>
         <div
@@ -129,18 +117,18 @@ function Card({ item, position }: { item: any; position: number }) {
         />
       </div>
 
-      <div className="flex items-baseline gap-1">
+      <div className="flex items-baseline gap-1 overflow-hidden">
         <Counter value={item.value} isActive={isActive} />
-        <span className="text-2xl font-bold opacity-20 italic text-[var(--foreground)]">
+        <span className="text-xl font-bold opacity-20 italic text-[var(--foreground)]">
           {item.unit}
         </span>
       </div>
 
-      <div className="flex justify-between items-end border-t border-[var(--border-color)] pt-6">
-        <p className="text-[11px] font-bold opacity-40 tracking-[0.3em] uppercase text-[var(--foreground)]">
+      <div className="flex justify-between items-end border-t border-[var(--border-color)] pt-4 md:pt-6">
+        <p className="text-[10px] font-bold opacity-40 tracking-[0.2em] uppercase text-[var(--foreground)]">
           {item.title}
         </p>
-        <p className="text-[9px] font-mono opacity-20 text-[var(--foreground)]">
+        <p className="text-[8px] font-mono opacity-20 text-[var(--foreground)]">
           v.2026
         </p>
       </div>
@@ -148,15 +136,14 @@ function Card({ item, position }: { item: any; position: number }) {
   );
 }
 
-// Composant de compteur "Rolling"
 function Counter({ value, isActive }: { value: number; isActive: boolean }) {
   const nodeRef = React.useRef<HTMLHeadingElement>(null);
 
   useEffect(() => {
     if (isActive && nodeRef.current) {
       const controls = animate(0, value, {
-        duration: 1.2,
-        ease: "easeOut",
+        duration: 2.2, // Ralenti pour plus de "poids" visuel
+        ease: [0.16, 1, 0.3, 1], // Quintic out pour un arrêt très smooth
         onUpdate: (v) => {
           if (nodeRef.current) {
             nodeRef.current.textContent = v.toFixed(1);
@@ -170,7 +157,7 @@ function Counter({ value, isActive }: { value: number; isActive: boolean }) {
   return (
     <h2
       ref={nodeRef}
-      className="text-7xl md:text-8xl font-black italic text-[var(--foreground)] tracking-tighter leading-none"
+      className="text-6xl md:text-8xl font-black italic text-[var(--foreground)] tracking-tighter leading-none"
     >
       0.0
     </h2>
