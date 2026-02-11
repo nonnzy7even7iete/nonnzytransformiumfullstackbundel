@@ -80,7 +80,6 @@ export default function FluxCarousel() {
 
   return (
     <div className="relative h-screen w-full bg-[var(--background)] overflow-hidden flex items-center justify-center font-sans">
-      {/* Interaction Layer */}
       <motion.div
         drag="x"
         dragConstraints={{ left: 0, right: 0 }}
@@ -102,7 +101,6 @@ export default function FluxCarousel() {
         </motion.div>
       </div>
 
-      {/* Pagination Minimaliste */}
       <div className="absolute bottom-10 flex gap-2">
         {DATA.map((_, i) => (
           <div
@@ -123,8 +121,6 @@ export default function FluxCarousel() {
 function Card({ item, position }: { item: any; position: number }) {
   const isActive = position === 0;
   const counterRef = useRef<HTMLHeadingElement>(null);
-
-  // Mobile spacing ultra-serré pour accentuer le chevauchement des flous
   const xOffset =
     typeof window !== "undefined" && window.innerWidth < 768
       ? window.innerWidth * 0.45
@@ -144,102 +140,81 @@ function Card({ item, position }: { item: any; position: number }) {
   }, [item.value, isActive]);
 
   return (
-    <>
-      <style>{`
-        @keyframes border-dance {
-          0% { background-position: 0px 0px, 100% 100%, 0px 100%, 100% 0px; }
-          100% { background-position: 25px 0px, 100% -25px, -25px 100%, 100% 25px; }
-        }
-        .v-blur-border {
-          background-image: 
-            linear-gradient(90deg, var(--foreground) 50%, transparent 50%),
-            linear-gradient(90deg, var(--foreground) 50%, transparent 50%),
-            linear-gradient(0deg, var(--foreground) 50%, transparent 50%),
-            linear-gradient(0deg, var(--foreground) 50%, transparent 50%);
-          background-repeat: repeat-x, repeat-x, repeat-y, repeat-y;
-          background-size: 20px 1px, 20px 1px, 1px 20px, 1px 20px;
-          animation: border-dance 1s infinite linear;
-        }
-      `}</style>
+    <motion.div
+      initial={false}
+      animate={{
+        x: position * xOffset,
+        rotateY: position * -30,
+        z: isActive ? 0 : -400,
+        opacity: isActive ? 1 : 0.4,
+        scale: isActive ? 1 : 0.8,
+      }}
+      transition={{ type: "spring", stiffness: 120, damping: 25 }}
+      className={cn(
+        "absolute w-[75vw] md:w-[420px] h-auto min-h-[300px] p-10 flex flex-col justify-between overflow-hidden transition-all duration-500",
+        // Zéro trait : on utilise backdrop-blur et une bordure statique ultra-fine (ou rien)
+        "backdrop-blur-[25px] md:backdrop-blur-[40px]",
+        isActive
+          ? "border border-[var(--foreground)]/10 shadow-[0_40px_100px_rgba(0,0,0,0.5)]"
+          : "border-none"
+      )}
+      style={
+        {
+          backgroundColor: isActive ? "rgba(255,255,255,0.02)" : "transparent",
+          borderRadius: "var(--radius-vercel, 14px)",
+        } as any
+      }
+    >
+      {/* HEADER */}
+      <div className="relative z-10 flex justify-between items-start opacity-30">
+        <p className="text-[10px] font-black tracking-[0.5em] uppercase text-[var(--foreground)]">
+          {item.label}
+        </p>
+        <div
+          className={cn(
+            "h-1 w-1 rounded-full",
+            isActive
+              ? "bg-emerald-500 shadow-[0_0_15px_#10b981]"
+              : "bg-[var(--foreground)] opacity-20"
+          )}
+        />
+      </div>
 
-      <motion.div
-        initial={false}
-        animate={{
-          x: position * xOffset,
-          rotateY: position * -30,
-          z: isActive ? 0 : -400,
-          opacity: isActive ? 1 : 0.4,
-          scale: isActive ? 1 : 0.8,
-        }}
-        transition={{ type: "spring", stiffness: 120, damping: 25 }}
-        className={cn(
-          "absolute w-[75vw] md:w-[420px] h-auto min-h-[300px] p-10 flex flex-col justify-between overflow-hidden transition-all duration-1000",
-          // On retire "border" et on ne garde que le flou
-          "backdrop-blur-[20px] md:backdrop-blur-[35px]",
-          isActive
-            ? "v-blur-border shadow-[0_40px_100px_rgba(0,0,0,0.5)]"
-            : "border-none"
-        )}
-        style={
-          {
-            backgroundColor: isActive
-              ? "rgba(255,255,255,0.03)"
-              : "transparent",
-            borderRadius: "var(--radius-vercel, 14px)",
-          } as any
-        }
-      >
-        {/* HEADER */}
-        <div className="relative z-10 flex justify-between items-start opacity-40">
-          <p className="text-[10px] font-black tracking-[0.5em] uppercase text-[var(--foreground)]">
-            {item.label}
-          </p>
-          <div
-            className={cn(
-              "h-1 w-1 rounded-full transition-all duration-1000",
-              isActive
-                ? "bg-emerald-500 shadow-[0_0_15px_#10b981] opacity-100"
-                : "bg-[var(--foreground)] opacity-20"
-            )}
-          />
+      {/* CONTENT */}
+      <div className="relative z-10 mt-8">
+        <h3 className="text-[11px] font-bold opacity-30 uppercase text-[var(--foreground)] tracking-[0.3em] mb-4">
+          {item.title}
+        </h3>
+        <div className="flex flex-col gap-2">
+          {item.notes.map((note: string, idx: number) => (
+            <p
+              key={idx}
+              className="text-[10px] font-mono text-[var(--foreground)] opacity-20 italic pl-4 border-l border-[var(--foreground)]/5"
+            >
+              {note}
+            </p>
+          ))}
         </div>
+      </div>
 
-        {/* CONTENT */}
-        <div className="relative z-10 mt-8">
-          <h3 className="text-[11px] font-bold opacity-30 uppercase text-[var(--foreground)] tracking-[0.3em] mb-4">
-            {item.title}
-          </h3>
-          <div className="flex flex-col gap-2">
-            {item.notes.map((note: string, idx: number) => (
-              <p
-                key={idx}
-                className="text-[10px] font-mono text-[var(--foreground)] opacity-20 italic pl-4 border-l border-[var(--foreground)]/10"
-              >
-                {note}
-              </p>
-            ))}
-          </div>
-        </div>
+      {/* COMPTEUR (Seule animation restante) */}
+      <div className="relative z-10 flex items-baseline gap-2 mt-auto pt-10">
+        <h2
+          ref={counterRef}
+          className="text-6xl md:text-8xl font-black italic text-[var(--foreground)] tracking-tighter leading-none"
+        >
+          0.0
+        </h2>
+        <span className="text-2xl font-bold opacity-10 italic text-[var(--foreground)] uppercase">
+          {item.unit}
+        </span>
+      </div>
 
-        {/* COMPTEUR */}
-        <div className="relative z-10 flex items-baseline gap-2 mt-auto pt-10">
-          <h2
-            ref={counterRef}
-            className="text-6xl md:text-8xl font-black italic text-[var(--foreground)] tracking-tighter leading-none"
-          >
-            0.0
-          </h2>
-          <span className="text-2xl font-bold opacity-10 italic text-[var(--foreground)] uppercase">
-            {item.unit}
-          </span>
-        </div>
-
-        {/* FOOTER */}
-        <div className="relative z-10 flex justify-between items-end pt-6 text-[9px] font-mono opacity-10 text-[var(--foreground)] tracking-[0.4em] uppercase">
-          <span>{item.id}_SYS</span>
-          <span>V26</span>
-        </div>
-      </motion.div>
-    </>
+      {/* FOOTER */}
+      <div className="relative z-10 flex justify-between items-end pt-6 text-[9px] font-mono opacity-10 text-[var(--foreground)] tracking-[0.4em] uppercase">
+        <span>{item.id}_SYS</span>
+        <span>V26</span>
+      </div>
+    </motion.div>
   );
 }
