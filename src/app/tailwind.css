@@ -18,6 +18,8 @@
   --accents-2: #eaeaea;
   --border-color: #eaeaea;
   --card-bg: #ffffff;
+  --card-bg-glass: rgba(255, 255, 255, 0.7);
+  /* Light mode */
 }
 
 .dark {
@@ -29,6 +31,8 @@
   --border-color: #333333;
   --card-bg: #000000;
   /* Noir pur comme demandé */
+  --card-bg-glass: rgba(0, 0, 0, 0.5);
+  /* Dark mode : Noir pur mais transparent */
 }
 
 @layer base {
