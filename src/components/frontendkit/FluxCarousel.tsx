@@ -4,7 +4,6 @@ import React, { useState, useEffect, useRef } from "react";
 import { motion, animate } from "framer-motion";
 import { cn } from "@/lib/utils";
 
-// Extension à 7 cartes avec ta data
 const DATA = [
   {
     id: 1,
@@ -102,13 +101,12 @@ export default function FluxCarousel() {
         </motion.div>
       </div>
 
-      {/* Pagination pour 7 éléments */}
-      <div className="absolute bottom-10 flex gap-1.5 px-4 overflow-x-auto max-w-full">
+      <div className="absolute bottom-10 flex gap-1.5 px-4">
         {DATA.map((_, i) => (
           <div
             key={i}
             className={cn(
-              "h-0.5 transition-all duration-500 rounded-full shrink-0",
+              "h-0.5 rounded-full transition-all duration-500",
               index === i
                 ? "w-8 bg-[var(--foreground)]"
                 : "w-2 bg-[var(--accents-2)]"
@@ -123,7 +121,6 @@ export default function FluxCarousel() {
 function Card({ item, position }: { item: any; position: number }) {
   const isActive = position === 0;
   const counterRef = useRef<HTMLHeadingElement>(null);
-
   const xOffset =
     typeof window !== "undefined" && window.innerWidth < 768
       ? window.innerWidth * 0.52
@@ -179,9 +176,7 @@ function Card({ item, position }: { item: any; position: number }) {
             ? "v-dashed-active shadow-[0_30px_60px_rgba(0,0,0,0.4)]"
             : "border-[var(--border-color)]"
         )}
-        style={
-          { backgroundColor: "var(--card-bg-glass, rgba(0,0,0,0.5))" } as any
-        }
+        style={{ backgroundColor: "rgba(0,0,0,0.5)" } as any}
       >
         <div className="relative z-10 flex justify-between items-start mb-6">
           <p className="text-[9px] font-black tracking-[0.4em] opacity-40 uppercase text-[var(--foreground)]">
