@@ -15,14 +15,14 @@ const ZYMANTRA_CONTENT: ZymantraSection[] = [
     badge: "01_VISION",
     title: "ZYMANTRA_PROTOCOL",
     description:
-      "Ton paragraphe de 77 mots ici. Le ratio est maintenant optimisé pour que le visage du sujet reste parfaitement cadré et visible, peu importe la taille de l'écran.",
+      "L'incertitude est le cancer du développement. Piloter une commune sans data, c'est naviguer sans radar dans un champ de mines financier. Réveiller un angle mort, c’est forcer l'exécutif à regarder ce qu'il a peur de quantifier. Zy transforme ce vide en un flux de décisions chirurgicales. Ignorer cette donnée, c'est choisir l'obsolescence programmée.",
     image: "/IMG-20260211-WA0000.jpg",
   },
   {
     badge: "02_STRATEGY",
     title: "MARKET_FLOW",
     description:
-      "Deuxième section avec inversion du layout. Cette alternance visuelle permet de maintenir l'attention de l'investisseur tout au long des 7 paragraphes du Business Plan.",
+      "Je suis Diane Chaka Junior. Mon métier n'est pas de collecter des chiffres, mais de structurer la vérité là où elle est ignorée. En Côte d'Ivoire, nous opérons dans un brouillard statistique où 70 % de la valeur réelle est invisible. Mon rôle est de réveiller cet angle mort. Ce que je propose à Anyama, ce n’est pas une étude de plus, c’est une interface de lucidité. Là où l’intuition échoue, ma lecture de la data impose une trajectoire de croissance chirurgicale. On ne gère pas ce que l'on ne mesure pas ; je suis ici pour que nous commencions enfin à mesurer notre puissance.",
     image: "/IMG-20260116-WA0000.jpg",
   },
 ];
