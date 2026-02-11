@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
 import { motion, useTransform, useScroll, useSpring } from "framer-motion";
-import NavbarFront from "./NavbarFront"; // Import depuis le même dossier
+import NavbarFront from "./NavbarFront";
 
 interface ZymantraSection {
   badge: string;
@@ -42,12 +42,8 @@ export default function Zymantra() {
       if (contentRef.current) setSvgHeight(contentRef.current.offsetHeight);
     };
     update();
-    const timer = setTimeout(update, 500);
     window.addEventListener("resize", update);
-    return () => {
-      window.removeEventListener("resize", update);
-      clearTimeout(timer);
-    };
+    return () => window.removeEventListener("resize", update);
   }, []);
 
   const beamY = useSpring(
@@ -61,26 +57,33 @@ export default function Zymantra() {
   return (
     <div
       ref={containerRef}
-      className="relative w-full transition-colors duration-500 bg-white dark:bg-black font-sans antialiased text-black dark:text-white"
+      className="relative w-full min-h-screen transition-colors duration-200"
+      style={{
+        backgroundColor: "var(--background)",
+        color: "var(--foreground)",
+      }}
     >
-      {/* NAVBAR INTÉGRÉE */}
       <NavbarFront />
 
-      {/* LE BEAM (Adaptatif au thème) */}
+      {/* BEAM CHIRURGICAL (S'adapte aux variables de bordure) */}
       <div
-        className="absolute left-6 md:left-12 top-0 h-full w-[2px] hidden md:block"
+        className="absolute left-6 md:left-12 top-0 h-full w-[1px] hidden md:block"
         aria-hidden="true"
       >
-        <div className="h-full w-full bg-black/5 dark:bg-white/5 absolute inset-0" />
+        <div
+          className="h-full w-full opacity-20 absolute inset-0"
+          style={{ backgroundColor: "var(--border-color)" }}
+        />
         <motion.div
-          style={{ height: beamY, top: 0 }}
-          className="absolute w-full bg-gradient-to-b from-transparent via-emerald-500 to-emerald-400 shadow-[0_0_15px_#10b981]"
+          style={{ height: beamY }}
+          className="absolute w-full bg-emerald-500 shadow-[0_0_8px_#10b981]"
         />
       </div>
 
+      {/* FLUX : Gap de 3px entre les sections */}
       <div
         ref={contentRef}
-        className="flex flex-col items-center w-full relative z-10 pt-32"
+        className="flex flex-col items-center w-full relative z-10 pt-24 gap-[3px]"
       >
         {ZYMANTRA_CONTENT.map((item, index) => {
           const isInactive = activeIdx !== null && activeIdx !== index;
@@ -93,43 +96,50 @@ export default function Zymantra() {
               onTouchStart={() => setActiveIdx(index)}
               animate={{
                 opacity: isInactive ? 0.3 : 1,
-                filter: isInactive ? "blur(8px)" : "blur(0px)",
+                filter: isInactive ? "blur(6px)" : "blur(0px)",
               }}
-              className="mb-32 w-[95vw] md:w-[900px] relative border border-black/10 dark:border-white/10 bg-black/[0.02] dark:bg-white/[0.02] backdrop-blur-md rounded-[2rem] p-6 md:p-12 overflow-hidden transition-all duration-500 hover:border-emerald-500/30"
+              className="v-card w-[98vw] md:w-[920px] relative p-4 md:p-6 overflow-hidden group cursor-default"
+              style={{
+                backgroundColor: "var(--card-bg)",
+                borderColor: "var(--border-color)",
+                borderRadius: "var(--radius-vercel)", // Utilisation de ton radius 7px
+              }}
             >
               {/* INDICATEUR 7PX */}
-              <div className="absolute top-[7px] right-[7px] h-2 w-2 bg-emerald-500 rounded-full shadow-[0_0_10px_#10b981] z-50" />
+              <div className="absolute top-[7px] right-[7px] h-2 w-2 bg-emerald-500 rounded-full shadow-[0_0_8px_#10b981] z-50" />
 
-              <div className="flex flex-col items-center">
-                {/* BADGE (Adaptatif) */}
-                <span className="text-emerald-600 dark:text-emerald-400 text-[10px] font-black tracking-[0.4em] uppercase px-4 py-1.5 border border-emerald-500/20 bg-emerald-500/5 mb-8 rounded-full">
-                  {item.badge}
-                </span>
-
-                {/* TITRE */}
-                <h2 className="text-4xl md:text-7xl font-black italic tracking-tighter mb-10 uppercase text-center leading-none">
-                  {item.title}
-                </h2>
-
-                {/* IMAGE BOX */}
-                <div className="relative w-full aspect-video rounded-xl overflow-hidden border border-black/10 dark:border-white/10 shadow-2xl bg-neutral-100 dark:bg-neutral-900">
+              <div className="flex flex-col md:flex-row items-center gap-6">
+                {/* IMAGE : Ratio 16/9 Fixé */}
+                <div
+                  className="relative w-full md:w-[380px] aspect-video overflow-hidden border"
+                  style={{
+                    borderColor: "var(--accents-2)",
+                    borderRadius: "var(--radius-vercel-zy)",
+                  }}
+                >
                   <img
                     src={item.image}
                     alt={item.title}
-                    className="w-full h-full object-cover grayscale-[0.3] hover:grayscale-0 transition-all duration-700"
+                    className="w-full h-full object-cover transition-all duration-700 grayscale-[0.4] group-hover:grayscale-0 group-hover:scale-105"
                     onError={(e) => {
                       e.currentTarget.src =
-                        "https://placehold.co/800x450/000000/10b981?text=FICHIER_MANQUANT";
+                        "https://placehold.co/600x337/000000/10b981?text=IMAGE_MISSING";
                     }}
                   />
-                  {/* Overlay adaptatif */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-white/40 dark:from-black/80 via-transparent to-transparent opacity-60" />
                 </div>
 
-                {/* DESCRIPTION */}
-                <p className="max-w-xl text-black/60 dark:text-white/50 text-center text-lg md:text-xl mt-10 leading-relaxed font-medium">
-                  {item.description}
-                </p>
+                {/* CONTENU TEXTUEL */}
+                <div className="flex-1 flex flex-col items-start text-left">
+                  <span className="text-emerald-500 text-[9px] font-black tracking-[0.4em] uppercase mb-2">
+                    {item.badge}
+                  </span>
+                  <h2 className="text-2xl md:text-3xl font-black italic tracking-tighter mb-3 uppercase leading-none">
+                    {item.title}
+                  </h2>
+                  <p className="text-sm md:text-base leading-relaxed max-w-lg opacity-60">
+                    {item.description}
+                  </p>
+                </div>
               </div>
             </motion.section>
           );
