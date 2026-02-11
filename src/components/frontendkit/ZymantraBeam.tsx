@@ -12,17 +12,18 @@ interface ZymantraSection {
 
 const ZYMANTRA_CONTENT: ZymantraSection[] = [
   {
-    badge: "01_VISION",
-    title: "ZYMANTRA_PROTOCOL",
+    badge: "LA VISION",
+    title: "DATA_DRIVEN_LOGICL",
     description:
-      "L'incertitude est le cancer du développement. Piloter une commune sans data, c'est naviguer sans radar dans un champ de mines financier. Réveiller un angle mort, c’est forcer l'exécutif à regarder ce qu'il a peur de quantifier. Zy transforme ce vide en un flux de décisions chirurgicales. Ignorer cette donnée, c'est choisir l'obsolescence programmée.",
+      "La donnée est la seule monnaie de rechange contre l’échec stratégique. Piloter une commune sans data, c'est naviguer sans radar dans un champ de mines financier. Réveiller cet angle mort, c’est convertir le vortex de l'exécutif , de la recherhce , de l attention , l imposition d un credit de souveraineté.",
     image: "/IMG-20260211-WA0000.jpg",
   },
   {
     badge: "02_STRATEGY",
-    title: "MARKET_FLOW",
+    title:
+      "Je suis Diane Chaka Junior Ingenieur IT , Data Analyste en Intelligence Économique",
     description:
-      "Je suis Diane Chaka Junior. Mon métier n'est pas de collecter des chiffres, mais de structurer la vérité là où elle est ignorée. En Côte d'Ivoire, nous opérons dans un brouillard statistique où 70 % de la valeur réelle est invisible. Mon rôle est de réveiller cet angle mort. Ce que je propose à Anyama, ce n’est pas une étude de plus, c’est une interface de lucidité. Là où l’intuition échoue, ma lecture de la data impose une trajectoire de croissance chirurgicale. On ne gère pas ce que l'on ne mesure pas ; je suis ici pour que nous commencions enfin à mesurer notre puissance.",
+      "Anyama sera une valeurs sure sous l algoithme zy  , soit la première commune de Côte d'Ivoire dotée d'un radar économique. Un outil capable de synchroniser les ressources officielles avec les réalités du terrain. Ce radar ne suit pas les événements, il les précède. En réveillant cet angle mort, nous créons un bouclier contre les opportunités manquées et un aimant à investissements massifs.",
     image: "/IMG-20260116-WA0000.jpg",
   },
 ];
