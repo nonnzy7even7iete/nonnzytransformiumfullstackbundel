@@ -80,6 +80,7 @@ export default function FluxCarousel() {
 
   return (
     <div className="relative h-screen w-full bg-[var(--background)] overflow-hidden flex items-center justify-center font-sans">
+      {/* Interaction Layer */}
       <motion.div
         drag="x"
         dragConstraints={{ left: 0, right: 0 }}
@@ -89,10 +90,10 @@ export default function FluxCarousel() {
 
       <div
         className="relative w-full h-full flex items-center justify-center"
-        style={{ perspective: "1000px" }}
+        style={{ perspective: "1200px" }}
       >
         <motion.div
-          className="relative flex items-center justify-center w-full max-w-[320px] md:max-w-[450px]"
+          className="relative flex items-center justify-center w-full max-w-[300px] md:max-w-[450px]"
           style={{ transformStyle: "preserve-3d" }}
         >
           {DATA.map((item, i) => (
@@ -101,15 +102,16 @@ export default function FluxCarousel() {
         </motion.div>
       </div>
 
-      <div className="absolute bottom-10 flex gap-1.5 px-4">
+      {/* Pagination Minimaliste */}
+      <div className="absolute bottom-10 flex gap-2">
         {DATA.map((_, i) => (
           <div
             key={i}
             className={cn(
-              "h-0.5 rounded-full transition-all duration-500",
+              "h-[1px] transition-all duration-700",
               index === i
-                ? "w-8 bg-[var(--foreground)]"
-                : "w-2 bg-[var(--accents-2)]"
+                ? "w-10 bg-[var(--foreground)]"
+                : "w-2 bg-[var(--foreground)] opacity-10"
             )}
           />
         ))}
@@ -121,9 +123,11 @@ export default function FluxCarousel() {
 function Card({ item, position }: { item: any; position: number }) {
   const isActive = position === 0;
   const counterRef = useRef<HTMLHeadingElement>(null);
+
+  // Mobile spacing ultra-serré pour accentuer le chevauchement des flous
   const xOffset =
     typeof window !== "undefined" && window.innerWidth < 768
-      ? window.innerWidth * 0.52
+      ? window.innerWidth * 0.45
       : 480;
 
   useEffect(() => {
@@ -144,18 +148,17 @@ function Card({ item, position }: { item: any; position: number }) {
       <style>{`
         @keyframes border-dance {
           0% { background-position: 0px 0px, 100% 100%, 0px 100%, 100% 0px; }
-          100% { background-position: 20px 0px, 100% -20px, -20px 100%, 100% 20px; }
+          100% { background-position: 25px 0px, 100% -25px, -25px 100%, 100% 25px; }
         }
-        .v-dashed-active {
+        .v-blur-border {
           background-image: 
             linear-gradient(90deg, var(--foreground) 50%, transparent 50%),
             linear-gradient(90deg, var(--foreground) 50%, transparent 50%),
             linear-gradient(0deg, var(--foreground) 50%, transparent 50%),
             linear-gradient(0deg, var(--foreground) 50%, transparent 50%);
           background-repeat: repeat-x, repeat-x, repeat-y, repeat-y;
-          background-size: 15px 1px, 15px 1px, 1px 15px, 1px 15px;
-          animation: border-dance 0.8s infinite linear;
-          border: none !important;
+          background-size: 20px 1px, 20px 1px, 1px 20px, 1px 20px;
+          animation: border-dance 1s infinite linear;
         }
       `}</style>
 
@@ -163,44 +166,54 @@ function Card({ item, position }: { item: any; position: number }) {
         initial={false}
         animate={{
           x: position * xOffset,
-          rotateY: position * -40,
-          z: isActive ? 0 : -350,
-          opacity: isActive ? 1 : 0.2,
-          scale: isActive ? 1 : 0.7,
+          rotateY: position * -30,
+          z: isActive ? 0 : -400,
+          opacity: isActive ? 1 : 0.4,
+          scale: isActive ? 1 : 0.8,
         }}
-        transition={{ type: "spring", stiffness: 140, damping: 22 }}
+        transition={{ type: "spring", stiffness: 120, damping: 25 }}
         className={cn(
-          "v-card absolute w-[65vw] md:w-[420px] h-auto min-h-[280px] p-8 md:p-10 flex flex-col justify-between overflow-hidden",
-          "backdrop-blur-md transition-all duration-500",
+          "absolute w-[75vw] md:w-[420px] h-auto min-h-[300px] p-10 flex flex-col justify-between overflow-hidden transition-all duration-1000",
+          // On retire "border" et on ne garde que le flou
+          "backdrop-blur-[20px] md:backdrop-blur-[35px]",
           isActive
-            ? "v-dashed-active shadow-[0_30px_60px_rgba(0,0,0,0.4)]"
-            : "border-[var(--border-color)]"
+            ? "v-blur-border shadow-[0_40px_100px_rgba(0,0,0,0.5)]"
+            : "border-none"
         )}
-        style={{ backgroundColor: "rgba(0,0,0,0.5)" } as any}
+        style={
+          {
+            backgroundColor: isActive
+              ? "rgba(255,255,255,0.03)"
+              : "transparent",
+            borderRadius: "var(--radius-vercel, 14px)",
+          } as any
+        }
       >
-        <div className="relative z-10 flex justify-between items-start mb-6">
-          <p className="text-[9px] font-black tracking-[0.4em] opacity-40 uppercase text-[var(--foreground)]">
+        {/* HEADER */}
+        <div className="relative z-10 flex justify-between items-start opacity-40">
+          <p className="text-[10px] font-black tracking-[0.5em] uppercase text-[var(--foreground)]">
             {item.label}
           </p>
           <div
             className={cn(
-              "h-1.5 w-1.5 rounded-full",
+              "h-1 w-1 rounded-full transition-all duration-1000",
               isActive
-                ? "bg-emerald-500 shadow-[0_0_12px_#10b981]"
-                : "bg-[var(--accents-2)]"
+                ? "bg-emerald-500 shadow-[0_0_15px_#10b981] opacity-100"
+                : "bg-[var(--foreground)] opacity-20"
             )}
           />
         </div>
 
-        <div className="relative z-10 flex flex-col mb-8">
-          <h3 className="text-[10px] font-bold opacity-60 uppercase text-[var(--foreground)] tracking-widest mb-3">
+        {/* CONTENT */}
+        <div className="relative z-10 mt-8">
+          <h3 className="text-[11px] font-bold opacity-30 uppercase text-[var(--foreground)] tracking-[0.3em] mb-4">
             {item.title}
           </h3>
-          <div className="flex flex-col gap-1.5">
+          <div className="flex flex-col gap-2">
             {item.notes.map((note: string, idx: number) => (
               <p
                 key={idx}
-                className="text-[9px] font-mono text-[var(--foreground)] opacity-30 border-l border-[var(--border-color)] pl-3"
+                className="text-[10px] font-mono text-[var(--foreground)] opacity-20 italic pl-4 border-l border-[var(--foreground)]/10"
               >
                 {note}
               </p>
@@ -208,21 +221,23 @@ function Card({ item, position }: { item: any; position: number }) {
           </div>
         </div>
 
-        <div className="relative z-10 flex items-baseline gap-1 mt-auto">
+        {/* COMPTEUR */}
+        <div className="relative z-10 flex items-baseline gap-2 mt-auto pt-10">
           <h2
             ref={counterRef}
-            className="text-5xl md:text-7xl font-black italic text-[var(--foreground)] tracking-tighter leading-none"
+            className="text-6xl md:text-8xl font-black italic text-[var(--foreground)] tracking-tighter leading-none"
           >
             0.0
           </h2>
-          <span className="text-xl font-bold opacity-20 italic text-[var(--foreground)] uppercase">
+          <span className="text-2xl font-bold opacity-10 italic text-[var(--foreground)] uppercase">
             {item.unit}
           </span>
         </div>
 
-        <div className="relative z-10 flex justify-between items-end border-t border-[var(--border-color)]/30 pt-4 mt-6 text-[8px] font-mono opacity-20 text-[var(--foreground)] uppercase tracking-widest">
-          <span>V.2026_PROTOCOL</span>
-          <span>NODE_{item.id}</span>
+        {/* FOOTER */}
+        <div className="relative z-10 flex justify-between items-end pt-6 text-[9px] font-mono opacity-10 text-[var(--foreground)] tracking-[0.4em] uppercase">
+          <span>{item.id}_SYS</span>
+          <span>V26</span>
         </div>
       </motion.div>
     </>
