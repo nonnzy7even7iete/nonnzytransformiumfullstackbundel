@@ -2,7 +2,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { motion, useTransform, useScroll, useSpring } from "framer-motion";
 import NavbarFront from "./NavbarFront";
-import { CardBody, CardContainer, CardItem } from "@/components/ui/3d-card";
 
 interface ZymantraSection {
   badge: string;
@@ -56,72 +55,67 @@ export default function Zymantra() {
   return (
     <div
       ref={containerRef}
-      className="relative w-full bg-black text-white" // Fallback direct pour éviter les erreurs de variables CSS
+      className="relative w-full bg-black text-white overflow-hidden"
     >
       <NavbarFront />
 
-      {/* BEAM */}
+      {/* BEAM (Tracing Line) */}
       <div className="absolute left-4 md:left-8 top-0 h-full w-[1px] hidden sm:block">
-        <div className="h-full w-full opacity-10 absolute inset-0 bg-white/20" />
+        <div className="h-full w-full bg-white/10 absolute inset-0" />
         <motion.div
           style={{ height: beamY }}
-          className="absolute w-full bg-emerald-500 shadow-[0_0_12px_#10b981]"
+          className="absolute w-full bg-emerald-500 shadow-[0_0_15px_#10b981]"
         />
       </div>
 
       <div
         ref={contentRef}
-        className="flex flex-col items-center w-full relative z-10 pt-28 pb-20 gap-4"
+        className="flex flex-col items-center w-full relative z-10 pt-28 pb-20 gap-20"
       >
         {ZYMANTRA_CONTENT.map((item, index) => (
-          <CardContainer key={index} className="inter-var">
-            <CardBody className="bg-gray-50 relative group/card dark:hover:shadow-2xl dark:hover:shadow-emerald-500/[0.1] dark:bg-black dark:border-white/[0.2] border-black/[0.1] w-auto sm:w-[920px] h-auto rounded-xl p-6 md:p-10 border flex flex-col md:flex-row items-center gap-8">
-              {/* IMAGE */}
-              <CardItem translateZ="100" className="w-full md:w-[45%]">
-                <div className="relative aspect-square overflow-hidden rounded-xl border border-white/10 shadow-2xl">
+          /* Card Container Simulation */
+          <div
+            key={index}
+            className="flex items-center justify-center [perspective:1000px] [transform-style:preserve-3d]"
+          >
+            {/* Card Body Simulation */}
+            <div className="group/card relative bg-gray-900/50 border border-white/10 w-[94vw] md:w-[920px] rounded-3xl p-6 md:p-10 transition-all duration-200 ease-linear hover:shadow-2xl hover:shadow-emerald-500/[0.1] flex flex-col md:flex-row items-center gap-10">
+              {/* IMAGE SECTION (Simulated CardItem translateZ) */}
+              <div className="w-full md:w-[45%] transition-transform duration-500 group-hover/card:[transform:translateZ(60px)]">
+                <div className="relative aspect-square overflow-hidden rounded-2xl border border-white/20 shadow-2xl">
                   <img
                     src={item.image}
-                    className="h-full w-full object-cover object-top grayscale-[0.2] group-hover/card:grayscale-0 transition-all duration-700"
+                    className="h-full w-full object-cover object-top grayscale-[0.3] group-hover/card:grayscale-0 transition-all duration-700"
                     alt="Diane Chaka"
                   />
-                  <div className="absolute top-[10px] right-[10px] h-3 w-3 bg-emerald-500 rounded-full shadow-[0_0_8px_#10b981] animate-pulse" />
-                </div>
-              </CardItem>
-
-              {/* CONTENU */}
-              <div className="flex-1 flex flex-col items-start text-left">
-                <CardItem
-                  translateZ="50"
-                  className="text-emerald-500 text-[10px] font-black tracking-[0.4em] mb-4 uppercase"
-                >
-                  {item.badge}
-                </CardItem>
-
-                <CardItem
-                  translateZ="60"
-                  className="text-3xl md:text-5xl font-black italic tracking-tighter mb-6 uppercase leading-tight text-neutral-600 dark:text-white"
-                >
-                  {item.title}
-                </CardItem>
-
-                <CardItem
-                  translateZ="40"
-                  className="text-base md:text-lg leading-relaxed text-neutral-500 dark:text-neutral-300 font-medium"
-                >
-                  {item.description}
-                </CardItem>
-
-                <div className="mt-10">
-                  <CardItem
-                    translateZ={20}
-                    className="px-4 py-2 rounded-xl bg-black dark:bg-white dark:text-black text-white text-xs font-bold"
-                  >
-                    Découvrir la Vision
-                  </CardItem>
+                  {/* Status Indicator */}
+                  <div className="absolute top-4 right-4 h-3 w-3 bg-emerald-500 rounded-full shadow-[0_0_10px_#10b981] animate-pulse" />
                 </div>
               </div>
-            </CardBody>
-          </CardContainer>
+
+              {/* TEXT CONTENT (Simulated CardItem translateZ) */}
+              <div className="flex-1 flex flex-col items-start text-left transition-transform duration-500 group-hover/card:[transform:translateZ(40px)]">
+                <span className="text-emerald-500 text-[10px] font-black tracking-[0.5em] mb-4 uppercase">
+                  {item.badge}
+                </span>
+
+                <h2 className="text-3xl md:text-5xl font-black italic tracking-tighter mb-6 uppercase leading-tight text-white drop-shadow-md">
+                  {item.title}
+                </h2>
+
+                <p className="text-base md:text-lg leading-relaxed text-neutral-400 font-medium">
+                  {item.description}
+                </p>
+
+                {/* SLOT POUR LE FUTUR COMPOSANT BOUTON */}
+                <div className="mt-10 transition-transform duration-500 group-hover/card:[transform:translateZ(20px)]">
+                  <button className="px-6 py-3 rounded-full bg-white text-black text-xs font-bold hover:bg-emerald-500 hover:text-white transition-colors">
+                    DÉCOUVRIR LA VISION
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
         ))}
       </div>
     </div>
