@@ -9,7 +9,6 @@ import {
 } from "framer-motion";
 import { cn } from "@/lib/utils";
 
-// Interface pour la Data
 interface ZymantraSection {
   badge: string;
   title: string;
@@ -45,13 +44,18 @@ export default function Zymantra() {
     offset: ["start start", "end start"],
   });
 
+  // Mise à jour de la hauteur au redimensionnement pour le responsive
   useEffect(() => {
-    if (contentRef.current) {
-      setSvgHeight(contentRef.current.offsetHeight);
-    }
+    const updateHeight = () => {
+      if (contentRef.current) {
+        setSvgHeight(contentRef.current.offsetHeight);
+      }
+    };
+    updateHeight();
+    window.addEventListener("resize", updateHeight);
+    return () => window.removeEventListener("resize", updateHeight);
   }, []);
 
-  // Types explicites pour les MotionValues pour calmer TS
   const y1: MotionValue<number> = useSpring(
     useTransform(scrollYProgress, [0, 0.8], [50, svgHeight]),
     { stiffness: 400, damping: 90 }
@@ -64,11 +68,11 @@ export default function Zymantra() {
   return (
     <div
       ref={containerRef}
-      className="relative w-full max-w-5xl mx-auto py-24 px-6 font-sans antialiased"
+      className="relative w-full max-w-5xl mx-auto py-12 md:py-24 px-4 md:px-6 font-sans antialiased bg-black"
     >
-      {/* SVG BEAM */}
+      {/* SVG BEAM - Adapté mobile (left-4) vs Desktop (left-12) */}
       <div
-        className="absolute left-6 md:left-12 top-0 h-full"
+        className="absolute left-4 md:left-12 top-0 h-full"
         aria-hidden="true"
       >
         <svg
@@ -80,7 +84,7 @@ export default function Zymantra() {
           <path
             d={`M 10 0 V ${svgHeight}`}
             fill="none"
-            stroke="currentColor"
+            stroke="white"
             strokeOpacity="0.05"
             strokeWidth="1"
           />
@@ -108,33 +112,38 @@ export default function Zymantra() {
         </svg>
       </div>
 
-      <div ref={contentRef} className="ml-16 md:ml-32">
+      {/* CONTENU - Padding ajustable pour mobile */}
+      <div ref={contentRef} className="ml-8 md:ml-32">
         {ZYMANTRA_CONTENT.map((item, index) => (
           <div
             key={`section-${index}`}
-            className="mb-40 relative group text-left"
+            className="mb-24 md:mb-40 relative group text-left"
           >
-            {/* INDICATEUR 7PX */}
+            {/* INDICATEUR 7PX - Toujours calé top/right */}
             <div className="absolute top-[7px] right-[7px] h-1.5 w-1.5 bg-emerald-500 rounded-full shadow-[0_0_10px_#10b981] z-20" />
 
-            <span className="text-emerald-500 text-[9px] font-black tracking-[0.5em] uppercase px-3 py-1.5 border border-emerald-500/10 bg-emerald-500/5 mb-8 inline-block">
+            {/* BADGE */}
+            <span className="text-emerald-500 text-[8px] md:text-[9px] font-black tracking-[0.5em] uppercase px-3 py-1.5 border border-emerald-500/10 bg-emerald-500/5 mb-6 md:mb-8 inline-block">
               {item.badge}
             </span>
 
-            <h2 className="text-5xl md:text-7xl font-black italic text-white tracking-tighter mb-10 uppercase leading-none">
+            {/* TITRE - Responsive sizing */}
+            <h2 className="text-3xl md:text-7xl font-black italic text-white tracking-tighter mb-6 md:mb-10 uppercase leading-[0.9]">
               {item.title}
             </h2>
 
-            <div className="relative rounded-2xl overflow-hidden border border-white/5 bg-white/5 backdrop-blur-3xl mb-12 shadow-2xl">
+            {/* IMAGE - Hauteur réduite sur mobile (h-[250px]) */}
+            <div className="relative rounded-xl md:rounded-2xl overflow-hidden border border-white/5 bg-white/5 backdrop-blur-3xl mb-8 md:mb-12 shadow-2xl">
               <img
                 src={item.image}
                 alt=""
-                className="w-full h-[450px] object-cover opacity-40 grayscale group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-1000"
+                className="w-full h-[250px] md:h-[450px] object-cover opacity-40 grayscale group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-1000"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-90" />
             </div>
 
-            <div className="max-w-2xl text-white/50 text-xl leading-relaxed">
+            {/* DESCRIPTION */}
+            <div className="max-w-2xl text-white/50 text-base md:text-xl leading-relaxed font-medium">
               {item.description}
             </div>
           </div>
