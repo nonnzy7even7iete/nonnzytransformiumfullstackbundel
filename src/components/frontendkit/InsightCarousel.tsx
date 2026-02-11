@@ -1,12 +1,7 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
-import {
-  motion,
-  AnimatePresence,
-  useMotionValue,
-  useSpring,
-} from "framer-motion";
+import React, { useState } from "react";
+import { motion, useMotionValue, useSpring } from "framer-motion";
 import { cn } from "@/lib/utils";
 
 const DATA = [
@@ -16,23 +11,27 @@ const DATA = [
   { id: 4, title: "VOLUME", value: "450", unit: "K" },
 ];
 
-export default function VercelPulseCarousel() {
+export default function FluxCarouselVercel() {
   const [index, setIndex] = useState(0);
-  const [isMounted, setIsMounted] = useState(false);
+  const dragX = useMotionValue(0);
 
-  useEffect(() => setIsMounted(true), []);
+  // Physique réactive pour le swipe
+  const rotationY = useSpring(0, { stiffness: 200, damping: 30 });
 
   const handleDragEnd = (_: any, info: any) => {
     const threshold = 50;
-    if (info.offset.x < -threshold && index < DATA.length - 1)
+    if (info.offset.x < -threshold && index < DATA.length - 1) {
       setIndex(index + 1);
-    else if (info.offset.x > threshold && index > 0) setIndex(index - 1);
+      rotationY.set((index + 1) * -45); // Angle de migration
+    } else if (info.offset.x > threshold && index > 0) {
+      setIndex(index - 1);
+      rotationY.set((index - 1) * -45);
+    }
   };
 
-  if (!isMounted) return null;
-
   return (
-    <div className="relative h-screen w-full bg-[var(--background)] overflow-hidden flex items-center justify-center">
+    <div className="relative h-screen w-full bg-[var(--background)] flex items-center justify-center overflow-hidden">
+      {/* Zone de swipe invisible */}
       <motion.div
         drag="x"
         dragConstraints={{ left: 0, right: 0 }}
@@ -40,92 +39,79 @@ export default function VercelPulseCarousel() {
         className="absolute inset-0 z-[100] cursor-grab active:cursor-grabbing"
       />
 
-      <div
-        className="relative w-full h-full flex items-center justify-center"
-        style={{ perspective: "1500px" }}
-      >
+      <div className="relative" style={{ perspective: "1200px" }}>
         <motion.div
-          className="relative w-[400px] h-[300px]"
-          style={{ transformStyle: "preserve-3d" }}
+          style={{
+            rotateY: rotationY,
+            transformStyle: "preserve-3d",
+          }}
+          className="relative flex items-center justify-center w-[400px] h-[280px]"
         >
-          <AnimatePresence mode="popLayout">
-            {DATA.map((item, i) => {
-              const position = i - index;
-              if (Math.abs(position) > 1) return null;
-
-              return <Card key={item.id} item={item} position={position} />;
-            })}
-          </AnimatePresence>
+          {DATA.map((item, i) => (
+            <Card key={item.id} item={item} i={i} activeIndex={index} />
+          ))}
         </motion.div>
       </div>
     </div>
   );
 }
 
-function Card({ item, position }: { item: any; position: number }) {
-  const isActive = position === 0;
+function Card({ item, i, activeIndex }: any) {
+  const isFocused = activeIndex === i;
+  const angle = i * 45; // Décalage angulaire fixe
 
   return (
     <motion.div
-      initial={false}
+      style={
+        {
+          position: "absolute",
+          inset: 0,
+          transformStyle: "preserve-3d",
+          // Positionnement en flux cylindrique
+          transform: `rotateY(${angle}deg) translateZ(450px)`,
+        } as any
+      }
       animate={{
-        x: position * 420,
-        rotateY: position * -35,
-        z: isActive ? 0 : -200,
-        opacity: isActive ? 1 : 0.1,
-        scale: isActive ? 1.05 : 0.9,
+        opacity: isFocused ? 1 : 0.1,
+        // On n'anime pas les couleurs ici, le CSS (.v-card) s'en occupe via les variables
       }}
-      transition={{ type: "spring", stiffness: 180, damping: 25 }}
-      style={{ transformStyle: "preserve-3d" }}
+      // .v-card applique ton border-radius (14px) et ton bg (var(--card-bg))
       className={cn(
-        "absolute inset-0 p-10 v-card flex flex-col justify-between overflow-hidden",
-        isActive ? "border-[var(--foreground)]" : "border-[var(--border-color)]"
+        "v-card p-10 flex flex-col justify-between",
+        isFocused
+          ? "border-[var(--foreground)]"
+          : "border-[var(--border-color)]"
       )}
     >
-      {/* EFFET PULSE : Un balayage lumineux discret lors du Snap */}
-      {isActive && (
-        <motion.div
-          initial={{ x: "-100%", opacity: 0 }}
-          animate={{ x: "100%", opacity: [0, 0.5, 0] }}
-          transition={{ duration: 1, ease: "easeInOut", delay: 0.2 }}
-          className="absolute inset-0 bg-gradient-to-r from-transparent via-[var(--foreground)] to-transparent opacity-10 pointer-events-none"
-          style={{ skewX: "-20deg" }}
-        />
-      )}
-
-      <div className="flex justify-between items-start z-10">
-        <span className="text-[10px] font-bold tracking-[0.4em] opacity-40 uppercase">
-          Vercel_Metric
+      <div className="flex justify-between items-start">
+        <span className="text-[10px] font-bold tracking-widest opacity-30 uppercase">
+          Metric_Node
         </span>
         <div
           className={cn(
-            "h-1.5 w-1.5 rounded-full transition-all duration-500",
-            isActive
-              ? "bg-[var(--foreground)] shadow-[0_0_10px_var(--foreground)]"
-              : "bg-[var(--accents-2)]"
+            "h-1 w-1 rounded-full",
+            isFocused ? "bg-[var(--foreground)]" : "bg-[var(--accents-2)]"
           )}
         />
       </div>
 
-      <div className="z-10">
+      <div className="space-y-1">
         <div className="flex items-baseline gap-1">
-          <h2 className="text-8xl font-black tracking-tighter text-[var(--foreground)] leading-none italic">
+          <span className="text-7xl font-bold tracking-tighter text-[var(--foreground)] italic leading-none">
             {item.value}
-          </h2>
-          <span className="text-xl font-bold opacity-30 italic">
+          </span>
+          <span className="text-xl font-medium opacity-20 italic">
             {item.unit}
           </span>
         </div>
-        <p className="text-[11px] font-bold opacity-40 tracking-widest mt-2 uppercase">
+        <p className="text-[10px] font-bold tracking-[0.3em] opacity-40 uppercase">
           {item.title}
         </p>
       </div>
 
-      <div className="pt-6 border-t border-[var(--border-color)] z-10">
-        <div className="flex justify-between items-center text-[9px] font-mono opacity-20">
-          <span>TX_STABLE</span>
-          <span>NODE_ID_{item.id}</span>
-        </div>
+      <div className="pt-6 border-t border-[var(--border-color)] flex justify-between items-center text-[9px] font-mono opacity-20 uppercase tracking-widest">
+        <span>Stability_OK</span>
+        <span>ID_{item.id}</span>
       </div>
     </motion.div>
   );
