@@ -5,11 +5,35 @@ import { motion, useMotionValue, useSpring, animate } from "framer-motion";
 import { cn } from "@/lib/utils";
 
 const DATA = [
-  { id: 1, title: "ALPHA_FLUX", value: 84.2, unit: "%", label: "PRIMARY_NODE" },
-  { id: 2, title: "DATA_CORE", value: 12.4, unit: "K", label: "SYNC_STATUS" },
-  { id: 3, title: "LATENCY", value: 0.4, unit: "MS", label: "ZERO_POINT" },
-  { id: 4, title: "LIQUIDITY", value: 450, unit: "K", label: "FLOW_RATE" },
-  { id: 5, title: "STABILITY", value: 99.9, unit: "%", label: "ENCRYPTED" },
+  {
+    id: 1,
+    title: "BUDGET_2026",
+    value: 84.2,
+    unit: "K",
+    label: "FINANCIAL_FLUX",
+    notes: ["Initial allocation", "Q1 Projection", "Buffer added"], // Notes qui feront grandir la carte
+  },
+  {
+    id: 2,
+    title: "MARKETING_EXP",
+    value: 12.4,
+    unit: "K",
+    label: "GROWTH_SYNC",
+    notes: ["Social Ads", "SEO"],
+  },
+  {
+    id: 3,
+    title: "R&D_COSTS",
+    value: 450,
+    unit: "€",
+    label: "INNOVATION",
+    notes: [
+      "New Engine",
+      "Cloud Infrastructure",
+      "Security Audit",
+      "Beta Testing",
+    ], // Carte très grande
+  },
 ];
 
 export default function FluxCarousel() {
@@ -19,7 +43,7 @@ export default function FluxCarousel() {
   useEffect(() => setMounted(true), []);
 
   const handleDragEnd = (_: any, info: any) => {
-    const threshold = 30; // Swipe plus sensible pour mobile
+    const threshold = 30;
     if (info.offset.x < -threshold && index < DATA.length - 1)
       setIndex(index + 1);
     else if (info.offset.x > threshold && index > 0) setIndex(index - 1);
@@ -28,7 +52,7 @@ export default function FluxCarousel() {
   if (!mounted) return null;
 
   return (
-    <div className="relative h-screen w-full bg-[var(--background)] overflow-hidden flex items-center justify-center font-sans transition-colors duration-500">
+    <div className="relative h-screen w-full bg-[var(--background)] overflow-hidden flex items-center justify-center font-sans">
       <motion.div
         drag="x"
         dragConstraints={{ left: 0, right: 0 }}
@@ -41,7 +65,7 @@ export default function FluxCarousel() {
         style={{ perspective: "1000px" }}
       >
         <motion.div
-          className="relative flex items-center justify-center w-full max-w-[400px] h-[350px]"
+          className="relative flex items-center justify-center w-full max-w-[320px] md:max-w-[450px]"
           style={{ transformStyle: "preserve-3d" }}
         >
           {DATA.map((item, i) => {
@@ -52,20 +76,18 @@ export default function FluxCarousel() {
         </motion.div>
       </div>
 
-      <div className="absolute bottom-10 flex items-center gap-4 z-[110]">
-        <div className="flex gap-2">
-          {DATA.map((_, i) => (
-            <div
-              key={i}
-              className={cn(
-                "h-0.5 transition-all duration-500",
-                index === i
-                  ? "w-10 bg-[var(--foreground)]"
-                  : "w-2 bg-[var(--accents-2)]"
-              )}
-            />
-          ))}
-        </div>
+      <div className="absolute bottom-10 flex gap-2">
+        {DATA.map((_, i) => (
+          <div
+            key={i}
+            className={cn(
+              "h-0.5 rounded-full transition-all duration-500",
+              index === i
+                ? "w-8 bg-[var(--foreground)]"
+                : "w-2 bg-[var(--accents-2)]"
+            )}
+          />
+        ))}
       </div>
     </div>
   );
@@ -73,24 +95,22 @@ export default function FluxCarousel() {
 
 function Card({ item, position }: { item: any; position: number }) {
   const isActive = position === 0;
-
-  // Calcul MOBILE : On réduit la largeur à 70vw et le xOffset à 65vw pour "serrer" les cartes
   const xOffset =
     typeof window !== "undefined" && window.innerWidth < 768
-      ? window.innerWidth * 0.65
-      : 440;
+      ? window.innerWidth * 0.55
+      : 480;
 
   return (
     <motion.div
       initial={false}
       animate={{
         x: position * xOffset,
-        rotateY: position * -40, // Rotation plus agressive pour voir les tranches
-        z: isActive ? 0 : -250,
-        opacity: isActive ? 1 : 0.2, // Légèrement plus d'opacité pour les cartes floues
-        scale: isActive ? 1 : 0.75,
+        rotateY: position * -45,
+        z: isActive ? 0 : -350,
+        opacity: isActive ? 1 : 0.2,
+        scale: isActive ? 1 : 0.7,
       }}
-      transition={{ type: "spring", stiffness: 150, damping: 25 }}
+      transition={{ type: "spring", stiffness: 140, damping: 22 }}
       style={
         {
           backgroundColor: isActive
@@ -98,38 +118,63 @@ function Card({ item, position }: { item: any; position: number }) {
             : "var(--card-bg)",
         } as any
       }
+      // "h-auto" permet à la carte de grandir selon les notes
       className={cn(
-        "v-card absolute w-[70vw] md:w-[400px] h-[260px] md:h-[300px] p-6 md:p-10 flex flex-col justify-between",
+        "v-card absolute w-[65vw] md:w-[420px] h-auto min-h-[260px] p-6 md:p-10 flex flex-col justify-between transition-all duration-500",
         isActive ? "border-[var(--foreground)]" : "border-[var(--border-color)]"
       )}
     >
-      <div className="flex justify-between items-start">
-        <p className="text-[9px] font-black tracking-[0.4em] opacity-30 uppercase text-[var(--foreground)]">
+      {/* HEADER */}
+      <div className="flex justify-between items-start mb-4">
+        <p className="text-[9px] font-black tracking-[0.3em] opacity-30 uppercase text-[var(--foreground)]">
           {item.label}
         </p>
         <div
           className={cn(
-            "h-1.5 w-1.5 rounded-full transition-all duration-500",
+            "h-1.5 w-1.5 rounded-full",
             isActive
-              ? "bg-emerald-500 shadow-[0_0_10px_#10b981]"
+              ? "bg-emerald-500 shadow-[0_0_8px_#10b981]"
               : "bg-[var(--accents-2)]"
           )}
         />
       </div>
 
-      <div className="flex items-baseline gap-1 overflow-hidden">
+      {/* TITRE ET NOTES (La zone qui pousse le contenu) */}
+      <div className="flex flex-col mb-6">
+        <h3 className="text-[11px] font-bold opacity-50 uppercase text-[var(--foreground)] tracking-widest mb-2">
+          {item.title}
+        </h3>
+
+        <div className="flex flex-col gap-1">
+          {item.notes.map((note: string, idx: number) => (
+            <motion.p
+              key={idx}
+              initial={{ opacity: 0, x: -10 }}
+              animate={{ opacity: isActive ? 0.3 : 0, x: isActive ? 0 : -10 }}
+              transition={{ delay: 0.5 + idx * 0.1 }}
+              className="text-[9px] font-mono text-[var(--foreground)] border-l border-[var(--border-color)] pl-2 italic"
+            >
+              • {note}
+            </motion.p>
+          ))}
+        </div>
+      </div>
+
+      {/* COMPTEUR (S'adapte à l'espace restant) */}
+      <div className="flex items-baseline gap-1 mt-auto">
         <Counter value={item.value} isActive={isActive} />
-        <span className="text-xl font-bold opacity-20 italic text-[var(--foreground)]">
+        <span className="text-lg font-bold opacity-20 italic text-[var(--foreground)] uppercase">
           {item.unit}
         </span>
       </div>
 
-      <div className="flex justify-between items-end border-t border-[var(--border-color)] pt-4 md:pt-6">
-        <p className="text-[10px] font-bold opacity-40 tracking-[0.2em] uppercase text-[var(--foreground)]">
-          {item.title}
+      {/* FOOTER */}
+      <div className="flex justify-between items-end border-t border-[var(--border-color)] pt-4 mt-6">
+        <p className="text-[8px] font-mono opacity-20 text-[var(--foreground)] tracking-[0.2em]">
+          PROTOCOL_V.26
         </p>
-        <p className="text-[8px] font-mono opacity-20 text-[var(--foreground)]">
-          v.2026
+        <p className="text-[8px] font-mono opacity-20 text-[var(--foreground)] tracking-[0.2em]">
+          #{item.id}
         </p>
       </div>
     </motion.div>
@@ -142,12 +187,10 @@ function Counter({ value, isActive }: { value: number; isActive: boolean }) {
   useEffect(() => {
     if (isActive && nodeRef.current) {
       const controls = animate(0, value, {
-        duration: 2.2, // Ralenti pour plus de "poids" visuel
-        ease: [0.16, 1, 0.3, 1], // Quintic out pour un arrêt très smooth
+        duration: 2.2,
+        ease: [0.16, 1, 0.3, 1],
         onUpdate: (v) => {
-          if (nodeRef.current) {
-            nodeRef.current.textContent = v.toFixed(1);
-          }
+          if (nodeRef.current) nodeRef.current.textContent = v.toFixed(1);
         },
       });
       return () => controls.stop();
@@ -157,7 +200,7 @@ function Counter({ value, isActive }: { value: number; isActive: boolean }) {
   return (
     <h2
       ref={nodeRef}
-      className="text-6xl md:text-8xl font-black italic text-[var(--foreground)] tracking-tighter leading-none"
+      className="text-5xl md:text-7xl font-black italic text-[var(--foreground)] tracking-tighter leading-none transition-all"
     >
       0.0
     </h2>
