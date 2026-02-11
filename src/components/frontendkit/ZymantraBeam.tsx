@@ -6,7 +6,6 @@ import {
   useScroll,
   useSpring,
   MotionValue,
-  AnimatePresence,
 } from "framer-motion";
 
 interface ZymantraSection {
@@ -16,19 +15,21 @@ interface ZymantraSection {
   image: string;
 }
 
+// --- CONFIGURATION DES IMAGES ---
+// Note : Si tes images sont dans /public/images, utilise "/images/nom.jpg"
 const ZYMANTRA_CONTENT: ZymantraSection[] = [
   {
     badge: "01_VISION",
     title: "ZYMANTRA_PROTOCOL",
     description:
-      "Infrastructure de monitoring sans latence, conçue pour l'ère de l'hyper-réactivité.",
-    image: "public/nonn.jpg",
+      "Infrastructure de monitoring sans latence pour l'hyper-réactivité.",
+    image: "/src/public/Nonn.jpg",
   },
   {
     badge: "02_STRATEGY",
     title: "MARKET_FLOW",
-    description: "Standardisation des flux financiers complexes et visuels.",
-    image: "public/public/IMG-20260116-WA0000.jpg",
+    description: "Standardisation des flux financiers complexes.",
+    image: "/src/public/IMG-20260116-WA0000.jpg",
   },
 ];
 
@@ -36,7 +37,7 @@ export default function Zymantra() {
   const containerRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
   const [svgHeight, setSvgHeight] = useState<number>(0);
-  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const [activeIdx, setActiveIdx] = useState<number | null>(null);
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -44,31 +45,31 @@ export default function Zymantra() {
   });
 
   useEffect(() => {
-    const updateHeight = () => {
+    const update = () => {
       if (contentRef.current) setSvgHeight(contentRef.current.offsetHeight);
     };
-    updateHeight();
-    window.addEventListener("resize", updateHeight);
-    return () => window.removeEventListener("resize", updateHeight);
+    update();
+    window.addEventListener("resize", update);
+    return () => window.removeEventListener("resize", update);
   }, []);
 
-  const y1: MotionValue<number> = useSpring(
+  const y1 = useSpring(
     useTransform(scrollYProgress, [0, 0.8], [50, svgHeight]),
     { stiffness: 400, damping: 90 }
-  );
-  const y2: MotionValue<number> = useSpring(
+  ) as any;
+  const y2 = useSpring(
     useTransform(scrollYProgress, [0, 1], [20, svgHeight - 20]),
     { stiffness: 400, damping: 90 }
-  );
+  ) as any;
 
   return (
     <div
       ref={containerRef}
-      className="relative w-full bg-black py-12 md:py-24 font-sans antialiased overflow-x-hidden"
+      className="relative w-full bg-black py-12 md:py-24 font-sans antialiased overflow-x-hidden text-white"
     >
-      {/* SVG BEAM - Masqué sur petit mobile pour le centrage, visible sur Desktop */}
+      {/* SVG BEAM (Desktop seulement) */}
       <div
-        className="absolute left-4 md:left-12 top-0 h-full hidden sm:block"
+        className="absolute left-12 top-0 h-full hidden md:block"
         aria-hidden="true"
       >
         <svg
@@ -81,78 +82,70 @@ export default function Zymantra() {
             d={`M 10 0 V ${svgHeight}`}
             fill="none"
             stroke="white"
-            strokeOpacity="0.05"
+            strokeOpacity="0.1"
             strokeWidth="1"
           />
           <motion.path
             d={`M 10 0 V ${svgHeight}`}
             fill="none"
-            stroke="url(#zymantra-laser)"
+            stroke="#10b981"
             strokeWidth="2"
+            style={{ strokeDasharray: "0 1", pathLength: scrollYProgress }}
           />
-          <defs>
-            <motion.linearGradient
-              id="zymantra-laser"
-              gradientUnits="userSpaceOnUse"
-              x1="0"
-              x2="0"
-              y1={y1 as any}
-              y2={y2 as any}
-            >
-              <stop stopColor="#10b981" stopOpacity="0" />
-              <stop stopColor="#10b981" />
-              <stop stopColor="#34d399" />
-              <stop stopColor="#6ee7b7" stopOpacity="0" />
-            </motion.linearGradient>
-          </defs>
         </svg>
       </div>
 
-      <div ref={contentRef} className="flex flex-col items-center w-full">
-        {ZYMANTRA_CONTENT.map((item, index) => {
-          const isBlurred = hoveredIndex !== null && hoveredIndex !== index;
+      <div
+        ref={contentRef}
+        className="flex flex-col items-center w-full relative z-10"
+      >
+        {ZYMANTRA_CONTENT.map((item, index) => (
+          <motion.div
+            key={index}
+            onMouseEnter={() => setActiveIdx(index)}
+            onMouseLeave={() => setActiveIdx(null)}
+            onTouchStart={() => setActiveIdx(index)}
+            animate={{
+              opacity: activeIdx !== null && activeIdx !== index ? 0.2 : 1,
+              filter:
+                activeIdx !== null && activeIdx !== index
+                  ? "blur(10px)"
+                  : "blur(0px)",
+            }}
+            className="mb-32 flex flex-col items-center w-full px-4"
+          >
+            {/* BADGE AVEC BORDURE ÉMERAUDE */}
+            <span className="text-emerald-500 text-[10px] font-black tracking-[0.5em] uppercase px-4 py-2 border border-emerald-500/20 bg-emerald-500/5 mb-8 rounded-full">
+              {item.badge}
+            </span>
 
-          return (
-            <motion.div
-              key={index}
-              onMouseEnter={() => setHoveredIndex(index)}
-              onMouseLeave={() => setHoveredIndex(null)}
-              onTouchStart={() => setHoveredIndex(index)}
-              animate={{
-                filter: isBlurred ? "blur(8px)" : "blur(0px)",
-                opacity: isBlurred ? 0.3 : 1,
-                scale: isBlurred ? 0.98 : 1,
-              }}
-              transition={{ duration: 0.4 }}
-              className="mb-24 md:mb-40 relative w-full flex flex-col items-center px-4 md:px-0 md:ml-32 md:items-start"
-            >
-              {/* INDICATEUR 7PX */}
-              <div className="absolute top-[7px] right-[7px] h-2 w-2 bg-emerald-500 rounded-full shadow-[0_0_15px_#10b981] z-30" />
+            <h2 className="text-4xl md:text-7xl font-black italic tracking-tighter mb-10 uppercase text-center leading-none">
+              {item.title}
+            </h2>
 
-              <span className="text-emerald-500 text-[10px] font-black tracking-[0.5em] uppercase px-3 py-1.5 border border-emerald-500/10 bg-emerald-500/5 mb-6 inline-block">
-                {item.badge}
-              </span>
+            {/* CONTAINER IMAGE : 90vw mobile, bordures restaurées */}
+            <div className="relative w-[90vw] md:w-[800px] aspect-video rounded-2xl overflow-hidden border border-white/20 bg-neutral-900 shadow-2xl transition-transform duration-500 group-hover:scale-[1.02]">
+              <img
+                src={item.image}
+                alt="Zymantra Graphic"
+                className="w-full h-full object-cover"
+                onError={(e) => {
+                  // Fallback si l'image ne charge pas
+                  e.currentTarget.src =
+                    "https://placehold.co/800x450/000000/10b981?text=IMAGE_NOT_FOUND";
+                }}
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
 
-              <h2 className="text-3xl md:text-7xl font-black italic text-white tracking-tighter mb-8 uppercase text-center md:text-left leading-none">
-                {item.title}
-              </h2>
+              {/* INDICATEUR 7PX interne pour être sûr qu'il soit visible */}
+              <div className="absolute top-[7px] right-[7px] h-2 w-2 bg-emerald-500 rounded-full shadow-[0_0_10px_#10b981]" />
+            </div>
 
-              {/* IMAGE : 90vw sur mobile, 100% du container sur Desktop */}
-              <div className="relative w-[90vw] md:w-full max-w-4xl rounded-2xl overflow-hidden border border-white/10 bg-white/5 backdrop-blur-3xl mb-10 shadow-2xl">
-                <img
-                  src={item.image}
-                  alt={item.title}
-                  className="w-full h-[300px] md:h-[500px] object-cover transition-all duration-700"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
-              </div>
-
-              <div className="max-w-2xl text-white/50 text-center md:text-left text-lg md:text-xl leading-relaxed">
-                {item.description}
-              </div>
-            </motion.div>
-          );
-        })}
+            <p className="max-w-xl text-white/60 text-center text-lg md:text-xl mt-10 leading-relaxed">
+              {item.description}
+            </p>
+          </motion.div>
+        ))}
       </div>
     </div>
   );
