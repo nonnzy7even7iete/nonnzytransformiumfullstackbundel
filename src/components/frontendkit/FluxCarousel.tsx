@@ -1,33 +1,66 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
-import { motion, useMotionValue, useSpring, animate } from "framer-motion";
+import { motion, animate } from "framer-motion";
 import { cn } from "@/lib/utils";
 
+// Extension à 7 cartes avec ta data
 const DATA = [
   {
     id: 1,
-    title: "BUDGET_2026",
+    title: "ALPHA_FLUX",
     value: 84.2,
-    unit: "K",
-    label: "FINANCIAL_DATA",
-    notes: ["Initial allocation", "Q1 Projection"],
+    unit: "%",
+    label: "PRIMARY_NODE",
+    notes: ["System Core", "Active"],
   },
   {
     id: 2,
-    title: "MARKETING_EXP",
+    title: "DATA_CORE",
     value: 12.4,
     unit: "K",
-    label: "GROWTH_SYNC",
-    notes: ["Social Ads", "SEO Strategy"],
+    label: "SYNC_STATUS",
+    notes: ["Database Link"],
   },
   {
     id: 3,
-    title: "R&D_COSTS",
-    value: 450.0,
-    unit: "€",
-    label: "INNOVATION",
-    notes: ["New Engine", "Security Audit", "Beta Testing"],
+    title: "LATENCY",
+    value: 0.4,
+    unit: "MS",
+    label: "ZERO_POINT",
+    notes: ["Edge optimized"],
+  },
+  {
+    id: 4,
+    title: "LIQUIDITY",
+    value: 450,
+    unit: "K",
+    label: "FLOW_RATE",
+    notes: ["Market depth"],
+  },
+  {
+    id: 5,
+    title: "STABILITY",
+    value: 99.9,
+    unit: "%",
+    label: "ENCRYPTED",
+    notes: ["SSL v3"],
+  },
+  {
+    id: 6,
+    title: "VOLUMETRY",
+    value: 1.2,
+    unit: "PB",
+    label: "STORAGE",
+    notes: ["Cold archive"],
+  },
+  {
+    id: 7,
+    title: "UPTIME",
+    value: 365,
+    unit: "D",
+    label: "RELIABILITY",
+    notes: ["No downtime"],
   },
 ];
 
@@ -47,8 +80,7 @@ export default function FluxCarousel() {
   if (!mounted) return null;
 
   return (
-    <div className="relative h-screen w-full bg-[var(--background)] overflow-hidden flex items-center justify-center font-sans transition-colors duration-500">
-      {/* 1. Zone de Capture (Geste) */}
+    <div className="relative h-screen w-full bg-[var(--background)] overflow-hidden flex items-center justify-center font-sans">
       <motion.div
         drag="x"
         dragConstraints={{ left: 0, right: 0 }}
@@ -56,7 +88,6 @@ export default function FluxCarousel() {
         className="absolute inset-0 z-[100] cursor-grab active:cursor-grabbing"
       />
 
-      {/* 2. Scène 3D */}
       <div
         className="relative w-full h-full flex items-center justify-center"
         style={{ perspective: "1000px" }}
@@ -71,13 +102,13 @@ export default function FluxCarousel() {
         </motion.div>
       </div>
 
-      {/* 3. Pagination */}
-      <div className="absolute bottom-10 flex gap-2">
+      {/* Pagination pour 7 éléments */}
+      <div className="absolute bottom-10 flex gap-1.5 px-4 overflow-x-auto max-w-full">
         {DATA.map((_, i) => (
           <div
             key={i}
             className={cn(
-              "h-0.5 rounded-full transition-all duration-500",
+              "h-0.5 transition-all duration-500 rounded-full shrink-0",
               index === i
                 ? "w-8 bg-[var(--foreground)]"
                 : "w-2 bg-[var(--accents-2)]"
@@ -89,20 +120,15 @@ export default function FluxCarousel() {
   );
 }
 
-/**
- * COMPOSANT CARD (Centralise toutes les animations)
- */
 function Card({ item, position }: { item: any; position: number }) {
   const isActive = position === 0;
   const counterRef = useRef<HTMLHeadingElement>(null);
 
-  // Calcul de la distance mobile
   const xOffset =
     typeof window !== "undefined" && window.innerWidth < 768
-      ? window.innerWidth * 0.55
+      ? window.innerWidth * 0.52
       : 480;
 
-  // Animation du compteur interne
   useEffect(() => {
     if (isActive && counterRef.current) {
       const controls = animate(0, item.value, {
@@ -118,7 +144,6 @@ function Card({ item, position }: { item: any; position: number }) {
 
   return (
     <>
-      {/* Injection locale de l'animation des pointillés */}
       <style>{`
         @keyframes border-dance {
           0% { background-position: 0px 0px, 100% 100%, 0px 100%, 100% 0px; }
@@ -133,6 +158,7 @@ function Card({ item, position }: { item: any; position: number }) {
           background-repeat: repeat-x, repeat-x, repeat-y, repeat-y;
           background-size: 15px 1px, 15px 1px, 1px 15px, 1px 15px;
           animation: border-dance 0.8s infinite linear;
+          border: none !important;
         }
       `}</style>
 
@@ -140,9 +166,9 @@ function Card({ item, position }: { item: any; position: number }) {
         initial={false}
         animate={{
           x: position * xOffset,
-          rotateY: position * -45,
+          rotateY: position * -40,
           z: isActive ? 0 : -350,
-          opacity: isActive ? 1 : 0.3,
+          opacity: isActive ? 1 : 0.2,
           scale: isActive ? 1 : 0.7,
         }}
         transition={{ type: "spring", stiffness: 140, damping: 22 }}
@@ -150,14 +176,13 @@ function Card({ item, position }: { item: any; position: number }) {
           "v-card absolute w-[65vw] md:w-[420px] h-auto min-h-[280px] p-8 md:p-10 flex flex-col justify-between overflow-hidden",
           "backdrop-blur-md transition-all duration-500",
           isActive
-            ? "v-dashed-active shadow-[0_20px_50px_rgba(0,0,0,0.2)]"
+            ? "v-dashed-active shadow-[0_30px_60px_rgba(0,0,0,0.4)]"
             : "border-[var(--border-color)]"
         )}
         style={
-          { backgroundColor: "var(--card-bg-glass, rgba(0,0,0,0.3))" } as any
+          { backgroundColor: "var(--card-bg-glass, rgba(0,0,0,0.5))" } as any
         }
       >
-        {/* HEADER */}
         <div className="relative z-10 flex justify-between items-start mb-6">
           <p className="text-[9px] font-black tracking-[0.4em] opacity-40 uppercase text-[var(--foreground)]">
             {item.label}
@@ -172,7 +197,6 @@ function Card({ item, position }: { item: any; position: number }) {
           />
         </div>
 
-        {/* CONTENT */}
         <div className="relative z-10 flex flex-col mb-8">
           <h3 className="text-[10px] font-bold opacity-60 uppercase text-[var(--foreground)] tracking-widest mb-3">
             {item.title}
@@ -189,7 +213,6 @@ function Card({ item, position }: { item: any; position: number }) {
           </div>
         </div>
 
-        {/* COMPTEUR INTERNE */}
         <div className="relative z-10 flex items-baseline gap-1 mt-auto">
           <h2
             ref={counterRef}
@@ -202,11 +225,9 @@ function Card({ item, position }: { item: any; position: number }) {
           </span>
         </div>
 
-        {/* FOOTER */}
-        <div className="relative z-10 flex justify-between items-end border-t border-[var(--border-color)]/30 pt-4 mt-6">
-          <p className="text-[8px] font-mono opacity-20 text-[var(--foreground)]">
-            V.2026_PROTOCOL
-          </p>
+        <div className="relative z-10 flex justify-between items-end border-t border-[var(--border-color)]/30 pt-4 mt-6 text-[8px] font-mono opacity-20 text-[var(--foreground)] uppercase tracking-widest">
+          <span>V.2026_PROTOCOL</span>
+          <span>NODE_{item.id}</span>
         </div>
       </motion.div>
     </>
