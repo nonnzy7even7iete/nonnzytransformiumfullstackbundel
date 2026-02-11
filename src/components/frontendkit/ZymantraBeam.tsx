@@ -22,15 +22,13 @@ const ZYMANTRA_CONTENT: ZymantraSection[] = [
     title: "ZYMANTRA_PROTOCOL",
     description:
       "Infrastructure de monitoring sans latence, conçue pour l'ère de l'hyper-réactivité.",
-    image:
-      "https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2000",
+    image: "public/nonn.jpg",
   },
   {
     badge: "02_STRATEGY",
     title: "MARKET_FLOW",
     description: "Standardisation des flux financiers complexes et visuels.",
-    image:
-      "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2000",
+    image: "public/public/IMG-20260116-WA0000.jpg",
   },
 ];
 
