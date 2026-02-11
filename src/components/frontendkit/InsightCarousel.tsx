@@ -10,11 +10,19 @@ import {
 } from "framer-motion";
 import { cn } from "@/lib/utils";
 
+// --- INTERFACES ---
 interface InsightData {
   id: number;
   title: string;
   value: string;
   desc: string;
+}
+
+interface CardProps {
+  item: InsightData;
+  index: number;
+  total: number;
+  globalRotation: MotionValue<number>;
 }
 
 const DATA: InsightData[] = [
@@ -27,41 +35,37 @@ const DATA: InsightData[] = [
 
 export default function InsightCarousel() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [isMounted, setIsMounted] = useState(false);
+  const [mounted, setMounted] = useState(false);
 
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
+  useEffect(() => setMounted(true), []);
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start start", "end end"],
   });
 
-  // Spring avec damping élevé pour éviter le jitter sur mobile
+  // Rotation contrôlée par le scroll
   const rotationY = useSpring(
     useTransform(scrollYProgress, [0, 1], [0, -360]),
-    { stiffness: 40, damping: 25, restDelta: 0.001 }
+    { stiffness: 45, damping: 20, mass: 1 }
   );
 
-  if (!isMounted) return null;
+  if (!mounted) return null;
 
   return (
-    <div ref={containerRef} className="relative h-[600vh] w-full bg-black">
+    <div ref={containerRef} className="relative h-[500vh] bg-black w-full">
       <div className="sticky top-0 h-screen w-full flex items-center justify-center overflow-hidden">
-        {/* Ambiance Depth */}
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(16,185,129,0.03)_0%,transparent_80%)]" />
-
+        {/* Scène 3D */}
         <div
           className="relative w-full h-full flex items-center justify-center"
-          style={{ perspective: "2000px" }}
+          style={{ perspective: "1800px" }}
         >
           <motion.div
             style={{
               rotateY: rotationY,
               transformStyle: "preserve-3d",
             }}
-            className="relative flex items-center justify-center w-full h-full"
+            className="relative flex items-center justify-center w-[400px] h-[300px]"
           >
             {DATA.map((item, i) => (
               <Card
@@ -69,7 +73,7 @@ export default function InsightCarousel() {
                 item={item}
                 index={i}
                 total={DATA.length}
-                rotationY={rotationY}
+                globalRotation={rotationY}
               />
             ))}
           </motion.div>
@@ -79,64 +83,52 @@ export default function InsightCarousel() {
   );
 }
 
-function Card({
-  item,
-  index,
-  total,
-  rotationY,
-}: {
-  item: InsightData;
-  index: number;
-  total: number;
-  rotationY: MotionValue<number>;
-}) {
-  const angle = (index / total) * 360;
-  const radius = "clamp(320px, 42vw, 600px)";
+function Card({ item, index, total, globalRotation }: CardProps) {
+  const initialAngle = (index / total) * 360;
 
-  // On calcule l'écart par rapport au centre (0°)
-  const distance = useTransform(rotationY, (r) => {
-    const currentAngle = (Math.abs(r) + angle) % 360;
-    const diff = Math.abs(
+  // Rayon imposant pour le design cylindrique
+  // On utilise un nombre pur pour translateZ (Framer Motion s'occupe de l'unité px)
+  const radius = 600;
+
+  // Détection de la carte centrale
+  const distance = useTransform(globalRotation, (v: number) => {
+    const currentAngle = (Math.abs(v) - initialAngle) % 360;
+    const normalized = Math.abs(
       currentAngle > 180 ? 360 - currentAngle : currentAngle
     );
-    return diff;
+    return normalized;
   });
 
-  // Effets basés sur la proximité du centre
-  const opacity = useTransform(distance, [0, 45, 90], [1, 0.2, 0]);
+  // États visuels
+  const opacity = useTransform(distance, [0, 45, 90], [1, 0.3, 0]);
   const scale = useTransform(distance, [0, 45], [1.1, 0.8]);
-  const blur = useTransform(distance, [0, 40], ["blur(0px)", "blur(10px)"]);
+  const blurValue = useTransform(distance, [0, 40], [0, 12]);
+  const blur = useTransform(blurValue, (v) => `blur(${v}px)`);
 
   return (
     <motion.div
-      style={
-        {
-          position: "absolute",
-          width: "min(85vw, 440px)",
-          height: "280px",
-          // Utilisation de backfaceVisibility pour opti mobile
-          backfaceVisibility: "hidden",
-          // On sépare le positionnement 3D statique (angle/radius) de l'animation dynamique
-          transform: `rotateY(${angle}deg) translateZ(${radius})`,
-          opacity,
-          scale,
-          filter: blur,
-          transformStyle: "preserve-3d",
-        } as any
-      }
+      style={{
+        position: "absolute",
+        width: "min(85vw, 420px)",
+        height: "280px",
+        transformStyle: "preserve-3d",
+        // Positionnement cylindrique via props Framer (propre pour TS)
+        rotateY: initialAngle,
+        z: radius,
+        opacity,
+        scale,
+        filter: blur,
+      }}
       className={cn(
-        "p-10 rounded-[48px] border border-white/10 shadow-[0_0_50px_rgba(0,0,0,0.5)]",
-        "bg-zinc-900/40 backdrop-blur-2xl flex flex-col justify-between"
+        "p-10 rounded-[48px] border border-white/10 shadow-[0_0_80px_rgba(0,0,0,0.8)]",
+        "bg-zinc-900/40 backdrop-blur-3xl flex flex-col justify-between"
       )}
     >
       <div className="flex justify-between items-start">
-        <div className="flex flex-col">
-          <span className="font-mono text-[11px] text-emerald-500 font-black tracking-[0.2em]">
-            NODE_0{item.id}
-          </span>
-          <div className="h-px w-8 bg-emerald-500/30 mt-1" />
-        </div>
-        <div className="h-3 w-3 rounded-full bg-emerald-500 shadow-[0_0_15px_#10b981]" />
+        <span className="font-mono text-[11px] text-emerald-500 font-black tracking-widest uppercase">
+          UNIT_0{item.id}
+        </span>
+        <div className="h-3 w-3 rounded-full bg-emerald-500 shadow-[0_0_20px_#10b981]" />
       </div>
 
       <div>
@@ -148,7 +140,7 @@ function Card({
         </div>
       </div>
 
-      <div className="flex items-center justify-between border-t border-white/5 pt-6 text-[10px] text-white/30 uppercase tracking-[0.2em]">
+      <div className="text-[10px] text-white/30 border-t border-white/5 pt-6 uppercase tracking-widest">
         {item.desc}
       </div>
     </motion.div>
