@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import Zymantra from "@/components/frontendkit/Zymantra"; // Vérifie bien le chemin vers ton fichier
+import Zymantra from "@/components/frontendkit/ZymantraBeam"; // Vérifie bien le chemin vers ton fichier
 
 export default function BusinessPlanPage() {
   return (
