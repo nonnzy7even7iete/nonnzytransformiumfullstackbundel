@@ -14,7 +14,7 @@ import {
   useMotionValue,
 } from "framer-motion";
 
-// --- LOGIQUE 3D CARD INTEGRÉE (Zéro erreur d'import) ---
+// --- LOGIQUE 3D CARD INTÉGRÉE ---
 const MouseEnterContext = createContext<
   [boolean, React.Dispatch<React.SetStateAction<boolean>>] | undefined
 >(undefined);
@@ -30,11 +30,11 @@ const CardContainer = ({
   const [isMouseEnter, setIsMouseEnter] = useState(false);
   const x = useMotionValue(0);
   const y = useMotionValue(0);
-  const rotateX = useSpring(useTransform(y, [-0.5, 0.5], [12, -12]), {
+  const rotateX = useSpring(useTransform(y, [-0.5, 0.5], [10, -10]), {
     stiffness: 100,
     damping: 30,
   });
-  const rotateY = useSpring(useTransform(x, [-0.5, 0.5], [-12, 12]), {
+  const rotateY = useSpring(useTransform(x, [-0.5, 0.5], [-10, 10]), {
     stiffness: 100,
     damping: 30,
   });
@@ -51,7 +51,7 @@ const CardContainer = ({
     <MouseEnterContext.Provider value={[isMouseEnter, setIsMouseEnter]}>
       <div
         className={`flex items-center justify-center ${className}`}
-        style={{ perspective: "1200px" }}
+        style={{ perspective: "1000px" }}
         onMouseMove={handleMouseMove}
         onMouseEnter={() => setIsMouseEnter(true)}
         onMouseLeave={() => {
@@ -72,7 +72,7 @@ const CardContainer = ({
   );
 };
 
-const CardItem = ({ children, translateZ = 0, className }: any) => {
+const CardItem = ({ children, translateZ = 0, className, style }: any) => {
   const context = useContext(MouseEnterContext);
   const [isMouseEnter] = context || [false];
   const tZ = isMouseEnter ? translateZ : 0;
@@ -81,6 +81,7 @@ const CardItem = ({ children, translateZ = 0, className }: any) => {
       animate={{ transform: `translateZ(${tZ}px)` }}
       transition={{ type: "spring", stiffness: 150, damping: 20 }}
       className={className}
+      style={style}
     >
       {children}
     </motion.div>
@@ -88,7 +89,7 @@ const CardItem = ({ children, translateZ = 0, className }: any) => {
 };
 
 // --- INTERFACES ---
-interface ZymantraItem {
+interface ZymantraSection {
   badge: string;
   title: string;
   description: string;
@@ -97,12 +98,12 @@ interface ZymantraItem {
   onCtaClick?: () => void;
 }
 
-interface ZymantraProps {
-  content?: ZymantraItem[];
-}
-
 // --- COMPOSANT PRINCIPAL ---
-export default function Zymantra({ content = DEFAULT_CONTENT }: ZymantraProps) {
+export default function Zymantra({
+  content = ZYMANTRA_CONTENT,
+}: {
+  content?: ZymantraSection[];
+}) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [svgHeight, setSvgHeight] = useState(0);
   const [activeIdx, setActiveIdx] = useState<number | null>(null);
@@ -127,82 +128,79 @@ export default function Zymantra({ content = DEFAULT_CONTENT }: ZymantraProps) {
   );
 
   return (
-    <section
+    <div
       ref={containerRef}
-      className="relative w-full transition-colors duration-300 py-24 px-4 overflow-hidden"
+      className="relative w-full transition-colors duration-300 py-16 px-4 overflow-hidden"
       style={{
         backgroundColor: "var(--background)",
         color: "var(--foreground)",
       }}
     >
-      {/* SCROLL BEAM */}
-      <div className="absolute left-6 md:left-12 top-0 h-full w-[1px] hidden sm:block opacity-20">
+      {/* BEAM (Plus fin, plus discret) */}
+      <div className="absolute left-6 md:left-10 top-0 h-full w-[1px] hidden sm:block opacity-20">
         <div className="h-full w-full bg-zinc-800" />
         <motion.div
           style={{ height: beamY }}
-          className="absolute top-0 w-full bg-emerald-500 shadow-[0_0_20px_#10b981]"
+          className="absolute top-0 w-full bg-emerald-500 shadow-[0_0_15px_#10b981]"
         />
       </div>
 
-      <div className="max-w-7xl mx-auto flex flex-col gap-32 relative z-10">
+      <div className="max-w-5xl mx-auto flex flex-col gap-20 relative z-10">
         {content.map((item, index) => {
           const isInactive = activeIdx !== null && activeIdx !== index;
+          const isEven = index % 2 === 0;
+
           return (
             <motion.div
               key={index}
               onMouseEnter={() => setActiveIdx(index)}
               onMouseLeave={() => setActiveIdx(null)}
               animate={{
-                opacity: isInactive ? 0.35 : 1,
+                opacity: isInactive ? 0.4 : 1,
                 filter: isInactive ? "blur(4px)" : "blur(0px)",
-                scale: isInactive ? 0.98 : 1,
+                scale: isInactive ? 0.99 : 1,
               }}
               className="transition-all duration-500 flex justify-center"
             >
               <CardContainer>
                 <div
                   className={`flex flex-col ${
-                    index % 2 === 0 ? "lg:flex-row" : "lg:flex-row-reverse"
-                  } items-center gap-12 p-6 md:p-14 border transition-colors duration-500 w-[95vw] lg:w-[1100px] hover:border-emerald-500/50`}
+                    isEven ? "md:flex-row" : "md:flex-row-reverse"
+                  } items-stretch gap-6 p-5 md:p-8 border transition-all duration-500 w-[95vw] md:w-[880px] hover:border-emerald-500/40 group/card group`}
                   style={{
                     backgroundColor: "var(--card-bg)",
                     borderColor: "var(--border-color)",
                     borderRadius: "var(--radius-vercel)",
                   }}
                 >
-                  {/* IMAGE SECTION */}
+                  {/* IMAGE SECTION - Prend sa place sans flotter */}
                   <CardItem
-                    translateZ={80}
-                    className="w-full lg:w-1/2 aspect-square relative group"
+                    translateZ={60}
+                    className="w-full md:w-[42%] aspect-square relative border overflow-hidden shrink-0"
+                    style={{
+                      borderColor: "var(--border-color)",
+                      borderRadius: "var(--radius-vercel-zy)",
+                    }}
                   >
-                    <div
-                      className="w-full h-full overflow-hidden border shadow-3xl"
-                      style={{
-                        borderRadius: "var(--radius-vercel-zy)",
-                        borderColor: "var(--border-color)",
-                      }}
-                    >
-                      <img
-                        src={item.image}
-                        alt={item.title}
-                        className="w-full h-full object-cover object-top grayscale-[0.4] group-hover:grayscale-0 group-hover:scale-105 transition-all duration-1000"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-40" />
-                    </div>
-                    <div className="absolute top-6 right-6 h-3 w-3 bg-emerald-500 rounded-full shadow-[0_0_15px_#10b981] animate-pulse" />
+                    <img
+                      src={item.image}
+                      alt={item.title}
+                      className="w-full h-full object-cover grayscale-[0.5] group-hover/card:grayscale-0 group-hover/card:scale-105 transition-all duration-700"
+                    />
+                    <div className="absolute top-4 right-4 h-2 w-2 bg-emerald-500 rounded-full shadow-[0_0_10px_#10b981] animate-pulse" />
                   </CardItem>
 
-                  {/* TEXT SECTION */}
-                  <div className="flex-1 flex flex-col items-start space-y-8">
-                    <CardItem translateZ={50}>
-                      <span className="px-4 py-1.5 rounded-full border border-emerald-500/30 bg-emerald-500/10 text-emerald-500 text-[11px] font-black tracking-[0.4em] uppercase">
+                  {/* TEXT SECTION - Alignée verticalement au centre de l'image */}
+                  <div className="flex-1 flex flex-col justify-center items-start space-y-4 py-2">
+                    <CardItem translateZ={30}>
+                      <span className="px-3 py-1 rounded-full border border-emerald-500/30 bg-emerald-500/10 text-emerald-500 text-[9px] font-black tracking-[0.3em] uppercase">
                         {item.badge}
                       </span>
                     </CardItem>
 
-                    <CardItem translateZ={70}>
+                    <CardItem translateZ={50}>
                       <h2
-                        className="text-3xl md:text-5xl font-black italic uppercase leading-[0.95] tracking-tighter"
+                        className="text-2xl md:text-3xl font-black italic uppercase leading-none tracking-tighter"
                         style={{ color: "var(--foreground)" }}
                       >
                         {item.title}
@@ -210,25 +208,24 @@ export default function Zymantra({ content = DEFAULT_CONTENT }: ZymantraProps) {
                     </CardItem>
 
                     <CardItem translateZ={40}>
-                      <p className="opacity-70 text-base md:text-lg leading-relaxed font-medium max-w-xl">
+                      <p className="opacity-60 text-sm md:text-base leading-snug font-medium line-clamp-4">
                         {item.description}
                       </p>
                     </CardItem>
 
-                    {/* CALL TO ACTION ADAPTATIF */}
-                    <CardItem translateZ={100} className="pt-4">
+                    <CardItem translateZ={80} className="pt-2 w-full">
                       <button
                         onClick={item.onCtaClick}
-                        className="group relative px-8 py-4 rounded-full font-black text-sm uppercase tracking-widest transition-all duration-300 shadow-xl"
+                        className="group relative px-6 py-3 rounded-full font-black text-[10px] uppercase tracking-[0.15em] transition-all duration-300 shadow-lg overflow-hidden border border-white/5"
                         style={{
                           backgroundColor: "var(--foreground)",
                           color: "var(--background)",
                         }}
                       >
-                        <span className="relative z-10 transition-colors group-hover:text-white">
-                          {item.ctaText || "Explorer la data"}
+                        <span className="relative z-10 group-hover:text-white transition-colors duration-300">
+                          {item.ctaText || "Propulser la data"}
                         </span>
-                        <div className="absolute inset-0 rounded-full bg-emerald-600 scale-0 group-hover:scale-100 transition-transform duration-500 -z-0 opacity-0 group-hover:opacity-100" />
+                        <div className="absolute inset-0 bg-emerald-600 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-in-out" />
                       </button>
                     </CardItem>
                   </div>
@@ -238,11 +235,11 @@ export default function Zymantra({ content = DEFAULT_CONTENT }: ZymantraProps) {
           );
         })}
       </div>
-    </section>
+    </div>
   );
 }
 
-const DEFAULT_CONTENT: ZymantraItem[] = [
+const ZYMANTRA_CONTENT: ZymantraSection[] = [
   {
     badge: "MANTRA",
     title: "DATA DRIVEN GROWTH",
@@ -253,10 +250,10 @@ const DEFAULT_CONTENT: ZymantraItem[] = [
   },
   {
     badge: "02_STRATEGY",
-    title: "Diane Chaka Junior : L'Algo Zy",
+    title: "DIANE CHAKA JUNIOR",
     description:
-      "Anyama sera une valeur sûre sous l'algorithme Zy. Un outil capable de synchroniser les ressources officielles avec les réalités du terrain. Nous créons un bouclier contre les opportunités manquées.",
+      "Anyama sera la première commune de Côte d'Ivoire dotée d'un radar économique. Un outil capable de synchroniser les ressources officielles avec les réalités du terrain.",
     image: "/IMG-20260116-WA0000.jpg",
-    ctaText: "Découvrir l'algorithme",
+    ctaText: "Explorer l'algo",
   },
 ];
