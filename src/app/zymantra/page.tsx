@@ -1,19 +1,29 @@
 "use client";
 
 import React from "react";
-import Zymantra from "@/components/frontendkit/ZymantraBeam"; // Vérifie bien le chemin vers ton fichier
+import Zymantra from "@/components/frontendkit/ZymantraBeam";
+import { TextGenerateEffect } from "@/components/ui/text-generate-effect";
 
-export default function BusinessPlanPage() {
+export default function Page() {
   return (
     <main className="min-h-screen bg-black selection:bg-emerald-500/30">
-      {/* ZYMANTRA est le premier composant. 
-          Il gère son propre padding-top (py-24) pour ne pas coller au haut de l'écran.
-      */}
+      {/* TEXTE DE PAGE : Positionné de manière chirurgicale avant le ZymantraBeam */}
+      <section className="pt-24 pb-4 px-6 flex flex-col items-center">
+        <TextGenerateEffect
+          words="DATA DRIVEN GROWTH STRATEGY"
+          className="text-4xl md:text-6xl font-black italic uppercase tracking-tighter text-white text-center"
+        />
+        <p className="mt-2 text-[10px] text-emerald-500 font-black tracking-[0.5em] uppercase opacity-50">
+          Algorithme Zy v.2026
+        </p>
+      </section>
+
+      {/* TON COMPOSANT ZYMANTRA BEAM */}
       <Zymantra />
 
-      {/* Tu pourras ajouter tes autres composants (Carousel, Footer, etc.) en dessous ici */}
+      {/* FOOTER LITTÉRAL */}
       <section className="py-20 flex justify-center">
-        <p className="text-[10px] font-mono opacity-20 text-white tracking-[0.5em]">
+        <p className="text-[10px] font-mono opacity-20 text-white tracking-[0.5em] uppercase">
           data driven , Anyama , Abidjan , cote d ivoire , 2026
         </p>
       </section>
