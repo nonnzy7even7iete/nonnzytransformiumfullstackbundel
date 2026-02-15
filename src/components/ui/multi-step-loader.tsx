@@ -22,10 +22,12 @@ export const MultiStepLoader = ({
   loadingStates,
   loading,
   duration = 2000,
+  onClose, // Nouvelle prop pour la fermeture
 }: {
   loadingStates: { text: string }[];
   loading?: boolean;
   duration?: number;
+  onClose?: () => void; // Type de la fonction de fermeture
 }) => {
   const [currentState, setCurrentState] = useState(0);
 
@@ -50,9 +52,16 @@ export const MultiStepLoader = ({
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           className="fixed inset-0 z-[100] flex items-center justify-center backdrop-blur-xl"
-          style={{ backgroundColor: "var(--card-bg-glass)" }}
         >
-          <div className="relative z-50">
+          {/* OVERLAY CLIQUABLE (Le fond qui ferme le composant) */}
+          <div
+            className="absolute inset-0 z-0 cursor-pointer"
+            onClick={onClose}
+            style={{ backgroundColor: "var(--card-bg-glass)" }}
+          />
+
+          {/* CONTENU (Z-index supérieur pour ne pas fermer au clic sur le texte) */}
+          <div className="relative z-50 pointer-events-none">
             {loadingStates.map((state, index) => {
               const isCurrent = currentState === index;
               const isPast = currentState > index;
