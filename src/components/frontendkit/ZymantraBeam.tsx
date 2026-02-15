@@ -12,6 +12,7 @@ import {
   useScroll,
   useSpring,
   useMotionValue,
+  HTMLMotionProps,
 } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { MultiStepLoader } from "@/components/ui/multi-step-loader";
@@ -24,10 +25,11 @@ interface ContentItem {
   image: string;
 }
 
-interface CardProps {
+// Extension du type pour éviter que VS Code ne râle sur les props de motion.div
+interface CardItemProps extends HTMLMotionProps<"div"> {
   children: React.ReactNode;
-  className?: string;
   translateZ?: number;
+  className?: string;
 }
 
 // --- CONTEXTE 3D ---
@@ -80,7 +82,7 @@ const CardContainer = ({
         <motion.div
           ref={containerRef}
           style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
-          className="relative"
+          className="relative transition-transform duration-200 ease-out"
         >
           {children}
         </motion.div>
@@ -89,13 +91,22 @@ const CardContainer = ({
   );
 };
 
-const CardItem = ({ children, translateZ = 0, className }: CardProps) => {
+const CardItem = ({
+  children,
+  translateZ = 0,
+  className,
+  ...rest
+}: CardItemProps) => {
   const context = useContext(MouseEnterContext);
   const isMouseEnter = context ? context[0] : false;
 
   return (
     <motion.div
-      animate={{ transform: `translateZ(${isMouseEnter ? translateZ : 0}px)` }}
+      {...rest}
+      animate={{
+        transform: `translateZ(${isMouseEnter ? translateZ : 0}px)`,
+        ...(typeof rest.animate === "object" ? rest.animate : {}),
+      }}
       transition={{ type: "spring", stiffness: 150, damping: 20 }}
       className={className}
     >
@@ -184,7 +195,7 @@ export default function Zymantra({
                 <div
                   className={cn(
                     "flex flex-col items-center transition-all duration-500 w-[92vw] lg:w-[1100px] group/card",
-                    "gap-8 p-5 md:p-8", // Gap réduit pour supprimer le vide
+                    "gap-8 p-5 md:p-8",
                     isEven ? "lg:flex-row" : "lg:flex-row-reverse"
                   )}
                   style={{
@@ -193,7 +204,7 @@ export default function Zymantra({
                     boxShadow: "0 0 0 1px var(--border-color)",
                   }}
                 >
-                  {/* IMAGE - Padding 3px strict */}
+                  {/* IMAGE - Precision 3px Padding */}
                   <CardItem
                     translateZ={80}
                     className="w-full lg:w-[45%] aspect-square relative overflow-hidden p-[3px] shrink-0 shadow-xl"
@@ -267,7 +278,7 @@ const ZYMANTRA_CONTENT: ContentItem[] = [
     badge: "MANTRA 01",
     title: "DATA DRIVEN GROWTH",
     description:
-      "Piloter une commune sans data, c'est naviguer sans radar dans un champ de mines financier. Réveiller cet angle mort pour l'exécutif.",
+      "La donnée est la seule monnaie de rechange contre l’échec stratégique. Réveiller cet angle mort pour l'exécutif.",
     image: "/IMG-20260211-WA0000.jpg",
   },
   {
