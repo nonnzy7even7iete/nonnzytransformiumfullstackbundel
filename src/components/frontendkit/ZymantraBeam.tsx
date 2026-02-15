@@ -25,7 +25,6 @@ interface ContentItem {
   image: string;
 }
 
-// Extension du type pour éviter que VS Code ne râle sur les props de motion.div
 interface CardItemProps extends HTMLMotionProps<"div"> {
   children: React.ReactNode;
   translateZ?: number;
@@ -115,7 +114,7 @@ const CardItem = ({
   );
 };
 
-// --- COMPOSANT PRINCIPAL ---
+// --- CONFIGURATION LOADER ---
 const LOADER_STATES = [
   { text: "Accès au serveur Penguin" },
   { text: "Scan de la zone Anyama" },
@@ -159,10 +158,12 @@ export default function Zymantra({
       className="relative w-full py-24 px-4 overflow-hidden"
       style={{ backgroundColor: "var(--background)" }}
     >
+      {/* LOADER AVEC FERMETURE AU CLIC METIER */}
       <MultiStepLoader
         loadingStates={LOADER_STATES}
         loading={loading}
         duration={1500}
+        onClose={() => setLoading(false)}
       />
 
       {/* BEAM (Fil d'Ariane) */}
@@ -249,7 +250,10 @@ export default function Zymantra({
 
                     <CardItem translateZ={100} className="w-full pt-4">
                       <button
-                        onClick={() => setLoading(true)}
+                        onClick={(e) => {
+                          e.stopPropagation(); // Évite de déclencher des events parents
+                          setLoading(true);
+                        }}
                         className="group relative h-14 w-full lg:w-64 overflow-hidden rounded-full transition-all active:scale-95 shadow-lg"
                         style={{ backgroundColor: "var(--foreground)" }}
                       >
@@ -278,7 +282,7 @@ const ZYMANTRA_CONTENT: ContentItem[] = [
     badge: "MANTRA 01",
     title: "DATA DRIVEN GROWTH",
     description:
-      "La donnée est la seule monnaie de rechange contre l’échec stratégique. Réveiller cet angle mort pour l'exécutif.",
+      "La donnée est la seule monnaie de rechange contre l'échec stratégique. Réveiller cet angle mort pour l'exécutif.",
     image: "/IMG-20260211-WA0000.jpg",
   },
   {
