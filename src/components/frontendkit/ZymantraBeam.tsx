@@ -12,7 +12,110 @@ import {
   useScroll,
   useSpring,
   useMotionValue,
+  AnimatePresence,
 } from "framer-motion";
+import { cn } from "@/lib/utils";
+
+// --- SOUS-COMPOSANTS DU LOADER (Design Dichotomique) ---
+const CheckFilled = ({ className }: { className?: string }) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+    fill="currentColor"
+    className={cn("w-6 h-6", className)}
+  >
+    <path
+      fillRule="evenodd"
+      d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm13.36-1.814a.75.75 0 1 0-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 0 0-1.06 1.06l2.25 2.25a.75.75 0 0 0 1.14-.094l3.75-5.25Z"
+      clipRule="evenodd"
+    />
+  </svg>
+);
+
+const InternalLoader = ({
+  loading,
+  duration = 2000,
+}: {
+  loading: boolean;
+  duration?: number;
+}) => {
+  const [currentState, setCurrentState] = useState(0);
+  const states = [
+    { text: "Accès au serveur Penguin" },
+    { text: "Scan de la zone Anyama" },
+    { text: "Synchronisation Algorithme Zy" },
+    { text: "Data Ready" },
+  ];
+
+  useEffect(() => {
+    if (!loading) {
+      setCurrentState(0);
+      return;
+    }
+    const timeout = setTimeout(() => {
+      setCurrentState((prev) => (prev === states.length - 1 ? prev : prev + 1));
+    }, duration);
+    return () => clearTimeout(timeout);
+  }, [currentState, loading, states.length, duration]);
+
+  return (
+    <AnimatePresence mode="wait">
+      {loading && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="fixed inset-0 z-[100] flex items-center justify-center backdrop-blur-xl"
+          style={{ backgroundColor: "var(--card-bg-glass)" }}
+        >
+          <div className="relative z-50">
+            {states.map((state, index) => (
+              <motion.div
+                key={index}
+                className="flex items-center gap-3 mb-6"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{
+                  opacity:
+                    currentState === index
+                      ? 1
+                      : currentState > index
+                      ? 0.3
+                      : 0.1,
+                  y: 0,
+                }}
+              >
+                <CheckFilled
+                  className={cn(
+                    "transition-colors duration-500",
+                    currentState >= index
+                      ? "text-emerald-500"
+                      : "text-[var(--accents-2)]"
+                  )}
+                />
+                <span
+                  className={cn(
+                    "text-lg font-bold uppercase tracking-tighter transition-colors duration-500",
+                    currentState === index
+                      ? "text-[var(--foreground)]"
+                      : "text-[var(--accents-2)]"
+                  )}
+                >
+                  {state.text}
+                </span>
+              </motion.div>
+            ))}
+            <button
+              onClick={() => window.location.reload()}
+              className="mt-8 text-[10px] font-black uppercase tracking-[0.4em] opacity-20 hover:opacity-100 text-[var(--foreground)]"
+            >
+              [ Fermer le scan ]
+            </button>
+          </div>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
+};
 
 // --- CONTEXTE 3D ---
 const MouseEnterContext = createContext<
@@ -30,7 +133,6 @@ const CardContainer = ({
   const [isMouseEnter, setIsMouseEnter] = useState(false);
   const x = useMotionValue(0);
   const y = useMotionValue(0);
-
   const rotateX = useSpring(useTransform(y, [-0.5, 0.5], [12, -12]), {
     stiffness: 100,
     damping: 30,
@@ -51,7 +153,7 @@ const CardContainer = ({
   return (
     <MouseEnterContext.Provider value={[isMouseEnter, setIsMouseEnter]}>
       <div
-        className={`flex items-center justify-center ${className}`}
+        className={cn("flex items-center justify-center", className)}
         style={{ perspective: "1000px" }}
         onMouseMove={handleMouseMove}
         onMouseEnter={() => setIsMouseEnter(true)}
@@ -73,15 +175,13 @@ const CardContainer = ({
   );
 };
 
-const CardItem = ({ children, translateZ = 0, className, style }: any) => {
+const CardItem = ({ children, translateZ = 0, className }: any) => {
   const context = useContext(MouseEnterContext);
-  const [isMouseEnter] = context || [false];
   return (
     <motion.div
-      animate={{ transform: `translateZ(${isMouseEnter ? translateZ : 0}px)` }}
+      animate={{ transform: `translateZ(${context?.[0] ? translateZ : 0}px)` }}
       transition={{ type: "spring", stiffness: 150, damping: 20 }}
       className={className}
-      style={style}
     >
       {children}
     </motion.div>
@@ -96,6 +196,7 @@ export default function Zymantra({
 }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [svgHeight, setSvgHeight] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
   const [activeIdx, setActiveIdx] = useState<number | null>(null);
 
   const { scrollYProgress } = useScroll({
@@ -126,7 +227,10 @@ export default function Zymantra({
         color: "var(--foreground)",
       }}
     >
-      {/* BEAM (Fil d'Ariane stratégique) */}
+      {/* Intégration du Loader interne */}
+      <InternalLoader loading={isLoading} />
+
+      {/* BEAM */}
       <div className="absolute left-6 md:left-12 top-0 h-full w-[1px] hidden sm:block opacity-10">
         <div className="h-full w-full bg-[var(--accents-2)]" />
         <motion.div
@@ -154,16 +258,17 @@ export default function Zymantra({
             >
               <CardContainer>
                 <div
-                  className={`flex flex-col ${
+                  className={cn(
+                    "flex flex-col gap-12 p-8 md:p-16 border transition-all duration-500 w-[92vw] lg:w-[1150px] group/card",
                     isEven ? "lg:flex-row" : "lg:flex-row-reverse"
-                  } items-center gap-12 p-8 md:p-16 border transition-all duration-500 w-[92vw] lg:w-[1150px] group/card`}
+                  )}
                   style={{
                     backgroundColor: "var(--card-bg)",
                     borderColor: "var(--border-color)",
                     borderRadius: "var(--radius-vercel)",
                   }}
                 >
-                  {/* IMAGE - Heritage 7px */}
+                  {/* IMAGE */}
                   <CardItem
                     translateZ={100}
                     className="w-full lg:w-1/2 aspect-square relative border overflow-hidden shadow-2xl"
@@ -187,31 +292,31 @@ export default function Zymantra({
                         {item.badge}
                       </span>
                     </CardItem>
-
                     <CardItem translateZ={80}>
                       <h2 className="text-4xl md:text-6xl font-black italic uppercase leading-[0.9] tracking-tighter">
                         {item.title}
                       </h2>
                     </CardItem>
-
                     <CardItem translateZ={40}>
                       <p className="opacity-50 text-base md:text-lg leading-relaxed font-medium max-w-xl">
                         {item.description}
                       </p>
                     </CardItem>
 
+                    {/* BOUTON DÉCLENCHEUR DU LOADER */}
                     <CardItem translateZ={120} className="pt-6 w-full">
                       <button
+                        onClick={() => setIsLoading(true)}
                         className="group relative px-10 py-5 rounded-full font-black text-xs uppercase tracking-[0.2em] transition-all duration-300 shadow-2xl overflow-hidden"
                         style={{
                           backgroundColor: "var(--foreground)",
                           color: "var(--background)",
                         }}
                       >
-                        <span className="relative z-10">
+                        <span className="relative z-10 transition-colors group-hover:text-emerald-500">
                           Lancer l'algorithme
                         </span>
-                        <div className="absolute inset-0 bg-emerald-600 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
+                        <div className="absolute inset-0 bg-[var(--accents-1)] translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
                       </button>
                     </CardItem>
                   </div>
@@ -235,7 +340,7 @@ const ZYMANTRA_CONTENT = [
   },
   {
     badge: "P-R-S",
-    title: "L'Algo Zy :  Radar",
+    title: "L'Algo Zy : Radar",
     description:
       "Anyama sera la première commune de Côte d'Ivoire dotée d'un radar économique. Un outil capable de synchroniser les ressources officielles avec les réalités du terrain.",
     image: "/IMG-20260116-WA0000.jpg",
