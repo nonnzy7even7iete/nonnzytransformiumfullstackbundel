@@ -29,17 +29,17 @@ export const TextGenerateEffect = ({
         delay: stagger(0.1),
       }
     );
-  }, [scope.current]);
+  }, [scope.current, animate, filter, duration]); // Ajout des dépendances pour éviter les warnings TS
 
   const renderWords = () => {
     return (
-      <motion.div ref={scope}>
+      <motion.div ref={scope} className="inline">
         {wordsArray.map((word, idx) => {
           return (
             <motion.span
               key={word + idx}
-              // Héritage direct de tes variables CSS :root et .dark
-              className="text-[var(--foreground)] opacity-0"
+              // Héritage dichotomique : on pioche dans --foreground
+              className="text-[var(--foreground)] opacity-0 inline-block"
               style={{
                 filter: filter ? "blur(10px)" : "none",
               }}
@@ -53,7 +53,7 @@ export const TextGenerateEffect = ({
   };
 
   return (
-    <div className={cn("font-bold", className)}>
+    <div className={cn("font-sans", className)}>
       <div className="mt-4">
         <div className="text-[var(--foreground)] text-2xl leading-snug tracking-wide">
           {renderWords()}
