@@ -10,27 +10,31 @@ import MobileMenu from "@/components/frontendkit/MobileMenu";
 import { DesktopMenu } from "./DesktopMenu";
 
 export default function NavbarFront() {
+  // On initialise à true pour être sûr que la barre est là au départ
   const [isVisible, setIsVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { data: session } = useSession();
 
-  // Gestion du scroll pour masquer/afficher la Navbar
   useEffect(() => {
     const handleScroll = () => {
       const currentY = window.scrollY;
-      setIsVisible(currentY <= lastScrollY || currentY <= 100);
+      // Sécurité : toujours visible si on est en haut de page (<= 10)
+      if (currentY <= 10) {
+        setIsVisible(true);
+      } else {
+        setIsVisible(currentY <= lastScrollY);
+      }
       setLastScrollY(currentY);
     };
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, [lastScrollY]);
 
-  // Liens de navigation mémorisés
   const navLinks = useMemo(
     () => [
-      { href: "/ResumeExecutif", label: "Résumé Exécutif" },
-      { href: "/logique-metier-serveur", label: "Logique Métier & Serveur" },
+      { href: "/ResumeExecutif", label: "Resume Executif" },
+      { href: "/logique-metier-serveur", label: "Logique Metier & Serveur" },
       { href: "/zymantra", label: "Zymantra" },
     ],
     []
@@ -39,24 +43,29 @@ export default function NavbarFront() {
   return (
     <>
       <nav
-        className={`fixed top-0 w-full z-[100] h-20 flex items-center transition-all duration-500 will-change-transform ${
-          isVisible ? "translate-y-0" : "-translate-y-full"
+        className={`fixed top-0 w-full z-[100] h-20 flex items-center transition-all duration-500 ${
+          isVisible
+            ? "translate-y-0 opacity-100"
+            : "-translate-y-full opacity-0"
         }`}
         style={{
-          // Correction Dark Mode : Utilisation de HSL variable
-          backgroundColor: "hsl(var(--background) / 0.8)",
+          // Utilisation de variables CSS standard pour éviter les conflits de thème
+          backgroundColor: "var(--background)",
           backdropFilter: "blur(32px)",
           WebkitBackdropFilter: "blur(32px)",
+          borderBottom: "1px solid var(--border-color)",
         }}
       >
+        {/* LE SCRIM */}
         <div
           className="absolute inset-x-0 bottom-[-50px] h-[50px] pointer-events-none z-[-1]"
           style={{
-            background: `linear-gradient(to bottom, hsl(var(--background)) 0%, transparent 100%)`,
+            background: `linear-gradient(to bottom, var(--background) 0%, transparent 100%)`,
           }}
         />
 
-        <div className="flex w-full h-full items-center justify-between px-2 lg:px-4 relative">
+        <div className="flex w-full h-full items-center justify-between px-6 lg:px-10 relative">
+          {/* ZONE LOGO */}
           <div className="flex items-center w-40 lg:w-56 h-full z-[110]">
             <Link
               href="/"
@@ -66,24 +75,24 @@ export default function NavbarFront() {
             </Link>
           </div>
 
+          {/* DESKTOP MENU */}
           <DesktopMenu links={navLinks} />
 
-          <div className="flex items-center gap-0 z-[120]">
+          {/* ZONE ACTIONS */}
+          <div className="flex items-center gap-4 z-[120]">
             <AnimatedThemeToggler />
 
-            {/* BOUTON MOBILE ÉPURÉ */}
+            {/* BOUTON MOBILE ÉPURÉ : w-7 h-3, décollé par pr-10 */}
             <button
               type="button"
               onPointerDown={(e) => {
                 e.preventDefault();
                 setIsMobileMenuOpen(true);
               }}
-              // pr-8 pour le padding right, text-foreground pour le Dark Mode automatique
-              className="md:hidden flex items-center justify-center w-12 h-12 text-foreground cursor-pointer focus:outline-none pr-8"
+              className="md:hidden flex items-center justify-center w-12 h-12 text-[var(--foreground)] cursor-pointer focus:outline-none pr-10"
               aria-label="Menu"
             >
-              {/* Dimensions demandées : w-7 (28px) et h-3 (12px) */}
-              <HiOutlineMenuAlt4 className="w-7 h-3" />
+              <HiOutlineMenuAlt4 className="w-7 h-3 transition-transform active:scale-90" />
             </button>
           </div>
         </div>
