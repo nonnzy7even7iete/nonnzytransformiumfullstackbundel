@@ -32,7 +32,7 @@ export default function NavbarFront() {
   const navLinks = useMemo(
     () => [
       { href: "/ResumeExecutif", label: "Resume Executif" },
-      { href: "/logique-metier-serveur", label: "Logique Metier & Serveur" },
+      { href: "/logique-metier-serveur", label: "Logique Metier" },
       { href: "/zymantra", label: "Zymantra" },
     ],
     []
@@ -53,14 +53,8 @@ export default function NavbarFront() {
           borderBottom: "1px solid var(--border-color)",
         }}
       >
-        <div
-          className="absolute inset-x-0 bottom-[-50px] h-[50px] pointer-events-none z-[-1]"
-          style={{
-            background: `linear-gradient(to bottom, var(--background) 0%, transparent 100%)`,
-          }}
-        />
-
         <div className="flex w-full h-full items-center justify-between px-6 lg:px-10 relative">
+          {/* LOGO */}
           <div className="flex items-center w-40 lg:w-56 h-full z-[110]">
             <Link
               href="/"
@@ -75,21 +69,28 @@ export default function NavbarFront() {
           <div className="flex items-center gap-4 z-[120]">
             <AnimatedThemeToggler />
 
+            {/* DÉCLENCHEUR MOBILE */}
             <button
               type="button"
               onPointerDown={(e) => {
                 e.preventDefault();
                 setIsMobileMenuOpen(true);
               }}
-              // Utilisation de text-foreground pour le Dark/Light automatique
-              className="md:hidden flex items-center justify-center w-12 h-12 text-foreground cursor-pointer focus:outline-none pr-10"
+              // On utilise pr-10 pour le décalage et var(--foreground) pour le Dark Mode
+              className="md:hidden flex items-center justify-center w-12 h-12 cursor-pointer focus:outline-none pr-10"
+              style={{ color: "var(--foreground)" }}
               aria-label="Menu"
             >
-              {/* FORCE LES DIMENSIONS : 
-                w-[28px] correspond à w-7
-                h-[12px] correspond à h-3
+              {/* FORÇAGE DES DIMENSIONS PAR LE STYLE INLINE 
+                  w-7 = 28px | h-3 = 12px 
               */}
-              <HiOutlineMenuAlt4 className="w-[28px] h-[12px] transition-transform active:scale-90" />
+              <HiOutlineMenuAlt4
+                style={{
+                  width: "28px",
+                  height: "12px",
+                  display: "block",
+                }}
+              />
             </button>
           </div>
         </div>
