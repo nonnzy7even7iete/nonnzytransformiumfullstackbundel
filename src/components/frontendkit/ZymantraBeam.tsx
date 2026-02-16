@@ -17,7 +17,7 @@ import {
 import { cn } from "@/lib/utils";
 import { MultiStepLoader } from "@/components/ui/multi-step-loader";
 
-// --- TYPES ---
+// --- INTERFACES (CONTRATS DE DONNÉES) ---
 interface ContentItem {
   badge: string;
   title: string;
@@ -32,6 +32,7 @@ interface CardItemProps extends HTMLMotionProps<"div"> {
 }
 
 // --- CONTEXTE 3D ---
+// On crée un "tunnel" d'information pour dire aux enfants si la souris survole le parent.
 const MouseEnterContext = createContext<
   [boolean, React.Dispatch<React.SetStateAction<boolean>>] | undefined
 >(undefined);
@@ -48,6 +49,8 @@ const CardContainer = ({
   const x = useMotionValue(0);
   const y = useMotionValue(0);
 
+  // Pourquoi useSpring ? Pour que la rotation ne soit pas sèche.
+  // Il ajoute de l'inertie physique au mouvement de la carte.
   const rotateX = useSpring(useTransform(y, [-0.5, 0.5], [8, -8]), {
     stiffness: 100,
     damping: 30,
@@ -61,6 +64,7 @@ const CardContainer = ({
     if (!containerRef.current) return;
     const { left, top, width, height } =
       containerRef.current.getBoundingClientRect();
+    // Calcul de la position relative par rapport au centre (0 = milieu)
     x.set((e.clientX - left) / width - 0.5);
     y.set((e.clientY - top) / height - 0.5);
   };
@@ -69,7 +73,7 @@ const CardContainer = ({
     <MouseEnterContext.Provider value={[isMouseEnter, setIsMouseEnter]}>
       <div
         className={cn("flex items-center justify-center", className)}
-        style={{ perspective: "1200px" }}
+        style={{ perspective: "1200px" }} // Indispensable pour l'effet de profondeur
         onMouseMove={handleMouseMove}
         onMouseEnter={() => setIsMouseEnter(true)}
         onMouseLeave={() => {
@@ -103,8 +107,8 @@ const CardItem = ({
     <motion.div
       {...rest}
       animate={{
+        // L'effet "Pop-out" : l'élément avance vers l'utilisateur sur l'axe Z
         transform: `translateZ(${isMouseEnter ? translateZ : 0}px)`,
-        ...(typeof rest.animate === "object" ? rest.animate : {}),
       }}
       transition={{ type: "spring", stiffness: 150, damping: 20 }}
       className={className}
@@ -114,7 +118,7 @@ const CardItem = ({
   );
 };
 
-// --- CONFIGURATION LOADER ---
+// --- CONFIGURATION DU LOADER ---
 const LOADER_STATES = [
   { text: "Accès au serveur Penguin" },
   { text: "Scan de la zone Anyama" },
@@ -133,6 +137,10 @@ export default function Zymantra({
   const [loading, setLoading] = useState(false);
   const [activeIdx, setActiveIdx] = useState<number | null>(null);
 
+  /**
+   * GESTION DU SCROLL (BEAM)
+   * On suit la progression du scroll pour animer la ligne verticale.
+   */
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start center", "end end"],
@@ -158,7 +166,9 @@ export default function Zymantra({
       className="relative w-full py-24 px-4 overflow-hidden"
       style={{ backgroundColor: "var(--background)" }}
     >
-      {/* LOADER AVEC FERMETURE AU CLIC METIER */}
+      {/* onClose permet de fermer le loader en cliquant "n'importe où" sur le flou. 
+          C'est crucial pour l'UX métier (liberté de l'utilisateur).
+      */}
       <MultiStepLoader
         loadingStates={LOADER_STATES}
         loading={loading}
@@ -166,7 +176,7 @@ export default function Zymantra({
         onClose={() => setLoading(false)}
       />
 
-      {/* BEAM (Fil d'Ariane) */}
+      {/* LE BEAM : Ligne de progression visuelle */}
       <div className="absolute left-6 md:left-12 top-0 h-full w-[1px] hidden sm:block opacity-15">
         <div className="h-full w-full bg-[var(--accents-2)]" />
         <motion.div
@@ -177,6 +187,10 @@ export default function Zymantra({
 
       <div className="max-w-7xl mx-auto flex flex-col gap-32 relative z-10">
         {content.map((item, index) => {
+          /**
+           * GESTION DU FOCUS :
+           * Si on survole une carte, les autres deviennent floues et transparentes.
+           */
           const isInactive = activeIdx !== null && activeIdx !== index;
           const isEven = index % 2 === 0;
 
@@ -197,6 +211,7 @@ export default function Zymantra({
                   className={cn(
                     "flex flex-col items-center transition-all duration-500 w-[92vw] lg:w-[1100px] group/card",
                     "gap-8 p-5 md:p-8",
+                    // ALTERNANCE : Si index est pair, image à gauche, sinon à droite.
                     isEven ? "lg:flex-row" : "lg:flex-row-reverse"
                   )}
                   style={{
@@ -205,7 +220,7 @@ export default function Zymantra({
                     boxShadow: "0 0 0 1px var(--border-color)",
                   }}
                 >
-                  {/* IMAGE - Precision 3px Padding */}
+                  {/* ZONE IMAGE : Padding technique de 3px */}
                   <CardItem
                     translateZ={80}
                     className="w-full lg:w-[45%] aspect-square relative overflow-hidden p-[3px] shrink-0 shadow-xl"
@@ -228,30 +243,34 @@ export default function Zymantra({
                     </div>
                   </CardItem>
 
-                  {/* TEXTE - Compact et aligné */}
+                  {/* ZONE TEXTE : Entièrement dynamique */}
                   <div className="flex-1 flex flex-col items-start justify-center space-y-6 px-2 md:px-10">
+                    {/* Badge Mantra */}
                     <CardItem translateZ={40}>
                       <span className="text-emerald-500 text-[10px] font-black tracking-[0.4em] uppercase">
                         {item.badge}
                       </span>
                     </CardItem>
 
+                    {/* Titre Principal */}
                     <CardItem translateZ={60}>
                       <h2 className="text-4xl md:text-6xl font-black italic uppercase leading-[0.9] tracking-tighter text-[var(--foreground)]">
                         {item.title}
                       </h2>
                     </CardItem>
 
+                    {/* Description (paragraphe) */}
                     <CardItem translateZ={30}>
                       <p className="opacity-40 text-sm md:text-lg leading-snug max-w-md text-[var(--foreground)]">
                         {item.description}
                       </p>
                     </CardItem>
 
+                    {/* Bouton d'action */}
                     <CardItem translateZ={100} className="w-full pt-4">
                       <button
                         onClick={(e) => {
-                          e.stopPropagation(); // Évite de déclencher des events parents
+                          e.stopPropagation();
                           setLoading(true);
                         }}
                         className="group relative h-14 w-full lg:w-64 overflow-hidden rounded-full transition-all active:scale-95 shadow-lg"
@@ -277,16 +296,17 @@ export default function Zymantra({
   );
 }
 
+// --- BASE DE DONNÉES LOCALE (CONTENT) ---
 const ZYMANTRA_CONTENT: ContentItem[] = [
   {
-    badge: "MANTRA 01",
+    badge: "MANTRA ",
     title: "DATA DRIVEN GROWTH",
     description:
       "La donnée est la seule monnaie de rechange contre l'échec stratégique. Réveiller cet angle mort pour l'exécutif.",
     image: "/IMG-20260211-WA0000.jpg",
   },
   {
-    badge: "P-R-S 02",
+    badge: "P-R-S ",
     title: "ALGO ZY RADAR",
     description:
       "Anyama sera la première commune de Côte d'Ivoire dotée d'un radar économique synchronisant les ressources et les réalités.",

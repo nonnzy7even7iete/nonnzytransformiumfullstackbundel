@@ -15,7 +15,7 @@ export default function NavbarFront() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { data: session } = useSession();
 
-  // Optimisation du scroll : On évite les calculs inutiles
+  // Optimisation du scroll : On Ã©vite les calculs inutiles
   useEffect(() => {
     const handleScroll = () => {
       const currentY = window.scrollY;
@@ -26,11 +26,11 @@ export default function NavbarFront() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [lastScrollY]);
 
-  // Memoisation des liens pour éviter les re-renders de DesktopMenu
+  // Memoisation des liens pour Ã©viter les re-renders de DesktopMenu
   const navLinks = useMemo(
     () => [
-      { href: "/ResumeExecutif", label: "Résumé Exécutif" },
-      { href: "/logique-metier-serveur", label: "Logique Métier & Serveur" },
+      { href: "/ResumeExecutif", label: "RÃ©sumÃ© ExÃ©cutif" },
+      { href: "/logique-metier-serveur", label: "Logique MÃ©tier & Serveur" },
       { href: "/zymantra", label: "Zymantra" },
     ],
     []
@@ -48,7 +48,7 @@ export default function NavbarFront() {
           WebkitBackdropFilter: "blur(32px)",
         }}
       >
-        {/* LE SCRIM : Maintenu ici pour une synchro parfaite avec le thème et le scroll */}
+        {/* LE SCRIM : Maintenu ici pour une synchro parfaite avec le thÃ¨me et le scroll */}
         <div
           className="absolute inset-x-0 bottom-[-50px] h-[50px] pointer-events-none z-[-1]"
           style={{
@@ -67,14 +67,16 @@ export default function NavbarFront() {
             </Link>
           </div>
 
-          {/* COMPOSANT DÉPORTÉ : Toute la Menubar est ici */}
+          {/* COMPOSANT DÃ‰PORTÃ‰ : Toute la Menubar est ici */}
           <DesktopMenu links={navLinks} />
 
           {/* ZONE ACTIONS */}
           <div className="flex items-center gap-0 z-[120]">
             <AnimatedThemeToggler />
 
-            {/* BOUTON MOBILE : Z-index 120 + Rayon d'action optimisé */}
+            {/* BOUTON MOBILE : Version Ultra-Épurée (w-3 h-3) */}
+            {/* Note pédagogique : On garde une hitbox w-12 h-12 pour l'accessibilité tactile 
+                mais l'élément visuel est réduit au minimum pour l'esthétique. */}
             <button
               type="button"
               onPointerDown={(e) => {
@@ -85,7 +87,7 @@ export default function NavbarFront() {
               style={{ marginRight: "-8px" }}
               aria-label="Menu"
             >
-              <HiOutlineMenuAlt4 className="w-9 h-9" />
+              <HiOutlineMenuAlt4 className="w-3 h-3" />
             </button>
           </div>
         </div>
