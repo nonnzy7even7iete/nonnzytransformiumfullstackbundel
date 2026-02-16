@@ -10,7 +10,6 @@ import MobileMenu from "@/components/frontendkit/MobileMenu";
 import { DesktopMenu } from "./DesktopMenu";
 
 export default function NavbarFront() {
-  // On initialise à true pour être sûr que la barre est là au départ
   const [isVisible, setIsVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -19,7 +18,6 @@ export default function NavbarFront() {
   useEffect(() => {
     const handleScroll = () => {
       const currentY = window.scrollY;
-      // Sécurité : toujours visible si on est en haut de page (<= 10)
       if (currentY <= 10) {
         setIsVisible(true);
       } else {
@@ -49,14 +47,12 @@ export default function NavbarFront() {
             : "-translate-y-full opacity-0"
         }`}
         style={{
-          // Utilisation de variables CSS standard pour éviter les conflits de thème
           backgroundColor: "var(--background)",
           backdropFilter: "blur(32px)",
           WebkitBackdropFilter: "blur(32px)",
           borderBottom: "1px solid var(--border-color)",
         }}
       >
-        {/* LE SCRIM */}
         <div
           className="absolute inset-x-0 bottom-[-50px] h-[50px] pointer-events-none z-[-1]"
           style={{
@@ -65,7 +61,6 @@ export default function NavbarFront() {
         />
 
         <div className="flex w-full h-full items-center justify-between px-6 lg:px-10 relative">
-          {/* ZONE LOGO */}
           <div className="flex items-center w-40 lg:w-56 h-full z-[110]">
             <Link
               href="/"
@@ -75,24 +70,26 @@ export default function NavbarFront() {
             </Link>
           </div>
 
-          {/* DESKTOP MENU */}
           <DesktopMenu links={navLinks} />
 
-          {/* ZONE ACTIONS */}
           <div className="flex items-center gap-4 z-[120]">
             <AnimatedThemeToggler />
 
-            {/* BOUTON MOBILE ÉPURÉ : w-7 h-3, décollé par pr-10 */}
             <button
               type="button"
               onPointerDown={(e) => {
                 e.preventDefault();
                 setIsMobileMenuOpen(true);
               }}
-              className="md:hidden flex items-center justify-center w-12 h-12 text-[var(--foreground)] cursor-pointer focus:outline-none pr-10"
+              // Utilisation de text-foreground pour le Dark/Light automatique
+              className="md:hidden flex items-center justify-center w-12 h-12 text-foreground cursor-pointer focus:outline-none pr-10"
               aria-label="Menu"
             >
-              <HiOutlineMenuAlt4 className="w-7 h-3 transition-transform active:scale-90" />
+              {/* FORCE LES DIMENSIONS : 
+                w-[28px] correspond à w-7
+                h-[12px] correspond à h-3
+              */}
+              <HiOutlineMenuAlt4 className="w-[28px] h-[12px] transition-transform active:scale-90" />
             </button>
           </div>
         </div>
