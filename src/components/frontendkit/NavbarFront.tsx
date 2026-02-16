@@ -88,7 +88,7 @@ export default function NavbarFront() {
               aria-label="Menu"
             >
               {/* Taille w-5 h-5 (20px) : l'équilibre parfait entre discrétion et visibilité */}
-              <HiOutlineMenuAlt4 className="w-7 h-3" />
+              <HiOutlineMenuAlt4 className="w-8 h-3" />
             </button>
           </div>
         </div>
