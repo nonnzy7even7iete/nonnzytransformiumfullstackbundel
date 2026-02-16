@@ -3,7 +3,6 @@
 import { useState, useEffect, useMemo } from "react";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
-import { HiOutlineMenuAlt4 } from "react-icons/hi";
 import { TextHoverEffect } from "../ui/TextHoverEffect";
 import { AnimatedThemeToggler } from "@/components/frontendkit/AnimatedThemeToggler";
 import MobileMenu from "@/components/frontendkit/MobileMenu";
@@ -18,11 +17,7 @@ export default function NavbarFront() {
   useEffect(() => {
     const handleScroll = () => {
       const currentY = window.scrollY;
-      if (currentY <= 10) {
-        setIsVisible(true);
-      } else {
-        setIsVisible(currentY <= lastScrollY);
-      }
+      setIsVisible(currentY <= lastScrollY || currentY <= 50);
       setLastScrollY(currentY);
     };
     window.addEventListener("scroll", handleScroll, { passive: true });
@@ -54,7 +49,6 @@ export default function NavbarFront() {
         }}
       >
         <div className="flex w-full h-full items-center justify-between px-6 lg:px-10 relative">
-          {/* LOGO */}
           <div className="flex items-center w-40 lg:w-56 h-full z-[110]">
             <Link
               href="/"
@@ -66,31 +60,30 @@ export default function NavbarFront() {
 
           <DesktopMenu links={navLinks} />
 
-          <div className="flex items-center gap-4 z-[120]">
+          <div className="flex items-center gap-0 z-[120]">
             <AnimatedThemeToggler />
 
-            {/* DÉCLENCHEUR MOBILE */}
             <button
               type="button"
-              onPointerDown={(e) => {
-                e.preventDefault();
-                setIsMobileMenuOpen(true);
-              }}
-              // On utilise pr-10 pour le décalage et var(--foreground) pour le Dark Mode
-              className="md:hidden flex items-center justify-center w-12 h-12 cursor-pointer focus:outline-none pr-10"
+              onClick={() => setIsMobileMenuOpen(true)}
+              className="md:hidden flex items-center justify-end w-14 h-12 cursor-pointer focus:outline-none pr-10"
               style={{ color: "var(--foreground)" }}
               aria-label="Menu"
             >
-              {/* FORÇAGE DES DIMENSIONS PAR LE STYLE INLINE 
-                  w-7 = 28px | h-3 = 12px 
-              */}
-              <HiOutlineMenuAlt4
-                style={{
-                  width: "28px",
-                  height: "12px",
-                  display: "block",
-                }}
-              />
+              <svg
+                width="28"
+                height="8"
+                viewBox="0 0 28 8"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M0 1H28M10 7H28"
+                  stroke="currentColor"
+                  strokeWidth="1.2"
+                  strokeLinecap="square"
+                />
+              </svg>
             </button>
           </div>
         </div>
