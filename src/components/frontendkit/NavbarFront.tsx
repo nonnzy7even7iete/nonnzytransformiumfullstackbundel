@@ -74,20 +74,21 @@ export default function NavbarFront() {
           <div className="flex items-center gap-0 z-[120]">
             <AnimatedThemeToggler />
 
-            {/* BOUTON MOBILE : Version Ultra-Épurée (w-3 h-3) */}
-            {/* Note pédagogique : On garde une hitbox w-12 h-12 pour l'accessibilité tactile 
-                mais l'élément visuel est réduit au minimum pour l'esthétique. */}
+            {/* BOUTON MOBILE : Épuré (w-5) et décollé du bord droit */}
             <button
               type="button"
               onPointerDown={(e) => {
                 e.preventDefault();
                 setIsMobileMenuOpen(true);
               }}
-              className="md:hidden flex items-center justify-center w-12 h-12 text-[var(--foreground)] cursor-pointer focus:outline-none"
-              style={{ marginRight: "-8px" }}
+              // Utilisation d'un padding-right (pr-4 ou pr-6) pour décoller l'icône du bord
+              className="md:hidden flex items-center justify-center w-12 h-12 text-[var(--foreground)] cursor-pointer focus:outline-none pr-4"
+              // On retire le margin-right négatif pour laisser l'icône respirer loin du bord
+              style={{ marginRight: "0px" }}
               aria-label="Menu"
             >
-              <HiOutlineMenuAlt4 className="w-3 h-3" />
+              {/* Taille w-5 h-5 (20px) : l'équilibre parfait entre discrétion et visibilité */}
+              <HiOutlineMenuAlt4 className="w-5 h-5" />
             </button>
           </div>
         </div>
