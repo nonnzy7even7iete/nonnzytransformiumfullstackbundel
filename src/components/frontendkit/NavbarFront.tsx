@@ -17,7 +17,11 @@ export default function NavbarFront() {
   useEffect(() => {
     const handleScroll = () => {
       const currentY = window.scrollY;
-      setIsVisible(currentY <= lastScrollY || currentY <= 50);
+      if (currentY <= 10) {
+        setIsVisible(true);
+      } else {
+        setIsVisible(currentY <= lastScrollY);
+      }
       setLastScrollY(currentY);
     };
     window.addEventListener("scroll", handleScroll, { passive: true });
@@ -49,6 +53,7 @@ export default function NavbarFront() {
         }}
       >
         <div className="flex w-full h-full items-center justify-between px-6 lg:px-10 relative">
+          {/* LOGO */}
           <div className="flex items-center w-40 lg:w-56 h-full z-[110]">
             <Link
               href="/"
@@ -60,29 +65,34 @@ export default function NavbarFront() {
 
           <DesktopMenu links={navLinks} />
 
+          {/* ZONE ACTIONS */}
           <div className="flex items-center gap-0 z-[120]">
             <AnimatedThemeToggler />
 
+            {/* DÉCLENCHEUR DEUX TRAITS */}
             <button
               type="button"
-              onClick={() => setIsMobileMenuOpen(true)}
+              onPointerDown={(e) => {
+                e.preventDefault();
+                setIsMobileMenuOpen(true);
+              }}
+              // pr-10 pour le recul, w-14 pour la zone de contact
               className="md:hidden flex items-center justify-end w-14 h-12 cursor-pointer focus:outline-none pr-10"
-              style={{ color: "var(--foreground)" }}
               aria-label="Menu"
             >
+              {/* SVG SUR-MESURE : 2 traits étirés */}
               <svg
                 width="28"
                 height="8"
                 viewBox="0 0 28 8"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
+                style={{ stroke: "var(--foreground)" }}
               >
-                <path
-                  d="M0 1H28M10 7H28"
-                  stroke="currentColor"
-                  strokeWidth="1.2"
-                  strokeLinecap="square"
-                />
+                {/* Trait du haut : Pleine largeur */}
+                <path d="M0 1H28" strokeWidth="1.2" strokeLinecap="square" />
+                {/* Trait du bas : Décalé et plus court pour le style */}
+                <path d="M10 7H28" strokeWidth="1.2" strokeLinecap="square" />
               </svg>
             </button>
           </div>
