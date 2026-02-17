@@ -27,46 +27,58 @@ interface DockProps {
 export function Dock({
   items,
   className,
-  iconSize = 16, // Taille miniaturisée par défaut
-  magnification = 22, // Effet de loupe discret
+  iconSize = 16,
+  magnification = 22,
   distance = 100,
 }: DockProps) {
   const mouseX = useMotionValue(Infinity);
 
   return (
-    <motion.div
-      onMouseMove={(e) => mouseX.set(e.pageX)}
-      onMouseLeave={() => mouseX.set(Infinity)}
-      className={cn(
-        "flex h-[38px] items-center gap-3 px-3 rounded-full border transition-all duration-500 shadow-xl",
-        // LOGIQUE IU : Opacité renforcée et blur massif pour stopper la lecture du texte en arrière-plan
-        "bg-white/70 backdrop-blur-[30px] border-white/40 shadow-zinc-200/50",
-        "dark:bg-zinc-950/80 dark:backdrop-blur-[40px] dark:border-white/10 dark:shadow-black/60",
-        className
-      )}
-    >
-      {items.map((item, idx) => {
-        const IconComponent = item.icon;
-        return (
-          <DockIcon
-            key={idx}
-            mouseX={mouseX}
-            size={iconSize}
-            magnification={magnification}
-            distance={distance}
-          >
-            <a
-              href={item.href}
-              target={item.href.startsWith("http") ? "_blank" : "_self"}
-              rel="noreferrer"
-              className="flex h-full w-full items-center justify-center"
+    // CONTENEUR RELATIF POUR LE SCRIM + DOCK
+    <div className="relative flex items-center justify-center w-full h-full">
+      {/* SCRIM OVERLAY INTEGRE : Adaptatif Light/Dark */}
+      <div
+        className="absolute inset-x-0 bottom-0 h-40 pointer-events-none z-0"
+        style={{
+          background: `linear-gradient(to top, var(--background) 0%, var(--background) 30%, transparent 100%)`,
+        }}
+      />
+
+      {/* LE DOCK LUI-MEME */}
+      <motion.div
+        onMouseMove={(e) => mouseX.set(e.pageX)}
+        onMouseLeave={() => mouseX.set(Infinity)}
+        className={cn(
+          "relative z-10 flex h-[38px] items-center gap-3 px-3 rounded-full border transition-all duration-500 shadow-xl",
+          // Adaptativité totale aux variables du système
+          "bg-[var(--background)]/70 backdrop-blur-[30px] border-[var(--border-color)] shadow-zinc-200/50",
+          "dark:bg-[var(--background)]/80 dark:backdrop-blur-[40px] dark:border-white/10 dark:shadow-black/60",
+          className
+        )}
+      >
+        {items.map((item, idx) => {
+          const IconComponent = item.icon;
+          return (
+            <DockIcon
+              key={idx}
+              mouseX={mouseX}
+              size={iconSize}
+              magnification={magnification}
+              distance={distance}
             >
-              <IconComponent className="h-full w-full stroke-[1.5px] text-zinc-900/80 dark:text-zinc-100/80 transition-colors duration-300" />
-            </a>
-          </DockIcon>
-        );
-      })}
-    </motion.div>
+              <a
+                href={item.href}
+                target={item.href.startsWith("http") ? "_blank" : "_self"}
+                rel="noreferrer"
+                className="flex h-full w-full items-center justify-center"
+              >
+                <IconComponent className="h-full w-full stroke-[1.5px] text-[var(--foreground)]/80 transition-colors duration-300" />
+              </a>
+            </DockIcon>
+          );
+        })}
+      </motion.div>
+    </div>
   );
 }
 

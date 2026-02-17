@@ -129,9 +129,8 @@ export default function HomePage() {
         </div>
       </main>
 
-      {/* FOOTER FIXED WITH DOCK */}
-      <footer className="fixed bottom-0 left-0 right-0 z-[100] h-28 flex items-center justify-center pointer-events-none">
-        <div className="absolute inset-x-0 bottom-0 h-full bg-gradient-to-t from-[var(--background)] via-[var(--background)]/60 to-transparent z-[-1]" />
+      {/* FOOTER FIXED : Logique Scrim gérée par le composant Dock lui-même */}
+      <footer className="fixed bottom-0 left-0 right-0 z-[100] h-32 flex items-center justify-center pointer-events-none">
         <div className="relative pointer-events-auto">
           <Dock
             items={dockItems}
