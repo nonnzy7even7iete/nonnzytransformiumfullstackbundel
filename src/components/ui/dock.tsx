@@ -34,50 +34,56 @@ export function Dock({
   const mouseX = useMotionValue(Infinity);
 
   return (
-    // CONTENEUR RELATIF POUR LE SCRIM + DOCK
-    <div className="relative flex items-center justify-center w-full h-full">
-      {/* SCRIM OVERLAY INTEGRE : Adaptatif Light/Dark */}
+    // On utilise fixed pour que le brouillard soit lié à la fenêtre, pas au Dock
+    <div className="fixed bottom-0 left-0 right-0 w-full flex flex-col items-center pointer-events-none">
+      {/* BROUILLARD (SCRIM OVERLAY) : Étendu et étagé */}
       <div
-        className="absolute inset-x-0 bottom-0 h-40 pointer-events-none z-0"
+        className="absolute inset-x-0 bottom-0 h-[250px] w-full z-0 pointer-events-none"
         style={{
-          background: `linear-gradient(to top, var(--background) 0%, var(--background) 30%, transparent 100%)`,
+          background: `linear-gradient(to top, 
+            var(--background) 0%, 
+            var(--background) 20%, 
+            var(--background)/90 40%, 
+            var(--background)/40 70%, 
+            transparent 100%)`,
         }}
       />
 
-      {/* LE DOCK LUI-MEME */}
-      <motion.div
-        onMouseMove={(e) => mouseX.set(e.pageX)}
-        onMouseLeave={() => mouseX.set(Infinity)}
-        className={cn(
-          "relative z-10 flex h-[38px] items-center gap-3 px-3 rounded-full border transition-all duration-500 shadow-xl",
-          // Adaptativité totale aux variables du système
-          "bg-[var(--background)]/70 backdrop-blur-[30px] border-[var(--border-color)] shadow-zinc-200/50",
-          "dark:bg-[var(--background)]/80 dark:backdrop-blur-[40px] dark:border-white/10 dark:shadow-black/60",
-          className
-        )}
-      >
-        {items.map((item, idx) => {
-          const IconComponent = item.icon;
-          return (
-            <DockIcon
-              key={idx}
-              mouseX={mouseX}
-              size={iconSize}
-              magnification={magnification}
-              distance={distance}
-            >
-              <a
-                href={item.href}
-                target={item.href.startsWith("http") ? "_blank" : "_self"}
-                rel="noreferrer"
-                className="flex h-full w-full items-center justify-center"
+      {/* LE DOCK LUI-MEME : Remonté au-dessus du brouillard */}
+      <div className="relative z-10 pb-10 pointer-events-auto">
+        <motion.div
+          onMouseMove={(e) => mouseX.set(e.pageX)}
+          onMouseLeave={() => mouseX.set(Infinity)}
+          className={cn(
+            "flex h-[42px] items-center gap-3 px-4 rounded-full border transition-all duration-500 shadow-2xl",
+            "bg-[var(--background)]/40 backdrop-blur-[25px] border-[var(--border-color)] shadow-black/10",
+            "dark:bg-black/40 dark:backdrop-blur-[40px] dark:border-white/10 dark:shadow-black/60",
+            className
+          )}
+        >
+          {items.map((item, idx) => {
+            const IconComponent = item.icon;
+            return (
+              <DockIcon
+                key={idx}
+                mouseX={mouseX}
+                size={iconSize}
+                magnification={magnification}
+                distance={distance}
               >
-                <IconComponent className="h-full w-full stroke-[1.5px] text-[var(--foreground)]/80 transition-colors duration-300" />
-              </a>
-            </DockIcon>
-          );
-        })}
-      </motion.div>
+                <a
+                  href={item.href}
+                  target={item.href.startsWith("http") ? "_blank" : "_self"}
+                  rel="noreferrer"
+                  className="flex h-full w-full items-center justify-center"
+                >
+                  <IconComponent className="h-full w-full stroke-[1.5px] text-[var(--foreground)] transition-colors duration-300" />
+                </a>
+              </DockIcon>
+            );
+          })}
+        </motion.div>
+      </div>
     </div>
   );
 }
@@ -116,7 +122,7 @@ function DockIcon({
     <motion.div
       ref={ref}
       style={{ width: scaleSize, height: scaleSize }}
-      className="flex aspect-square items-center justify-center rounded-full transition-colors"
+      className="flex aspect-square items-center justify-center rounded-full"
     >
       {children}
     </motion.div>
