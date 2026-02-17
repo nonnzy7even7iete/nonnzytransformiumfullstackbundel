@@ -53,7 +53,6 @@ export default function NavbarFront() {
         }}
       >
         <div className="flex w-full h-full items-center justify-between px-6 lg:px-10 relative">
-          {/* LOGO */}
           <div className="flex items-center w-40 lg:w-56 h-full z-[110]">
             <Link
               href="/"
@@ -65,34 +64,34 @@ export default function NavbarFront() {
 
           <DesktopMenu links={navLinks} />
 
-          {/* ZONE ACTIONS */}
-          <div className="flex items-center gap-0 z-[120]">
+          {/* ZONE ACTIONS : gap-6 pour ne pas coller au Toggler */}
+          <div className="flex items-center gap-6 z-[120]">
             <AnimatedThemeToggler />
 
-            {/* DÉCLENCHEUR DEUX TRAITS */}
             <button
               type="button"
               onPointerDown={(e) => {
                 e.preventDefault();
                 setIsMobileMenuOpen(true);
               }}
-              // pr-10 pour le recul, w-14 pour la zone de contact
-              className="md:hidden flex items-center justify-end w-14 h-12 cursor-pointer focus:outline-none pr-10"
+              // pr-6 pour le bord de l'ecran, color var(--foreground) pour le Dark Mode
+              className="md:hidden flex items-center justify-center cursor-pointer focus:outline-none pr-6"
+              style={{ color: "var(--foreground)" }}
               aria-label="Menu"
             >
-              {/* SVG SUR-MESURE : 2 traits étirés */}
               <svg
                 width="28"
-                height="8"
-                viewBox="0 0 28 8"
+                height="10"
+                viewBox="0 0 28 10"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
-                style={{ stroke: "var(--foreground)" }}
               >
-                {/* Trait du haut : Pleine largeur */}
-                <path d="M0 1H28" strokeWidth="1.2" strokeLinecap="square" />
-                {/* Trait du bas : Décalé et plus court pour le style */}
-                <path d="M10 7H28" strokeWidth="1.2" strokeLinecap="square" />
+                <path
+                  d="M0 1H28M10 9H28"
+                  stroke="currentColor"
+                  strokeWidth="1.2"
+                  strokeLinecap="square"
+                />
               </svg>
             </button>
           </div>
