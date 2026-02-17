@@ -49,9 +49,16 @@ export default function NavbarFront() {
           backgroundColor: "var(--background)",
           backdropFilter: "blur(32px)",
           WebkitBackdropFilter: "blur(32px)",
-          borderBottom: "1px solid var(--border-color)",
         }}
       >
+        {/* LE SCRIM : REPLACE TEL QUEL */}
+        <div
+          className="absolute inset-x-0 bottom-[-50px] h-[50px] pointer-events-none z-[-1]"
+          style={{
+            background: `linear-gradient(to bottom, var(--background) 0%, transparent 100%)`,
+          }}
+        />
+
         <div className="flex w-full h-full items-center justify-between px-6 lg:px-10 relative">
           <div className="flex items-center w-40 lg:w-56 h-full z-[110]">
             <Link
@@ -64,7 +71,6 @@ export default function NavbarFront() {
 
           <DesktopMenu links={navLinks} />
 
-          {/* ZONE ACTIONS : gap-6 pour ne pas coller au Toggler */}
           <div className="flex items-center gap-6 z-[120]">
             <AnimatedThemeToggler />
 
@@ -74,7 +80,6 @@ export default function NavbarFront() {
                 e.preventDefault();
                 setIsMobileMenuOpen(true);
               }}
-              // pr-6 pour le bord de l'ecran, color var(--foreground) pour le Dark Mode
               className="md:hidden flex items-center justify-center cursor-pointer focus:outline-none pr-6"
               style={{ color: "var(--foreground)" }}
               aria-label="Menu"
