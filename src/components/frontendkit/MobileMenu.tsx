@@ -3,26 +3,47 @@
 import React from "react";
 import Link from "next/link";
 import { Sheet, SheetContent, SheetClose } from "@/components/ui/sheet";
+
+// Vérifie bien ce chemin d'import, c'est souvent lui qui fait raler VS Code
 import { NoiseBackground } from "@/components/frontendkit/NoiseBackground";
 
-// On reçoit isOpen et onClose de la Navbar
-export default function MobileMenu({ links, session, isOpen, onClose }: any) {
+interface NavLink {
+  href: string;
+  label: string;
+}
+
+interface MobileMenuProps {
+  links: NavLink[];
+  session: any;
+  isOpen: boolean;
+  onClose: () => void;
+}
+
+export default function MobileMenu({
+  links,
+  session,
+  isOpen,
+  onClose,
+}: MobileMenuProps) {
   return (
     <Sheet open={isOpen} onOpenChange={onClose}>
       <style>{StaticMobileStyles}</style>
 
       <SheetContent
         side="right"
-        className="flex flex-col p-0 w-[85%] sm:w-[350px] bg-[var(--background)] border-l border-[var(--border-color)] outline-none shadow-2xl transition-colors duration-500 rounded-none z-[150]"
+        className="flex flex-col p-0 w-[85%] sm:w-[350px] bg-[var(--background)] border-l border-[var(--border-color)] outline-none shadow-[0_0_40px_rgba(255,255,255,0.15)] transition-colors duration-500 rounded-none z-[150] [&>button]:hidden"
       >
-        {/* Header */}
-        <div className="flex justify-end p-6">
-          <SheetClose className="group outline-none border-none bg-transparent cursor-pointer">
-            <div className="h-[1.5px] w-8 bg-[var(--foreground)]/20 group-hover:bg-[var(--foreground)] transition-colors" />
+        {/* BOUTON FERMETURE : Trait dynamique Noir/Blanc */}
+        <div className="flex justify-end p-6 pt-10">
+          <SheetClose className="group outline-none border-none bg-transparent cursor-pointer pr-4">
+            <div
+              className="h-[1.5px] w-8 transition-opacity opacity-40 group-hover:opacity-100"
+              style={{ backgroundColor: "var(--foreground)" }}
+            />
           </SheetClose>
         </div>
 
-        {/* User Profile Info */}
+        {/* PROFIL */}
         <div className="px-8 pb-8 space-y-1">
           <h2 className="text-[18px] font-black italic tracking-tighter text-[var(--foreground)] uppercase">
             {session?.user?.name || "Global Node"}
@@ -34,24 +55,25 @@ export default function MobileMenu({ links, session, isOpen, onClose }: any) {
 
         <div className="h-[1px] w-full bg-[var(--border-color)] opacity-50" />
 
-        {/* Nav - Réalignée sur var(--border-color) */}
+        {/* NAVIGATION */}
         <nav className="flex-grow p-[14px] flex flex-col items-start gap-1">
-          {links.map((link: any) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              onClick={onClose} // Ferme le menu au clic sur un lien
-              className="glass-nav-item w-full text-[14px] font-black uppercase tracking-tight text-[var(--foreground)]/70 hover:text-[var(--foreground)] group/item"
-            >
-              {link.label}
-              <span className="opacity-0 group-hover/item:opacity-100 transition-opacity ml-1">
-                →
-              </span>
-            </Link>
-          ))}
+          {links &&
+            links.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                onClick={onClose}
+                className="glass-nav-item w-full text-[14px] font-black uppercase tracking-tight text-[var(--foreground)]/70 hover:text-[var(--foreground)] group/item"
+              >
+                {link.label}
+                <span className="opacity-0 group-hover/item:opacity-100 transition-opacity ml-2">
+                  -&gt;
+                </span>
+              </Link>
+            ))}
         </nav>
 
-        {/* Footer */}
+        {/* FOOTER */}
         <div className="mt-auto border-t border-[var(--border-color)] bg-[var(--foreground)]/[0.02] p-6 pt-8 space-y-10">
           <div className="flex items-center justify-between px-2">
             <div className="space-y-2">
@@ -64,7 +86,7 @@ export default function MobileMenu({ links, session, isOpen, onClose }: any) {
             </div>
             <div className="flex items-center gap-2 px-3 py-1.5 rounded-[2px] bg-green-500/5 border border-green-500/20">
               <span className="h-1.5 w-1.5 rounded-full bg-green-500 animate-pulse" />
-              <span className="text-[9px] font-bold text-green-600 dark:text-green-500 uppercase tracking-widest">
+              <span className="text-[9px] font-bold text-green-600 uppercase tracking-widest">
                 Active
               </span>
             </div>
@@ -89,6 +111,13 @@ export default function MobileMenu({ links, session, isOpen, onClose }: any) {
 }
 
 const StaticMobileStyles = `
+  /* Cache le X par defaut de Shadcn */
+  [data-radix-collection-item] + button, 
+  .hide-close button,
+  button[aria-label="Close"] { 
+    display: none !important; 
+  }
+
   .glass-nav-item {
     transition: all 0.3s ease;
     border: 1px solid transparent; 
@@ -96,7 +125,7 @@ const StaticMobileStyles = `
     display: flex; 
     align-items: center; 
     gap: 12px; 
-    border-radius: var(--radius-vercel) !important; /* Utilisation de ta variable */
+    border-radius: var(--radius-vercel) !important;
   }
   .glass-nav-item:hover {
     background: var(--accents-1);
