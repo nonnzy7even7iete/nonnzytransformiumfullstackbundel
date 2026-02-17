@@ -5,7 +5,6 @@ import Link from "next/link";
 import { Sheet, SheetContent, SheetClose } from "@/components/ui/sheet";
 import { NoiseBackground } from "@/components/frontendkit/NoiseBackground";
 
-// Types stricts pour supprimer les erreurs VS Code
 interface NavLink {
   href: string;
   label: string;
@@ -33,7 +32,8 @@ export default function MobileMenu({
     <Sheet open={isOpen} onOpenChange={onClose}>
       <SheetContent
         side="right"
-        className="flex flex-col p-0 w-[85%] sm:w-[350px] bg-[var(--background)] border-l border-[var(--border-color)] outline-none shadow-[-20px_0_50px_rgba(255,255,255,0.15)] transition-colors duration-500 rounded-none z-[150] [&>button]:hidden"
+        // Suppression du shadow, ajout du backdrop-blur et border-l réactif
+        className="flex flex-col p-0 w-[85%] sm:w-[350px] bg-[var(--background)]/80 backdrop-blur-2xl border-l border-[var(--border-color)] outline-none transition-all duration-500 rounded-none z-[150] [&>button]:hidden shadow-none"
       >
         {/* BOUTON FERMETURE : Trait dynamique Noir/Blanc */}
         <div className="flex justify-end p-6 pt-10">
@@ -64,10 +64,11 @@ export default function MobileMenu({
               key={link.href}
               href={link.href}
               onClick={onClose}
-              className="glass-nav-item w-full text-[14px] font-black uppercase tracking-tight text-[var(--foreground)]/70 hover:text-[var(--foreground)] group/item flex items-center gap-2 px-4 py-3 transition-all hover:translate-x-1"
+              className="w-full text-[14px] font-black uppercase tracking-tight text-[var(--foreground)]/70 hover:text-[var(--foreground)] group/item flex items-center gap-2 px-4 py-3 transition-all hover:translate-x-1"
+              style={{ borderRadius: "var(--radius-vercel)" }}
             >
               {link.label}
-              <span className="opacity-0 group-hover/item:opacity-100 transition-opacity">
+              <span className="opacity-0 group-hover/item:opacity-100 transition-opacity ml-2">
                 -&gt;
               </span>
             </Link>
