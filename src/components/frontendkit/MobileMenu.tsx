@@ -3,10 +3,9 @@
 import React from "react";
 import Link from "next/link";
 import { Sheet, SheetContent, SheetClose } from "@/components/ui/sheet";
-
-// Vérifie bien ce chemin d'import, c'est souvent lui qui fait raler VS Code
 import { NoiseBackground } from "@/components/frontendkit/NoiseBackground";
 
+// Types stricts pour supprimer les erreurs VS Code
 interface NavLink {
   href: string;
   label: string;
@@ -14,7 +13,12 @@ interface NavLink {
 
 interface MobileMenuProps {
   links: NavLink[];
-  session: any;
+  session: {
+    user?: {
+      name?: string | null;
+      email?: string | null;
+    };
+  } | null;
   isOpen: boolean;
   onClose: () => void;
 }
@@ -27,17 +31,15 @@ export default function MobileMenu({
 }: MobileMenuProps) {
   return (
     <Sheet open={isOpen} onOpenChange={onClose}>
-      <style>{StaticMobileStyles}</style>
-
       <SheetContent
         side="right"
-        className="flex flex-col p-0 w-[85%] sm:w-[350px] bg-[var(--background)] border-l border-[var(--border-color)] outline-none shadow-[0_0_40px_rgba(255,255,255,0.15)] transition-colors duration-500 rounded-none z-[150] [&>button]:hidden"
+        className="flex flex-col p-0 w-[85%] sm:w-[350px] bg-[var(--background)] border-l border-[var(--border-color)] outline-none shadow-[-20px_0_50px_rgba(255,255,255,0.15)] transition-colors duration-500 rounded-none z-[150] [&>button]:hidden"
       >
         {/* BOUTON FERMETURE : Trait dynamique Noir/Blanc */}
         <div className="flex justify-end p-6 pt-10">
-          <SheetClose className="group outline-none border-none bg-transparent cursor-pointer pr-4">
+          <SheetClose className="group outline-none border-none bg-transparent cursor-pointer pr-4 focus:ring-0">
             <div
-              className="h-[1.5px] w-8 transition-opacity opacity-40 group-hover:opacity-100"
+              className="h-[1.5px] w-8 opacity-40 group-hover:opacity-100 transition-opacity"
               style={{ backgroundColor: "var(--foreground)" }}
             />
           </SheetClose>
@@ -57,27 +59,26 @@ export default function MobileMenu({
 
         {/* NAVIGATION */}
         <nav className="flex-grow p-[14px] flex flex-col items-start gap-1">
-          {links &&
-            links.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                onClick={onClose}
-                className="glass-nav-item w-full text-[14px] font-black uppercase tracking-tight text-[var(--foreground)]/70 hover:text-[var(--foreground)] group/item"
-              >
-                {link.label}
-                <span className="opacity-0 group-hover/item:opacity-100 transition-opacity ml-2">
-                  -&gt;
-                </span>
-              </Link>
-            ))}
+          {links?.map((link) => (
+            <Link
+              key={link.href}
+              href={link.href}
+              onClick={onClose}
+              className="glass-nav-item w-full text-[14px] font-black uppercase tracking-tight text-[var(--foreground)]/70 hover:text-[var(--foreground)] group/item flex items-center gap-2 px-4 py-3 transition-all hover:translate-x-1"
+            >
+              {link.label}
+              <span className="opacity-0 group-hover/item:opacity-100 transition-opacity">
+                -&gt;
+              </span>
+            </Link>
+          ))}
         </nav>
 
         {/* FOOTER */}
         <div className="mt-auto border-t border-[var(--border-color)] bg-[var(--foreground)]/[0.02] p-6 pt-8 space-y-10">
           <div className="flex items-center justify-between px-2">
             <div className="space-y-2">
-              <p className="raad-effect-pro text-[11px] font-black uppercase tracking-[0.4em]">
+              <p className="text-[11px] font-black uppercase tracking-[0.4em] text-[var(--foreground)]/60">
                 Ivory Coast
               </p>
               <p className="text-[8px] uppercase tracking-[0.2em] text-[var(--foreground)]/20 italic font-bold leading-none">
@@ -109,39 +110,3 @@ export default function MobileMenu({
     </Sheet>
   );
 }
-
-const StaticMobileStyles = `
-  /* Cache le X par defaut de Shadcn */
-  [data-radix-collection-item] + button, 
-  .hide-close button,
-  button[aria-label="Close"] { 
-    display: none !important; 
-  }
-
-  .glass-nav-item {
-    transition: all 0.3s ease;
-    border: 1px solid transparent; 
-    padding: 12px 16px;
-    display: flex; 
-    align-items: center; 
-    gap: 12px; 
-    border-radius: var(--radius-vercel) !important;
-  }
-  .glass-nav-item:hover {
-    background: var(--accents-1);
-    border-color: var(--border-color);
-    transform: translateX(4px);
-  }
-  @keyframes raad-shine-linear {
-    0% { background-position: 250% 0; }
-    50%, 100% { background-position: -250% 0; }
-  }
-  .raad-effect-pro {
-    display: inline-block;
-    color: rgba(120, 120, 120, 0.4);
-    background: linear-gradient(to right, transparent 0%, rgba(255, 255, 255, 0) 25%, #888 50%, rgba(255, 255, 255, 0) 75%, transparent 100%);
-    background-size: 250% 100%;
-    -webkit-background-clip: text; background-clip: text;
-    animation: raad-shine-linear 12s cubic-bezier(0.4, 0, 0.2, 1) infinite;
-  }
-`;
