@@ -34,30 +34,32 @@ export function Dock({
   const mouseX = useMotionValue(Infinity);
 
   return (
-    // On utilise fixed pour que le brouillard soit lié à la fenêtre, pas au Dock
-    <div className="fixed bottom-0 left-0 right-0 w-full flex flex-col items-center pointer-events-none">
-      {/* BROUILLARD (SCRIM OVERLAY) : Étendu et étagé */}
+    // Le conteneur occupe toute la largeur pour que le brouillard s'étende partout
+    <div className="fixed bottom-0 left-0 right-0 w-full flex flex-col items-center pointer-events-none z-[100]">
+      {/* LE VRAI SCRIM OVERLAY (Brouillard massif) */}
       <div
-        className="absolute inset-x-0 bottom-0 h-[250px] w-full z-0 pointer-events-none"
+        className="absolute inset-x-0 bottom-0 h-[300px] w-full pointer-events-none"
         style={{
           background: `linear-gradient(to top, 
             var(--background) 0%, 
-            var(--background) 20%, 
-            var(--background)/90 40%, 
-            var(--background)/40 70%, 
+            var(--background) 15%, 
+            var(--background)/95 30%, 
+            var(--background)/75 45%, 
+            var(--background)/40 65%, 
+            var(--background)/10 85%, 
             transparent 100%)`,
         }}
       />
 
-      {/* LE DOCK LUI-MEME : Remonté au-dessus du brouillard */}
-      <div className="relative z-10 pb-10 pointer-events-auto">
+      {/* LE DOCK */}
+      <div className="relative z-10 pb-12 pointer-events-auto">
         <motion.div
           onMouseMove={(e) => mouseX.set(e.pageX)}
           onMouseLeave={() => mouseX.set(Infinity)}
           className={cn(
-            "flex h-[42px] items-center gap-3 px-4 rounded-full border transition-all duration-500 shadow-2xl",
-            "bg-[var(--background)]/40 backdrop-blur-[25px] border-[var(--border-color)] shadow-black/10",
-            "dark:bg-black/40 dark:backdrop-blur-[40px] dark:border-white/10 dark:shadow-black/60",
+            "flex h-[44px] items-center gap-4 px-4 rounded-full border transition-all duration-500",
+            "bg-[var(--background)]/30 backdrop-blur-[25px] border-[var(--border-color)] shadow-2xl",
+            "dark:bg-black/30 dark:backdrop-blur-[40px] dark:border-white/5 dark:shadow-black/80",
             className
           )}
         >
@@ -77,7 +79,7 @@ export function Dock({
                   rel="noreferrer"
                   className="flex h-full w-full items-center justify-center"
                 >
-                  <IconComponent className="h-full w-full stroke-[1.5px] text-[var(--foreground)] transition-colors duration-300" />
+                  <IconComponent className="h-full w-full stroke-[1.2px] text-[var(--foreground)] transition-opacity duration-300 hover:opacity-100 opacity-70" />
                 </a>
               </DockIcon>
             );
