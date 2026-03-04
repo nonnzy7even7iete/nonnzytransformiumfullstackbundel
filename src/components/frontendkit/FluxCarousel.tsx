@@ -4,63 +4,43 @@ import React, { useState, useEffect, useRef } from "react";
 import { motion, animate } from "framer-motion";
 import { cn } from "@/lib/utils";
 
-// Tes données DATA restent inchangées (Respect absolu de tes strings)
-const DATA = [
+// DATA-DRIVEN : Transformation de l'article du Fraser Institute en KPIs
+const MINING_DATA = [
   {
     id: 1,
-    title: "ALPHA_FLUX",
-    value: 84.2,
-    unit: "%",
-    label: "PRIMARY_NODE",
-    notes: ["System Core", "Active"],
+    title: "ATTRACTIVITÉ_2025",
+    value: 60.9,
+    unit: "PTS",
+    label: "GLOBAL_RANKING",
+    notes: ["Top 5 Afrique", "1er UEMOA"],
+    status: "active",
   },
   {
     id: 2,
-    title: "DATA_CORE",
-    value: 12.4,
-    unit: "K",
-    label: "SYNC_STATUS",
-    notes: ["Database Link"],
+    title: "PROGRESSION_SCORE",
+    value: 5.2,
+    unit: "+",
+    label: "GROWTH_INDEX",
+    notes: ["vs 55.70 en 2023", "Redressement Net"],
+    status: "active",
   },
   {
     id: 3,
-    title: "LATENCY",
-    value: 0.4,
-    unit: "MS",
-    label: "ZERO_POINT",
-    notes: ["Edge optimized"],
+    title: "BENCHMARK_GHANA",
+    value: 5.7,
+    unit: "Δ",
+    label: "REGIONAL_LEAD",
+    notes: ["Leadership repris", "Cadre stable"],
+    status: "active",
   },
   {
     id: 4,
-    title: "LIQUIDITY",
-    value: 450,
-    unit: "K",
-    label: "FLOW_RATE",
-    notes: ["Market depth"],
-  },
-  {
-    id: 5,
-    title: "STABILITY",
-    value: 99.9,
-    unit: "%",
-    label: "ENCRYPTED",
-    notes: ["SSL v3"],
-  },
-  {
-    id: 6,
-    title: "VOLUMETRY",
-    value: 1.2,
-    unit: "PB",
-    label: "STORAGE",
-    notes: ["Cold archive"],
-  },
-  {
-    id: 7,
-    title: "UPTIME",
-    value: 365,
-    unit: "D",
-    label: "RELIABILITY",
-    notes: ["No downtime"],
+    title: "POSITION_MONDIALE",
+    value: 47,
+    unit: "th",
+    label: "GLOBAL_SCOPE",
+    notes: ["68 Juridictions", "Signal Marchés"],
+    status: "syncing",
   },
 ];
 
@@ -72,7 +52,7 @@ export default function FluxCarousel() {
 
   const handleDragEnd = (_: any, info: any) => {
     const threshold = 30;
-    if (info.offset.x < -threshold && index < DATA.length - 1)
+    if (info.offset.x < -threshold && index < MINING_DATA.length - 1)
       setIndex(index + 1);
     else if (info.offset.x > threshold && index > 0) setIndex(index - 1);
   };
@@ -81,7 +61,6 @@ export default function FluxCarousel() {
 
   return (
     <div className="relative h-screen w-full bg-[var(--background)] overflow-hidden flex items-center justify-center font-sans transition-colors duration-500">
-      {/* COUCHE DE DRAG : Invisible mais capte les gestes */}
       <motion.div
         drag="x"
         dragConstraints={{ left: 0, right: 0 }}
@@ -97,22 +76,21 @@ export default function FluxCarousel() {
           className="relative flex items-center justify-center w-full max-w-[300px] md:max-w-[450px]"
           style={{ transformStyle: "preserve-3d" }}
         >
-          {DATA.map((item, i) => (
+          {MINING_DATA.map((item, i) => (
             <Card key={item.id} item={item} position={i - index} />
           ))}
         </motion.div>
       </div>
 
-      {/* INDICATEURS DE POSITION (PAGINATION) */}
       <div className="absolute bottom-10 flex gap-2">
-        {DATA.map((_, i) => (
+        {MINING_DATA.map((_, i) => (
           <div
             key={i}
             className={cn(
-              "h-[1px] transition-all duration-700",
+              "h-[1.5px] transition-all duration-700",
               index === i
-                ? "w-10 bg-[var(--foreground)]"
-                : "w-2 bg-[var(--foreground)] opacity-20" // Augmentation légère de l'opacité
+                ? "w-12 bg-[var(--foreground)]"
+                : "w-3 bg-[var(--foreground)] opacity-20"
             )}
           />
         ))}
@@ -124,8 +102,6 @@ export default function FluxCarousel() {
 function Card({ item, position }: { item: any; position: number }) {
   const isActive = position === 0;
   const counterRef = useRef<HTMLHeadingElement>(null);
-
-  // Calcul dynamique de l'offset pour la réactivité mobile
   const xOffset =
     typeof window !== "undefined" && window.innerWidth < 768
       ? window.innerWidth * 0.45
@@ -133,7 +109,6 @@ function Card({ item, position }: { item: any; position: number }) {
 
   useEffect(() => {
     if (isActive && counterRef.current) {
-      // .animate(start, end, options) : Fonction de Framer Motion pour animer des chiffres
       const controls = animate(0, item.value, {
         duration: 2.2,
         ease: [0.16, 1, 0.3, 1],
@@ -157,42 +132,40 @@ function Card({ item, position }: { item: any; position: number }) {
       }}
       transition={{ type: "spring", stiffness: 120, damping: 25 }}
       className={cn(
-        "absolute w-[75vw] md:w-[420px] h-auto min-h-[300px] p-10 flex flex-col justify-between overflow-hidden transition-all duration-700",
-        // ÉLÉMENT CLÉ : Amélioration du flou et du contraste de bordure
-        "backdrop-blur-[30px] border border-[var(--foreground)]/10",
+        "absolute w-[80vw] md:w-[420px] h-auto min-h-[320px] p-10 flex flex-col justify-between overflow-hidden transition-all duration-700",
+        "backdrop-blur-[40px] border border-[var(--foreground)]/15", // Bordure plus marquée
         isActive
-          ? "shadow-[0_40px_100px_rgba(0,0,0,0.1),inset_0_0_20px_rgba(16,185,129,0.05)] bg-[var(--foreground)]/[0.03]"
+          ? "shadow-[0_40px_100px_rgba(0,0,0,0.1),inset_0_0_20px_rgba(16,185,129,0.05)] bg-[var(--foreground)]/[0.04]"
           : "bg-transparent border-none"
       )}
       style={{ borderRadius: "var(--radius-vercel, 14px)" }}
     >
-      {/* INDICATEUR D'ÉTAT (Node Status) */}
       <div
         className={cn(
-          "absolute top-[10px] right-[10px] h-2 w-2 rounded-full transition-all duration-1000",
+          "absolute top-[12px] right-[12px] h-2 w-2 rounded-full transition-all duration-1000",
           isActive
-            ? "bg-emerald-500 shadow-[0_0_15px_#10b981] opacity-100"
+            ? "bg-emerald-500 shadow-[0_0_15px_#10b981]"
             : "bg-[var(--foreground)] opacity-0"
         )}
       />
 
-      {/* HEADER : Opacité augmentée de 0.3 à 0.5 pour l'aide à la décision */}
-      <div className="relative z-10 flex justify-between items-start mt-[-5px]">
-        <p className="text-[11px] font-black tracking-[0.5em] uppercase text-[var(--foreground)] opacity-50">
+      {/* HEADER : Lisibilité renforcée (Opacity 0.6) */}
+      <div className="relative z-10 flex justify-between items-start">
+        <p className="text-[11px] font-black tracking-[0.5em] uppercase text-[var(--foreground)] opacity-60">
           {item.label}
         </p>
       </div>
 
-      {/* CONTENT : Titre plus marqué */}
+      {/* CONTENT : Hiérarchie visuelle décisionnelle */}
       <div className="relative z-10 mt-6">
-        <h3 className="text-[12px] font-black uppercase text-[var(--foreground)] tracking-[0.3em] mb-4 opacity-60">
+        <h3 className="text-[13px] font-black uppercase text-[var(--foreground)] tracking-[0.3em] mb-5 opacity-80">
           {item.title}
         </h3>
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-3">
           {item.notes.map((note: string, idx: number) => (
             <p
               key={idx}
-              className="text-[11px] font-mono text-[var(--foreground)] opacity-40 italic pl-4 border-l border-[var(--foreground)]/20"
+              className="text-[12px] font-mono text-[var(--foreground)] opacity-50 italic pl-4 border-l-2 border-[var(--foreground)]/20"
             >
               {note}
             </p>
@@ -200,11 +173,11 @@ function Card({ item, position }: { item: any; position: number }) {
         </div>
       </div>
 
-      {/* CHIFFRE CLÉ (Décisionnel) : L'élément le plus important */}
+      {/* COMPTEUR : Impact maximal */}
       <div className="relative z-10 flex items-baseline gap-2 mt-auto pt-10">
         <h2
           ref={counterRef}
-          className="text-6xl md:text-8xl font-black italic text-[var(--foreground)] tracking-tighter leading-none"
+          className="text-7xl md:text-8xl font-black italic text-[var(--foreground)] tracking-tighter leading-none"
         >
           0.0
         </h2>
@@ -213,10 +186,9 @@ function Card({ item, position }: { item: any; position: number }) {
         </span>
       </div>
 
-      {/* FOOTER : Discret mais lisible */}
-      <div className="relative z-10 flex justify-between items-end pt-6 text-[10px] font-mono opacity-30 text-[var(--foreground)] tracking-[0.4em] uppercase">
-        <span>NODE_{item.id}</span>
-        <span>V26</span>
+      <div className="relative z-10 flex justify-between items-end pt-6 text-[11px] font-mono opacity-30 text-[var(--foreground)] tracking-[0.4em] uppercase">
+        <span>CI_EXTRACTIVE_{item.id}</span>
+        <span>2026</span>
       </div>
     </motion.div>
   );
