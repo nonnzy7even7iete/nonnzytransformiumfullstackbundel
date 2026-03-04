@@ -95,7 +95,6 @@ export default function MiningDashboard() {
 
   const handleDragEnd = (_: any, info: any) => {
     const threshold = 30;
-    // .info.offset.x : Accès point-notation Framer Motion (Ne pas toucher)
     if (info.offset.x < -threshold && index < DATA_MINIERE_7.length - 1)
       setIndex(index + 1);
     else if (info.offset.x > threshold && index > 0) setIndex(index - 1);
@@ -104,7 +103,7 @@ export default function MiningDashboard() {
   if (!mounted) return null;
 
   return (
-    <div className="relative h-screen w-full bg-[var(--background)] overflow-hidden flex items-center justify-center font-sans">
+    <div className="relative h-screen w-full bg-[var(--background)] overflow-hidden flex items-center justify-center font-sans transition-colors duration-500">
       <motion.div
         drag="x"
         dragConstraints={{ left: 0, right: 0 }}
@@ -131,10 +130,10 @@ export default function MiningDashboard() {
           <div
             key={i}
             className={cn(
-              "h-[1.5px] transition-all duration-700",
+              "h-[2px] transition-all duration-700",
               index === i
                 ? "w-10 bg-emerald-500 shadow-[0_0_10px_#10b981]"
-                : "w-2 bg-white opacity-40" // .opacity-40 : Visibilité pure sur fond noir
+                : "w-2 bg-[var(--foreground)] opacity-20"
             )}
           />
         ))}
@@ -178,26 +177,28 @@ function Card({ item, position }: { item: any; position: number }) {
       transition={{ type: "spring", stiffness: 120, damping: 25 }}
       className={cn(
         "absolute w-[85vw] md:w-[450px] h-auto min-h-[380px] p-8 md:p-10 flex flex-col justify-between overflow-hidden transition-all duration-700",
-        "backdrop-blur-[35px] border",
+        /* Utilisation de var(--border-color) et var(--card-bg) pour la rÃ©activitÃ© */
+        "backdrop-blur-[35px] border-2",
         isActive
-          ? "border-emerald-500 bg-black shadow-[0_0_50px_rgba(16,185,129,0.1)]"
-          : "border-white/10 bg-transparent"
+          ? "border-emerald-500 bg-[var(--card-bg)] shadow-[0_40px_100px_rgba(0,0,0,0.2)]"
+          : "border-[var(--border-color)] bg-transparent"
       )}
       style={{ borderRadius: "var(--radius-vercel, 12px)" }}
     >
       <div
         className={cn(
           "absolute top-6 right-6 h-2 w-2 rounded-full transition-all duration-1000",
-          isActive ? "bg-emerald-500 shadow-[0_0_12px_#10b981]" : "bg-white/10"
+          isActive
+            ? "bg-emerald-500 shadow-[0_0_12px_#10b981]"
+            : "bg-[var(--foreground)] opacity-10"
         )}
       />
 
       <div className="relative z-10 flex flex-col gap-1.5">
-        {/* .text-emerald-500 : Vert Pur sans opacité */}
         <p className="text-[10px] font-black tracking-[0.4em] uppercase text-emerald-500">
           {item.status}
         </p>
-        <h3 className="text-[14px] font-bold text-white tracking-[0.1em] uppercase leading-tight">
+        <h3 className="text-[14px] font-bold text-[var(--foreground)] tracking-[0.1em] uppercase leading-tight">
           {item.title}
         </h3>
       </div>
@@ -207,13 +208,12 @@ function Card({ item, position }: { item: any; position: number }) {
           {item.notes.map((note: string, idx: number) => (
             <p
               key={idx}
-              className="text-[11px] font-mono text-white font-bold italic leading-none tracking-tight"
+              className="text-[11px] font-mono text-[var(--foreground)] font-bold italic leading-none tracking-tight"
             >
               {note}
             </p>
           ))}
-          {/* .text-white : Lisibilité maximale, opacité supprimée */}
-          <p className="text-[11px] font-medium text-white uppercase leading-relaxed max-w-[220px]">
+          <p className="text-[11px] font-medium text-[var(--foreground)] uppercase leading-relaxed max-w-[220px]">
             {item.detail}
           </p>
         </div>
@@ -222,7 +222,7 @@ function Card({ item, position }: { item: any; position: number }) {
       <div className="relative z-10 flex items-baseline gap-3 mt-6">
         <h2
           ref={counterRef}
-          className="text-7xl md:text-8xl font-black italic text-white tracking-tighter leading-none"
+          className="text-7xl md:text-8xl font-black italic text-[var(--foreground)] tracking-tighter leading-none"
         >
           0.0
         </h2>
@@ -231,12 +231,12 @@ function Card({ item, position }: { item: any; position: number }) {
         </span>
       </div>
 
-      <div className="relative z-10 flex justify-between items-end pt-6 border-t-2 border-white/10 mt-5">
+      <div className="relative z-10 flex justify-between items-end pt-6 border-t-2 border-[var(--border-color)] mt-5">
         <div className="flex flex-col">
           <span className="text-[8px] font-mono font-black uppercase tracking-widest text-emerald-500">
             Node_Ref
           </span>
-          <span className="text-[11px] font-mono font-bold text-white uppercase">
+          <span className="text-[11px] font-mono font-bold text-[var(--foreground)] uppercase">
             {item.ref}
           </span>
         </div>
