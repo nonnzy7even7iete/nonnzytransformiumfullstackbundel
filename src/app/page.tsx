@@ -121,7 +121,7 @@ export default function HomePage() {
         <div className="order-3 w-full max-w-[360px] h-[450px] shrink-0">
           <SideCard
             className="!w-full !max-w-none !min-w-0 h-full"
-            imageSrc="/zyy.png"
+            imageSrc="/public/IMG-20260228-WA0000.jpg"
             title="Zy recherche un financement orienté workspace & Workflow"
             description="Exécution de la logique métier et serveur en burn out."
             location="Anyama, Abidjan, Côte d'Ivoire"

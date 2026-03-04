@@ -4,6 +4,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { motion, animate } from "framer-motion";
 import { cn } from "@/lib/utils";
 
+// Tes données DATA restent inchangées (Respect absolu de tes strings)
 const DATA = [
   {
     id: 1,
@@ -79,7 +80,8 @@ export default function FluxCarousel() {
   if (!mounted) return null;
 
   return (
-    <div className="relative h-screen w-full bg-[var(--background)] overflow-hidden flex items-center justify-center font-sans">
+    <div className="relative h-screen w-full bg-[var(--background)] overflow-hidden flex items-center justify-center font-sans transition-colors duration-500">
+      {/* COUCHE DE DRAG : Invisible mais capte les gestes */}
       <motion.div
         drag="x"
         dragConstraints={{ left: 0, right: 0 }}
@@ -101,6 +103,7 @@ export default function FluxCarousel() {
         </motion.div>
       </div>
 
+      {/* INDICATEURS DE POSITION (PAGINATION) */}
       <div className="absolute bottom-10 flex gap-2">
         {DATA.map((_, i) => (
           <div
@@ -109,7 +112,7 @@ export default function FluxCarousel() {
               "h-[1px] transition-all duration-700",
               index === i
                 ? "w-10 bg-[var(--foreground)]"
-                : "w-2 bg-[var(--foreground)] opacity-10"
+                : "w-2 bg-[var(--foreground)] opacity-20" // Augmentation légère de l'opacité
             )}
           />
         ))}
@@ -121,6 +124,8 @@ export default function FluxCarousel() {
 function Card({ item, position }: { item: any; position: number }) {
   const isActive = position === 0;
   const counterRef = useRef<HTMLHeadingElement>(null);
+
+  // Calcul dynamique de l'offset pour la réactivité mobile
   const xOffset =
     typeof window !== "undefined" && window.innerWidth < 768
       ? window.innerWidth * 0.45
@@ -128,6 +133,7 @@ function Card({ item, position }: { item: any; position: number }) {
 
   useEffect(() => {
     if (isActive && counterRef.current) {
+      // .animate(start, end, options) : Fonction de Framer Motion pour animer des chiffres
       const controls = animate(0, item.value, {
         duration: 2.2,
         ease: [0.16, 1, 0.3, 1],
@@ -152,41 +158,41 @@ function Card({ item, position }: { item: any; position: number }) {
       transition={{ type: "spring", stiffness: 120, damping: 25 }}
       className={cn(
         "absolute w-[75vw] md:w-[420px] h-auto min-h-[300px] p-10 flex flex-col justify-between overflow-hidden transition-all duration-700",
-        "backdrop-blur-[25px] md:backdrop-blur-[40px] border border-[var(--foreground)]/5",
-        // Focus "Class" : Lueur interne diffuse et ombre portée élégante
+        // ÉLÉMENT CLÉ : Amélioration du flou et du contraste de bordure
+        "backdrop-blur-[30px] border border-[var(--foreground)]/10",
         isActive
-          ? "shadow-[0_40px_100px_rgba(0,0,0,0.6),inset_0_0_20px_rgba(16,185,129,0.05)] bg-[var(--foreground)]/[0.02]"
+          ? "shadow-[0_40px_100px_rgba(0,0,0,0.1),inset_0_0_20px_rgba(16,185,129,0.05)] bg-[var(--foreground)]/[0.03]"
           : "bg-transparent border-none"
       )}
       style={{ borderRadius: "var(--radius-vercel, 14px)" }}
     >
-      {/* INDICATEUR VERT : Positionné à 7px top/right du border */}
+      {/* INDICATEUR D'ÉTAT (Node Status) */}
       <div
         className={cn(
-          "absolute top-[7px] right-[7px] h-1.5 w-1.5 rounded-full transition-all duration-1000 ease-in-out",
+          "absolute top-[10px] right-[10px] h-2 w-2 rounded-full transition-all duration-1000",
           isActive
-            ? "bg-emerald-500 shadow-[0_0_10px_#10b981] opacity-100 scale-100"
-            : "bg-[var(--foreground)] opacity-0 scale-50"
+            ? "bg-emerald-500 shadow-[0_0_15px_#10b981] opacity-100"
+            : "bg-[var(--foreground)] opacity-0"
         )}
       />
 
-      {/* HEADER */}
-      <div className="relative z-10 flex justify-between items-start opacity-30 mt-[-5px]">
-        <p className="text-[10px] font-black tracking-[0.5em] uppercase text-[var(--foreground)]">
+      {/* HEADER : Opacité augmentée de 0.3 à 0.5 pour l'aide à la décision */}
+      <div className="relative z-10 flex justify-between items-start mt-[-5px]">
+        <p className="text-[11px] font-black tracking-[0.5em] uppercase text-[var(--foreground)] opacity-50">
           {item.label}
         </p>
       </div>
 
-      {/* CONTENT */}
+      {/* CONTENT : Titre plus marqué */}
       <div className="relative z-10 mt-6">
-        <h3 className="text-[11px] font-bold opacity-30 uppercase text-[var(--foreground)] tracking-[0.3em] mb-4">
+        <h3 className="text-[12px] font-black uppercase text-[var(--foreground)] tracking-[0.3em] mb-4 opacity-60">
           {item.title}
         </h3>
         <div className="flex flex-col gap-2">
           {item.notes.map((note: string, idx: number) => (
             <p
               key={idx}
-              className="text-[10px] font-mono text-[var(--foreground)] opacity-20 italic pl-4 border-l border-[var(--foreground)]/5"
+              className="text-[11px] font-mono text-[var(--foreground)] opacity-40 italic pl-4 border-l border-[var(--foreground)]/20"
             >
               {note}
             </p>
@@ -194,7 +200,7 @@ function Card({ item, position }: { item: any; position: number }) {
         </div>
       </div>
 
-      {/* COMPTEUR */}
+      {/* CHIFFRE CLÉ (Décisionnel) : L'élément le plus important */}
       <div className="relative z-10 flex items-baseline gap-2 mt-auto pt-10">
         <h2
           ref={counterRef}
@@ -202,13 +208,13 @@ function Card({ item, position }: { item: any; position: number }) {
         >
           0.0
         </h2>
-        <span className="text-2xl font-bold opacity-10 italic text-[var(--foreground)] uppercase">
+        <span className="text-2xl font-bold opacity-30 italic text-[var(--foreground)] uppercase">
           {item.unit}
         </span>
       </div>
 
-      {/* FOOTER */}
-      <div className="relative z-10 flex justify-between items-end pt-6 text-[9px] font-mono opacity-10 text-[var(--foreground)] tracking-[0.4em] uppercase">
+      {/* FOOTER : Discret mais lisible */}
+      <div className="relative z-10 flex justify-between items-end pt-6 text-[10px] font-mono opacity-30 text-[var(--foreground)] tracking-[0.4em] uppercase">
         <span>NODE_{item.id}</span>
         <span>V26</span>
       </div>
