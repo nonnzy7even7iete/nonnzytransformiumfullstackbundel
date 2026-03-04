@@ -4,6 +4,9 @@ import React, { useState, useEffect, useRef } from "react";
 import { motion, animate } from "framer-motion";
 import { cn } from "@/lib/utils";
 
+/**
+ * SOURCE DE DONNÉES SOUVERAINE : FRAZIER 2026
+ */
 const DATA_MINIERE_7 = [
   {
     id: "01",
@@ -92,6 +95,7 @@ export default function MiningDashboard() {
 
   const handleDragEnd = (_: any, info: any) => {
     const threshold = 30;
+    // .info.offset.x : Accès point-notation Framer Motion (Ne pas toucher)
     if (info.offset.x < -threshold && index < DATA_MINIERE_7.length - 1)
       setIndex(index + 1);
     else if (info.offset.x > threshold && index > 0) setIndex(index - 1);
@@ -100,8 +104,7 @@ export default function MiningDashboard() {
   if (!mounted) return null;
 
   return (
-    <div className="relative h-screen w-full bg-[#000000] overflow-hidden flex items-center justify-center font-sans">
-      {/* ZONE DE CAPTURE DRAG */}
+    <div className="relative h-screen w-full bg-[var(--background)] overflow-hidden flex items-center justify-center font-sans">
       <motion.div
         drag="x"
         dragConstraints={{ left: 0, right: 0 }}
@@ -114,7 +117,7 @@ export default function MiningDashboard() {
         style={{ perspective: "1200px" }}
       >
         <motion.div
-          className="relative flex items-center justify-center w-full max-w-[450px]"
+          className="relative flex items-center justify-center w-full max-w-[300px] md:max-w-[450px]"
           style={{ transformStyle: "preserve-3d" }}
         >
           {DATA_MINIERE_7.map((item, i) => (
@@ -123,14 +126,15 @@ export default function MiningDashboard() {
         </motion.div>
       </div>
 
-      {/* PAGINATION PUR ÉMERAUDE */}
-      <div className="absolute bottom-10 flex gap-3 z-[110]">
+      <div className="absolute bottom-10 flex gap-2 z-[110]">
         {DATA_MINIERE_7.map((_, i) => (
           <div
             key={i}
             className={cn(
-              "h-[2px] transition-all duration-500",
-              index === i ? "w-12 bg-[#10b981]" : "w-3 bg-white"
+              "h-[1.5px] transition-all duration-700",
+              index === i
+                ? "w-10 bg-emerald-500 shadow-[0_0_10px_#10b981]"
+                : "w-2 bg-white opacity-40" // .opacity-40 : Visibilité pure sur fond noir
             )}
           />
         ))}
@@ -142,15 +146,16 @@ export default function MiningDashboard() {
 function Card({ item, position }: { item: any; position: number }) {
   const isActive = position === 0;
   const counterRef = useRef<HTMLHeadingElement>(null);
+
   const xOffset =
     typeof window !== "undefined" && window.innerWidth < 768
-      ? window.innerWidth * 0.5
-      : 500;
+      ? window.innerWidth * 0.45
+      : 480;
 
   useEffect(() => {
     if (isActive && counterRef.current) {
       const controls = animate(0, item.value, {
-        duration: 1.5,
+        duration: 2.2,
         ease: [0.16, 1, 0.3, 1],
         onUpdate: (v) => {
           if (counterRef.current) counterRef.current.textContent = v.toFixed(1);
@@ -165,79 +170,77 @@ function Card({ item, position }: { item: any; position: number }) {
       initial={false}
       animate={{
         x: position * xOffset,
-        rotateY: position * -25,
-        z: isActive ? 0 : -500,
-        opacity: isActive ? 1 : 0.2, // Les cartes de côté sont là mais l'active est le focus pur
-        scale: isActive ? 1 : 0.7,
+        rotateY: position * -30,
+        z: isActive ? 0 : -400,
+        opacity: isActive ? 1 : 0.4,
+        scale: isActive ? 1 : 0.8,
       }}
-      transition={{ type: "spring", stiffness: 150, damping: 30 }}
+      transition={{ type: "spring", stiffness: 120, damping: 25 }}
       className={cn(
-        "absolute w-[90vw] md:w-[480px] h-auto min-h-[400px] p-10 flex flex-col justify-between overflow-hidden",
-        "border-2 transition-all duration-300",
+        "absolute w-[85vw] md:w-[450px] h-auto min-h-[380px] p-8 md:p-10 flex flex-col justify-between overflow-hidden transition-all duration-700",
+        "backdrop-blur-[35px] border",
         isActive
-          ? "bg-[#000000] border-[#10b981] shadow-[0_0_40px_rgba(16,185,129,0.2)]"
-          : "bg-black border-white/20"
+          ? "border-emerald-500 bg-black shadow-[0_0_50px_rgba(16,185,129,0.1)]"
+          : "border-white/10 bg-transparent"
       )}
+      style={{ borderRadius: "var(--radius-vercel, 12px)" }}
     >
-      {/* LED STATUS - PURE GREEN */}
       <div
         className={cn(
-          "absolute top-8 right-8 h-3 w-3 rounded-full",
-          isActive ? "bg-[#10b981] shadow-[0_0_15px_#10b981]" : "bg-white/10"
+          "absolute top-6 right-6 h-2 w-2 rounded-full transition-all duration-1000",
+          isActive ? "bg-emerald-500 shadow-[0_0_12px_#10b981]" : "bg-white/10"
         )}
       />
 
-      {/* HEADER : FULL VISIBILITY */}
-      <div className="relative z-10 flex flex-col gap-2">
-        <p className="text-[11px] font-black tracking-[0.5em] uppercase text-[#10b981]">
+      <div className="relative z-10 flex flex-col gap-1.5">
+        {/* .text-emerald-500 : Vert Pur sans opacité */}
+        <p className="text-[10px] font-black tracking-[0.4em] uppercase text-emerald-500">
           {item.status}
         </p>
-        <h3 className="text-lg font-black text-white tracking-widest uppercase leading-tight">
+        <h3 className="text-[14px] font-bold text-white tracking-[0.1em] uppercase leading-tight">
           {item.title}
         </h3>
       </div>
 
-      {/* BODY : ZERO OPACITY ON TEXT */}
-      <div className="relative z-10 mt-6 flex-1">
-        <div className="flex flex-col gap-4 border-l-2 border-[#10b981] pl-6 py-2">
+      <div className="relative z-10 mt-5 flex-1">
+        <div className="flex flex-col gap-3 border-l-2 border-emerald-500/50 pl-4 py-1">
           {item.notes.map((note: string, idx: number) => (
             <p
               key={idx}
-              className="text-[12px] font-bold font-mono text-white uppercase tracking-tight"
+              className="text-[11px] font-mono text-white font-bold italic leading-none tracking-tight"
             >
               {note}
             </p>
           ))}
-          <p className="text-[11px] font-bold text-white uppercase leading-relaxed max-w-[250px]">
+          {/* .text-white : Lisibilité maximale, opacité supprimée */}
+          <p className="text-[11px] font-medium text-white uppercase leading-relaxed max-w-[220px]">
             {item.detail}
           </p>
         </div>
       </div>
 
-      {/* COMPTEUR : PURE WHITE ON BLACK */}
-      <div className="relative z-10 flex items-baseline gap-4 mt-8">
+      <div className="relative z-10 flex items-baseline gap-3 mt-6">
         <h2
           ref={counterRef}
           className="text-7xl md:text-8xl font-black italic text-white tracking-tighter leading-none"
         >
           0.0
         </h2>
-        <span className="text-3xl font-black italic text-[#10b981] uppercase">
+        <span className="text-2xl font-black italic text-emerald-500 uppercase tracking-tighter">
           {item.unit}
         </span>
       </div>
 
-      {/* FOOTER : BOLD CONTRAST */}
-      <div className="relative z-10 flex justify-between items-end pt-8 border-t-2 border-white/10 mt-6">
+      <div className="relative z-10 flex justify-between items-end pt-6 border-t-2 border-white/10 mt-5">
         <div className="flex flex-col">
-          <span className="text-[8px] font-black text-[#10b981] uppercase tracking-widest">
-            System_Reference
+          <span className="text-[8px] font-mono font-black uppercase tracking-widest text-emerald-500">
+            Node_Ref
           </span>
-          <span className="text-[11px] font-bold text-white uppercase">
+          <span className="text-[11px] font-mono font-bold text-white uppercase">
             {item.ref}
           </span>
         </div>
-        <span className="text-sm font-black italic text-[#10b981]">
+        <span className="text-[12px] font-black italic text-emerald-500">
           {item.progression}
         </span>
       </div>
