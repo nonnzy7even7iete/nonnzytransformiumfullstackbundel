@@ -1,12 +1,12 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
-import { motion, animate, AnimatePresence } from "framer-motion";
+import { motion, animate } from "framer-motion";
 import { cn } from "@/lib/utils";
-import { TextGenerateEffect } from "@/components/ui/text-generate-effect";
 
 /**
- * DATA_MINIERE_7 : Base de données immuable.
+ * DATA_MINIERE_7 : Intégration de tes données souveraines
+ * dans le moule CSS FluxCarousel.
  */
 const DATA_MINIERE_7 = [
   {
@@ -85,14 +85,11 @@ export default function MiningDashboard() {
   const [index, setIndex] = useState(0);
   const [mounted, setMounted] = useState(false);
 
-  const conversionText =
-    "CÔTE D'IVOIRE : L'ÉPICENTRE DU ROI GARANTI . INVESTIR AILLEURS EST UNE ERREUR STRATÉGIQUE .";
-
   useEffect(() => setMounted(true), []);
 
   const handleDragEnd = (_: any, info: any) => {
-    const threshold = 50;
-    // .info.offset.x : Accès point pour piloter la navigation du terminal
+    const threshold = 30;
+    // .info.offset.x : Accès point pour piloter la navigation du carrousel
     if (info.offset.x < -threshold && index < DATA_MINIERE_7.length - 1)
       setIndex(index + 1);
     else if (info.offset.x > threshold && index > 0) setIndex(index - 1);
@@ -101,65 +98,62 @@ export default function MiningDashboard() {
   if (!mounted) return null;
 
   return (
-    <main className="relative min-h-screen bg-[var(--background)] overflow-hidden flex flex-col items-center justify-between py-20 transition-all">
-      <section className="relative z-[110] w-full max-w-5xl px-6">
-        <p className="text-[10px] font-black tracking-[0.5em] text-center uppercase opacity-30 mb-6 text-emerald-500">
-          Nonnzytransformium High-Stakes Analytics
-        </p>
-        <TextGenerateEffect
-          words={conversionText}
-          className="text-3xl md:text-5xl lg:text-6xl font-black italic uppercase tracking-tighter text-center leading-[0.9]"
-        />
-      </section>
-
+    <div className="relative h-screen w-full bg-[var(--background)] overflow-hidden flex items-center justify-center font-sans">
+      {/* ZONE DE CAPTURE DRAG : Couvre tout l'écran comme ton original */}
       <motion.div
         drag="x"
         dragConstraints={{ left: 0, right: 0 }}
         onDragEnd={handleDragEnd}
-        className="absolute inset-0 z-[100] cursor-col-resize"
+        className="absolute inset-0 z-[100] cursor-grab active:cursor-grabbing"
       />
 
-      {/* RESTAURATION DE LA PERSPECTIVE 3D */}
       <div
-        className="relative w-full h-[55vh] flex items-center justify-center"
-        style={{ perspective: "1200px" }} // Profondeur de champ restaurée
+        className="relative w-full h-full flex items-center justify-center"
+        style={{ perspective: "1200px" }}
       >
-        <AnimatePresence mode="popLayout">
-          {DATA_MINIERE_7.map(
-            (item, i) => i === index && <DataCard key={item.id} item={item} />
-          )}
-        </AnimatePresence>
+        <motion.div
+          className="relative flex items-center justify-center w-full max-w-[300px] md:max-w-[450px]"
+          style={{ transformStyle: "preserve-3d" }}
+        >
+          {DATA_MINIERE_7.map((item, i) => (
+            <Card key={item.id} item={item} position={i - index} />
+          ))}
+        </motion.div>
       </div>
 
-      <footer className="relative z-[110] flex flex-col items-center gap-8 w-full">
-        <div className="flex gap-2">
-          {DATA_MINIERE_7.map((_, i) => (
-            <div
-              key={i}
-              className={cn(
-                "h-[1px] transition-all duration-700",
-                i === index
-                  ? "w-12 bg-emerald-500 shadow-[0_0_10px_#10b981]"
-                  : "w-3 bg-white/10"
-              )}
-            />
-          ))}
-        </div>
-        <div className="text-[9px] font-mono opacity-20 tracking-[0.4em] uppercase text-white">
-          AUDIT_V26_CIV_CORE
-        </div>
-      </footer>
-    </main>
+      {/* PAGINATION BASSE */}
+      <div className="absolute bottom-10 flex gap-2">
+        {DATA_MINIERE_7.map((_, i) => (
+          <div
+            key={i}
+            className={cn(
+              "h-[1px] transition-all duration-700",
+              index === i
+                ? "w-10 bg-[var(--foreground)]"
+                : "w-2 bg-[var(--foreground)] opacity-10"
+            )}
+          />
+        ))}
+      </div>
+    </div>
   );
 }
 
-function DataCard({ item }: { item: any }) {
+function Card({ item, position }: { item: any; position: number }) {
+  const isActive = position === 0;
   const counterRef = useRef<HTMLHeadingElement>(null);
 
+  // .window.innerWidth : Calcul du décalage horizontal pour l'effet galerie
+  const xOffset =
+    typeof window !== "undefined" && window.innerWidth < 768
+      ? window.innerWidth * 0.45
+      : 480;
+
   useEffect(() => {
-    if (counterRef.current) {
+    if (isActive && counterRef.current) {
+      // .animate() : Animation de l'odomètre point-notation
       const controls = animate(0, item.value, {
-        duration: 1.5,
+        duration: 2.2,
         ease: [0.16, 1, 0.3, 1],
         onUpdate: (v) => {
           if (counterRef.current) counterRef.current.textContent = v.toFixed(1);
@@ -167,80 +161,78 @@ function DataCard({ item }: { item: any }) {
       });
       return () => controls.stop();
     }
-  }, [item.value]);
+  }, [item.value, isActive]);
 
   return (
     <motion.div
-      // RESTAURATION DU ROTATEY : L'inclinaison qui donne la perspective
-      initial={{ opacity: 0, x: 100, rotateY: 25 }}
-      animate={{ opacity: 1, x: 0, rotateY: 0 }}
-      exit={{ opacity: 0, x: -100, rotateY: -25 }}
-      transition={{ type: "spring", stiffness: 100, damping: 24 }}
-      className="w-[90vw] md:w-[620px] bg-black/40 border border-white/10 p-10 md:p-14 backdrop-blur-3xl relative"
-      style={{
-        boxShadow: "0 25px 50px -12px rgba(0,0,0,0.5)",
-        borderRadius: "2px",
-        transformStyle: "preserve-3d", // Important pour la hiérarchie 3D
+      initial={false}
+      animate={{
+        x: position * xOffset,
+        rotateY: position * -30,
+        z: isActive ? 0 : -400,
+        opacity: isActive ? 1 : 0.4,
+        scale: isActive ? 1 : 0.8,
       }}
+      transition={{ type: "spring", stiffness: 120, damping: 25 }}
+      className={cn(
+        "absolute w-[75vw] md:w-[420px] h-auto min-h-[300px] p-10 flex flex-col justify-between overflow-hidden transition-all duration-700",
+        "backdrop-blur-[25px] md:backdrop-blur-[40px] border border-[var(--foreground)]/5",
+        // Focus "Class" : Réplication exacte de ton système de lueur
+        isActive
+          ? "shadow-[0_40px_100px_rgba(0,0,0,0.6),inset_0_0_20px_rgba(16,185,129,0.05)] bg-[var(--foreground)]/[0.02]"
+          : "bg-transparent border-none"
+      )}
+      style={{ borderRadius: "var(--radius-vercel, 14px)" }}
     >
-      <div className="absolute top-0 right-0 p-10 flex flex-col items-end">
-        <span className="text-[8px] font-mono opacity-30 uppercase tracking-widest text-white mb-1">
-          PROGR.
-        </span>
-        <span className="text-sm font-black text-emerald-500 font-mono italic">
-          {item.progression}
-        </span>
-      </div>
+      {/* INDICATEUR VERT : 7px top/right du border */}
+      <div
+        className={cn(
+          "absolute top-[7px] right-[7px] h-1.5 w-1.5 rounded-full transition-all duration-1000 ease-in-out",
+          isActive
+            ? "bg-emerald-500 shadow-[0_0_10px_#10b981] opacity-100 scale-100"
+            : "bg-[var(--foreground)] opacity-0 scale-50"
+        )}
+      />
 
-      <div className="flex justify-between items-center mb-16 border-b border-white/5 pb-8">
-        <div className="flex items-center gap-3">
-          <div className="w-1.5 h-1.5 bg-emerald-500 animate-pulse rounded-full" />
-          <span className="font-mono text-[9px] tracking-[0.5em] opacity-40 uppercase text-white">
-            {item.ref}
-          </span>
-        </div>
-        <span className="font-mono text-[9px] px-3 py-1 bg-emerald-500/10 border border-emerald-500/20 text-emerald-500 tracking-widest uppercase italic">
+      {/* HEADER CARD : STATUS */}
+      <div className="relative z-10 flex justify-between items-start opacity-30 mt-[-5px]">
+        <p className="text-[10px] font-black tracking-[0.5em] uppercase text-[var(--foreground)]">
           {item.status}
-        </span>
+        </p>
       </div>
 
-      <div className="space-y-4">
-        <h3 className="font-black text-2xl md:text-3xl tracking-[0.1em] uppercase italic text-white/90">
+      {/* CONTENT : DATA AUDIT */}
+      <div className="relative z-10 mt-6">
+        <h3 className="text-[11px] font-bold opacity-30 uppercase text-[var(--foreground)] tracking-[0.3em] mb-4">
           {item.title}
         </h3>
-        <p className="font-mono text-[10px] opacity-20 text-white tracking-[0.4em] uppercase">
-          {item.detail}
-        </p>
-        <div className="flex items-baseline gap-4 py-8">
-          <h2
-            ref={counterRef}
-            className="text-8xl md:text-[11rem] font-black tracking-tighter leading-none text-white"
-          >
-            0.0
-          </h2>
-          <span className="text-2xl md:text-4xl font-light italic opacity-20 text-emerald-500 uppercase">
-            {item.unit}
-          </span>
+        <div className="flex flex-col gap-2">
+          <p className="text-[10px] font-mono text-[var(--foreground)] opacity-20 italic pl-4 border-l border-[var(--foreground)]/5">
+            {item.detail}
+          </p>
+          <p className="text-[10px] font-mono text-[var(--foreground)] opacity-20 italic pl-4 border-l border-[var(--foreground)]/5">
+            {item.ref}
+          </p>
         </div>
       </div>
 
-      <div className="mt-12 grid grid-cols-2 gap-8 pt-8 border-t border-white/5">
-        <div className="space-y-1">
-          <p className="text-[8px] font-mono opacity-20 uppercase tracking-[0.3em] text-white">
-            Validation
-          </p>
-          <p className="text-[10px] font-mono font-black uppercase text-white/60">
-            FRAZIER_CERT_2026
-          </p>
-        </div>
-        <div className="space-y-1 text-right">
-          <p className="text-[8px] font-mono opacity-20 uppercase tracking-[0.3em] text-white">
-            Source
-          </p>
-          <p className="text-[10px] font-mono font-black uppercase text-white/60">
-            NONNZY_#0{item.id}
-          </p>
-        </div>
+      {/* COMPTEUR ROI */}
+      <div className="relative z-10 flex items-baseline gap-2 mt-auto pt-10">
+        <h2
+          ref={counterRef}
+          className="text-6xl md:text-8xl font-black italic text-[var(--foreground)] tracking-tighter leading-none"
+        >
+          0.0
+        </h2>
+        <span className="text-2xl font-bold opacity-10 italic text-[var(--foreground)] uppercase">
+          {item.unit}
+        </span>
+      </div>
+
+      {/* FOOTER CARD */}
+      <div className="relative z-10 flex justify-between items-end pt-6 text-[9px] font-mono opacity-10 text-[var(--foreground)] tracking-[0.4em] uppercase">
+        <span>NONNZY_NODE_#0{item.id}</span>
+        <span>V26</span>
       </div>
     </motion.div>
   );
