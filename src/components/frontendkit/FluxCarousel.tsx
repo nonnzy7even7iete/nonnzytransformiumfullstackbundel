@@ -5,6 +5,9 @@ import { motion, animate, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { TextGenerateEffect } from "@/components/ui/text-generate-effect";
 
+/**
+ * DATA_MINIERE_7 : Base de données immuable.
+ */
 const DATA_MINIERE_7 = [
   {
     id: "01",
@@ -78,13 +81,10 @@ const DATA_MINIERE_7 = [
   },
 ];
 
-/**
- * COMPOSANT HARMONISÉ : MiningDashboard
- * Le nom du fichier et de l'export correspondent maintenant parfaitement.
- */
 export default function MiningDashboard() {
   const [index, setIndex] = useState(0);
   const [mounted, setMounted] = useState(false);
+
   const conversionText =
     "CÔTE D'IVOIRE : L'ÉPICENTRE DU ROI GARANTI . INVESTIR AILLEURS EST UNE ERREUR STRATÉGIQUE .";
 
@@ -92,7 +92,7 @@ export default function MiningDashboard() {
 
   const handleDragEnd = (_: any, info: any) => {
     const threshold = 50;
-    // .info.offset.x : Accès point pour piloter la navigation du carrousel
+    // .info.offset.x : Accès point pour piloter la navigation du terminal
     if (info.offset.x < -threshold && index < DATA_MINIERE_7.length - 1)
       setIndex(index + 1);
     else if (info.offset.x > threshold && index > 0) setIndex(index - 1);
@@ -119,9 +119,10 @@ export default function MiningDashboard() {
         className="absolute inset-0 z-[100] cursor-col-resize"
       />
 
+      {/* RESTAURATION DE LA PERSPECTIVE 3D */}
       <div
         className="relative w-full h-[55vh] flex items-center justify-center"
-        style={{ perspective: "2000px" }}
+        style={{ perspective: "1200px" }} // Profondeur de champ restaurée
       >
         <AnimatePresence mode="popLayout">
           {DATA_MINIERE_7.map(
@@ -170,18 +171,20 @@ function DataCard({ item }: { item: any }) {
 
   return (
     <motion.div
-      initial={{ opacity: 0, x: 100, rotateY: 20 }}
+      // RESTAURATION DU ROTATEY : L'inclinaison qui donne la perspective
+      initial={{ opacity: 0, x: 100, rotateY: 25 }}
       animate={{ opacity: 1, x: 0, rotateY: 0 }}
-      exit={{ opacity: 0, x: -100, rotateY: -20 }}
+      exit={{ opacity: 0, x: -100, rotateY: -25 }}
       transition={{ type: "spring", stiffness: 100, damping: 24 }}
       className="w-[90vw] md:w-[620px] bg-black/40 border border-white/10 p-10 md:p-14 backdrop-blur-3xl relative"
       style={{
         boxShadow: "0 25px 50px -12px rgba(0,0,0,0.5)",
         borderRadius: "2px",
+        transformStyle: "preserve-3d", // Important pour la hiérarchie 3D
       }}
     >
       <div className="absolute top-0 right-0 p-10 flex flex-col items-end">
-        <span className="text-[8px] font-mono opacity-30 uppercase tracking-widest text-white">
+        <span className="text-[8px] font-mono opacity-30 uppercase tracking-widest text-white mb-1">
           PROGR.
         </span>
         <span className="text-sm font-black text-emerald-500 font-mono italic">
@@ -189,7 +192,7 @@ function DataCard({ item }: { item: any }) {
         </span>
       </div>
 
-      <div className="flex justify-between items-center mb-16 border-b border-white/5 pb-6">
+      <div className="flex justify-between items-center mb-16 border-b border-white/5 pb-8">
         <div className="flex items-center gap-3">
           <div className="w-1.5 h-1.5 bg-emerald-500 animate-pulse rounded-full" />
           <span className="font-mono text-[9px] tracking-[0.5em] opacity-40 uppercase text-white">
