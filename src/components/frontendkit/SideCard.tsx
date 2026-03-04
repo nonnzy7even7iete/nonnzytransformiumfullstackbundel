@@ -21,7 +21,7 @@ export default function SideCard({
   return (
     <div
       className={cn(
-        /* Sizing conforme à tes besoins Desktop */
+        /* Sizing conforme Ã  tes besoins Desktop */
         "flex flex-col h-[450px] w-full min-w-[300px] max-w-[350px] overflow-hidden transition-all duration-500",
         /* Switch radical vers tes variables CSS */
         "bg-[var(--card-bg)] backdrop-blur-3xl border border-[var(--border-color)] rounded-[var(--radius-vercel)] shadow-2xl group",
@@ -31,21 +31,24 @@ export default function SideCard({
     >
       {/* Container Image - Protection ratio et border-radius Vercel */}
       <div className="relative w-full h-[220px] p-2">
-        <div className="relative w-full h-full overflow-hidden rounded-[var(--radius-vercel)] bg-[var(--accents-1)]">
+        {/* bg-black : Ajout du fond noir pour combler les vides si l'image est entiÃ¨re */}
+        <div className="relative w-full h-full overflow-hidden rounded-[var(--radius-vercel)] bg-black">
           <Image
             src={imageSrc}
             alt={title}
             fill
             sizes="(max-width: 768px) 100vw, 350px"
-            className="object-cover transition-transform duration-700 group-hover:scale-105"
+            /* .object-contain : Affiche l'image ENTIÃˆRE sans la rogner (Notation point).
+               L'image s'adapte pour tenir totalement dans le cadre de 220px. */
+            className="object-contain transition-transform duration-700 group-hover:scale-105"
             priority
           />
-          {/* Overlay subtil pour l'unité visuelle */}
-          <div className="absolute inset-0 bg-gradient-to-t from-[var(--background)]/20 to-transparent" />
+          {/* Overlay subtil pour l'unitÃ© visuelle */}
+          <div className="absolute inset-0 bg-gradient-to-t from-[var(--background)]/20 to-transparent pointer-events-none" />
         </div>
       </div>
 
-      {/* Zone Texte - Alignée sur la typographie Ivory Coast */}
+      {/* Zone Texte - AlignÃ©e sur la typographie Ivory Coast */}
       <div className="flex flex-col flex-1 justify-between p-6 text-center">
         <div className="flex flex-col gap-4">
           <h2 className="text-lg font-black text-[var(--foreground)] leading-[1.1] uppercase tracking-[0.15em] italic">
