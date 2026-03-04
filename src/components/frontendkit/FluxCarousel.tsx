@@ -95,6 +95,7 @@ export default function MiningDashboard() {
 
   const handleDragEnd = (_: any, info: any) => {
     const threshold = 30;
+    // .info.offset.x : Accès point-notation pour les vecteurs de mouvement
     if (info.offset.x < -threshold && index < DATA_MINIERE_7.length - 1)
       setIndex(index + 1);
     else if (info.offset.x > threshold && index > 0) setIndex(index - 1);
@@ -157,6 +158,7 @@ function Card({ item, position }: { item: any; position: number }) {
         duration: 2.2,
         ease: [0.16, 1, 0.3, 1],
         onUpdate: (v) => {
+          // .current.textContent : Mise à jour directe pour éviter les re-renders inutiles
           if (counterRef.current) counterRef.current.textContent = v.toFixed(1);
         },
       });
@@ -177,13 +179,12 @@ function Card({ item, position }: { item: any; position: number }) {
       transition={{ type: "spring", stiffness: 120, damping: 25 }}
       className={cn(
         "absolute w-[85vw] md:w-[450px] h-auto min-h-[380px] p-8 md:p-10 flex flex-col justify-between overflow-hidden transition-all duration-700",
-        /* Utilisation de var(--border-color) et var(--card-bg) pour la rÃ©activitÃ© */
         "backdrop-blur-[35px] border-2",
         isActive
-          ? "border-emerald-500 bg-[var(--card-bg)] shadow-[0_40px_100px_rgba(0,0,0,0.2)]"
+          ? "border-emerald-500/30 bg-[var(--card-bg)] shadow-[0_40px_100px_rgba(0,0,0,0.1)]"
           : "border-[var(--border-color)] bg-transparent"
       )}
-      style={{ borderRadius: "var(--radius-vercel, 12px)" }}
+      style={{ borderRadius: "var(--radius-vercel, 14px)" }} // .radius-vercel : Respect strict de tes 14px
     >
       <div
         className={cn(
@@ -204,7 +205,7 @@ function Card({ item, position }: { item: any; position: number }) {
       </div>
 
       <div className="relative z-10 mt-5 flex-1">
-        <div className="flex flex-col gap-3 border-l-2 border-emerald-500/50 pl-4 py-1">
+        <div className="flex flex-col gap-3 border-l-2 border-emerald-500/30 pl-4 py-1">
           {item.notes.map((note: string, idx: number) => (
             <p
               key={idx}
