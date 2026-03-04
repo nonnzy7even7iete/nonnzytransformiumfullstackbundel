@@ -1,31 +1,33 @@
 "use client";
 
 import React from "react";
-// Importation chirurgicale : La Navbar est dans le dossier frontendkit
-import NavbarFront from "@/components/frontendkit/NavbarFront";
-import FluxCarousel from "@/components/frontendkit/FluxCarousel";
+// Importation des composants (Vérifie bien tes chemins d'accès)
+import Navbarfront from "@/components/frontendkit/NavbarFront";
+import MiningDashboard from "@/components/frontendkit/FluxCarousel";
 
 /**
- * COMPOSANT : Home
- * Structure réactive pilotée par les variables CSS (Design System Nonnzytransformium)
+ * PAGE PRINCIPALE : AUDIT STRATÉGIQUE 2026
+ * Ce fichier orchestre la Navbar et le Dashboard de données sans surcharge de props.
  */
-export default function Home() {
+export default function logiqueMetierEtServeur() {
   return (
-    // 'relative' : nécessaire pour que la Navbar (fixed) se positionne par rapport au viewport
-    // 'transition-colors' : assure la fluidité lors du changement Dark/Light
-    <main
-      className="min-h-screen relative transition-colors duration-500"
-      style={{ backgroundColor: "var(--background)" }}
-    >
-      {/* NAVBARFRONT : Appelée depuis frontendkit.
-        Elle survolera le FluxCarousel grâce à son z-index interne.
+    <div className="relative min-h-screen bg-[var(--background)] flex flex-col">
+      {/* NAVBAR : Appel direct. 
+        Positionnée en absolute ou fixed selon ton Design System pour ne pas gêner le flux 3D.
       */}
-      <NavbarFront />
+      <Navbarfront />
 
-      {/* FLUXCAROUSEL : 
-        Ton carrousel data-driven qui occupe le reste de l'espace.
+      {/* MINING DASHBOARD : Le terminal autonome.
+        Contient déjà sa propre logique de données, de drag et de conversion.
       */}
-      <FluxCarousel />
-    </main>
+      <main className="flex-1 w-full">
+        <MiningDashboard />
+      </main>
+
+      {/* OVERLAY DÉCORATIF (Optionnel) 
+        Pour renforcer le sentiment de "Terminal Sécurisé"
+      */}
+      <div className="pointer-events-none fixed inset-0 z-[120] border-[1px] border-white/5 m-4 md:m-8 opacity-20" />
+    </div>
   );
 }
