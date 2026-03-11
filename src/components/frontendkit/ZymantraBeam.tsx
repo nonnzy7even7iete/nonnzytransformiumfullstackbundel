@@ -12,7 +12,7 @@ import {
   useScroll,
   useSpring,
   useMotionValue,
-  HTMLMotionProps,
+  useInView,
 } from "framer-motion";
 import { cn } from "@/lib/utils";
 
@@ -22,6 +22,47 @@ import { TextGenerateEffect } from "@/components/ui/text-generate-effect";
 const MouseEnterContext = createContext<
   [boolean, React.Dispatch<React.SetStateAction<boolean>>] | undefined
 >(undefined);
+
+// --- CONTAINER AVEC LOGIQUE DE FOCUS AU SCROLL ---
+const SectionWrapper = ({
+  children,
+  index,
+  activeIdx,
+  setActiveIdx,
+}: {
+  children: React.ReactNode;
+  index: number;
+  activeIdx: number | null;
+  setActiveIdx: (idx: number | null) => void;
+}) => {
+  const ref = useRef(null);
+  // isInView s'active quand 40% de la section est visible
+  const isInView = useInView(ref, { amount: 0.4 });
+
+  // Déterminer si cette section doit être floue
+  // Priorité 1 : Le survol (Hover)
+  // Priorité 2 : Le scroll (Viseur)
+  const isBlurred =
+    (activeIdx !== null && activeIdx !== index) ||
+    (activeIdx === null && !isInView);
+
+  return (
+    <motion.div
+      ref={ref}
+      onMouseEnter={() => setActiveIdx(index)}
+      onMouseLeave={() => setActiveIdx(null)}
+      animate={{
+        opacity: isBlurred ? 0.3 : 1,
+        filter: isBlurred ? "blur(8px)" : "blur(0px)",
+        scale: isBlurred ? 0.98 : 1,
+      }}
+      transition={{ duration: 0.4, ease: "easeOut" }}
+      className="flex justify-center transition-all"
+    >
+      {children}
+    </motion.div>
+  );
+};
 
 const CardContainer = ({
   children,
@@ -148,6 +189,7 @@ export default function ZymantraBeam() {
         onClose={() => setLoading(false)}
       />
 
+      {/* BEAM */}
       <div className="absolute left-6 md:left-20 top-0 h-full w-[1px] hidden sm:block opacity-30 bg-border">
         <motion.div
           style={{ height: beamY }}
@@ -157,28 +199,23 @@ export default function ZymantraBeam() {
 
       <div className="max-w-6xl mx-auto flex flex-col gap-32 relative z-10 px-6">
         {ZYMANTRA_CONTENT.map((item, index) => {
-          const isInactive = activeIdx !== null && activeIdx !== index;
           return (
-            <motion.div
+            <SectionWrapper
               key={index}
-              onMouseEnter={() => setActiveIdx(index)}
-              onMouseLeave={() => setActiveIdx(null)}
-              animate={{
-                opacity: isInactive ? 0.3 : 1,
-                filter: isInactive ? "blur(10px)" : "none",
-              }}
-              className="flex justify-center"
+              index={index}
+              activeIdx={activeIdx}
+              setActiveIdx={setActiveIdx}
             >
               <CardContainer>
                 <div
                   className={cn(
-                    "flex flex-col lg:flex-row items-center gap-12 p-1 w-[95vw] lg:w-[1000px] transition-all duration-500",
-                    "bg-card border border-[#e5e5e5] dark:border-[#171717]",
+                    "flex flex-col lg:flex-row items-stretch gap-12 p-1 w-[95vw] lg:w-[1000px] transition-all duration-500",
+                    // BORDER GRIS FONCÉ POUR LES DEUX MODES
+                    "bg-card border border-[#262626] dark:border-[#171717]",
                     index % 2 !== 0 && "lg:flex-row-reverse"
                   )}
                   style={{ borderRadius: "var(--radius-vercel-zy)" }}
                 >
-                  {/* IMAGE - CONSISTANTE */}
                   <CardItem
                     translateZ={40}
                     className="w-full lg:w-1/2 aspect-square md:aspect-[4/5] overflow-hidden bg-muted m-1"
@@ -193,8 +230,7 @@ export default function ZymantraBeam() {
                     />
                   </CardItem>
 
-                  {/* CONTENU - ALIGNEMENT FIXE À GAUCHE POUR LA LISIBILITÉ */}
-                  <div className="flex-1 flex flex-col items-start text-left space-y-6 p-10 lg:p-4">
+                  <div className="flex-1 flex flex-col items-start justify-center text-left space-y-6 p-10 lg:p-8">
                     <CardItem
                       translateZ={20}
                       className="text-emerald-500 font-black tracking-[0.5em] text-[10px] uppercase"
@@ -214,10 +250,7 @@ export default function ZymantraBeam() {
                       {item.title}
                     </CardItem>
 
-                    <CardItem
-                      translateZ={30}
-                      className="min-h-[80px] flex items-start"
-                    >
+                    <CardItem translateZ={30} className="flex items-start">
                       <TextGenerateEffect
                         words={item.description}
                         className={cn(
@@ -233,13 +266,7 @@ export default function ZymantraBeam() {
                       <button
                         onClick={() => setLoading(true)}
                         className={cn(
-                          "px-10 py-4 rounded-xl text-[9px] font-black uppercase tracking-widest transition-all active:scale-95",
-                          "bg-card text-muted-foreground border border-border/40",
-                          "shadow-[5px_5px_10px_rgba(0,0,0,0.06),-5px_-5px_10px_rgba(255,255,255,0.8)]",
-                          "dark:shadow-[6px_6px_12px_rgba(0,0,0,0.5),-4px_-4px_12px_rgba(255,255,255,0.01)]",
-                          "hover:shadow-[inset_4px_4px_8px_rgba(0,0,0,0.06),inset_-4px_-4px_8px_rgba(255,255,255,0.8)]",
-                          "dark:hover:shadow-[inset_4px_4px_8px_rgba(0,0,0,0.4),inset_-4px_-4px_8px_rgba(255,255,255,0.01)]",
-                          "hover:text-emerald-500 transition-all"
+                          "px-10 py-4 rounded-xl text-[9px] font-black uppercase tracking-widest transition-all active:scale-95 bg-card text-muted-foreground border border-border/40 shadow-[5px_5px_10px_rgba(0,0,0,0.06),-5px_-5px_10px_rgba(255,255,255,0.8)] dark:shadow-[6px_6px_12px_rgba(0,0,0,0.5),-4px_-4px_12px_rgba(255,255,255,0.01)] hover:text-emerald-500"
                         )}
                       >
                         Lancer l'algorithme
@@ -248,7 +275,7 @@ export default function ZymantraBeam() {
                   </div>
                 </div>
               </CardContainer>
-            </motion.div>
+            </SectionWrapper>
           );
         })}
       </div>
