@@ -19,11 +19,11 @@ import { cn } from "@/lib/utils";
 import { MultiStepLoader } from "@/components/ui/multi-step-loader";
 import { TextGenerateEffect } from "@/components/ui/text-generate-effect";
 
+// --- CONTEXTE POUR L'EFFET 3D ---
 const MouseEnterContext = createContext<
   [boolean, React.Dispatch<React.SetStateAction<boolean>>] | undefined
 >(undefined);
 
-// --- COMPOSANTS DE STRUCTURE ---
 const CardContainer = ({
   children,
   className,
@@ -119,15 +119,17 @@ export default function ZymantraBeam() {
       badge: "PROFIL",
       title: "DATA DRIVEN ARCHITECT",
       description:
-        "Chaka Junior Diané. Software Engineer & Data Analyst. Conception de systèmes algorithmiques orientés data-driven. Modélisation et structuration des dynamiques de données.",
+        "CHAKA JUNIOR DIANÉ. SOFTWARE ENGINEER & DATA ANALYST. CONCEPTION DE SYSTÈMES ALGORITHMIQUES ORIENTÉS DATA-DRIVEN. MODÉLISATION ET STRUCTURATION DES DYNAMIQUES DE DONNÉES.",
       image: "/IMG-20260311-WA0001.jpg",
+      isUppercase: true,
     },
     {
       badge: "P-R-S",
-      title: "ALGO ZY RADAR",
+      title: "Algo Zy Radar",
       description:
         "Anyama : première commune dotée d'un radar économique synchronisant ressources et réalités.",
       image: "/IMG-20260116-WA0000.jpg",
+      isUppercase: false,
     },
   ];
 
@@ -139,18 +141,19 @@ export default function ZymantraBeam() {
       <MultiStepLoader
         loadingStates={[
           { text: "Synchronisation..." },
-          { text: "Analyse..." },
-          { text: "Ready" },
+          { text: "Analyse Flux..." },
+          { text: "Calcul Zy..." },
         ]}
         loading={loading}
         duration={1000}
         onClose={() => setLoading(false)}
       />
 
-      <div className="absolute left-6 md:left-12 top-0 h-full w-[1px] hidden sm:block opacity-20 bg-border">
+      {/* TRAIT DE GUIDAGE (BEAM) À GAUCHE */}
+      <div className="absolute left-6 md:left-20 top-0 h-full w-[1px] hidden sm:block opacity-30 bg-border">
         <motion.div
           style={{ height: beamY }}
-          className="absolute top-0 w-full bg-primary shadow-[0_0_15px_hsl(var(--primary))]"
+          className="absolute top-0 w-full bg-primary shadow-[0_0_10px_hsl(var(--primary))]"
         />
       </div>
 
@@ -172,12 +175,12 @@ export default function ZymantraBeam() {
                 <div
                   className={cn(
                     "flex flex-col lg:flex-row items-center gap-12 p-8 md:p-12 w-[95vw] lg:w-[1000px] transition-all duration-500",
-                    "bg-card border border-[#262626] dark:border-[#262626] border-opacity-50",
+                    "bg-card border border-[#262626] border-opacity-40",
                     index % 2 !== 0 && "lg:flex-row-reverse"
                   )}
                   style={{ borderRadius: "var(--radius-vercel-zy)" }}
                 >
-                  {/* IMAGE - CADRAGE VISAGE OPTIMISÉ */}
+                  {/* IMAGE AVEC CADRAGE HAUT (VISAGE) */}
                   <CardItem
                     translateZ={40}
                     className="w-full lg:w-1/2 aspect-square md:aspect-[4/5] overflow-hidden bg-muted"
@@ -192,16 +195,23 @@ export default function ZymantraBeam() {
                     />
                   </CardItem>
 
+                  {/* TEXTE RÉACTIF */}
                   <div className="flex-1 flex flex-col items-center lg:items-start text-center lg:text-left space-y-6">
                     <CardItem
                       translateZ={20}
-                      className="text-primary text-[10px] font-black tracking-[0.5em] uppercase opacity-70"
+                      className="text-emerald-500 font-black tracking-[0.5em] text-[10px] uppercase"
                     >
                       {item.badge}
                     </CardItem>
+
                     <CardItem
                       translateZ={50}
-                      className="text-3xl md:text-5xl font-black italic uppercase leading-none text-foreground tracking-tighter"
+                      className={cn(
+                        "italic leading-none text-foreground tracking-tighter",
+                        item.isUppercase
+                          ? "text-2xl md:text-4xl uppercase font-black"
+                          : "text-3xl md:text-5xl font-bold"
+                      )}
                     >
                       {item.title}
                     </CardItem>
@@ -212,24 +222,30 @@ export default function ZymantraBeam() {
                     >
                       <TextGenerateEffect
                         words={item.description}
-                        className="text-sm md:text-base text-muted-foreground leading-relaxed max-w-sm"
+                        className={cn(
+                          "text-muted-foreground leading-relaxed max-w-sm",
+                          item.isUppercase
+                            ? "text-[11px] md:text-[13px] font-medium uppercase tracking-wider"
+                            : "text-sm md:text-base font-normal"
+                        )}
                       />
                     </CardItem>
 
-                    {/* BOUTON NEUMORPHISME ADAPTATIF DARK/LIGHT */}
+                    {/* BOUTON NEUMORPHISME ADAPTATIF */}
                     <CardItem translateZ={80} className="pt-4">
                       <button
                         onClick={() => setLoading(true)}
                         className={cn(
                           "px-10 py-4 rounded-xl text-[9px] font-black uppercase tracking-widest transition-all active:scale-95",
                           "bg-card text-muted-foreground border border-border/40",
-                          // LOGIQUE DE SHADOWS NEUMORPHISM (DÉPEND DU MODE)
-                          "shadow-[6px_6px_12px_rgba(0,0,0,0.1),-6px_-6px_12px_rgba(255,255,255,0.8)]", // Mode Clair
-                          "dark:shadow-[6px_6px_12px_rgba(0,0,0,0.6),-4px_-4px_12px_rgba(255,255,255,0.02)]", // Mode Sombre
-                          // HOVER (EFFET ENFONCÉ)
-                          "hover:shadow-[inset_4px_4px_8px_rgba(0,0,0,0.1),inset_-4px_-4px_8px_rgba(255,255,255,0.8)]",
-                          "dark:hover:shadow-[inset_4px_4px_8px_rgba(0,0,0,0.5),inset_-4px_-4px_8px_rgba(255,255,255,0.01)]",
-                          "hover:text-primary"
+                          // Light Mode Shadows
+                          "shadow-[5px_5px_10px_rgba(0,0,0,0.06),-5px_-5px_10px_rgba(255,255,255,0.8)]",
+                          // Dark Mode Shadows
+                          "dark:shadow-[6px_6px_12px_rgba(0,0,0,0.5),-4px_-4px_12px_rgba(255,255,255,0.01)]",
+                          // Interaction Hover (Effet enfoncé)
+                          "hover:shadow-[inset_4px_4px_8px_rgba(0,0,0,0.06),inset_-4px_-4px_8px_rgba(255,255,255,0.8)]",
+                          "dark:hover:shadow-[inset_4px_4px_8px_rgba(0,0,0,0.4),inset_-4px_-4px_8px_rgba(255,255,255,0.01)]",
+                          "hover:text-emerald-500 transition-shadow duration-300"
                         )}
                       >
                         Lancer l'algorithme
