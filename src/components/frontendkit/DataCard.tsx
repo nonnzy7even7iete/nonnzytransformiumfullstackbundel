@@ -1,118 +1,164 @@
 "use client";
 
-import React, { useState, ReactNode } from "react";
-import { Card } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { ChevronRight, XCircle } from "lucide-react";
-import { cn } from "@/lib/utils";
+import React from "react";
+// Importation des outils spécifiques pour le rendu "Area" (Zone remplie)
+import {
+  Area,
+  AreaChart,
+  CartesianGrid,
+  XAxis,
+  YAxis,
+  ResponsiveContainer,
+} from "recharts";
 
-interface DataCardProps {
-  title?: ReactNode;
-  content?: ReactNode;
-  width?: number;
-  height?: number;
-  buttonContent?: ReactNode;
-  modalContent?: ReactNode;
-  className?: string;
-}
+import {
+  ChartConfig,
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+} from "@/components/ui/chart";
 
-export default function DataCard({
-  title,
-  content,
-  height = 270,
-  buttonContent,
-  modalContent,
-  className,
-}: DataCardProps) {
-  const [modalOpen, setModalOpen] = useState(false);
+/**
+ * DATA : Flux de Souveraineté Minière
+ * Structure Data-Driven pour Nonnzytransformium.
+ */
+const miningData = [
+  { periode: "Jan", or: 40, lithium: 24 },
+  { periode: "Fév", or: 30, lithium: 13 },
+  { periode: "Mar", or: 20, lithium: 98 }, // Pic de réactivité
+  { periode: "Avr", or: 27, lithium: 39 },
+  { periode: "Mai", or: 18, lithium: 48 },
+  { periode: "Juin", or: 23, lithium: 38 },
+  { periode: "Juil", or: 34, lithium: 43 },
+];
 
+/**
+ * CONFIGURATION : Intégration au Design System Vercel
+ * On utilise les variables de ton fichier CSS.
+ */
+const miningConfig = {
+  or: {
+    label: "Or (Tonnes)",
+    // On utilise foreground pour la ligne principale pour le contraste max
+    color: "var(--foreground)",
+  },
+  lithium: {
+    label: "Lithium",
+    // On utilise un accent pour la ligne secondaire
+    color: "#0070f3", // Bleu Vercel typique pour le contraste
+  },
+} satisfies ChartConfig;
+
+export default function DataChart() {
   return (
-    <>
-      {/* Card principale - Design Scrim réactif */}
-      <Card
-        className={cn(
-          "relative flex flex-col items-center justify-start p-4 gap-4 bg-[var(--card-bg)] backdrop-blur-xl border border-[var(--border-color)] rounded-[var(--radius-vercel)] shadow-lg transition-all duration-300",
-          "w-[90vw] md:w-[300px] md:min-w-[300px] md:max-w-[300px]",
-          className
-        )}
-        style={{ minHeight: height }}
-      >
-        {title && (
-          /* Suppression du gris : utilisation d'une bordure nette et d'un fond transparent */
-          <div className="w-full bg-transparent rounded-[var(--radius-vercel)] p-2 border border-[var(--border-color)] text-[var(--foreground)] text-sm font-bold italic tracking-tighter uppercase shadow-inner text-center">
-            {title}
-          </div>
-        )}
+    /* v-card : On utilise ta classe CSS personnalisée pour la bordure et le rayon */
+    <div className="v-card w-full max-w-5xl p-6 shadow-sm">
+      <div className="flex flex-col gap-1 mb-10">
+        <h3 className="text-sm font-medium tracking-tight opacity-50 uppercase">
+          Flux de Performance Minière
+        </h3>
+        <p className="text-2xl font-bold tracking-tighter">
+          Area Chart — Interactive
+        </p>
+      </div>
 
-        {content && (
-          /* Remplacement de accents-1 par une opacité foreground ultra-légère (3%) */
-          <div className="w-full bg-[var(--foreground)]/[0.03] rounded-[var(--radius-vercel)] p-3 border border-[var(--border-color)] flex flex-col gap-1 overflow-auto text-[var(--foreground)]/80 text-xs leading-relaxed">
-            {content}
-          </div>
-        )}
-
-        <Button
-          variant="secondary"
-          className="mt-auto w-full flex items-center justify-center gap-2 bg-[var(--foreground)] text-[var(--background)] hover:opacity-90 transition-all outline-none border-none shadow-md"
-          onClick={() => setModalOpen(true)}
-        >
-          <ChevronRight className="w-4 h-4" />
-          <span className="text-[10px] font-black uppercase tracking-widest">
-            {buttonContent || "Comprendre"}
-          </span>
-        </Button>
-      </Card>
-
-      {/* Modal overlay - Cohérence Totale */}
-      {modalOpen && (
-        <div className="fixed inset-0 z-[200] flex flex-col items-center justify-center p-4">
-          {/* Overlay adaptatif au thème */}
-          <div
-            className="absolute inset-0 bg-[var(--background)]/85 backdrop-blur-[12px] transition-opacity duration-500"
-            onClick={() => setModalOpen(false)}
-          />
-
-          <Card
-            className={cn(
-              "relative flex flex-col items-center justify-start z-[201] p-6 gap-4 rounded-[var(--radius-vercel)] shadow-2xl overflow-auto border transition-all duration-300",
-              "bg-[var(--background)] border-[var(--border-color)] text-[var(--foreground)]"
-            )}
-            style={{
-              width: "min(90vw, 400px)",
-              maxHeight: "80vh",
-              minHeight: height + 50,
-            }}
+      <ChartContainer config={miningConfig} className="h-[350px] w-full">
+        <ResponsiveContainer width="100%" height="100%">
+          <AreaChart
+            data={miningData}
+            margin={{ top: 10, right: 10, left: -20, bottom: 0 }}
           >
-            {/* Modal Titre */}
-            {title && (
-              <div className="w-full bg-transparent rounded-[var(--radius-vercel)] p-4 border border-[var(--border-color)] shadow-sm">
-                <div className="font-black italic uppercase tracking-tighter text-center">
-                  {title}
-                </div>
-              </div>
-            )}
+            {/* DÉFINITION DES DÉGRADÉS CHIRURGICAUX */}
+            <defs>
+              <linearGradient id="fillOr" x1="0" y1="0" x2="0" y2="1">
+                <stop
+                  offset="5%"
+                  stopColor="var(--foreground)"
+                  stopOpacity={0.1}
+                />
+                <stop
+                  offset="95%"
+                  stopColor="var(--foreground)"
+                  stopOpacity={0}
+                />
+              </linearGradient>
+              <linearGradient id="fillLithium" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="5%" stopColor="#0070f3" stopOpacity={0.1} />
+                <stop offset="95%" stopColor="#0070f3" stopOpacity={0} />
+              </linearGradient>
+            </defs>
 
-            {/* Modal Contenu - Transparence cristalline */}
-            {modalContent && (
-              <div className="w-full bg-[var(--foreground)]/[0.02] rounded-[var(--radius-vercel)] p-5 border border-[var(--border-color)] flex flex-col gap-2 overflow-auto">
-                <div className="text-xs leading-relaxed opacity-80 font-medium font-mono uppercase tracking-tight">
-                  {modalContent}
-                </div>
-              </div>
-            )}
+            {/* Grille utilisant ta variable --border-color */}
+            <CartesianGrid
+              vertical={false}
+              stroke="var(--border-color)"
+              strokeDasharray="3 3"
+            />
 
-            {/* Bouton fermeture */}
-            <Button
-              variant="destructive"
-              className="mt-6 w-full flex items-center justify-center gap-2 font-black text-[10px] uppercase tracking-[0.2em] shadow-lg rounded-[var(--radius-vercel)] active:scale-95 transition-transform"
-              onClick={() => setModalOpen(false)}
-            >
-              <XCircle className="w-4 h-4" />
-              Fermer l'accès
-            </Button>
-          </Card>
+            <XAxis
+              dataKey="periode"
+              tickLine={false}
+              axisLine={false}
+              tickMargin={12}
+              // S'adapte au foreground avec opacité
+              className="text-[12px] font-medium fill-[var(--foreground)] opacity-40"
+            />
+
+            <YAxis
+              tickLine={false}
+              axisLine={false}
+              className="text-[12px] font-medium fill-[var(--foreground)] opacity-40"
+            />
+
+            <ChartTooltip
+              cursor={{ stroke: "var(--border-color)" }}
+              content={<ChartTooltipContent />}
+            />
+
+            {/* ZONE LITHIUM */}
+            <Area
+              dataKey="lithium"
+              type="natural"
+              fill="url(#fillLithium)"
+              stroke="#0070f3"
+              strokeWidth={2}
+              stackId="a"
+            />
+
+            {/* ZONE OR */}
+            <Area
+              dataKey="or"
+              type="natural"
+              fill="url(#fillOr)"
+              stroke="var(--foreground)"
+              strokeWidth={2}
+              stackId="a"
+            />
+          </AreaChart>
+        </ResponsiveContainer>
+      </ChartContainer>
+
+      {/* LÉGENDE ALIGNÉE SUR TES ACCENTS */}
+      <div className="mt-6 flex items-center gap-4 text-[11px] font-mono uppercase tracking-widest opacity-50">
+        <div className="flex items-center gap-2">
+          <div className="h-1 w-4 bg-[var(--foreground)]" />
+          Souveraineté Or
         </div>
-      )}
-    </>
+        <div className="flex items-center gap-2">
+          <div className="h-1 w-4 bg-[#0070f3]" />
+          Lithium Pulse
+        </div>
+      </div>
+    </div>
   );
 }
+
+/**
+ * LOGIQUE JUNIOR : ADAPTATION LIGHT/DARK
+ * 1. var(--foreground) : En mode Light, c'est noir (#000). En mode Dark, c'est blanc (#fff).
+ * Le graphique change donc de couleur automatiquement sans code JS supplémentaire.
+ * 2. var(--border-color) : La grille du graphique utilise la même bordure que tes cartes.
+ * Cela crée une unité visuelle parfaite.
+ * 3. v-card : En ajoutant cette classe sur le div parent, ton graphique hérite du
+ * background-color réactif (blanc ou noir pur) et du radius de 14px.
+ */
