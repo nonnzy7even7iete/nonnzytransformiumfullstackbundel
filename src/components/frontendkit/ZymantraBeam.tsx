@@ -16,7 +16,6 @@ import {
 } from "framer-motion";
 import { cn } from "@/lib/utils";
 
-// COMPOSANTS EXTERNES (CORRIGÉS)
 import { MultiStepLoader } from "@/components/ui/multi-step-loader";
 import { TextGenerateEffect } from "@/components/ui/text-generate-effect";
 
@@ -27,12 +26,10 @@ interface ContentItem {
   description: string;
   image: string;
 }
-
 interface CardItemProps extends HTMLMotionProps<"div"> {
   children: React.ReactNode;
   translateZ?: number;
 }
-
 const MouseEnterContext = createContext<
   [boolean, React.Dispatch<React.SetStateAction<boolean>>] | undefined
 >(undefined);
@@ -49,30 +46,27 @@ const CardContainer = ({
   const [isMouseEnter, setIsMouseEnter] = useState(false);
   const x = useMotionValue(0);
   const y = useMotionValue(0);
-
-  const rotateX = useSpring(useTransform(y, [-0.5, 0.5], [8, -8]), {
+  const rotateX = useSpring(useTransform(y, [-0.5, 0.5], [5, -5]), {
     stiffness: 100,
     damping: 30,
   });
-  const rotateY = useSpring(useTransform(x, [-0.5, 0.5], [-8, 8]), {
+  const rotateY = useSpring(useTransform(x, [-0.5, 0.5], [-5, 5]), {
     stiffness: 100,
     damping: 30,
   });
-
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!containerRef.current) return;
-    const { left, top, width, height } =
-      containerRef.current.getBoundingClientRect();
-    x.set((e.clientX - left) / width - 0.5);
-    y.set((e.clientY - top) / height - 0.5);
-  };
 
   return (
     <MouseEnterContext.Provider value={[isMouseEnter, setIsMouseEnter]}>
       <div
         className={cn("flex items-center justify-center", className)}
-        style={{ perspective: "1200px" }}
-        onMouseMove={handleMouseMove}
+        style={{ perspective: "1000px" }}
+        onMouseMove={(e) => {
+          if (!containerRef.current) return;
+          const { left, top, width, height } =
+            containerRef.current.getBoundingClientRect();
+          x.set((e.clientX - left) / width - 0.5);
+          y.set((e.clientY - top) / height - 0.5);
+        }}
         onMouseEnter={() => setIsMouseEnter(true)}
         onMouseLeave={() => {
           setIsMouseEnter(false);
@@ -116,19 +110,19 @@ const CardItem = ({
 };
 
 // --- DATA ---
-const ZYMANTRA_CONTENT: ContentItem[] = [
+const ZYMANTRA_CONTENT = [
   {
     badge: "PROFIL",
     title: "DATA DRIVEN ARCHITECT",
     description:
-      "Chaka Junior Diané. Software Engineer & Data Analyst. Conception de systèmes algorithmiques orientés data-driven. Modélisation, structuration et extraction des dynamiques de données.",
+      "Chaka Junior Diané. Software Engineer & Data Analyst. Conception de systèmes algorithmiques orientés data-driven. Modélisation et structuration des dynamiques de données.",
     image: "/IMG-20260311-WA0001.jpg",
   },
   {
     badge: "P-R-S",
     title: "ALGO ZY RADAR",
     description:
-      "Anyama sera la première commune de Côte d'Ivoire dotée d'un radar économique synchronisant les ressources et les réalités.",
+      "Anyama : première commune dotée d'un radar économique synchronisant ressources et réalités.",
     image: "/IMG-20260116-WA0000.jpg",
   },
 ];
@@ -156,28 +150,28 @@ export default function ZymantraBeam() {
   return (
     <div
       ref={containerRef}
-      className="relative w-full py-24 bg-background overflow-hidden"
+      className="relative w-full py-24 bg-[#0a0a0a] overflow-hidden"
     >
       <MultiStepLoader
         loadingStates={[
-          { text: "Scan Data..." },
-          { text: "Calcul Algorithme..." },
-          { text: "Ready" },
-          { text: "Logique metier et serveur en cours d execution" },
+          { text: "Synchronisation..." },
+          { text: "Analyse des flux..." },
+          { text: "Accès autorisé" },
         ]}
         loading={loading}
         duration={1000}
         onClose={() => setLoading(false)}
       />
 
-      <div className="absolute left-6 md:left-12 top-0 h-full w-[1px] hidden sm:block opacity-20 bg-border">
+      {/* BEAM SUBTIL */}
+      <div className="absolute left-6 md:left-12 top-0 h-full w-[1px] hidden sm:block opacity-10 bg-zinc-800">
         <motion.div
           style={{ height: beamY }}
-          className="absolute top-0 w-full bg-emerald-500 shadow-[0_0_15px_#10b981]"
+          className="absolute top-0 w-full bg-emerald-500 shadow-[0_0_10px_#10b981]"
         />
       </div>
 
-      <div className="max-w-7xl mx-auto flex flex-col gap-32 relative z-10 px-6">
+      <div className="max-w-6xl mx-auto flex flex-col gap-32 relative z-10 px-6">
         {ZYMANTRA_CONTENT.map((item, index) => {
           const isInactive = activeIdx !== null && activeIdx !== index;
           return (
@@ -186,56 +180,67 @@ export default function ZymantraBeam() {
               onMouseEnter={() => setActiveIdx(index)}
               onMouseLeave={() => setActiveIdx(null)}
               animate={{
-                opacity: isInactive ? 0.4 : 1,
-                filter: isInactive ? "blur(8px)" : "none",
+                opacity: isInactive ? 0.3 : 1,
+                filter: isInactive ? "blur(10px)" : "none",
               }}
-              className="flex justify-center transition-all duration-500"
+              className="flex justify-center transition-all duration-700"
             >
               <CardContainer>
                 <div
                   className={cn(
-                    "flex flex-col lg:flex-row items-center gap-10 p-8 bg-card border border-border shadow-2xl",
+                    "flex flex-col lg:flex-row items-center gap-12 p-10 bg-[#0d0d0d] border border-zinc-800/50 w-[95vw] lg:w-[1000px]",
                     index % 2 !== 0 && "lg:flex-row-reverse"
                   )}
-                  style={{ borderRadius: "var(--radius-vercel)" }}
+                  style={{ borderRadius: "16px" }}
                 >
+                  {/* IMAGE PROPORTIONNELLE */}
                   <CardItem
-                    translateZ={60}
-                    className="w-full lg:w-[450px] aspect-square overflow-hidden"
-                    style={{ borderRadius: "var(--radius-vercel)" }}
+                    translateZ={40}
+                    className="w-full lg:w-1/2 aspect-[4/3] overflow-hidden rounded-xl border border-zinc-800/30"
                   >
                     <img
                       src={item.image}
                       alt={item.title}
-                      className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-1000"
+                      className="w-full h-full object-cover grayscale opacity-60 hover:opacity-100 transition-all duration-1000"
                     />
                   </CardItem>
 
-                  <div className="flex-1 space-y-6">
+                  {/* CONTENU CENTRÉ */}
+                  <div className="flex-1 flex flex-col items-center lg:items-start text-center lg:text-left space-y-6">
                     <CardItem
-                      translateZ={30}
-                      className="text-emerald-500 text-[10px] font-black tracking-widest uppercase"
+                      translateZ={20}
+                      className="text-emerald-500 text-[10px] font-bold tracking-[0.5em] uppercase opacity-60"
                     >
                       {item.badge}
                     </CardItem>
                     <CardItem
                       translateZ={50}
-                      className="text-4xl md:text-6xl font-black italic uppercase leading-tight text-foreground"
+                      className="text-3xl md:text-5xl font-black italic uppercase leading-none text-zinc-100 tracking-tighter"
                     >
                       {item.title}
                     </CardItem>
 
-                    <CardItem translateZ={20} className="min-h-[80px]">
+                    <CardItem
+                      translateZ={30}
+                      className="min-h-[100px] flex items-center justify-center lg:justify-start"
+                    >
                       <TextGenerateEffect
                         words={item.description}
-                        className="text-sm md:text-lg opacity-80 leading-relaxed max-w-md"
+                        className="text-sm md:text-base text-zinc-500 leading-relaxed max-w-sm"
                       />
                     </CardItem>
 
-                    <CardItem translateZ={100} className="pt-6">
+                    {/* BOUTON NEUMORPHISME */}
+                    <CardItem translateZ={80} className="pt-4">
                       <button
                         onClick={() => setLoading(true)}
-                        className="px-10 py-4 bg-foreground text-background text-[10px] font-black uppercase rounded-full tracking-[0.2em] hover:bg-emerald-600 transition-all active:scale-95"
+                        className={cn(
+                          "px-8 py-3 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all active:scale-95",
+                          "bg-[#0d0d0d] text-zinc-400 border border-zinc-800/50",
+                          "shadow-[4px_4px_10px_rgba(0,0,0,0.8),-2px_-2px_10px_rgba(255,255,255,0.02)]",
+                          "hover:shadow-[inset_4px_4px_10px_rgba(0,0,0,0.8),inset_-2px_-2px_10px_rgba(255,255,255,0.02)]",
+                          "hover:text-emerald-500 hover:border-emerald-500/30"
+                        )}
                       >
                         Lancer l'algorithme
                       </button>
