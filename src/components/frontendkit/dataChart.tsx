@@ -1,137 +1,123 @@
 "use client";
-
-import React from "react";
-// Importation des outils de visualisation Recharts
-// La notation par point (recharts.LineChart) sera utilisée par React pour le rendu
 import {
-  CartesianGrid,
-  Line,
   LineChart,
+  Line,
   XAxis,
   YAxis,
+  CartesianGrid,
+  Tooltip,
   ResponsiveContainer,
+  AreaChart,
+  Area,
 } from "recharts";
 
-// Importation chirurgicale des composants Shadcn Chart
-// On utilise l'alias "@" qui pointe vers ton dossier "src"
-import {
-  ChartConfig,
-  ChartContainer,
-  ChartTooltip,
-  ChartTooltipContent,
-} from "@/components/ui/chart";
-
-/**
- * DATA : Évolution Cinétique de l'Extraction Minière (CI)
- * Architecture Data-Driven : Les valeurs sont isolées pour une précision maximale.
- */
-const miningData = [
-  { periode: "2022", or: 48, lithium: 2 },
-  { periode: "2023", or: 54, lithium: 8 },
-  { periode: "2024", or: 65, lithium: 22 },
-  { periode: "2025", or: 82, lithium: 48 }, // Accélération Nonnzytransformium
-  { periode: "2026", or: 98, lithium: 85 }, // Projection Souveraineté
+const PERFORMANCE_HISTORY = [
+  { year: "2023", score: 55.7, label: "Initial" },
+  { year: "2024", score: 52.1, label: "Perte Leadership" },
+  { year: "2025", score: 60.92, label: "Reprise (Top 5)" },
 ];
 
-/**
- * CONFIGURATION : Design System Réactif
- * Les clés 'or' et 'lithium' correspondent aux propriétés de notre objet miningData.
- */
-const miningConfig = {
-  or: {
-    label: "Or (Tonnes/An)",
-    color: "var(--primary)",
-  },
-  lithium: {
-    label: "Lithium (Unités)",
-    color: "#10b981", // Emerald-500 pour le secteur énergie
-  },
-} satisfies ChartConfig;
-
-export default function DataChart() {
+export default function MiningAnalytics() {
   return (
-    <div className="w-full max-w-4xl p-8 rounded-3xl border border-white/5 bg-black/40 backdrop-blur-2xl">
-      {/* En-tête du composant : Philosophie de Gouvernance */}
-      <div className="mb-10">
-        <h3 className="text-3xl font-black uppercase tracking-tighter text-white">
-          Souveraineté Cinétique
-        </h3>
-        <p className="mt-2 text-[10px] text-emerald-500 font-bold uppercase tracking-[0.4em] opacity-80">
-          High-Frequency Governance // Mining Loop
+    <div className="w-full bg-[#051109] p-8 text-white font-sans border border-emerald-900/30 rounded-xl">
+      {/* HEADER STRATÉGIQUE */}
+      <div className="flex flex-col mb-10 border-l-4 border-emerald-500 pl-6">
+        <h2 className="text-3xl font-black tracking-tighter text-emerald-50">
+          CÔTE D'IVOIRE : HUB EXTRACTIF 2026
+        </h2>
+        <p className="text-emerald-500/60 font-mono text-sm uppercase tracking-widest">
+          Analytics Driven by Fraser Institute
         </p>
       </div>
 
-      {/* ChartContainer : Composant de haut niveau de Shadcn.
-          Il injecte les styles CSS nécessaires basés sur miningConfig.
-      */}
-      <ChartContainer config={miningConfig} className="h-[350px] w-full">
-        {/* ResponsiveContainer assure que le graphique s'adapte à la largeur du parent */}
+      {/* KPI GRID */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+        <MetricCard
+          label="Indice d'Attractivité"
+          value="60.92"
+          change="+9.3%"
+          sub="Score Global / 100"
+        />
+        <MetricCard
+          label="Différentiel Régional"
+          value="+5.71"
+          change="vs Ghana"
+          sub="Position : 1er UEMOA"
+        />
+        <MetricCard
+          label="Rang Mondial"
+          value="47"
+          change="Stable"
+          sub="Sur 68 Juridictions"
+        />
+      </div>
+
+      {/* CHART SECTION */}
+      <div className="h-[350px] w-full bg-[#0a1a10] border border-emerald-800/20 p-6 rounded-lg">
+        <h3 className="text-emerald-400 text-xs font-bold uppercase mb-6 tracking-widest">
+          Trajectoire de Redressement Institutionnel
+        </h3>
         <ResponsiveContainer width="100%" height="100%">
-          <LineChart
-            data={miningData}
-            margin={{ top: 10, right: 10, left: 10, bottom: 0 }}
-          >
-            {/* Grille de fond : vertical={false} pour ne garder que les lignes de repères horizontales */}
-            <CartesianGrid vertical={false} strokeOpacity={0.05} />
-
-            {/* Axe X : Paramétrage chirurgical pour le minimalisme */}
+          <AreaChart data={PERFORMANCE_HISTORY}>
+            <defs>
+              <linearGradient id="colorScore" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="5%" stopColor="#10b981" stopOpacity={0.3} />
+                <stop offset="95%" stopColor="#10b981" stopOpacity={0} />
+              </linearGradient>
+            </defs>
+            <CartesianGrid strokeDasharray="3 3" stroke="#10b98110" />
             <XAxis
-              dataKey="periode"
-              axisLine={false}
+              dataKey="year"
+              stroke="#34d399"
+              fontSize={12}
               tickLine={false}
-              tickMargin={15}
-              className="text-[11px] font-mono opacity-40"
+              axisLine={false}
             />
-
-            {/* Tooltip : Le composant qui affiche les détails au survol (Notation par point : ChartTooltip.content) */}
-            <ChartTooltip content={<ChartTooltipContent />} />
-
-            {/* COURBE DE L'OR : 
-                type="monotone" pour une ligne fluide représentant l'extraction traditionnelle optimisée.
-            */}
-            <Line
-              dataKey="or"
+            <YAxis
+              stroke="#34d399"
+              fontSize={12}
+              tickLine={false}
+              axisLine={false}
+              domain={[50, 65]}
+            />
+            <Tooltip
+              contentStyle={{
+                backgroundColor: "#051109",
+                border: "1px solid #065f46",
+                borderRadius: "8px",
+              }}
+              itemStyle={{ color: "#34d399" }}
+            />
+            <Area
               type="monotone"
-              stroke="var(--color-or)"
-              strokeWidth={4}
-              dot={false}
-              activeDot={{ r: 6, strokeWidth: 0, fill: "var(--color-or)" }}
+              dataKey="score"
+              stroke="#10b981"
+              strokeWidth={3}
+              fillOpacity={1}
+              fill="url(#colorScore)"
             />
-
-            {/* COURBE DU LITHIUM : 
-                type="stepAfter" pour symboliser les sauts de maturité technologique.
-            */}
-            <Line
-              dataKey="lithium"
-              type="stepAfter"
-              stroke="var(--color-lithium)"
-              strokeWidth={4}
-              dot={false}
-              activeDot={{ r: 6, strokeWidth: 0, fill: "var(--color-lithium)" }}
-            />
-          </LineChart>
+          </AreaChart>
         </ResponsiveContainer>
-      </ChartContainer>
-
-      {/* Footer technique : Preuve de la réduction de latence */}
-      <div className="mt-8 pt-6 border-t border-white/5 flex justify-between items-center text-[9px] font-mono opacity-30 uppercase tracking-[0.2em]">
-        <span>Boucle de rétroaction : 0.001ms</span>
-        <span>© Nonnzytransformium 2026</span>
       </div>
     </div>
   );
 }
 
-/**
- * SECTION MONTÉE EN COMPÉTENCES (NIVEAU JUNIOR)
- * * 1. NOTATION PAR POINT (.) DANS LES IMPORTS :
- * - import { LineChart } from "recharts" : On extrait le composant spécifique.
- * - <LineChart data={miningData}> : Le point (caché ici par React) lie la donnée au composant.
- * * 2. CONFIGURATION SATISFIES (TypeScript) :
- * - 'satisfies ChartConfig' permet à ton éditeur de code de comprendre que miningConfig
- * doit avoir une structure précise. Si tu oublies la propriété 'color', il te le dira.
- * * 3. LOGIQUE DATA-DRIVEN :
- * - Le composant ne contient pas de texte "dur" pour les chiffres.
- * - Si les chiffres de l'État changent dans miningData, le graphique s'ajuste
- * automatiquement sans toucher au design. C'est l'essence de ton projet.
- */
+function MetricCard({ label, value, change, sub }: any) {
+  return (
+    <div className="bg-[#0a2014] p-6 border-b-2 border-emerald-900 hover:border-emerald-500 transition-all group">
+      <p className="text-[10px] text-emerald-500/50 uppercase font-black tracking-widest mb-2">
+        {label}
+      </p>
+      <div className="flex items-baseline gap-3">
+        <span className="text-4xl font-bold text-white group-hover:text-emerald-400 transition-colors">
+          {value}
+        </span>
+        <span className="text-xs font-bold text-emerald-400 bg-emerald-900/30 px-2 py-1 rounded">
+          {change}
+        </span>
+      </div>
+      <p className="text-[11px] text-emerald-700 mt-2 font-mono">{sub}</p>
+    </div>
+  );
+}
