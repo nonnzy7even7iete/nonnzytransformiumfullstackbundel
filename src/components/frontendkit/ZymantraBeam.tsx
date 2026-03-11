@@ -148,7 +148,6 @@ export default function ZymantraBeam() {
         onClose={() => setLoading(false)}
       />
 
-      {/* BEAM LATÉRAL */}
       <div className="absolute left-6 md:left-20 top-0 h-full w-[1px] hidden sm:block opacity-30 bg-border">
         <motion.div
           style={{ height: beamY }}
@@ -173,13 +172,13 @@ export default function ZymantraBeam() {
               <CardContainer>
                 <div
                   className={cn(
-                    "flex flex-col lg:flex-row items-center gap-12 p-1 md:p-1 w-[95vw] lg:w-[1000px] transition-all duration-500",
-                    "bg-card border border-[#e5e5e5] dark:border-[#171717]", // Gris clair vs Gris sombre profond
+                    "flex flex-col lg:flex-row items-center gap-12 p-1 w-[95vw] lg:w-[1000px] transition-all duration-500",
+                    "bg-card border border-[#e5e5e5] dark:border-[#171717]",
                     index % 2 !== 0 && "lg:flex-row-reverse"
                   )}
                   style={{ borderRadius: "var(--radius-vercel-zy)" }}
                 >
-                  {/* IMAGE - COLLÉE AU BORD (Padding réduit) */}
+                  {/* IMAGE - CONSISTANTE */}
                   <CardItem
                     translateZ={40}
                     className="w-full lg:w-1/2 aspect-square md:aspect-[4/5] overflow-hidden bg-muted m-1"
@@ -194,8 +193,8 @@ export default function ZymantraBeam() {
                     />
                   </CardItem>
 
-                  {/* TEXTE RÉACTIF AVEC PADDING INTERNE POUR RESPIRER */}
-                  <div className="flex-1 flex flex-col items-center lg:items-start text-center lg:text-left space-y-6 p-8 lg:p-0">
+                  {/* CONTENU - ALIGNEMENT FIXE À GAUCHE POUR LA LISIBILITÉ */}
+                  <div className="flex-1 flex flex-col items-start text-left space-y-6 p-10 lg:p-4">
                     <CardItem
                       translateZ={20}
                       className="text-emerald-500 font-black tracking-[0.5em] text-[10px] uppercase"
@@ -206,10 +205,10 @@ export default function ZymantraBeam() {
                     <CardItem
                       translateZ={50}
                       className={cn(
-                        "italic leading-none text-foreground tracking-tighter",
+                        "italic leading-[0.9] text-foreground tracking-tighter",
                         item.isUppercase
                           ? "text-2xl md:text-4xl uppercase font-black"
-                          : "text-3xl md:text-5xl font-bold"
+                          : "text-3xl md:text-5xl font-extrabold"
                       )}
                     >
                       {item.title}
@@ -217,7 +216,7 @@ export default function ZymantraBeam() {
 
                     <CardItem
                       translateZ={30}
-                      className="min-h-[80px] flex items-center"
+                      className="min-h-[80px] flex items-start"
                     >
                       <TextGenerateEffect
                         words={item.description}
@@ -225,7 +224,7 @@ export default function ZymantraBeam() {
                           "text-muted-foreground leading-relaxed max-w-sm",
                           item.isUppercase
                             ? "text-[11px] md:text-[12px] font-medium uppercase tracking-wider"
-                            : "text-sm md:text-base font-normal"
+                            : "text-sm md:text-base font-medium"
                         )}
                       />
                     </CardItem>
