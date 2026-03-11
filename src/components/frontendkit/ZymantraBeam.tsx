@@ -19,7 +19,6 @@ import { cn } from "@/lib/utils";
 import { MultiStepLoader } from "@/components/ui/multi-step-loader";
 import { TextGenerateEffect } from "@/components/ui/text-generate-effect";
 
-// --- CONTEXTE POUR L'EFFET 3D ---
 const MouseEnterContext = createContext<
   [boolean, React.Dispatch<React.SetStateAction<boolean>>] | undefined
 >(undefined);
@@ -149,7 +148,7 @@ export default function ZymantraBeam() {
         onClose={() => setLoading(false)}
       />
 
-      {/* TRAIT DE GUIDAGE (BEAM) À GAUCHE */}
+      {/* BEAM LATÉRAL */}
       <div className="absolute left-6 md:left-20 top-0 h-full w-[1px] hidden sm:block opacity-30 bg-border">
         <motion.div
           style={{ height: beamY }}
@@ -174,16 +173,16 @@ export default function ZymantraBeam() {
               <CardContainer>
                 <div
                   className={cn(
-                    "flex flex-col lg:flex-row items-center gap-12 p-8 md:p-12 w-[95vw] lg:w-[1000px] transition-all duration-500",
-                    "bg-card border border-[#262626] border-opacity-40",
+                    "flex flex-col lg:flex-row items-center gap-12 p-1 md:p-1 w-[95vw] lg:w-[1000px] transition-all duration-500",
+                    "bg-card border border-[#e5e5e5] dark:border-[#171717]", // Gris clair vs Gris sombre profond
                     index % 2 !== 0 && "lg:flex-row-reverse"
                   )}
                   style={{ borderRadius: "var(--radius-vercel-zy)" }}
                 >
-                  {/* IMAGE AVEC CADRAGE HAUT (VISAGE) */}
+                  {/* IMAGE - COLLÉE AU BORD (Padding réduit) */}
                   <CardItem
                     translateZ={40}
-                    className="w-full lg:w-1/2 aspect-square md:aspect-[4/5] overflow-hidden bg-muted"
+                    className="w-full lg:w-1/2 aspect-square md:aspect-[4/5] overflow-hidden bg-muted m-1"
                     style={{
                       borderRadius: "calc(var(--radius-vercel-zy) - 4px)",
                     }}
@@ -195,8 +194,8 @@ export default function ZymantraBeam() {
                     />
                   </CardItem>
 
-                  {/* TEXTE RÉACTIF */}
-                  <div className="flex-1 flex flex-col items-center lg:items-start text-center lg:text-left space-y-6">
+                  {/* TEXTE RÉACTIF AVEC PADDING INTERNE POUR RESPIRER */}
+                  <div className="flex-1 flex flex-col items-center lg:items-start text-center lg:text-left space-y-6 p-8 lg:p-0">
                     <CardItem
                       translateZ={20}
                       className="text-emerald-500 font-black tracking-[0.5em] text-[10px] uppercase"
@@ -218,34 +217,30 @@ export default function ZymantraBeam() {
 
                     <CardItem
                       translateZ={30}
-                      className="min-h-[100px] flex items-center justify-center lg:justify-start"
+                      className="min-h-[80px] flex items-center"
                     >
                       <TextGenerateEffect
                         words={item.description}
                         className={cn(
                           "text-muted-foreground leading-relaxed max-w-sm",
                           item.isUppercase
-                            ? "text-[11px] md:text-[13px] font-medium uppercase tracking-wider"
+                            ? "text-[11px] md:text-[12px] font-medium uppercase tracking-wider"
                             : "text-sm md:text-base font-normal"
                         )}
                       />
                     </CardItem>
 
-                    {/* BOUTON NEUMORPHISME ADAPTATIF */}
-                    <CardItem translateZ={80} className="pt-4">
+                    <CardItem translateZ={80} className="pt-2">
                       <button
                         onClick={() => setLoading(true)}
                         className={cn(
                           "px-10 py-4 rounded-xl text-[9px] font-black uppercase tracking-widest transition-all active:scale-95",
                           "bg-card text-muted-foreground border border-border/40",
-                          // Light Mode Shadows
                           "shadow-[5px_5px_10px_rgba(0,0,0,0.06),-5px_-5px_10px_rgba(255,255,255,0.8)]",
-                          // Dark Mode Shadows
                           "dark:shadow-[6px_6px_12px_rgba(0,0,0,0.5),-4px_-4px_12px_rgba(255,255,255,0.01)]",
-                          // Interaction Hover (Effet enfoncé)
                           "hover:shadow-[inset_4px_4px_8px_rgba(0,0,0,0.06),inset_-4px_-4px_8px_rgba(255,255,255,0.8)]",
                           "dark:hover:shadow-[inset_4px_4px_8px_rgba(0,0,0,0.4),inset_-4px_-4px_8px_rgba(255,255,255,0.01)]",
-                          "hover:text-emerald-500 transition-shadow duration-300"
+                          "hover:text-emerald-500 transition-all"
                         )}
                       >
                         Lancer l'algorithme
