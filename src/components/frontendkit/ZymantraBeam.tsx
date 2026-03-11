@@ -23,7 +23,7 @@ const MouseEnterContext = createContext<
   [boolean, React.Dispatch<React.SetStateAction<boolean>>] | undefined
 >(undefined);
 
-// --- CONTAINER AVEC LOGIQUE DE FOCUS AU SCROLL ---
+// --- WRAPPER DE FOCUS (FLOU & OPACITÉ) ---
 const SectionWrapper = ({
   children,
   index,
@@ -36,12 +36,8 @@ const SectionWrapper = ({
   setActiveIdx: (idx: number | null) => void;
 }) => {
   const ref = useRef(null);
-  // isInView s'active quand 40% de la section est visible
   const isInView = useInView(ref, { amount: 0.4 });
 
-  // Déterminer si cette section doit être floue
-  // Priorité 1 : Le survol (Hover)
-  // Priorité 2 : Le scroll (Viseur)
   const isBlurred =
     (activeIdx !== null && activeIdx !== index) ||
     (activeIdx === null && !isInView);
@@ -52,12 +48,12 @@ const SectionWrapper = ({
       onMouseEnter={() => setActiveIdx(index)}
       onMouseLeave={() => setActiveIdx(null)}
       animate={{
-        opacity: isBlurred ? 0.3 : 1,
-        filter: isBlurred ? "blur(8px)" : "blur(0px)",
-        scale: isBlurred ? 0.98 : 1,
+        opacity: isBlurred ? 0.35 : 1,
+        filter: isBlurred ? "blur(12px)" : "blur(0px)",
+        scale: isBlurred ? 0.97 : 1,
       }}
-      transition={{ duration: 0.4, ease: "easeOut" }}
-      className="flex justify-center transition-all"
+      transition={{ duration: 0.5, ease: [0.23, 1, 0.32, 1] }}
+      className="flex justify-center"
     >
       {children}
     </motion.div>
@@ -189,15 +185,15 @@ export default function ZymantraBeam() {
         onClose={() => setLoading(false)}
       />
 
-      {/* BEAM */}
-      <div className="absolute left-6 md:left-20 top-0 h-full w-[1px] hidden sm:block opacity-30 bg-border">
+      {/* BEAM SUBTILE */}
+      <div className="absolute left-6 md:left-20 top-0 h-full w-[1px] hidden sm:block opacity-20 bg-zinc-800">
         <motion.div
           style={{ height: beamY }}
           className="absolute top-0 w-full bg-primary shadow-[0_0_10px_hsl(var(--primary))]"
         />
       </div>
 
-      <div className="max-w-6xl mx-auto flex flex-col gap-32 relative z-10 px-6">
+      <div className="max-w-6xl mx-auto flex flex-col gap-40 relative z-10 px-6">
         {ZYMANTRA_CONTENT.map((item, index) => {
           return (
             <SectionWrapper
@@ -210,12 +206,13 @@ export default function ZymantraBeam() {
                 <div
                   className={cn(
                     "flex flex-col lg:flex-row items-stretch gap-12 p-1 w-[95vw] lg:w-[1000px] transition-all duration-500",
-                    // BORDER GRIS FONCÉ POUR LES DEUX MODES
-                    "bg-card border border-[#262626] dark:border-[#171717]",
+                    // BORDURES ZINC POUR ÉVITER LE NOIR AGRESSIF
+                    "bg-card border border-zinc-200 dark:border-zinc-800/50",
                     index % 2 !== 0 && "lg:flex-row-reverse"
                   )}
                   style={{ borderRadius: "var(--radius-vercel-zy)" }}
                 >
+                  {/* IMAGE */}
                   <CardItem
                     translateZ={40}
                     className="w-full lg:w-1/2 aspect-square md:aspect-[4/5] overflow-hidden bg-muted m-1"
@@ -230,6 +227,7 @@ export default function ZymantraBeam() {
                     />
                   </CardItem>
 
+                  {/* CONTENU */}
                   <div className="flex-1 flex flex-col items-start justify-center text-left space-y-6 p-10 lg:p-8">
                     <CardItem
                       translateZ={20}
@@ -266,7 +264,14 @@ export default function ZymantraBeam() {
                       <button
                         onClick={() => setLoading(true)}
                         className={cn(
-                          "px-10 py-4 rounded-xl text-[9px] font-black uppercase tracking-widest transition-all active:scale-95 bg-card text-muted-foreground border border-border/40 shadow-[5px_5px_10px_rgba(0,0,0,0.06),-5px_-5px_10px_rgba(255,255,255,0.8)] dark:shadow-[6px_6px_12px_rgba(0,0,0,0.5),-4px_-4px_12px_rgba(255,255,255,0.01)] hover:text-emerald-500"
+                          "px-10 py-4 rounded-xl text-[9px] font-black uppercase tracking-widest transition-all active:scale-95",
+                          "bg-card text-muted-foreground",
+                          // BORDURE BOUTON ZINC
+                          "border border-zinc-200 dark:border-zinc-800",
+                          // NEUMORPHISME ADOUCI (ZINC BASED)
+                          "shadow-[4px_4px_10px_rgba(0,0,0,0.03),-4px_-4px_10px_rgba(255,255,255,0.7)]",
+                          "dark:shadow-[6px_6px_12px_rgba(0,0,0,0.4),-2px_-2px_10px_rgba(255,255,255,0.01)]",
+                          "hover:text-emerald-500 transition-all"
                         )}
                       >
                         Lancer l'algorithme
