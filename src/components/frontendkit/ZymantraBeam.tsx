@@ -19,7 +19,6 @@ import { cn } from "@/lib/utils";
 import { MultiStepLoader } from "@/components/ui/multi-step-loader";
 import { TextGenerateEffect } from "@/components/ui/text-generate-effect";
 
-// --- CONTEXTE 3D ---
 const MouseEnterContext = createContext<
   [boolean, React.Dispatch<React.SetStateAction<boolean>>] | undefined
 >(undefined);
@@ -140,15 +139,14 @@ export default function ZymantraBeam() {
       <MultiStepLoader
         loadingStates={[
           { text: "Synchronisation..." },
-          { text: "Analyse des flux..." },
-          { text: "Accès autorisé" },
+          { text: "Analyse..." },
+          { text: "Ready" },
         ]}
         loading={loading}
         duration={1000}
         onClose={() => setLoading(false)}
       />
 
-      {/* BEAM BASÉ SUR LES VARIABLES CSS DU PROJET */}
       <div className="absolute left-6 md:left-12 top-0 h-full w-[1px] hidden sm:block opacity-20 bg-border">
         <motion.div
           style={{ height: beamY }}
@@ -174,29 +172,30 @@ export default function ZymantraBeam() {
                 <div
                   className={cn(
                     "flex flex-col lg:flex-row items-center gap-12 p-8 md:p-12 w-[95vw] lg:w-[1000px] transition-all duration-500",
-                    "bg-card border border-border/60",
+                    "bg-card border border-[#262626] dark:border-[#262626] border-opacity-50",
                     index % 2 !== 0 && "lg:flex-row-reverse"
                   )}
-                  style={{ borderRadius: "calc(var(--radius) * 2)" }}
+                  style={{ borderRadius: "var(--radius-vercel-zy)" }}
                 >
-                  {/* IMAGE AVEC RATIO FIXE 4:3 POUR LA STABILITÉ */}
+                  {/* IMAGE - CADRAGE VISAGE OPTIMISÉ */}
                   <CardItem
                     translateZ={40}
-                    className="w-full lg:w-1/2 aspect-[4/3] overflow-hidden bg-muted"
-                    style={{ borderRadius: "var(--radius)" }}
+                    className="w-full lg:w-1/2 aspect-square md:aspect-[4/5] overflow-hidden bg-muted"
+                    style={{
+                      borderRadius: "calc(var(--radius-vercel-zy) - 4px)",
+                    }}
                   >
                     <img
                       src={item.image}
                       alt={item.title}
-                      className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-1000"
+                      className="w-full h-full object-cover object-top grayscale hover:grayscale-0 transition-all duration-1000"
                     />
                   </CardItem>
 
-                  {/* CONTENU RÉACTIF AU MODE SOMBRE/CLAIR */}
                   <div className="flex-1 flex flex-col items-center lg:items-start text-center lg:text-left space-y-6">
                     <CardItem
                       translateZ={20}
-                      className="text-primary text-[10px] font-bold tracking-[0.5em] uppercase opacity-70"
+                      className="text-primary text-[10px] font-black tracking-[0.5em] uppercase opacity-70"
                     >
                       {item.badge}
                     </CardItem>
@@ -209,7 +208,7 @@ export default function ZymantraBeam() {
 
                     <CardItem
                       translateZ={30}
-                      className="min-h-[100px] flex items-center"
+                      className="min-h-[100px] flex items-center justify-center lg:justify-start"
                     >
                       <TextGenerateEffect
                         words={item.description}
@@ -217,17 +216,20 @@ export default function ZymantraBeam() {
                       />
                     </CardItem>
 
-                    {/* BOUTON NEUMORPHISME RÉACTIF */}
+                    {/* BOUTON NEUMORPHISME ADAPTATIF DARK/LIGHT */}
                     <CardItem translateZ={80} className="pt-4">
                       <button
                         onClick={() => setLoading(true)}
                         className={cn(
-                          "px-10 py-4 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all active:scale-95",
+                          "px-10 py-4 rounded-xl text-[9px] font-black uppercase tracking-widest transition-all active:scale-95",
                           "bg-card text-muted-foreground border border-border/40",
-                          // Ombre adaptative : Sombre en Dark Mode, légère en Light Mode
-                          "shadow-[6px_6px_12px_rgba(0,0,0,0.4),-4px_-4px_12px_rgba(255,255,255,0.01)] dark:shadow-[8px_8px_16px_rgba(0,0,0,0.7),-2px_-2px_10px_rgba(255,255,255,0.02)]",
-                          "hover:shadow-[inset_4px_4px_8px_rgba(0,0,0,0.3),inset_-4px_-4px_8px_rgba(255,255,255,0.01)]",
-                          "hover:text-primary hover:border-primary/40"
+                          // LOGIQUE DE SHADOWS NEUMORPHISM (DÉPEND DU MODE)
+                          "shadow-[6px_6px_12px_rgba(0,0,0,0.1),-6px_-6px_12px_rgba(255,255,255,0.8)]", // Mode Clair
+                          "dark:shadow-[6px_6px_12px_rgba(0,0,0,0.6),-4px_-4px_12px_rgba(255,255,255,0.02)]", // Mode Sombre
+                          // HOVER (EFFET ENFONCÉ)
+                          "hover:shadow-[inset_4px_4px_8px_rgba(0,0,0,0.1),inset_-4px_-4px_8px_rgba(255,255,255,0.8)]",
+                          "dark:hover:shadow-[inset_4px_4px_8px_rgba(0,0,0,0.5),inset_-4px_-4px_8px_rgba(255,255,255,0.01)]",
+                          "hover:text-primary"
                         )}
                       >
                         Lancer l'algorithme
