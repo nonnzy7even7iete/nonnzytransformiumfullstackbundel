@@ -50,7 +50,7 @@ const SectionWrapper = ({
       animate={{
         opacity: isBlurred ? 0.35 : 1,
         filter: isBlurred ? "blur(12px)" : "blur(0px)",
-        scale: isBlurred ? 0.97 : 1,
+        scale: isBlurred ? 0.98 : 1,
       }}
       transition={{ duration: 0.5, ease: [0.23, 1, 0.32, 1] }}
       className="flex justify-center"
@@ -185,11 +185,14 @@ export default function ZymantraBeam() {
         onClose={() => setLoading(false)}
       />
 
-      {/* BEAM - Synchronisé sur --accents-2 */}
-      <div className="absolute left-6 md:left-20 top-0 h-full w-[1px] hidden sm:block opacity-40 bg-[#333333]">
+      {/* BEAM - BRANCHÉE SUR TA VARIABLE CSS */}
+      <div
+        className="absolute left-6 md:left-20 top-0 h-full w-[1px] hidden sm:block opacity-50"
+        style={{ backgroundColor: "var(--border-color)" }}
+      >
         <motion.div
           style={{ height: beamY }}
-          className="absolute top-0 w-full bg-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.5)]"
+          className="absolute top-0 w-full bg-emerald-500 shadow-[0_0_15px_rgba(16,185,129,0.6)]"
         />
       </div>
 
@@ -205,12 +208,13 @@ export default function ZymantraBeam() {
               <CardContainer>
                 <div
                   className={cn(
-                    "flex flex-col lg:flex-row items-stretch gap-12 p-1 w-[95vw] lg:w-[1000px] transition-all duration-500",
-                    // Utilisation forcée des couleurs sombres même en mode light pour le look technique
-                    "bg-card border border-[#333333] dark:border-[#333333]",
+                    "flex flex-col lg:flex-row items-stretch gap-12 p-1 w-[95vw] lg:w-[1000px] transition-all duration-500 bg-card",
                     index % 2 !== 0 && "lg:flex-row-reverse"
                   )}
-                  style={{ borderRadius: "var(--radius-vercel-zy)" }}
+                  style={{
+                    borderRadius: "var(--radius-vercel-zy)",
+                    border: "1px solid var(--border-color)", // SYNCHRONISATION VARIABLE CSS
+                  }}
                 >
                   {/* IMAGE */}
                   <CardItem
@@ -264,12 +268,10 @@ export default function ZymantraBeam() {
                       <button
                         onClick={() => setLoading(true)}
                         className={cn(
-                          "px-10 py-4 rounded-xl text-[9px] font-black uppercase tracking-widest transition-all active:scale-95",
-                          "bg-card text-muted-foreground",
-                          "border border-[#333333]", // Bordure identique au mode dark
-                          "shadow-[4px_4px_10px_rgba(0,0,0,0.2)]", // Ombre plus marquée pour le côté technique
-                          "hover:text-emerald-500 hover:border-emerald-500 transition-all"
+                          "px-10 py-4 rounded-xl text-[9px] font-black uppercase tracking-widest transition-all active:scale-95 bg-card text-muted-foreground",
+                          "hover:text-emerald-500 hover:scale-105 duration-300"
                         )}
+                        style={{ border: "1px solid var(--border-color)" }} // SYNCHRONISATION VARIABLE CSS
                       >
                         Lancer l'algorithme
                       </button>
@@ -285,7 +287,6 @@ export default function ZymantraBeam() {
   );
 }
 
-// Display Names pour React DevTools
 CardContainer.displayName = "CardContainer";
 CardItem.displayName = "CardItem";
 ZymantraBeam.displayName = "ZymantraBeam";
