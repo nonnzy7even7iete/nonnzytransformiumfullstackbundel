@@ -23,7 +23,7 @@ const MouseEnterContext = createContext<
   [boolean, React.Dispatch<React.SetStateAction<boolean>>] | undefined
 >(undefined);
 
-// --- WRAPPER DE FOCUS (FLOU & OPACITÉ) ---
+// --- 1. WRAPPER DE FOCUS (FLOU & OPACITÉ AU SCROLL/HOVER) ---
 const SectionWrapper = ({
   children,
   index,
@@ -60,6 +60,7 @@ const SectionWrapper = ({
   );
 };
 
+// --- 2. CONTENEUR 3D ---
 const CardContainer = ({
   children,
   className,
@@ -111,6 +112,7 @@ const CardContainer = ({
   );
 };
 
+// --- 3. ITEM RÉACTIF ---
 const CardItem = ({ children, translateZ = 0, className, ...rest }: any) => {
   const context = useContext(MouseEnterContext);
   const isMouseEnter = context ? context[0] : false;
@@ -130,6 +132,7 @@ const CardItem = ({ children, translateZ = 0, className, ...rest }: any) => {
   );
 };
 
+// --- 4. COMPOSANT PRINCIPAL ---
 export default function ZymantraBeam() {
   const containerRef = useRef<HTMLDivElement>(null);
   const [loading, setLoading] = useState(false);
@@ -185,108 +188,113 @@ export default function ZymantraBeam() {
         onClose={() => setLoading(false)}
       />
 
-      {/* BEAM - BRANCHÉE SUR TA VARIABLE CSS */}
+      {/* BEAM LATÉRAL HARMONISÉ */}
       <div
         className="absolute left-6 md:left-20 top-0 h-full w-[1px] hidden sm:block opacity-50"
         style={{ backgroundColor: "var(--border-color)" }}
       >
         <motion.div
           style={{ height: beamY }}
-          className="absolute top-0 w-full bg-emerald-500 shadow-[0_0_15px_rgba(16,185,129,0.6)]"
+          className="absolute top-0 w-full bg-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.5)]"
         />
       </div>
 
       <div className="max-w-6xl mx-auto flex flex-col gap-40 relative z-10 px-6">
-        {ZYMANTRA_CONTENT.map((item, index) => {
-          return (
-            <SectionWrapper
-              key={index}
-              index={index}
-              activeIdx={activeIdx}
-              setActiveIdx={setActiveIdx}
-            >
-              <CardContainer>
-                <div
-                  className={cn(
-                    "flex flex-col lg:flex-row items-stretch gap-12 p-1 w-[95vw] lg:w-[1000px] transition-all duration-500 bg-card",
-                    index % 2 !== 0 && "lg:flex-row-reverse"
-                  )}
+        {ZYMANTRA_CONTENT.map((item, index) => (
+          <SectionWrapper
+            key={index}
+            index={index}
+            activeIdx={activeIdx}
+            setActiveIdx={setActiveIdx}
+          >
+            <CardContainer>
+              <div
+                className={cn(
+                  "flex flex-col lg:flex-row items-stretch gap-12 p-1 w-[95vw] lg:w-[1000px] transition-all duration-500 bg-card",
+                  index % 2 !== 0 && "lg:flex-row-reverse"
+                )}
+                style={{
+                  borderRadius: "var(--radius-vercel-zy)",
+                  border: "1px solid var(--border-color)", // HARMONISÉ NAVBAR
+                  boxShadow: "0 4px 12px rgba(0, 0, 0, 0.02)",
+                }}
+              >
+                {/* IMAGE - PADDING NÉGATIF VISUEL (-4px environ via m-1) */}
+                <CardItem
+                  translateZ={40}
+                  className="w-full lg:w-1/2 aspect-square md:aspect-[4/5] overflow-hidden bg-muted m-1"
                   style={{
-                    borderRadius: "var(--radius-vercel-zy)",
-                    border: "1px solid var(--border-color)", // SYNCHRONISATION VARIABLE CSS
+                    borderRadius: "calc(var(--radius-vercel-zy) - 1px)",
+                    border: "1px solid var(--border-color)",
                   }}
                 >
-                  {/* IMAGE */}
+                  <img
+                    src={item.image}
+                    alt={item.title}
+                    className="w-full h-full object-cover object-top grayscale hover:grayscale-0 transition-all duration-1000"
+                  />
+                </CardItem>
+
+                {/* CONTENU TEXTUEL */}
+                <div className="flex-1 flex flex-col items-start justify-center text-left space-y-6 p-10 lg:p-8">
                   <CardItem
-                    translateZ={40}
-                    className="w-full lg:w-1/2 aspect-square md:aspect-[4/5] overflow-hidden bg-muted m-1"
-                    style={{
-                      borderRadius: "calc(var(--radius-vercel-zy) - 1px)",
-                    }}
+                    translateZ={20}
+                    className="text-emerald-500 font-black tracking-[0.5em] text-[10px] uppercase"
                   >
-                    <img
-                      src={item.image}
-                      alt={item.title}
-                      className="w-full h-full object-cover object-top grayscale hover:grayscale-0 transition-all duration-1000"
+                    {item.badge}
+                  </CardItem>
+
+                  <CardItem
+                    translateZ={50}
+                    className={cn(
+                      "italic leading-[0.9] text-foreground tracking-tighter",
+                      item.isUppercase
+                        ? "text-2xl md:text-4xl uppercase font-black"
+                        : "text-3xl md:text-5xl font-extrabold"
+                    )}
+                  >
+                    {item.title}
+                  </CardItem>
+
+                  <CardItem translateZ={30} className="flex items-start">
+                    <TextGenerateEffect
+                      words={item.description}
+                      className={cn(
+                        "text-muted-foreground leading-relaxed max-w-sm",
+                        item.isUppercase
+                          ? "text-[11px] md:text-[12px] font-medium uppercase tracking-wider"
+                          : "text-sm md:text-base font-medium"
+                      )}
                     />
                   </CardItem>
 
-                  {/* CONTENU */}
-                  <div className="flex-1 flex flex-col items-start justify-center text-left space-y-6 p-10 lg:p-8">
-                    <CardItem
-                      translateZ={20}
-                      className="text-emerald-500 font-black tracking-[0.5em] text-[10px] uppercase"
-                    >
-                      {item.badge}
-                    </CardItem>
-
-                    <CardItem
-                      translateZ={50}
+                  <CardItem translateZ={80} className="pt-2">
+                    <button
+                      onClick={() => setLoading(true)}
                       className={cn(
-                        "italic leading-[0.9] text-foreground tracking-tighter",
-                        item.isUppercase
-                          ? "text-2xl md:text-4xl uppercase font-black"
-                          : "text-3xl md:text-5xl font-extrabold"
+                        "px-10 py-4 rounded-md text-[9px] font-bold uppercase tracking-widest transition-all active:scale-95 bg-card text-muted-foreground",
+                        "hover:text-emerald-500 hover:border-emerald-500 duration-300"
                       )}
+                      style={{
+                        border: "1px solid var(--border-color)",
+                        borderRadius: "var(--radius-vercel-zy)",
+                      }}
                     >
-                      {item.title}
-                    </CardItem>
-
-                    <CardItem translateZ={30} className="flex items-start">
-                      <TextGenerateEffect
-                        words={item.description}
-                        className={cn(
-                          "text-muted-foreground leading-relaxed max-w-sm",
-                          item.isUppercase
-                            ? "text-[11px] md:text-[12px] font-medium uppercase tracking-wider"
-                            : "text-sm md:text-base font-medium"
-                        )}
-                      />
-                    </CardItem>
-
-                    <CardItem translateZ={80} className="pt-2">
-                      <button
-                        onClick={() => setLoading(true)}
-                        className={cn(
-                          "px-10 py-4 rounded-xl text-[9px] font-black uppercase tracking-widest transition-all active:scale-95 bg-card text-muted-foreground",
-                          "hover:text-emerald-500 hover:scale-105 duration-300"
-                        )}
-                        style={{ border: "1px solid var(--border-color)" }} // SYNCHRONISATION VARIABLE CSS
-                      >
-                        Lancer l'algorithme
-                      </button>
-                    </CardItem>
-                  </div>
+                      Lancer l'algorithme
+                    </button>
+                  </CardItem>
                 </div>
-              </CardContainer>
-            </SectionWrapper>
-          );
-        })}
+              </div>
+            </CardContainer>
+          </SectionWrapper>
+        ))}
       </div>
     </div>
   );
 }
 
+// Noms pour React DevTools
+SectionWrapper.displayName = "SectionWrapper";
 CardContainer.displayName = "CardContainer";
 CardItem.displayName = "CardItem";
 ZymantraBeam.displayName = "ZymantraBeam";
