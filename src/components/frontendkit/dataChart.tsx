@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   ComposedChart,
   Line,
@@ -11,10 +11,8 @@ import {
   Tooltip,
   Legend,
   ResponsiveContainer,
-  Cell,
 } from "recharts";
 
-// Dataset fourni
 const miningAttractivenessCI = [
   {
     year: 2020,
@@ -98,16 +96,30 @@ const CustomTooltip = ({ active, payload, label }: any) => {
 };
 
 export default function MiningIntelligenceChart() {
+  // --- FIX INVARIANT FAILED : HYDRATION BARRIER ---
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) {
+    return (
+      <div
+        className="h-[450px] w-full bg-card animate-pulse"
+        style={{ borderRadius: "var(--radius-vercel-zy)" }}
+      />
+    );
+  }
+  // ------------------------------------------------
+
   return (
     <div
       className="w-full bg-card p-6 md:p-8 transition-all duration-500"
       style={{
         borderRadius: "var(--radius-vercel-zy)",
         border: "1px solid var(--border-color)",
-        boxShadow: "0 10px 30px -15px rgba(0,0,0,0.1)",
       }}
     >
-      {/* HEADER ANALYTIQUE */}
       <div className="mb-8">
         <h2 className="text-xl md:text-2xl font-black tracking-tighter text-foreground uppercase">
           Côte d’Ivoire – Mining Investment Attractiveness Trend
@@ -118,7 +130,7 @@ export default function MiningIntelligenceChart() {
         </p>
       </div>
 
-      <div className="h-[450px] w-full">
+      <div className="h-[400px] w-full">
         <ResponsiveContainer width="100%" height="100%">
           <ComposedChart
             data={miningAttractivenessCI}
@@ -130,7 +142,6 @@ export default function MiningIntelligenceChart() {
               stroke="var(--border-color)"
               opacity={0.3}
             />
-
             <XAxis
               dataKey="year"
               axisLine={false}
@@ -144,28 +155,13 @@ export default function MiningIntelligenceChart() {
               dy={10}
             />
 
-            {/* AXE GAUCHE : SCORE FRASER */}
             <YAxis
               yAxisId="left"
               domain={[0, 100]}
               axisLine={false}
               tickLine={false}
               tick={{ fill: "#10b981", fontSize: 10, fontWeight: 800 }}
-              label={{
-                value: "Fraser Score (0-100)",
-                angle: -90,
-                position: "insideLeft",
-                style: {
-                  fill: "#10b981",
-                  fontSize: 10,
-                  fontWeight: 900,
-                  textTransform: "uppercase",
-                  letterSpacing: "1px",
-                },
-              }}
             />
-
-            {/* AXE DROIT : PRODUCTION OR */}
             <YAxis
               yAxisId="right"
               orientation="right"
@@ -173,18 +169,6 @@ export default function MiningIntelligenceChart() {
               axisLine={false}
               tickLine={false}
               tick={{ fill: "#f59e0b", fontSize: 10, fontWeight: 800 }}
-              label={{
-                value: "Production Or (T)",
-                angle: 90,
-                position: "insideRight",
-                style: {
-                  fill: "#f59e0b",
-                  fontSize: 10,
-                  fontWeight: 900,
-                  textTransform: "uppercase",
-                  letterSpacing: "1px",
-                },
-              }}
             />
 
             <Tooltip
@@ -196,25 +180,22 @@ export default function MiningIntelligenceChart() {
               verticalAlign="top"
               align="right"
               height={36}
-              iconType="circle"
               formatter={(value) => (
-                <span className="text-[10px] font-black uppercase tracking-widest text-foreground/70 ml-2">
+                <span className="text-[10px] font-black uppercase tracking-widest text-foreground/70">
                   {value}
                 </span>
               )}
             />
 
-            {/* BARS : INVESTISSEMENTS (BACKDROP) */}
             <Bar
               name="Investissements USD"
               dataKey="mining_investment_usd"
               barSize={40}
               fill="currentColor"
-              className="fill-foreground/5 dark:fill-foreground/10"
+              className="fill-foreground/5"
               radius={[4, 4, 0, 0]}
             />
 
-            {/* LINE 1 : FRASER SCORE (ConnectNulls = false par défaut) */}
             <Line
               yAxisId="left"
               type="monotone"
@@ -228,11 +209,9 @@ export default function MiningIntelligenceChart() {
                 strokeWidth: 2,
                 stroke: "var(--background)",
               }}
-              activeDot={{ r: 8, strokeWidth: 0 }}
-              connectNulls={false} // Règle : ne pas interpoler
+              connectNulls={false}
             />
 
-            {/* LINE 2 : PRODUCTION OR */}
             <Line
               yAxisId="right"
               type="monotone"
@@ -276,10 +255,7 @@ export default function MiningIntelligenceChart() {
           <p className="text-[9px] font-black text-amber-500 uppercase tracking-widest">
             Croissance Prod.
           </p>
-          <p className="text-xl font-black tabular-nums">
-            +71%{" "}
-            <span className="text-[10px] opacity-50 font-medium">vs 2020</span>
-          </p>
+          <p className="text-xl font-black tabular-nums">+71%</p>
         </div>
       </div>
     </div>
