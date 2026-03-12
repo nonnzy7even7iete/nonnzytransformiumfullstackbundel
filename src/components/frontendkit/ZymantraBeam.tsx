@@ -185,11 +185,11 @@ export default function ZymantraBeam() {
         onClose={() => setLoading(false)}
       />
 
-      {/* BEAM SUBTILE */}
-      <div className="absolute left-6 md:left-20 top-0 h-full w-[1px] hidden sm:block opacity-20 bg-zinc-800">
+      {/* BEAM - Synchronisé sur --accents-2 */}
+      <div className="absolute left-6 md:left-20 top-0 h-full w-[1px] hidden sm:block opacity-40 bg-[#333333]">
         <motion.div
           style={{ height: beamY }}
-          className="absolute top-0 w-full bg-primary shadow-[0_0_10px_hsl(var(--primary))]"
+          className="absolute top-0 w-full bg-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.5)]"
         />
       </div>
 
@@ -206,8 +206,8 @@ export default function ZymantraBeam() {
                 <div
                   className={cn(
                     "flex flex-col lg:flex-row items-stretch gap-12 p-1 w-[95vw] lg:w-[1000px] transition-all duration-500",
-                    // BORDURES ZINC POUR ÉVITER LE NOIR AGRESSIF
-                    "bg-card border border-zinc-200 dark:border-zinc-800/50",
+                    // Utilisation forcée des couleurs sombres même en mode light pour le look technique
+                    "bg-card border border-[#333333] dark:border-[#333333]",
                     index % 2 !== 0 && "lg:flex-row-reverse"
                   )}
                   style={{ borderRadius: "var(--radius-vercel-zy)" }}
@@ -217,7 +217,7 @@ export default function ZymantraBeam() {
                     translateZ={40}
                     className="w-full lg:w-1/2 aspect-square md:aspect-[4/5] overflow-hidden bg-muted m-1"
                     style={{
-                      borderRadius: "calc(var(--radius-vercel-zy) - 4px)",
+                      borderRadius: "calc(var(--radius-vercel-zy) - 1px)",
                     }}
                   >
                     <img
@@ -266,12 +266,9 @@ export default function ZymantraBeam() {
                         className={cn(
                           "px-10 py-4 rounded-xl text-[9px] font-black uppercase tracking-widest transition-all active:scale-95",
                           "bg-card text-muted-foreground",
-                          // BORDURE BOUTON ZINC
-                          "border border-zinc-200 dark:border-zinc-800",
-                          // NEUMORPHISME ADOUCI (ZINC BASED)
-                          "shadow-[4px_4px_10px_rgba(0,0,0,0.03),-4px_-4px_10px_rgba(255,255,255,0.7)]",
-                          "dark:shadow-[6px_6px_12px_rgba(0,0,0,0.4),-2px_-2px_10px_rgba(255,255,255,0.01)]",
-                          "hover:text-emerald-500 transition-all"
+                          "border border-[#333333]", // Bordure identique au mode dark
+                          "shadow-[4px_4px_10px_rgba(0,0,0,0.2)]", // Ombre plus marquée pour le côté technique
+                          "hover:text-emerald-500 hover:border-emerald-500 transition-all"
                         )}
                       >
                         Lancer l'algorithme
@@ -287,3 +284,8 @@ export default function ZymantraBeam() {
     </div>
   );
 }
+
+// Display Names pour React DevTools
+CardContainer.displayName = "CardContainer";
+CardItem.displayName = "CardItem";
+ZymantraBeam.displayName = "ZymantraBeam";
