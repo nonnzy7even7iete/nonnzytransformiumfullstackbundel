@@ -11,9 +11,9 @@ import {
   ReferenceLine,
   Label,
 } from "recharts";
-import { TrendingUp, ShieldCheck, Globe, Zap, Crown } from "lucide-react";
+import { Crown, Zap } from "lucide-react";
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import {
   ChartContainer,
   ChartTooltip,
@@ -21,17 +21,8 @@ import {
   type ChartConfig,
 } from "@/components/ui/chart";
 
-// Types stricts pour VS Code
-interface EliteDataPoint {
-  year: string;
-  civ: number;
-  ghana: number;
-  mali: number;
-  burkina: number;
-  guinea: number;
-}
-
-const eliteData: EliteDataPoint[] = [
+// DATA SCRAPÉE 2026 - TOP 5 ECOWAS
+const eliteData = [
   {
     year: "2022",
     civ: 48.2,
@@ -75,174 +66,171 @@ const eliteData: EliteDataPoint[] = [
 ];
 
 const chartConfig = {
-  civ: { label: "Côte d'Ivoire", color: "#10b981" },
-  ghana: { label: "Ghana", color: "#f59e0b" },
-  mali: { label: "Mali", color: "#71717a" },
-  burkina: { label: "Burkina Faso", color: "#3f3f46" },
-  guinea: { label: "Guinée", color: "#a1a1aa" },
+  civ: { label: "CÔTE D'IVOIRE", color: "#10b981" },
+  ghana: { label: "GHANA", color: "#f59e0b" },
+  mali: { label: "MALI", color: "#71717a" },
+  burkina: { label: "BURKINA", color: "#3f3f46" },
+  guinea: { label: "GUINÉE", color: "#a1a1aa" },
 } satisfies ChartConfig;
 
 export default function EliteMiningDashboard() {
   const chartId = React.useId();
 
   return (
-    <div className="w-full space-y-6 bg-black p-4 md:p-8 border border-zinc-900">
-      {/* HEADER PROFESSIONNEL */}
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-end border-b border-zinc-800 pb-8 gap-4">
-        <div className="space-y-2">
-          <div className="flex items-center gap-2">
-            <Crown className="text-emerald-500 w-5 h-5" />
-            <h1 className="text-3xl font-black tracking-tighter uppercase italic text-white">
-              Sovereign{" "}
-              <span className="text-emerald-500 underline decoration-4 underline-offset-4">
-                Mining
-              </span>{" "}
-              Terminal
-            </h1>
+    <div className="w-full bg-black p-6 border border-zinc-900 font-sans tracking-tight">
+      {/* HEADER ÉPURÉ & MODERNE */}
+      <div className="flex justify-between items-center border-b border-zinc-800/50 pb-6 mb-8">
+        <div className="flex items-center gap-3">
+          <div className="p-2 bg-emerald-500/10 rounded-full">
+            <Crown className="text-emerald-500 w-4 h-4" />
           </div>
-          <p className="text-zinc-500 text-[10px] font-bold uppercase tracking-[0.4em]">
-            TOP 5 WEST AFRICAN PRODUCERS • FRASER INDEX AUDIT 2026
-          </p>
+          <h1 className="text-lg font-black tracking-[0.2em] uppercase text-white">
+            Sovereign <span className="text-emerald-500">Index</span>
+          </h1>
         </div>
-        <div className="flex gap-6">
-          <div className="flex flex-col items-end leading-none">
-            <span className="text-[8px] text-zinc-600 font-black uppercase tracking-widest mb-1">
-              Status
-            </span>
-            <span className="text-xs font-mono font-bold text-emerald-500">
-              DOMINANT
-            </span>
-          </div>
-          <div className="flex flex-col items-end leading-none">
-            <span className="text-[8px] text-zinc-600 font-black uppercase tracking-widest mb-1">
-              Confidence
-            </span>
-            <span className="text-xs font-mono font-bold text-blue-500">
-              99.2%
-            </span>
+        <div className="flex items-center gap-4 border-l border-zinc-800 pl-6 text-[10px] font-mono">
+          <div className="flex items-center gap-2">
+            <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+            <span className="text-zinc-400 uppercase">Audit Q1_2026</span>
           </div>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
-        <Card className="lg:col-span-3 bg-transparent border-none shadow-none p-0">
-          <CardContent className="p-0">
-            <ChartContainer config={chartConfig} className="h-[450px] w-full">
-              <ResponsiveContainer width="100%" height="100%">
-                <AreaChart
-                  data={eliteData}
-                  margin={{ left: -20, right: 0, top: 20 }}
-                >
-                  <defs>
-                    <linearGradient
-                      id={`fillCIV-${chartId}`}
-                      x1="0"
-                      y1="0"
-                      x2="0"
-                      y2="1"
-                    >
-                      <stop offset="5%" stopColor="#10b981" stopOpacity={0.4} />
-                      <stop offset="95%" stopColor="#10b981" stopOpacity={0} />
-                    </linearGradient>
-                  </defs>
-
-                  <CartesianGrid
-                    vertical={false}
-                    stroke="#18181b"
-                    strokeDasharray="3 3"
-                  />
-                  <XAxis
-                    dataKey="year"
-                    axisLine={false}
-                    tickLine={false}
-                    tick={{ fill: "#52525b", fontSize: 11, fontWeight: 800 }}
-                    dy={15}
-                  />
-                  <YAxis hide domain={[30, 70]} />
-
-                  <ChartTooltip
-                    cursor={{ stroke: "#27272a", strokeWidth: 1 }}
-                    content={<ChartTooltipContent />}
-                  />
-
-                  {/* BENCHMARKS (GRIS) */}
-                  {["mali", "burkina", "guinea"].map((key) => (
-                    <Area
-                      key={key}
-                      dataKey={key}
-                      type="monotone"
-                      stroke="#27272a"
-                      strokeWidth={1}
-                      fill="none"
-                      opacity={0.4}
-                      animationDuration={1000}
-                    />
-                  ))}
-
-                  {/* GHANA CHALLENGER */}
-                  <Area
-                    dataKey="ghana"
-                    type="monotone"
-                    stroke="#f59e0b"
-                    strokeWidth={1.5}
-                    fill="none"
-                    strokeDasharray="4 4"
-                  />
-
-                  {/* COTE D'IVOIRE LEADER */}
-                  <Area
-                    dataKey="civ"
-                    type="monotone"
-                    stroke="#10b981"
-                    strokeWidth={3}
-                    fill={`url(#fillCIV-${chartId})`}
-                    animationDuration={2500}
-                    dot={{
-                      r: 4,
-                      fill: "#10b981",
-                      strokeWidth: 2,
-                      stroke: "#000",
-                    }}
-                  />
-
-                  <ReferenceLine
-                    x="2024"
-                    stroke="#10b981"
-                    strokeDasharray="3 3"
-                    opacity={0.5}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        {/* CHART SECTION (9 COLUMNS) */}
+        <div className="lg:col-span-9">
+          <ChartContainer config={chartConfig} className="h-[400px] w-full">
+            <ResponsiveContainer width="100%" height="100%">
+              <AreaChart
+                data={eliteData}
+                margin={{ left: 40, right: 10, top: 10 }}
+              >
+                <defs>
+                  <linearGradient
+                    id={`fillCIV-${chartId}`}
+                    x1="0"
+                    y1="0"
+                    x2="0"
+                    y2="1"
                   >
-                    <Label
-                      value="Sovereignty Pivot"
-                      position="top"
-                      fill="#10b981"
-                      fontSize={10}
-                      fontWeight={900}
-                    />
-                  </ReferenceLine>
-                </AreaChart>
-              </ResponsiveContainer>
-            </ChartContainer>
-          </CardContent>
-        </Card>
+                    <stop offset="5%" stopColor="#10b981" stopOpacity={0.3} />
+                    <stop offset="95%" stopColor="#10b981" stopOpacity={0} />
+                  </linearGradient>
+                </defs>
 
-        {/* SIDEBAR ANALYSE */}
-        <div className="space-y-6">
-          <div className="space-y-2 border-l-2 border-emerald-500 pl-4 py-1">
-            <h4 className="text-[11px] font-black text-white uppercase tracking-tighter italic">
-              Leadership Analysis
+                <CartesianGrid
+                  vertical={false}
+                  stroke="#18181b"
+                  strokeDasharray="3 3"
+                />
+
+                <XAxis
+                  dataKey="year"
+                  axisLine={false}
+                  tickLine={false}
+                  tick={{ fill: "#52525b", fontSize: 10, fontWeight: 700 }}
+                  dy={10}
+                />
+
+                {/* AXE Y ORGANISÉ AVEC LABELS PAYS */}
+                <YAxis
+                  axisLine={false}
+                  tickLine={false}
+                  tick={{ fill: "#3f3f46", fontSize: 9, fontWeight: 800 }}
+                  ticks={[37, 46, 52, 55, 61]}
+                  tickFormatter={(val) => {
+                    if (val === 61) return "CIV #1";
+                    if (val === 55) return "GHANA";
+                    if (val === 52) return "GUINÉE";
+                    if (val === 46) return "MALI";
+                    if (val === 37) return "BURKINA";
+                    return "";
+                  }}
+                />
+
+                <ChartTooltip
+                  cursor={{ stroke: "#27272a", strokeWidth: 1 }}
+                  content={<ChartTooltipContent />}
+                />
+
+                {/* BENCHMARKS SPECTRÉS */}
+                {["mali", "burkina", "guinea"].map((key) => (
+                  <Area
+                    key={key}
+                    dataKey={key}
+                    type="monotone"
+                    stroke="#27272a"
+                    strokeWidth={1}
+                    fill="none"
+                    opacity={0.3}
+                  />
+                ))}
+
+                <Area
+                  dataKey="ghana"
+                  type="monotone"
+                  stroke="#f59e0b"
+                  strokeWidth={1}
+                  fill="none"
+                  strokeDasharray="4 4"
+                  opacity={0.5}
+                />
+
+                {/* DOMINATION IVOIRIENNE */}
+                <Area
+                  dataKey="civ"
+                  type="monotone"
+                  stroke="#10b981"
+                  strokeWidth={2.5}
+                  fill={`url(#fillCIV-${chartId})`}
+                  dot={{ r: 3, fill: "#10b981", strokeWidth: 0 }}
+                />
+
+                <ReferenceLine
+                  x="2024"
+                  stroke="#10b981"
+                  strokeDasharray="3 3"
+                  opacity={0.3}
+                >
+                  <Label
+                    value="LEADERSHIP SHIFT"
+                    position="top"
+                    fill="#10b981"
+                    fontSize={8}
+                    fontWeight={900}
+                  />
+                </ReferenceLine>
+              </AreaChart>
+            </ResponsiveContainer>
+          </ChartContainer>
+        </div>
+
+        {/* SIDEBAR D'ANALYSE MINIMALISTE (3 COLUMNS) */}
+        <div className="lg:col-span-3 space-y-6">
+          <div className="space-y-4">
+            <h4 className="text-[10px] font-black text-zinc-500 uppercase tracking-widest border-l-2 border-emerald-500 pl-3">
+              Insights
             </h4>
-            <p className="text-[10px] text-zinc-500 leading-relaxed font-medium tracking-tight">
-              La Côte d'Ivoire affiche une corrélation de 0.94 entre stabilité
-              et attractivité. Le dépassement du Ghana en 2024 marque l'ère de
-              la souveraineté totale.
+            <p className="text-xs text-zinc-400 leading-relaxed font-medium">
+              Corrélation entre l'indice Fraser (
+              <span className="text-white">60.9</span>) et la stabilité fiscale
+              post-2024.
             </p>
           </div>
 
-          <div className="flex flex-col gap-2">
-            <RankingItem rank="01" name="Côte d'Ivoire" score="60.9" active />
-            <RankingItem rank="02" name="Ghana" score="55.2" active={false} />
-            <RankingItem rank="03" name="Guinée" score="52.1" active={false} />
-            <RankingItem rank="04" name="Mali" score="46.1" active={false} />
+          <div className="space-y-2 pt-4 border-t border-zinc-900">
+            <div className="flex justify-between items-center text-[10px] font-bold">
+              <span className="text-zinc-500 uppercase">Global Ranking</span>
+              <span className="text-emerald-500 italic">Tier A</span>
+            </div>
+            <div className="h-1 w-full bg-zinc-900 rounded-full overflow-hidden">
+              <div className="h-full bg-emerald-500 w-[85%]" />
+            </div>
+          </div>
+
+          <div className="pt-4 space-y-3">
+            <MetricSmall label="Gap vs Ghana" value="+5.72" />
+            <MetricSmall label="Reliability" value="99.2%" />
           </div>
         </div>
       </div>
@@ -250,48 +238,14 @@ export default function EliteMiningDashboard() {
   );
 }
 
-// Composant de ligne de classement typé
-function RankingItem({
-  rank,
-  name,
-  score,
-  active,
-}: {
-  rank: string;
-  name: string;
-  score: string;
-  active: boolean;
-}) {
+function MetricSmall({ label, value }: { label: string; value: string }) {
   return (
-    <div
-      className={`flex justify-between items-center p-2 border transition-all ${
-        active
-          ? "bg-emerald-500/10 border-emerald-500/30"
-          : "bg-zinc-900/30 border-zinc-800"
-      }`}
-    >
-      <div className="flex items-center gap-3">
-        <span
-          className={`text-[10px] font-black ${
-            active ? "text-emerald-500" : "text-zinc-600"
-          }`}
-        >
-          {rank}
-        </span>
-        <span
-          className={`text-[11px] font-bold uppercase ${
-            active ? "text-white" : "text-zinc-400"
-          }`}
-        >
-          {name}
-        </span>
-      </div>
-      <span
-        className={`text-[10px] font-mono font-bold ${
-          active ? "text-emerald-500" : "text-zinc-500"
-        }`}
-      >
-        {score}
+    <div className="flex justify-between items-center border-b border-zinc-900 pb-2">
+      <span className="text-[9px] font-black text-zinc-600 uppercase tracking-tighter">
+        {label}
+      </span>
+      <span className="text-[10px] font-mono font-bold text-white">
+        {value}
       </span>
     </div>
   );
