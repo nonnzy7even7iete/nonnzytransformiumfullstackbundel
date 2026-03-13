@@ -9,164 +9,139 @@ import {
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
-  Legend,
+  Line,
+  ComposedChart,
 } from "recharts";
 import { cn } from "@/lib/utils";
-import { TrendingUp, Globe, ShieldCheck, Zap } from "lucide-react"; // Assure-toi d'avoir lucide-react
+import { Shield, Activity } from "lucide-react";
 
-const data = [
+// 1. DATA INTÉGRÉE (Pour éviter l'erreur 'data is not defined')
+const internalData = [
   {
     year: "2021",
-    performance: 41,
-    benchmark: 38,
-    reliability: 45,
-    note: "Phase d'expansion initiale",
+    perf: 41,
+    bench: 38,
+    trust: 45,
+    info: "Expansion Structurelle",
   },
-  {
-    year: "2022",
-    performance: 48,
-    benchmark: 42,
-    reliability: 48,
-    note: "Optimisation des sites miniers",
-  },
-  {
-    year: "2023",
-    performance: 51,
-    benchmark: 46,
-    reliability: 55.7,
-    note: "Réforme du code minier",
-  },
-  {
-    year: "2024",
-    performance: 53,
-    benchmark: 50,
-    reliability: 58,
-    note: "Nouveaux gisements opérationnels",
-  },
-  {
-    year: "2025",
-    performance: 55,
-    benchmark: 54,
-    reliability: 60.92,
-    note: "Pic d'attractivité historique",
-  },
-  {
-    year: "2026",
-    performance: 59,
-    benchmark: 58,
-    reliability: 64,
-    note: "Convergence standards mondiaux",
-  },
+  { year: "2022", perf: 48, bench: 42, trust: 48, info: "Optimisation GIS" },
+  { year: "2023", perf: 51, bench: 46, trust: 55.7, info: "Code Minier V2" },
+  { year: "2024", perf: 53, bench: 50, trust: 58, info: "Nouveaux Gisements" },
+  { year: "2025", perf: 55, bench: 54, trust: 60.9, info: "Audit Conformité" },
+  { year: "2026", perf: 61, bench: 58, trust: 66, info: "Standard Mondial" },
 ];
 
 export default function DataChart() {
   const chartId = useId();
 
   return (
-    <div className="w-full bg-[#09090b] p-8 border border-[#27272a] rounded-2xl shadow-2xl font-sans">
-      {/* SECTION 1 : RÉSUMÉ EXÉCUTIF (LECTURE EN 3 SECONDES) */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-        <div className="p-4 bg-emerald-500/5 border border-emerald-500/20 rounded-xl">
-          <div className="flex items-center gap-2 text-emerald-500 mb-1">
-            <TrendingUp size={16} />
-            <span className="text-[10px] font-black uppercase tracking-widest">
-              Performance
+    <div
+      className="w-full p-6 border transition-colors duration-300"
+      style={{
+        backgroundColor: "var(--card)",
+        borderColor: "var(--border-color)",
+        borderRadius: "var(--radius-vercel-zy)",
+      }}
+    >
+      {/* HEADER */}
+      <div
+        className="flex justify-between items-start mb-12 border-b pb-6"
+        style={{ borderColor: "var(--border-color)" }}
+      >
+        <div className="space-y-1">
+          <h2 className="text-[var(--foreground)] text-sm font-black uppercase tracking-[0.4em]">
+            Sovereignty Mining Intelligence
+          </h2>
+          <div className="flex gap-4 text-[10px] text-muted-foreground font-medium uppercase tracking-widest">
+            <span>Market: CIV.Gold</span>
+            <span className="flex items-center gap-1">
+              Status: <span className="text-emerald-500 italic">Nominal</span>
             </span>
           </div>
-          <p className="text-xl font-bold text-white tracking-tight">
-            +14% de croissance
-          </p>
-          <p className="text-zinc-500 text-[10px]">
-            Production nationale en hausse continue.
-          </p>
         </div>
-
-        <div className="p-4 bg-amber-500/5 border border-amber-500/20 rounded-xl">
-          <div className="flex items-center gap-2 text-amber-500 mb-1">
-            <Globe size={16} />
-            <span className="text-[10px] font-black uppercase tracking-widest">
-              Compétitivité
-            </span>
-          </div>
-          <p className="text-xl font-bold text-white tracking-tight">
-            Top 3 CEDEAO
-          </p>
-          <p className="text-zinc-500 text-[10px]">
-            Rattrapage accéléré du benchmark Afrique.
-          </p>
-        </div>
-
-        <div className="p-4 bg-zinc-100/5 border border-zinc-100/20 rounded-xl">
-          <div className="flex items-center gap-2 text-zinc-100 mb-1">
-            <ShieldCheck size={16} />
-            <span className="text-[10px] font-black uppercase tracking-widest">
-              Confiance
-            </span>
-          </div>
-          <p className="text-xl font-bold text-white tracking-tight">
-            Score Fraser : 64.0
-          </p>
-          <p className="text-zinc-500 text-[10px]">
-            Indice de fiabilité au plus haut (Audit 2026).
+        <div className="text-right">
+          <p className="text-muted-foreground text-[9px] font-mono uppercase tracking-tighter">
+            Update: 2026-03-13
           </p>
         </div>
       </div>
 
-      {/* SECTION 2 : LE GRAPHIQUE VISUEL */}
-      <div className="h-[400px] w-full mb-10">
+      {/* KPI GRID */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-12">
+        <Metric label="Efficience" value="+16.4%" color="text-emerald-500" />
+        <Metric label="Bench. Africa" value="Rank #3" color="text-amber-500" />
+        <Metric
+          label="Reliability"
+          value="66.00"
+          color="text-[var(--foreground)]"
+        />
+        <Metric label="Volatility" value="Low" color="text-muted-foreground" />
+      </div>
+
+      {/* CHART AREA */}
+      <div className="h-[380px] w-full">
         <ResponsiveContainer width="100%" height="100%">
-          <AreaChart data={data} id={chartId} margin={{ left: -15, right: 10 }}>
+          <ComposedChart data={internalData} id={chartId}>
             <defs>
-              <linearGradient id="perf" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="#10b981" stopOpacity={0.3} />
-                <stop offset="95%" stopColor="#10b981" stopOpacity={0} />
-              </linearGradient>
-              <linearGradient id="bench" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="#f59e0b" stopOpacity={0.1} />
-                <stop offset="95%" stopColor="#f59e0b" stopOpacity={0} />
+              <linearGradient id="gradPerf" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stopColor="#10b981" stopOpacity={0.15} />
+                <stop offset="100%" stopColor="#10b981" stopOpacity={0} />
               </linearGradient>
             </defs>
 
             <CartesianGrid
-              strokeDasharray="3 3"
+              strokeDasharray="2 4"
               vertical={false}
-              stroke="#18181b"
+              stroke="var(--border-color)"
+              opacity={0.5}
             />
+
             <XAxis
               dataKey="year"
               axisLine={false}
               tickLine={false}
-              tick={{ fill: "#52525b", fontSize: 12, fontWeight: "bold" }}
+              tick={{
+                fill: "var(--muted-foreground)",
+                fontSize: 9,
+                fontWeight: 700,
+              }}
               dy={15}
             />
-            <YAxis hide domain={[30, 70]} />
+
+            <YAxis hide domain={[30, 75]} />
 
             <Tooltip
-              cursor={{ stroke: "#27272a", strokeWidth: 2 }}
+              cursor={{ stroke: "var(--border-color)", strokeWidth: 1 }}
               content={({ active, payload, label }) => {
                 if (active && payload && payload.length) {
                   return (
-                    <div className="bg-zinc-950 border border-zinc-800 p-4 rounded-lg shadow-2xl backdrop-blur-xl">
-                      <p className="text-emerald-500 font-black text-[10px] uppercase mb-2">
-                        Année {label}
+                    <div
+                      className="p-3 shadow-2xl backdrop-blur-md border rounded-sm"
+                      style={{
+                        backgroundColor: "var(--background)",
+                        borderColor: "var(--border-color)",
+                      }}
+                    >
+                      <p
+                        className="text-muted-foreground text-[9px] font-bold mb-2 uppercase border-b pb-1 italic"
+                        style={{ borderColor: "var(--border-color)" }}
+                      >
+                        Logs: {label}
                       </p>
-                      <p className="text-white text-xs font-medium mb-3 border-b border-zinc-800 pb-2 italic">
-                        "{payload[0].payload.note}"
-                      </p>
-                      <div className="space-y-1.5">
+                      <div className="space-y-2">
                         {payload.map((item: any, i: number) => (
                           <div
                             key={i}
-                            className="flex justify-between gap-8 items-center"
+                            className="flex justify-between items-center gap-12 text-[10px]"
                           >
-                            <span className="text-[10px] text-zinc-500 uppercase font-bold">
+                            <span className="text-muted-foreground uppercase font-medium tracking-tighter">
                               {item.name}
                             </span>
                             <span
-                              className="text-xs font-mono font-bold"
+                              className="font-mono font-bold"
                               style={{ color: item.color }}
                             >
-                              {item.value}
+                              {item.value.toFixed(2)}
                             </span>
                           </div>
                         ))}
@@ -178,76 +153,96 @@ export default function DataChart() {
               }}
             />
 
-            <Area
+            <Line
               type="monotone"
-              dataKey="benchmark"
+              dataKey="bench"
               name="Benchmark"
-              stroke="#f59e0b"
-              fill="url(#bench)"
-              strokeWidth={2}
-              strokeDasharray="5 5"
-            />
-            <Area
-              type="monotone"
-              dataKey="reliability"
-              name="Fiabilité"
-              stroke="#ffffff"
-              fill="none"
+              stroke="#d97706"
               strokeWidth={1}
-              dot={{ r: 2 }}
+              dot={false}
+              strokeDasharray="3 3"
+            />
+            <Line
+              type="monotone"
+              dataKey="trust"
+              name="Index Fraser"
+              stroke="var(--foreground)"
+              strokeWidth={1}
+              dot={{ r: 2, fill: "var(--foreground)", strokeWidth: 0 }}
+              opacity={0.2}
             />
             <Area
               type="monotone"
-              dataKey="performance"
+              dataKey="perf"
               name="Performance CI"
               stroke="#10b981"
-              fill="url(#perf)"
-              strokeWidth={4}
+              strokeWidth={1.2}
+              fill="url(#gradPerf)"
             />
-          </AreaChart>
+          </ComposedChart>
         </ResponsiveContainer>
       </div>
 
-      {/* SECTION 3 : NOTES DE PRÉCISION (POUR L'ANALYSE SANS EFFORT) */}
-      <div className="border-t border-zinc-800 pt-6">
-        <h4 className="text-zinc-100 text-[10px] font-black uppercase tracking-[0.3em] mb-4">
-          Interprétation de l'Algorithme ZY
-        </h4>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-4 text-[11px] text-zinc-400 leading-relaxed">
-          <div className="flex gap-3">
-            <span className="text-emerald-500 font-bold">●</span>
-            <p>
-              La <span className="text-white font-bold">Performance CI</span>{" "}
-              (verte) montre une accélération post-2023. La distance croissante
-              avec le benchmark signifie que la Côte d'Ivoire devient un leader
-              régional.
-            </p>
-          </div>
-          <div className="flex gap-3">
-            <span className="text-amber-500 font-bold">●</span>
-            <p>
-              Le <span className="text-white font-bold">Benchmark Afrique</span>{" "}
-              (orange) sert de ligne de flottaison. En 2026, la Côte d'Ivoire
-              dépasse enfin la moyenne des pays producteurs historiques.
-            </p>
-          </div>
-          <div className="flex gap-3">
-            <span className="text-white font-bold">●</span>
-            <p>
-              Le <span className="text-white font-bold">Rapport Fraser</span>{" "}
-              (blanc) valide que les investisseurs ont une confiance élevée. Un
-              score &gt; 60 est le seuil de "Haute Fiabilité".
-            </p>
-          </div>
-          <div className="flex gap-3 text-emerald-500 italic bg-emerald-500/5 p-2 rounded">
-            <Zap size={14} />
-            <p>
-              Conclusion : Le secteur est en phase de "Convergence Totale". Les
-              chiffres de production sont alignés avec la fiabilité
-              internationale.
-            </p>
-          </div>
-        </div>
+      {/* FOOTER */}
+      <div
+        className="mt-12 pt-6 border-t grid grid-cols-1 md:grid-cols-2 gap-x-16 gap-y-4"
+        style={{ borderColor: "var(--border-color)" }}
+      >
+        <Note
+          icon={<Activity size={12} />}
+          title="Vecteur de Croissance"
+          desc="Performance surclassant le benchmark régional."
+        />
+        <Note
+          icon={<Shield size={12} />}
+          title="Compliance Score"
+          desc="Convergence vers les standards Frazier Zone A."
+        />
+      </div>
+    </div>
+  );
+}
+
+// 2. TYPES ET SOUS-COMPOSANTS
+interface MetricProps {
+  label: string;
+  value: string;
+  color: string;
+}
+function Metric({ label, value, color }: MetricProps) {
+  return (
+    <div className="space-y-1">
+      <p className="text-muted-foreground text-[9px] font-black uppercase tracking-[0.2em]">
+        {label}
+      </p>
+      <p
+        className={cn(
+          "text-lg font-medium tracking-tighter tabular-nums leading-none",
+          color
+        )}
+      >
+        {value}
+      </p>
+    </div>
+  );
+}
+
+interface NoteProps {
+  icon: React.ReactNode;
+  title: string;
+  desc: string;
+}
+function Note({ icon, title, desc }: NoteProps) {
+  return (
+    <div className="flex gap-3">
+      <div className="mt-1 text-muted-foreground">{icon}</div>
+      <div className="space-y-0.5">
+        <h5 className="text-[var(--foreground)] text-[10px] font-bold uppercase tracking-widest leading-none">
+          {title}
+        </h5>
+        <p className="text-muted-foreground text-[10px] leading-relaxed opacity-70">
+          {desc}
+        </p>
       </div>
     </div>
   );
