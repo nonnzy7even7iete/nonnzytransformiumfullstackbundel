@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { TrendingUp, ShieldCheck, Zap, Info } from "lucide-react";
+import { TrendingUp, Info } from "lucide-react";
 import {
   Area,
   AreaChart,
@@ -28,6 +28,10 @@ import {
   type ChartConfig,
 } from "@/components/ui/chart";
 
+/**
+ * STRUCTURE DES DONNÉES (AUDIT DATA SCIENTIST)
+ * Les valeurs sont structurées pour une lecture multidimensionnelle.
+ */
 const DONNEES_SOUVERAINETE = [
   { annee: "2021", indice: 41.0, moyenne_region: 54.0 },
   { annee: "2022", indice: 48.2, moyenne_region: 56.5 },
@@ -38,56 +42,57 @@ const DONNEES_SOUVERAINETE = [
 ];
 
 const configGraphique = {
-  indice: { label: "Indice CIV", color: "#10b981" },
-  moyenne_region: { label: "Moyenne Région", color: "var(--accents-2)" },
+  indice: { label: "Indice Côte d'Ivoire", color: "#10b981" },
+  moyenne_region: { label: "Moyenne CEDEAO", color: "var(--accents-2)" },
 } satisfies ChartConfig;
 
-export default function TerminalStructurel() {
+export default function TerminalCompletSouverain() {
   const id = React.useId();
 
   return (
     <div className="w-full bg-[var(--background)] text-[var(--foreground)] p-10 font-sans antialiased border border-[var(--border-color)] rounded-[var(--radius-vercel)] shadow-2xl transition-colors duration-200">
-      {/* EN-TÊTE : STRUCTURE PRÉSERVÉE */}
+      {/* EN-TÊTE : STRUCTURE ET IDENTITÉ VISUELLE */}
       <div className="flex flex-col md:flex-row justify-between items-start mb-16 border-b border-[var(--accents-2)] pb-10 gap-8">
         <div className="space-y-4">
           <div className="flex items-center gap-4">
-            <div className="p-3 bg-[var(--card-bg-glass)] border border-[var(--accents-2)] backdrop-blur-md rounded-[var(--radius-vercel-zy)]">
+            {/* Icône avec container en transparence (Glassmorphism) */}
+            <div className="p-3 bg-[var(--card-bg-glass)] border border-[var(--accents-2)] backdrop-blur-md rounded-[var(--radius-vercel-zy)] shadow-[0_0_20px_rgba(16,185,129,0.1)]">
               <TrendingUp className="h-6 w-6 text-[#10b981] stroke-[2.5]" />
             </div>
             <div>
               <h1 className="text-4xl font-black tracking-tighter uppercase italic leading-none">
                 Indice de <span className="text-[#10b981]">Souveraineté</span>
               </h1>
-              <p className="text-[10px] font-bold text-[var(--foreground)] opacity-50 uppercase tracking-[0.5em] mt-2">
-                Audit Officiel • Synchronisation 2026
+              <p className="text-[10px] font-bold text-[var(--foreground)] opacity-40 uppercase tracking-[0.5em] mt-2">
+                Audit Officiel Fraser • 2026
               </p>
             </div>
           </div>
         </div>
 
         <div className="flex gap-12">
-          <StatHeader label="Rang Politique" value="#47" />
+          <StatHeader label="Rang Politique (PPI)" value="#47" />
           <StatHeader label="Attractivité" value="#28" />
         </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-16">
-        {/* BARRE LATÉRALE : PRÉSERVATION SQUELETTIQUE */}
+        {/* BARRE LATÉRALE (SIDEBAR) : JAUGES ET NOTE D'ANALYSE */}
         <div className="lg:col-span-3 space-y-12">
           <div className="space-y-8">
-            <h3 className="text-[10px] font-black uppercase text-[var(--foreground)] opacity-40 tracking-widest border-l-2 border-[#10b981] pl-3">
-              Paramètres d'Audit
+            <h3 className="text-[10px] font-black uppercase text-[var(--foreground)] opacity-30 tracking-widest border-l-2 border-[#10b981] pl-3 italic">
+              Paramètres d'Expertise
             </h3>
             <JaugeStat label="Stabilité Législative" val={92} />
             <JaugeStat label="Potentiel Géologique" val={89} />
             <JaugeStat label="Transparence ITIE" val={74} />
           </div>
 
-          {/* LE CONTAINER DEMANDÉ : NOIR EN DARK / CLAIR EN LIGHT AVEC BORDURES */}
-          <div className="p-6 bg-[var(--card-bg)] border border-[var(--border-color)] rounded-[var(--radius-vercel-zy)] shadow-sm">
+          {/* Bloc Note d'Analyse (Respect strict de votre CSS) */}
+          <div className="p-6 bg-[var(--card-bg)] border border-[var(--border-color)] rounded-[var(--radius-vercel-zy)]">
             <div className="flex items-center gap-2 mb-3">
               <Info className="h-3 w-3 text-[#10b981]" />
-              <p className="text-[9px] font-black uppercase text-[var(--foreground)] opacity-40 tracking-tighter">
+              <p className="text-[9px] font-black uppercase text-[var(--foreground)] opacity-40">
                 Note d'analyse
               </p>
             </div>
@@ -95,18 +100,18 @@ export default function TerminalStructurel() {
               Optimisation <br />
               Risque / Rendement
             </div>
-            <p className="text-[11px] text-[var(--foreground)] opacity-80 leading-relaxed font-medium">
+            <p className="text-[11px] text-[var(--foreground)] opacity-70 leading-relaxed font-medium">
               Le <span className="text-[#10b981] font-bold">60.92</span> marque
               le passage de la Côte d'Ivoire en{" "}
-              <span className="font-bold underline decoration-[#10b981]/30">
+              <span className="font-bold underline decoration-[#10b981]/20">
                 Zone de Confiance Majeure
               </span>{" "}
-              pour les investisseurs institutionnels.
+              pour les investisseurs.
             </p>
           </div>
         </div>
 
-        {/* GRAPHIQUE CENTRAL */}
+        {/* CONTENU PRINCIPAL : GRAPHIQUE ANALYTIQUE */}
         <div className="lg:col-span-9">
           <ChartContainer config={configGraphique} className="h-[450px] w-full">
             <ResponsiveContainer width="100%" height="100%">
@@ -126,12 +131,15 @@ export default function TerminalStructurel() {
                     <stop offset="100%" stopColor="#10b981" stopOpacity={0} />
                   </linearGradient>
                 </defs>
+
+                {/* Grille ajustée pour la lisibilité Light/Dark */}
                 <CartesianGrid
                   vertical={false}
                   stroke="var(--accents-2)"
                   strokeWidth={1}
                   opacity={0.4}
                 />
+
                 <XAxis
                   dataKey="annee"
                   axisLine={false}
@@ -144,11 +152,31 @@ export default function TerminalStructurel() {
                   }}
                   dy={15}
                 />
+
                 <YAxis domain={[30, 75]} hide />
+
+                {/* TOOLTIP CORRIGÉ : ESPACEMENT ET LISIBILITÉ */}
                 <ChartTooltip
-                  cursor={{ stroke: "var(--accents-2)" }}
-                  content={<ChartTooltipContent />}
+                  cursor={{ stroke: "var(--accents-2)", strokeWidth: 1 }}
+                  content={
+                    <ChartTooltipContent
+                      className="min-w-[220px] bg-[var(--card-bg)] border-[var(--border-color)] p-4 shadow-2xl"
+                      formatter={(value, name) => (
+                        <div className="flex w-full items-center justify-between gap-10">
+                          <span className="text-[10px] font-black uppercase tracking-widest opacity-50">
+                            {configGraphique[
+                              name as keyof typeof configGraphique
+                            ]?.label || name}
+                          </span>
+                          <span className="font-mono font-bold text-[#10b981]">
+                            {value}
+                          </span>
+                        </div>
+                      )}
+                    />
+                  }
                 />
+
                 <Area
                   dataKey="moyenne_region"
                   type="monotone"
@@ -165,27 +193,36 @@ export default function TerminalStructurel() {
                   fill={`url(#eclat-${id})`}
                   animationDuration={3000}
                 />
+
                 <ReferenceLine
                   y={60}
                   stroke="#10b981"
                   strokeDasharray="4 4"
                   opacity={0.3}
-                />
+                >
+                  <Label
+                    value="SEUIL GRADE A"
+                    position="insideBottomRight"
+                    fill="#10b981"
+                    fontSize={9}
+                    fontWeight={900}
+                  />
+                </ReferenceLine>
               </AreaChart>
             </ResponsiveContainer>
           </ChartContainer>
 
-          {/* LÉGENDE MATRICIELLE */}
+          {/* LÉGENDE MATRICIELLE (PIED DE GRAPHIQUE) */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-16 border-t border-[var(--accents-2)] pt-10">
-            <NewsTile
+            <TuileActualite
               titre="Numérisation Cadastre"
-              statut="ACTIF"
-              desc="Attribution des permis en < 30 jours. Transparence totale exigée par les VC et les Politiques."
+              statut="EN VIGUEUR"
+              desc="Attribution des permis en moins de 30 jours. Transparence totale exigée par les investisseurs (VC)."
             />
-            <NewsTile
-              titre="Projet Koné"
+            <TuileActualite
+              titre="Complexe Industriel Koné"
               statut="STRATÉGIQUE"
-              desc="Validation de la plus grande mine d'or du pays (11t/an). Pilier du leadership 2026."
+              desc="Capacité confirmée de 11 tonnes/an. Pilier central du leadership souverain en Afrique de l'Ouest."
             />
           </div>
         </div>
@@ -230,7 +267,7 @@ function JaugeStat({ label, val }: { label: string; val: number }) {
   );
 }
 
-function NewsTile({
+function TuileActualite({
   titre,
   statut,
   desc,
@@ -242,7 +279,8 @@ function NewsTile({
   return (
     <div className="p-6 bg-[var(--card-bg)] border border-[var(--border-color)] rounded-[var(--radius-vercel-zy)] hover:border-[var(--foreground)] transition-all group">
       <div className="flex justify-between items-center mb-4">
-        <div className="h-4 w-4 bg-[#10b981] group-hover:shadow-[0_0_10px_rgba(16,185,129,0.3)]" />
+        {/* Point Carré Collé (Identifiant de légende) */}
+        <div className="h-4 w-4 bg-[#10b981] group-hover:shadow-[0_0_10px_rgba(16,185,129,0.3)] transition-shadow" />
         <span className="text-[9px] font-bold text-[#10b981] uppercase border border-[#10b981]/20 px-2 py-0.5 rounded-full">
           {statut}
         </span>
@@ -250,7 +288,7 @@ function NewsTile({
       <h4 className="text-xs font-black uppercase text-[var(--foreground)] mb-2 tracking-tight">
         {titre}
       </h4>
-      <p className="text-[10px] leading-relaxed text-[var(--foreground)] opacity-60 font-medium italic">
+      <p className="text-[10px] leading-relaxed text-[var(--foreground)] opacity-50 font-medium italic">
         "{desc}"
       </p>
     </div>
