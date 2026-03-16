@@ -3,7 +3,7 @@
  * ---------------------------------------------------------------------------
  * COMPOSANT : ACCORDION FAQ - TUNNEL DE CONVERSION (GRADIENT EDITION)
  * 1. DESIGN : Utilisation des variables --border-color et --foreground.
- * 2. TYPO : Titres en uppercase / font-black.
+ * 2. TYPO : Titres en uppercase / font-black pour matcher le Terminal.
  * 3. GRADIENT : Application du gradient Emerald 500 -> 300 sur les notions clés.
  * ---------------------------------------------------------------------------
  */

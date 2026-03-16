@@ -1,7 +1,7 @@
 import type { Config } from "tailwindcss";
 
 const config: Config = {
-  // Mode classe pour le contrÃ´le du Dark Mode
+  // Mode classe pour le contrôle du Dark Mode
   darkMode: "class",
 
   content: [
@@ -19,7 +19,7 @@ const config: Config = {
         "mono-tech": ["var(--font-mono-tech)", "monospace"],
       },
 
-      // 2. COULEURS SÃ‰MANTIQUES (HSL Variables)
+      // 2. COULEURS SÉMANTIQUES (HSL Variables)
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
@@ -46,7 +46,7 @@ const config: Config = {
 
       // 3. EFFETS SPECIFIQUES
       backdropBlur: {
-        xxl: "777px", // Ton rÃ©glage spÃ©cifique
+        xxl: "777px",
       },
 
       // 4. ANIMATIONS & KEYFRAMES
@@ -54,6 +54,9 @@ const config: Config = {
         "card-stack": "stack-move 0.5s ease-out forwards",
         shimmer: "shimmer 2s linear infinite",
         "glow-pulse": "glow 2s ease-in-out infinite alternate",
+        // AJOUT : Animations fluides pour l'accordéon
+        "accordion-down": "accordion-down 0.3s ease-out",
+        "accordion-up": "accordion-up 0.3s ease-out",
       },
 
       keyframes: {
@@ -71,6 +74,15 @@ const config: Config = {
             "text-shadow":
               "0 0 15px rgba(34, 197, 94, 0.5), 0 0 25px rgba(34, 197, 94, 0.3)",
           },
+        },
+        // AJOUT : Keyframes calculées pour Radix UI
+        "accordion-down": {
+          from: { height: "0" },
+          to: { height: "var(--radix-accordion-content-height)" },
+        },
+        "accordion-up": {
+          from: { height: "var(--radix-accordion-content-height)" },
+          to: { height: "0" },
         },
       },
 
