@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { TrendingUp, ArrowUpRight, ShieldCheck } from "lucide-react";
+import { TrendingUp, ShieldCheck, Info } from "lucide-react";
 import {
   Area,
   AreaChart,
@@ -9,6 +9,7 @@ import {
   XAxis,
   YAxis,
   ResponsiveContainer,
+  LabelList,
 } from "recharts";
 
 import {
@@ -80,47 +81,45 @@ const chartData = [
 const chartConfig = {
   civ: { label: "Côte d'Ivoire", color: "#10b981" },
   ghana: { label: "Ghana", color: "#f59e0b" },
-  guinea: { label: "Guinée", color: "#71717a" },
-  mali: { label: "Mali", color: "#71717a" },
-  burkina: { label: "Burkina", color: "#71717a" },
+  others: { label: "Regional Avg", color: "#71717a" },
 } satisfies ChartConfig;
 
-// Changement ici : Export default pour éviter l'erreur de module React
-export default function SovereignChart() {
+export default function InvestorDashboard() {
   const id = React.useId();
 
   return (
-    <Card className="border-none shadow-none bg-transparent font-sans w-full overflow-hidden">
-      <CardHeader className="px-0 pb-10">
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
-          <div className="space-y-2">
+    <Card className="border-none shadow-none bg-transparent font-sans w-full">
+      <CardHeader className="px-0 pb-12">
+        <div className="flex flex-col md:flex-row md:items-start justify-between gap-6">
+          <div className="space-y-3">
             <div className="flex items-center gap-3">
-              <div className="bg-[#10b981] p-1.5 rounded-[4px]">
-                <ArrowUpRight className="h-5 w-5 text-black stroke-[3]" />
+              <div className="bg-[#10b981] p-2 rounded-[4px]">
+                <TrendingUp className="h-5 w-5 text-black stroke-[3]" />
               </div>
-              <CardTitle className="text-2xl font-black tracking-tighter uppercase italic leading-none">
+              <CardTitle className="text-3xl font-black tracking-tighter uppercase italic leading-none text-zinc-950 dark:text-white">
                 Sovereign <span className="text-[#10b981]">Index</span>
               </CardTitle>
             </div>
-            <CardDescription className="text-[10px] font-bold uppercase tracking-[0.3em] text-zinc-500">
-              Top 5 ECOWAS • Mining Attractiveness Audit 2021-2026
-            </CardDescription>
+            <div className="flex items-center gap-2 text-zinc-500">
+              <Info className="h-3 w-3" />
+              <CardDescription className="text-[10px] font-bold uppercase tracking-[0.2em]">
+                Fraser Investment Attractiveness Score (0-100)
+              </CardDescription>
+            </div>
           </div>
-          <div className="flex items-center gap-2 px-3 py-1 bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-full w-fit">
-            <ShieldCheck className="h-3 w-3 text-[#10b981]" />
-            <span className="text-[9px] font-black uppercase text-zinc-500">
-              Tier 1 Sovereign Data
-            </span>
+          <div className="flex gap-4">
+            <DataBadge label="CIV SCORE" value="60.9" color="text-[#10b981]" />
+            <DataBadge label="GHA SCORE" value="55.2" color="text-[#f59e0b]" />
           </div>
         </div>
       </CardHeader>
 
       <CardContent className="px-0">
-        <ChartContainer config={chartConfig} className="h-[400px] w-full">
+        <ChartContainer config={chartConfig} className="h-[450px] w-full">
           <ResponsiveContainer width="100%" height="100%">
             <AreaChart
               data={chartData}
-              margin={{ left: 0, right: 0, top: 10, bottom: 0 }}
+              margin={{ left: 0, right: 60, top: 20, bottom: 0 }}
             >
               <defs>
                 <linearGradient
@@ -130,99 +129,158 @@ export default function SovereignChart() {
                   x2="0"
                   y2="1"
                 >
-                  <stop offset="5%" stopColor="#10b981" stopOpacity={0.3} />
+                  <stop offset="5%" stopColor="#10b981" stopOpacity={0.2} />
                   <stop offset="95%" stopColor="#10b981" stopOpacity={0} />
                 </linearGradient>
-                <linearGradient
-                  id={`fillGhana-${id}`}
-                  x1="0"
-                  y1="0"
-                  x2="0"
-                  y2="1"
-                >
-                  <stop offset="5%" stopColor="#f59e0b" stopOpacity={0.1} />
-                  <stop offset="95%" stopColor="#f59e0b" stopOpacity={0} />
-                </linearGradient>
               </defs>
+
+              {/* Grille horizontale uniquement pour la clarté de l'échelle */}
               <CartesianGrid
                 vertical={false}
                 stroke="#333333"
                 strokeDasharray="3 3"
-                opacity={0.3}
+                opacity={0.2}
               />
+
               <XAxis
                 dataKey="year"
                 tickLine={false}
                 axisLine={false}
                 tickMargin={20}
-                tick={{ fontSize: 11, fontWeight: 800, fill: "#71717a" }}
-              />
-              <YAxis hide domain={[30, 75]} />
-              <ChartTooltip
-                cursor={{ stroke: "#333333", strokeWidth: 1 }}
-                content={<ChartTooltipContent hideLabel />}
+                tick={{ fontSize: 12, fontWeight: 800, fill: "#71717a" }}
               />
 
+              {/* Échelle Y apparente et précise pour les investisseurs */}
+              <YAxis
+                orientation="right"
+                domain={[30, 70]}
+                axisLine={false}
+                tickLine={false}
+                tick={{ fontSize: 10, fontWeight: 700, fill: "#71717a" }}
+                tickFormatter={(val) => `${val}.0`}
+              />
+
+              <ChartTooltip
+                cursor={{ stroke: "#10b981", strokeWidth: 1 }}
+                content={<ChartTooltipContent />}
+              />
+
+              {/* Benchmarks (Région) */}
               {["mali", "burkina", "guinea"].map((key) => (
                 <Area
                   key={key}
                   dataKey={key}
-                  type="natural"
+                  type="monotone"
                   stroke="#3f3f46"
                   strokeWidth={1}
                   fill="none"
-                  opacity={0.4}
+                  opacity={0.3}
                 />
               ))}
 
+              {/* Ghana */}
               <Area
                 dataKey="ghana"
-                type="natural"
+                type="monotone"
                 stroke="#f59e0b"
-                strokeWidth={1.5}
-                fill="url(#fillGhana)"
+                strokeWidth={2}
+                fill="none"
                 strokeDasharray="4 4"
-                opacity={0.6}
               />
 
+              {/* Côte d'Ivoire - La courbe maîtresse */}
               <Area
                 dataKey="civ"
-                type="natural"
+                type="monotone"
                 stroke="#10b981"
-                strokeWidth={3}
+                strokeWidth={4}
                 fill={`url(#fillCiv-${id})`}
-                stackId="none"
-              />
+              >
+                {/* Affiche le score final directement sur le dernier point */}
+                <LabelList
+                  dataKey="civ"
+                  position="top"
+                  offset={10}
+                  content={(props: any) => {
+                    const { x, y, value, index } = props;
+                    if (index === chartData.length - 1) {
+                      return (
+                        <text
+                          x={x}
+                          y={y - 10}
+                          fill="#10b981"
+                          fontSize={12}
+                          fontWeight={900}
+                          textAnchor="middle"
+                        >
+                          {value}
+                        </text>
+                      );
+                    }
+                    return null;
+                  }}
+                />
+              </Area>
             </AreaChart>
           </ResponsiveContainer>
         </ChartContainer>
       </CardContent>
 
-      <CardFooter className="px-0 pt-8 border-t border-zinc-100 dark:border-zinc-900 mt-6">
-        <div className="flex w-full items-end justify-between">
-          <div className="space-y-1">
-            <div className="flex items-center gap-2 font-black italic uppercase tracking-tighter text-[#10b981] text-base">
-              Regional Leadership <TrendingUp className="h-5 w-5" />
+      <CardFooter className="px-0 pt-10 border-t border-zinc-100 dark:border-zinc-900 mt-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 w-full gap-8">
+          <div className="space-y-2">
+            <div className="flex items-center gap-2 font-black italic uppercase text-[#10b981]">
+              <ShieldCheck className="h-4 w-4" /> Policy Reliability Audit
             </div>
-            <p className="text-[10px] font-medium text-zinc-500 max-w-[300px] leading-relaxed">
-              Basé sur l'audit Fraser 2026. La CIV maintient une croissance de
-              souveraineté de{" "}
-              <span className="text-zinc-900 dark:text-white font-bold">
-                18.2%
-              </span>
-              .
+            <p className="text-[11px] font-medium text-zinc-500 leading-relaxed italic">
+              "L'inflexion de 2024 résulte de la convergence entre stabilité
+              législative et potentiel géologique. Pour un investisseur, la CIV
+              présente le profil risque/rendement le plus attractif de la zone
+              ECOWAS."
             </p>
           </div>
-          <div className="text-right hidden sm:block">
-            <p className="text-[9px] font-black text-zinc-600 uppercase tracking-widest">
-              Status
-            </p>
-            <p className="text-xs font-mono font-bold text-zinc-900 dark:text-white">
-              ACTIVE_DOMINANCE
-            </p>
+          <div className="flex justify-end items-center gap-6">
+            <div className="text-right">
+              <p className="text-[9px] font-black text-zinc-500 uppercase">
+                Projection 2026
+              </p>
+              <p className="text-2xl font-black text-zinc-950 dark:text-white leading-none">
+                Tier A+
+              </p>
+            </div>
+            <div className="h-10 w-[1px] bg-zinc-800" />
+            <div className="text-right">
+              <p className="text-[9px] font-black text-zinc-500 uppercase">
+                Confidence Index
+              </p>
+              <p className="text-2xl font-black text-[#10b981] leading-none">
+                94.8%
+              </p>
+            </div>
           </div>
         </div>
       </CardFooter>
     </Card>
+  );
+}
+
+function DataBadge({
+  label,
+  value,
+  color,
+}: {
+  label: string;
+  value: string;
+  color: string;
+}) {
+  return (
+    <div className="flex flex-col items-end border-l border-zinc-800 pl-4">
+      <span className="text-[9px] font-black text-zinc-500 uppercase tracking-tighter">
+        {label}
+      </span>
+      <span className={`text-xl font-black tabular-nums ${color}`}>
+        {value}
+      </span>
+    </div>
   );
 }
