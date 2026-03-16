@@ -2,16 +2,19 @@
 
 /**
  * @STRUCTURE_PRESERVATION_PROTOCOL
+ * @STRUCTURE_PRESERVATION_DE_LA_LOGIQUE_ACTUELLE
  * ---------------------------------------------------------------------------
- * PROTOCOLE DE PERSISTANCE VISUELLE V2.0 - ANIMATIONS DYNAMIQUES
+ * PROTOCOLE DE PERSISTANCE VISUELLE V2.2 - ICONOGRAPHIE & ANIMATIONS
  * 1. DESIGN SYSTEM : Variables CSS (--background, --foreground, etc.) obligatoires.
- * 2. COMPTEURS : Animation "Counter" sans symbole "#". Réinitialisation au scroll.
- * 3. SQUELETTE : Interdiction de modifier le ratio Sidebar(3/12) / Chart(9/12).
+ * 2. COMPTEURS & CHART : Réinitialisation forcée au scroll via key={isInView}.
+ * 3. ICONE : Remplacement par AiOutlineLineChart (React Icons).
+ * 4. SQUELETTE : Interdiction de modifier le ratio Sidebar(3/12) / Chart(9/12).
  * ---------------------------------------------------------------------------
  */
 
 import * as React from "react";
-import { TrendingUp, Info } from "lucide-react";
+import { AiOutlineLineChart } from "react-icons/ai"; // Importation de la nouvelle icône
+import { Info } from "lucide-react";
 import {
   Area,
   AreaChart,
@@ -24,14 +27,6 @@ import {
 } from "recharts";
 import { motion, useInView, useMotionValue, useSpring } from "framer-motion";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 import {
   ChartContainer,
   ChartTooltip,
@@ -56,7 +51,7 @@ const configGraphique = {
 export default function TerminalDynamiqueSouverain() {
   const id = React.useId();
   const ref = React.useRef(null);
-  const isInView = useInView(ref, { amount: 0.3 });
+  const isInView = useInView(ref, { amount: 0.2 });
 
   return (
     <div
@@ -67,8 +62,9 @@ export default function TerminalDynamiqueSouverain() {
       <div className="flex flex-col md:flex-row justify-between items-start mb-16 border-b border-[var(--accents-2)] pb-10 gap-8">
         <div className="space-y-4">
           <div className="flex items-center gap-4">
+            {/* Conteneur Icône mis à jour avec AiOutlineLineChart */}
             <div className="p-3 bg-[var(--card-bg-glass)] border border-[var(--accents-2)] backdrop-blur-md rounded-[var(--radius-vercel-zy)] shadow-[0_0_20px_rgba(16,185,129,0.1)]">
-              <TrendingUp className="h-6 w-6 text-[#10b981] stroke-[2.5]" />
+              <AiOutlineLineChart className="h-6 w-6 text-[#10b981]" />
             </div>
             <div>
               <h1 className="text-4xl font-black tracking-tighter uppercase italic leading-none">
@@ -147,7 +143,9 @@ export default function TerminalDynamiqueSouverain() {
         <div className="lg:col-span-9">
           <ChartContainer config={configGraphique} className="h-[450px] w-full">
             <ResponsiveContainer width="100%" height="100%">
+              {/* Key dynamique pour forcer la ré-animation au scroll */}
               <AreaChart
+                key={isInView ? "visible" : "hidden"}
                 data={DONNEES_SOUVERAINETE}
                 margin={{ left: 0, right: 0, top: 20, bottom: 0 }}
               >
@@ -211,6 +209,7 @@ export default function TerminalDynamiqueSouverain() {
                   strokeWidth={1.5}
                   fill="none"
                   opacity={0.3}
+                  animationDuration={1000}
                 />
                 <Area
                   dataKey="indice"
@@ -218,7 +217,9 @@ export default function TerminalDynamiqueSouverain() {
                   stroke="#10b981"
                   strokeWidth={4}
                   fill={`url(#eclat-${id})`}
-                  animationDuration={isInView ? 3000 : 0}
+                  isAnimationActive={isInView}
+                  animationDuration={2500}
+                  animationBegin={200}
                 />
                 <ReferenceLine
                   y={60}
@@ -267,7 +268,7 @@ function CompteurHeader({
     if (isInView) {
       count.set(target);
     } else {
-      count.set(0); // Reset au scroll
+      count.set(0);
     }
   }, [isInView, target, count]);
 
