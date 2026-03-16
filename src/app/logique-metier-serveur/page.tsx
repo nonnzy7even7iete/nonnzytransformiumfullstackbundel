@@ -3,49 +3,42 @@
 import React from "react";
 import dynamic from "next/dynamic";
 
-// Importations classiques
 import Navbarfront from "@/components/frontendkit/NavbarFront";
 import MiningDashboard from "@/components/frontendkit/FluxCarousel";
 
-/**
- * CHARGEMENT DYNAMIQUE DES COMPOSANTS CRITIQUES
- */
 const DataChart = dynamic(() => import("@/components/frontendkit/dataChart"), {
   ssr: false,
   loading: () => (
-    <SkeletonLoader height="450px" label="Initialisation du flux..." />
+    <SkeletonLoader height="500px" label="Initialisation du flux..." />
   ),
 });
 
-// Importation de ton nouveau composant Accordion
 const AccordionFaqTunnel = dynamic(
-  () => import("@/components/frontendkit/accordionFaq"),
-  {
-    ssr: false,
-  }
+  () =>
+    import("@/components/frontendkit/accordionFaq").then(
+      (mod) => mod.AccordionFaqTunnel
+    ),
+  { ssr: false }
 );
 
 export default function logiqueMetierEtServeur() {
   return (
-    <div className="relative min-h-screen bg-[var(--background)] flex flex-col">
+    <div className="relative min-h-screen bg-[var(--background)] flex flex-col font-sans">
       <Navbarfront />
 
       {/* MAIN CONTAINER */}
       <main className="flex-1 w-full pt-32 pb-12 px-4 md:px-10 space-y-32">
-        {/* SECTION 1 : ANALYSE VISUELLE & FAQ (LE TUNNEL) */}
-        <section className="max-w-6xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-16 items-start">
-          {/* Le Graphique (9 colonnes pour garder la majesté de la donnée) */}
-          <div className="lg:col-span-8">
-            <DataChart />
-          </div>
-
-          {/* L'Accordéon (4 colonnes pour la conversion textuelle) */}
-          <div className="lg:col-span-4 lg:pt-20">
-            <AccordionFaqTunnel />
-          </div>
+        {/* SECTION 1 : DATA VISUALIZATION (FULL WIDTH) */}
+        <section className="max-w-7xl mx-auto w-full">
+          <DataChart />
         </section>
 
-        {/* SECTION 2 : TERMINAL FLUX (L'IMMERSION) */}
+        {/* SECTION 2 : FAQ STRATÉGIQUE (CENTERED & RESTRAINED) */}
+        <section className="max-w-3xl mx-auto w-full py-20 border-t border-[var(--border-color)]">
+          <AccordionFaqTunnel />
+        </section>
+
+        {/* SECTION 3 : TERMINAL FLUX */}
         <section className="w-full">
           <MiningDashboard />
         </section>
@@ -57,7 +50,7 @@ export default function logiqueMetierEtServeur() {
         style={{ border: "1px solid var(--border-color)" }}
       />
 
-      {/* FOOTER TECHNIQUE */}
+      {/* FOOTER */}
       <footer className="p-8 flex justify-center opacity-10">
         <p className="text-[10px] font-mono tracking-[0.5em] uppercase text-[var(--foreground)]">
           Abidjan - Anyama // 2026 // Latency 0.001ms
@@ -67,9 +60,6 @@ export default function logiqueMetierEtServeur() {
   );
 }
 
-/**
- * SKELETON LOADER - RÉUTILISABLE
- */
 function SkeletonLoader({ height, label }: { height: string; label: string }) {
   return (
     <div
