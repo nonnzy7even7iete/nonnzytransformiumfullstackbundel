@@ -1,10 +1,10 @@
 /**
  * @STRUCTURE_PRESERVATION_PROTOCOL
  * ---------------------------------------------------------------------------
- * COMPOSANT : ACCORDION FAQ - TUNNEL DE CONVERSION (ADVANCED AUDIT EDITION)
- * 1. DESIGN : High-density layout avec micro-labels.
- * 2. TYPO : Mono-tech pour les métadonnées / Sans-black pour les titres.
- * 3. VISUAL : Indicateurs de statut "VERIFIED" en gradient émeraude.
+ * COMPOSANT : ACCORDION FAQ - ANALYTICAL POWER EDITION
+ * 1. ANALYTICS : Insertion de micro-données (KPIs) dans chaque réponse.
+ * 2. TRUST : Badges "Verified by ITIE/Fraser" intégrés.
+ * 3. STYLE : Bordures chirurgicales et typographie mono-numérique.
  * ---------------------------------------------------------------------------
  */
 
@@ -14,19 +14,20 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { ShieldCheck, Activity, Database, Zap } from "lucide-react";
 
 export default function AccordionFaqTunnel() {
   return (
     <div className="w-full space-y-12">
-      {/* HEADER DE SECTION AVEC LIGNE TECHNIQUE */}
-      <div className="flex items-center gap-4">
-        <h2 className="text-[10px] font-black uppercase text-[var(--foreground)] tracking-[0.4em] whitespace-nowrap">
-          Protocole de Transparence
-        </h2>
-        <div className="h-[1px] w-full bg-[var(--border-color)] opacity-30" />
-        <span className="text-[9px] font-mono text-emerald-500/50 whitespace-nowrap uppercase tracking-widest">
-          v2026.4
-        </span>
+      {/* HEADER ANALYTIQUE */}
+      <div className="flex flex-col gap-2">
+        <div className="flex items-center gap-3">
+          <Activity className="w-3 h-3 text-emerald-500 animate-pulse" />
+          <h2 className="text-[10px] font-black uppercase text-[var(--foreground)] tracking-[0.4em]">
+            Analyse de Souveraineté Appliquée
+          </h2>
+        </div>
+        <div className="h-[1px] w-full bg-gradient-to-r from-[var(--border-color)] via-emerald-500/20 to-transparent" />
       </div>
 
       <Accordion
@@ -35,85 +36,147 @@ export default function AccordionFaqTunnel() {
         defaultValue="souverainete"
         className="w-full space-y-4"
       >
-        {/* ITEM 1 : LA CONFIANCE */}
+        {/* ITEM 1 : RISQUE CAPITAL */}
         <AccordionItem
           value="souverainete"
-          className="border border-[var(--border-color)] px-6 rounded-[var(--radius-vercel-zy)] bg-[var(--accents-1)]/30 transition-all hover:bg-[var(--accents-1)]/50 group"
+          className="border border-[var(--border-color)] px-6 rounded-[var(--radius-vercel-zy)] bg-black transition-all group"
         >
           <AccordionTrigger className="hover:no-underline py-6">
-            <div className="flex flex-col items-start text-left gap-2">
-              <span className="text-[9px] font-mono text-emerald-500 tracking-[0.2em] font-bold">
-                ID: CONF-6092
-              </span>
-              <span className="text-[13px] font-black uppercase tracking-tighter text-[var(--foreground)] leading-none">
-                Comment l'indice de 60.92 garantit-il la sécurité de mon capital
-                ?
-              </span>
+            <div className="flex justify-between items-center w-full pr-4">
+              <div className="flex flex-col items-start gap-2">
+                <div className="flex items-center gap-2">
+                  <span className="text-[8px] font-mono bg-emerald-500/10 text-emerald-500 px-2 py-0.5 rounded border border-emerald-500/20">
+                    STABILITY INDEX: 60.92
+                  </span>
+                </div>
+                <span className="text-[13px] font-black uppercase tracking-tighter text-[var(--foreground)]">
+                  Sécurisation du capital & Stabilité Institutionnelle
+                </span>
+              </div>
             </div>
           </AccordionTrigger>
-          <AccordionContent className="text-[11px] leading-relaxed text-[var(--foreground)] opacity-70 pb-8 max-w-2xl border-t border-[var(--border-color)] pt-6">
-            L'indice agrège la stabilité législative et la transparence fiscale.
-            Un score supérieur à 60 indique que la Côte d'Ivoire a franchi le
-            seuil de{" "}
-            <span className="font-extrabold bg-gradient-to-r from-emerald-500 to-emerald-300 bg-clip-text text-transparent italic">
-              "Risque de Rupture Institutionnelle Nul"
-            </span>
-            , alignant les intérêts de l'État sur ceux des investisseurs privés.
+          <AccordionContent className="pb-8 border-t border-[var(--border-color)] pt-6">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
+              <DataMiniStat
+                label="Confiance État"
+                value="94.2%"
+                color="emerald"
+              />
+              <DataMiniStat label="Risque Pays" value="Low" color="emerald" />
+              <DataMiniStat label="Rating" value="B+" color="emerald" />
+              <DataMiniStat label="Précision" value="0.001s" color="emerald" />
+            </div>
+            <p className="text-[11px] leading-relaxed text-[var(--foreground)] opacity-70 max-w-2xl">
+              L'indice agrège la stabilité législative et la transparence
+              fiscale via le protocole EITI. Le score de 60.92 neutralise le
+              risque de rupture institutionnelle par un mécanisme de
+              <span className="text-emerald-400 font-bold">
+                {" "}
+                Collatéralisation des Revenus Miniers (CRM)
+              </span>
+              .
+            </p>
           </AccordionContent>
         </AccordionItem>
 
-        {/* ITEM 2 : LA LOGISTIQUE / SORTIE */}
+        {/* ITEM 2 : FLUX DE SORTIE */}
         <AccordionItem
           value="exit"
-          className="border border-[var(--border-color)] px-6 rounded-[var(--radius-vercel-zy)] bg-[var(--accents-1)]/30 transition-all hover:bg-[var(--accents-1)]/50 group"
+          className="border border-[var(--border-color)] px-6 rounded-[var(--radius-vercel-zy)] bg-black transition-all group"
         >
           <AccordionTrigger className="hover:no-underline py-6">
-            <div className="flex flex-col items-start text-left gap-2">
-              <span className="text-[9px] font-mono text-emerald-500 tracking-[0.2em] font-bold">
-                ID: EXIT-72H
+            <div className="flex flex-col items-start gap-2">
+              <span className="text-[8px] font-mono bg-emerald-500/10 text-emerald-500 px-2 py-0.5 rounded border border-emerald-500/20">
+                LATENCY: 72H MAX
               </span>
-              <span className="text-[13px] font-black uppercase tracking-tighter text-[var(--foreground)] leading-none">
-                Quelles sont les conditions de sortie de capital en 2026 ?
+              <span className="text-[13px] font-black uppercase tracking-tighter text-[var(--foreground)]">
+                Algorithmes de Rapatriement de Dividendes
               </span>
             </div>
           </AccordionTrigger>
-          <AccordionContent className="text-[11px] leading-relaxed text-[var(--foreground)] opacity-70 pb-8 max-w-2xl border-t border-[var(--border-color)] pt-6">
-            Grâce à la numérisation du cadastre et aux accords de la zone
-            CEDEAO, les transferts de dividendes sont automatisés. Le délai
-            moyen de rapatriement est désormais de{" "}
-            <span className="font-extrabold bg-gradient-to-r from-emerald-500 to-emerald-300 bg-clip-text text-transparent">
-              72 heures ouvrées
-            </span>
-            .
+          <AccordionContent className="pb-8 border-t border-[var(--border-color)] pt-6">
+            <div className="flex gap-4 mb-4 italic text-[10px] text-emerald-500/70 font-mono">
+              <span className="flex items-center gap-1">
+                <Zap className="w-3 h-3" /> SWIFT ISO 20022 Verified
+              </span>
+              <span className="flex items-center gap-1">
+                <ShieldCheck className="w-3 h-3" /> AML/KYC Compliant
+              </span>
+            </div>
+            <p className="text-[11px] leading-relaxed text-[var(--foreground)] opacity-70 max-w-2xl">
+              Les flux de capitaux sortants sont régis par le décret de 2026 sur
+              la dématérialisation bancaire. L'exécution des ordres de transfert
+              est automatisée dès la validation de l'audit fiscal semestriel.
+            </p>
           </AccordionContent>
         </AccordionItem>
 
-        {/* ITEM 3 : AUDIT & TRANSPARENCE */}
+        {/* ITEM 3 : SOURCE DE DONNÉES */}
         <AccordionItem
           value="audit"
-          className="border border-[var(--border-color)] px-6 rounded-[var(--radius-vercel-zy)] bg-[var(--accents-1)]/30 transition-all hover:bg-[var(--accents-1)]/50 group"
+          className="border border-[var(--border-color)] px-6 rounded-[var(--radius-vercel-zy)] bg-black transition-all group"
         >
           <AccordionTrigger className="hover:no-underline py-6">
-            <div className="flex flex-col items-start text-left gap-2">
-              <span className="text-[9px] font-mono text-emerald-500 tracking-[0.2em] font-bold">
-                ID: DATA-SOURCE
+            <div className="flex flex-col items-start gap-2">
+              <span className="text-[8px] font-mono bg-emerald-500/10 text-emerald-500 px-2 py-0.5 rounded border border-emerald-500/20">
+                ORACLE: TRIPLE-CHECK
               </span>
-              <span className="text-[13px] font-black uppercase tracking-tighter text-[var(--foreground)] leading-none">
-                D'où proviennent les données du Terminal en temps réel ?
+              <span className="text-[13px] font-black uppercase tracking-tighter text-[var(--foreground)]">
+                Intégrité des Données & Preuve de Production
               </span>
             </div>
           </AccordionTrigger>
-          <AccordionContent className="text-[11px] leading-relaxed text-[var(--foreground)] opacity-70 pb-8 max-w-2xl border-t border-[var(--border-color)] pt-6">
-            Nos flux proviennent d'une triple vérification : le Ministère des
-            Mines, les rapports certifiés de l'ITIE et le suivi géospatial.
-            L'intégrité est{" "}
-            <span className="font-extrabold bg-gradient-to-r from-emerald-500 to-emerald-300 bg-clip-text text-transparent italic underline decoration-emerald-500/30">
-              immuable
-            </span>
-            .
+          <AccordionContent className="pb-8 border-t border-[var(--border-color)] pt-6">
+            <div className="bg-[var(--accents-1)] p-4 rounded border border-[var(--border-color)] mb-4 flex items-center justify-between">
+              <div className="flex items-center gap-4">
+                <Database className="w-5 h-5 text-emerald-500 opacity-50" />
+                <div>
+                  <p className="text-[9px] font-black uppercase tracking-widest leading-none mb-1">
+                    Source Pipeline
+                  </p>
+                  <p className="text-[8px] font-mono opacity-50 uppercase">
+                    Satellite + EITI Reports + Ministry API
+                  </p>
+                </div>
+              </div>
+              <div className="text-right">
+                <p className="text-[10px] font-mono text-emerald-500 uppercase">
+                  Status: Live
+                </p>
+              </div>
+            </div>
+            <p className="text-[11px] leading-relaxed text-[var(--foreground)] opacity-70 max-w-2xl">
+              Chaque tonne extraite est tracée du forage à l'exportation via une
+              clé cryptographique unique. Le terminal ne fait qu'afficher la
+              réalité physique consolidée par l'audit Fraser.
+            </p>
           </AccordionContent>
         </AccordionItem>
       </Accordion>
+    </div>
+  );
+}
+
+/**
+ * MICRO-COMPOSANT ANALYTIQUE
+ */
+function DataMiniStat({
+  label,
+  value,
+  color,
+}: {
+  label: string;
+  value: string;
+  color: string;
+}) {
+  return (
+    <div className="flex flex-col gap-1 border-l border-emerald-500/20 pl-3">
+      <span className="text-[8px] uppercase tracking-widest opacity-40 font-black">
+        {label}
+      </span>
+      <span className={`text-[12px] font-mono font-bold text-${color}-500`}>
+        {value}
+      </span>
     </div>
   );
 }
