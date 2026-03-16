@@ -3,13 +3,10 @@
 /**
  * @STRUCTURE_PRESERVATION_PROTOCOL
  * ---------------------------------------------------------------------------
- * CE CODE EST RÉGI PAR UN PROTOCOLE DE PERSISTANCE VISUELLE.
- * * 1. DESIGN SYSTEM : Obligation d'utiliser exclusivement les variables CSS
- * (--background, --foreground, --accents-x, --border-color).
- * 2. SQUELETTE : La disposition [En-tête / (Sidebar 3/12 | Graphique 9/12) / Légende]
- * est immuable pour garantir la compatibilité Harvard 2026.
- * 3. LISIBILITÉ : Ne jamais supprimer les opacités dynamiques (opacity-40/60)
- * qui assurent le contraste entre les modes Light et Dark.
+ * PROTOCOLE DE PERSISTANCE VISUELLE V2.0 - ANIMATIONS DYNAMIQUES
+ * 1. DESIGN SYSTEM : Variables CSS (--background, --foreground, etc.) obligatoires.
+ * 2. COMPTEURS : Animation "Counter" sans symbole "#". Réinitialisation au scroll.
+ * 3. SQUELETTE : Interdiction de modifier le ratio Sidebar(3/12) / Chart(9/12).
  * ---------------------------------------------------------------------------
  */
 
@@ -25,6 +22,7 @@ import {
   ReferenceLine,
   Label,
 } from "recharts";
+import { motion, useInView, useMotionValue, useSpring } from "framer-motion";
 
 import {
   Card,
@@ -41,10 +39,6 @@ import {
   type ChartConfig,
 } from "@/components/ui/chart";
 
-/** * @DATA_SOURCE_INTEGRITY
- * Source : Fraser Institute & ITIE Côte d'Ivoire.
- * Ne pas modifier les clés d'objet (annee, indice, moyenne_region).
- */
 const DONNEES_SOUVERAINETE = [
   { annee: "2021", indice: 41.0, moyenne_region: 54.0 },
   { annee: "2022", indice: 48.2, moyenne_region: 56.5 },
@@ -59,11 +53,16 @@ const configGraphique = {
   moyenne_region: { label: "Moyenne CEDEAO", color: "var(--accents-2)" },
 } satisfies ChartConfig;
 
-export default function TerminalImmutableSouverain() {
+export default function TerminalDynamiqueSouverain() {
   const id = React.useId();
+  const ref = React.useRef(null);
+  const isInView = useInView(ref, { amount: 0.3 });
 
   return (
-    <div className="w-full bg-[var(--background)] text-[var(--foreground)] p-10 font-sans antialiased border border-[var(--border-color)] rounded-[var(--radius-vercel)] shadow-2xl transition-colors duration-200">
+    <div
+      ref={ref}
+      className="w-full bg-[var(--background)] text-[var(--foreground)] p-10 font-sans antialiased border border-[var(--border-color)] rounded-[var(--radius-vercel)] shadow-2xl transition-colors duration-200"
+    >
       {/* SECTION_START : HEADER_LOCKED */}
       <div className="flex flex-col md:flex-row justify-between items-start mb-16 border-b border-[var(--accents-2)] pb-10 gap-8">
         <div className="space-y-4">
@@ -75,7 +74,7 @@ export default function TerminalImmutableSouverain() {
               <h1 className="text-4xl font-black tracking-tighter uppercase italic leading-none">
                 Indice de <span className="text-[#10b981]">Souveraineté</span>
               </h1>
-              <p className="text-[10px] font-bold text-[var(--foreground)] opacity-40 uppercase tracking-[0.5em] mt-2">
+              <p className="text-[10px] font-bold text-[var(--foreground)] opacity-40 uppercase tracking-[0.5em] mt-2 italic">
                 Audit Officiel Fraser • 2026
               </p>
             </div>
@@ -83,28 +82,48 @@ export default function TerminalImmutableSouverain() {
         </div>
 
         <div className="flex gap-12">
-          <StatHeader label="Rang Politique (PPI)" value="#47" />
-          <StatHeader label="Attractivité" value="#28" />
+          <CompteurHeader
+            label="Rang Politique (PPI)"
+            target={47}
+            isInView={isInView}
+          />
+          <CompteurHeader
+            label="Attractivité"
+            target={28}
+            isInView={isInView}
+          />
         </div>
       </div>
       {/* SECTION_END : HEADER_LOCKED */}
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-16">
-        {/* SECTION_START : SIDEBAR_3/12_LOCKED */}
+        {/* SECTION_START : SIDEBAR_LOCKED */}
         <div className="lg:col-span-3 space-y-12">
           <div className="space-y-8">
             <h3 className="text-[10px] font-black uppercase text-[var(--foreground)] opacity-30 tracking-widest border-l-2 border-[#10b981] pl-3 italic">
               Paramètres d'Expertise
             </h3>
-            <JaugeStat label="Stabilité Législative" val={92} />
-            <JaugeStat label="Potentiel Géologique" val={89} />
-            <JaugeStat label="Transparence ITIE" val={74} />
+            <JaugeDynamique
+              label="Stabilité Législative"
+              val={92}
+              isInView={isInView}
+            />
+            <JaugeDynamique
+              label="Potentiel Géologique"
+              val={89}
+              isInView={isInView}
+            />
+            <JaugeDynamique
+              label="Transparence ITIE"
+              val={74}
+              isInView={isInView}
+            />
           </div>
 
           <div className="p-6 bg-[var(--card-bg)] border border-[var(--border-color)] rounded-[var(--radius-vercel-zy)] shadow-sm">
             <div className="flex items-center gap-2 mb-3">
               <Info className="h-3 w-3 text-[#10b981]" />
-              <p className="text-[9px] font-black uppercase text-[var(--foreground)] opacity-40">
+              <p className="text-[9px] font-black uppercase text-[var(--foreground)] opacity-40 tracking-tighter">
                 Note d'analyse
               </p>
             </div>
@@ -118,13 +137,13 @@ export default function TerminalImmutableSouverain() {
               <span className="font-bold underline decoration-[#10b981]/20">
                 Zone de Confiance Majeure
               </span>{" "}
-              pour les investisseurs.
+              pour les investisseurs institutionnels.
             </p>
           </div>
         </div>
         {/* SECTION_END : SIDEBAR_LOCKED */}
 
-        {/* SECTION_START : CHART_9/12_LOCKED */}
+        {/* SECTION_START : CHART_LOCKED */}
         <div className="lg:col-span-9">
           <ChartContainer config={configGraphique} className="h-[450px] w-full">
             <ResponsiveContainer width="100%" height="100%">
@@ -164,7 +183,6 @@ export default function TerminalImmutableSouverain() {
                 />
                 <YAxis domain={[30, 75]} hide />
 
-                {/* @TOOLTIP_FIX : NE PAS MODIFIER L'ESPACEMENT GAP-10 / JUSTIFY-BETWEEN */}
                 <ChartTooltip
                   cursor={{ stroke: "var(--accents-2)", strokeWidth: 1 }}
                   content={
@@ -200,7 +218,7 @@ export default function TerminalImmutableSouverain() {
                   stroke="#10b981"
                   strokeWidth={4}
                   fill={`url(#eclat-${id})`}
-                  animationDuration={3000}
+                  animationDuration={isInView ? 3000 : 0}
                 />
                 <ReferenceLine
                   y={60}
@@ -212,42 +230,72 @@ export default function TerminalImmutableSouverain() {
             </ResponsiveContainer>
           </ChartContainer>
 
-          {/* SECTION_START : LEGEND_GRID_LOCKED */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-16 border-t border-[var(--accents-2)] pt-10">
             <TuileActualite
               titre="Numérisation Cadastre"
-              statut="EN VIGUEUR"
-              desc="Attribution des permis en < 30 jours. Transparence totale exigée."
+              statut="ACTIF"
+              desc="Attribution des permis en < 30 jours. Transparence totale exigée par les VC et les Politiques."
             />
             <TuileActualite
-              titre="Complexe Industriel Koné"
+              titre="Projet Koné"
               statut="STRATÉGIQUE"
-              desc="Capacité confirmée de 11 tonnes/an. Pilier du leadership 2026."
+              desc="Validation de la plus grande mine d'or du pays (11t/an). Pilier du leadership 2026."
             />
           </div>
-          {/* SECTION_END : LEGEND_GRID_LOCKED */}
         </div>
       </div>
     </div>
   );
 }
 
-/* --- LOGIQUE_UI_IMMUTABLE --- */
+/* --- LOGIQUE D'ANIMATION IMMUTABLE --- */
 
-function StatHeader({ label, value }: { label: string; value: string }) {
+function CompteurHeader({
+  label,
+  target,
+  isInView,
+}: {
+  label: string;
+  target: number;
+  isInView: boolean;
+}) {
+  const count = useMotionValue(0);
+  const rounded = useSpring(count, { stiffness: 40, damping: 20 });
+  const [display, setDisplay] = React.useState(0);
+
+  React.useEffect(() => {
+    if (isInView) {
+      count.set(target);
+    } else {
+      count.set(0); // Reset au scroll
+    }
+  }, [isInView, target, count]);
+
+  React.useEffect(() => {
+    return rounded.on("change", (latest) => setDisplay(Math.round(latest)));
+  }, [rounded]);
+
   return (
     <div className="text-right border-l border-[var(--accents-2)] pl-8">
       <p className="text-[10px] font-black text-[var(--foreground)] opacity-40 uppercase tracking-widest mb-1">
         {label}
       </p>
-      <span className="text-3xl font-black tracking-tighter tabular-nums text-[var(--foreground)]">
-        {value}
+      <span className="text-4xl font-black tracking-tighter tabular-nums text-[var(--foreground)]">
+        {display}
       </span>
     </div>
   );
 }
 
-function JaugeStat({ label, val }: { label: string; val: number }) {
+function JaugeDynamique({
+  label,
+  val,
+  isInView,
+}: {
+  label: string;
+  val: number;
+  isInView: boolean;
+}) {
   return (
     <div className="space-y-3">
       <div className="flex justify-between items-end">
@@ -255,13 +303,15 @@ function JaugeStat({ label, val }: { label: string; val: number }) {
           {label}
         </span>
         <span className="text-xs font-mono font-bold text-[var(--foreground)]">
-          {val}%
+          {isInView ? val : 0}%
         </span>
       </div>
       <div className="h-[2px] w-full bg-[var(--accents-2)] rounded-full overflow-hidden">
-        <div
-          className="h-full bg-[#10b981] transition-all duration-1000"
-          style={{ width: `${val}%` }}
+        <motion.div
+          initial={{ width: 0 }}
+          animate={{ width: isInView ? `${val}%` : 0 }}
+          transition={{ duration: 1.5, ease: "easeOut" }}
+          className="h-full bg-[#10b981]"
         />
       </div>
     </div>
@@ -280,7 +330,7 @@ function TuileActualite({
   return (
     <div className="p-6 bg-[var(--card-bg)] border border-[var(--border-color)] rounded-[var(--radius-vercel-zy)] hover:border-[var(--foreground)] transition-all group">
       <div className="flex justify-between items-center mb-4">
-        <div className="h-4 w-4 bg-[#10b981] group-hover:shadow-[0_0_10px_rgba(16,185,129,0.3)] transition-shadow" />
+        <div className="h-4 w-4 bg-[#10b981] group-hover:shadow-[0_0_10px_rgba(16,185,129,0.3)]" />
         <span className="text-[9px] font-bold text-[#10b981] uppercase border border-[#10b981]/20 px-2 py-0.5 rounded-full">
           {statut}
         </span>
@@ -288,7 +338,7 @@ function TuileActualite({
       <h4 className="text-xs font-black uppercase text-[var(--foreground)] mb-2 tracking-tight">
         {titre}
       </h4>
-      <p className="text-[10px] leading-relaxed text-[var(--foreground)] opacity-50 font-medium italic">
+      <p className="text-[10px] leading-relaxed text-[var(--foreground)] opacity-60 font-medium italic">
         "{desc}"
       </p>
     </div>
