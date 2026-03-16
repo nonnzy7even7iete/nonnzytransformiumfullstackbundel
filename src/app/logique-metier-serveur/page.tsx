@@ -1,33 +1,29 @@
 "use client";
 
 import React from "react";
-import dynamic from "next/dynamic"; // Importation pour le chargement dynamique
+import dynamic from "next/dynamic";
 
 // Importations classiques
 import Navbarfront from "@/components/frontendkit/NavbarFront";
 import MiningDashboard from "@/components/frontendkit/FluxCarousel";
 
 /**
- * SOLUTION CHIRURGICALE POUR L'ERREUR INVARIANT :
- * On charge le DataChart avec ssr: false pour éviter les conflits d'IDs SVG
- * entre le serveur et le client.
+ * CHARGEMENT DYNAMIQUE DES COMPOSANTS CRITIQUES
  */
 const DataChart = dynamic(() => import("@/components/frontendkit/dataChart"), {
   ssr: false,
   loading: () => (
-    <div
-      className="w-full h-[450px] bg-card animate-pulse flex items-center justify-center border"
-      style={{
-        borderRadius: "var(--radius-vercel-zy)",
-        borderColor: "var(--border-color)",
-      }}
-    >
-      <span className="text-[10px] font-black uppercase tracking-[0.2em] opacity-20">
-        Initialisation du flux de données...
-      </span>
-    </div>
+    <SkeletonLoader height="450px" label="Initialisation du flux..." />
   ),
 });
+
+// Importation de ton nouveau composant Accordion
+const AccordionFaqTunnel = dynamic(
+  () => import("@/components/frontendkit/accordionFaq"),
+  {
+    ssr: false,
+  }
+);
 
 export default function logiqueMetierEtServeur() {
   return (
@@ -35,19 +31,27 @@ export default function logiqueMetierEtServeur() {
       <Navbarfront />
 
       {/* MAIN CONTAINER */}
-      <main className="flex-1 w-full pt-32 pb-12 px-4 md:px-10 space-y-20">
-        {/* SECTION GRAPHIQUE ANALYTIQUE */}
-        <section className="max-w-6xl mx-auto w-full">
-          <DataChart />
+      <main className="flex-1 w-full pt-32 pb-12 px-4 md:px-10 space-y-32">
+        {/* SECTION 1 : ANALYSE VISUELLE & FAQ (LE TUNNEL) */}
+        <section className="max-w-6xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-16 items-start">
+          {/* Le Graphique (9 colonnes pour garder la majesté de la donnée) */}
+          <div className="lg:col-span-8">
+            <DataChart />
+          </div>
+
+          {/* L'Accordéon (4 colonnes pour la conversion textuelle) */}
+          <div className="lg:col-span-4 lg:pt-20">
+            <AccordionFaqTunnel />
+          </div>
         </section>
 
-        {/* SECTION TERMINAL FLUX */}
+        {/* SECTION 2 : TERMINAL FLUX (L'IMMERSION) */}
         <section className="w-full">
           <MiningDashboard />
         </section>
       </main>
 
-      {/* OVERLAY DÉCORATIF - HARMONISÉ AVEC TES BORDURES */}
+      {/* OVERLAY DÉCORATIF */}
       <div
         className="pointer-events-none fixed inset-0 z-[120] m-4 md:m-8 opacity-20"
         style={{ border: "1px solid var(--border-color)" }}
@@ -59,6 +63,26 @@ export default function logiqueMetierEtServeur() {
           Abidjan - Anyama // 2026 // Latency 0.001ms
         </p>
       </footer>
+    </div>
+  );
+}
+
+/**
+ * SKELETON LOADER - RÉUTILISABLE
+ */
+function SkeletonLoader({ height, label }: { height: string; label: string }) {
+  return (
+    <div
+      className="w-full bg-card animate-pulse flex items-center justify-center border"
+      style={{
+        height,
+        borderRadius: "var(--radius-vercel-zy)",
+        borderColor: "var(--border-color)",
+      }}
+    >
+      <span className="text-[10px] font-black uppercase tracking-[0.2em] opacity-20">
+        {label}
+      </span>
     </div>
   );
 }
