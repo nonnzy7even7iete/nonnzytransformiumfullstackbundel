@@ -26,7 +26,6 @@ import {
   type ChartConfig,
 } from "@/components/ui/chart";
 
-// Données réelles 2021-2026 (Audit Fraser & CEDEAO)
 const chartData = [
   {
     year: "2021",
@@ -78,7 +77,6 @@ const chartData = [
   },
 ];
 
-// Configuration sans variables CSS : Couleurs Hexa directes
 const chartConfig = {
   civ: { label: "Côte d'Ivoire", color: "#10b981" },
   ghana: { label: "Ghana", color: "#f59e0b" },
@@ -87,11 +85,12 @@ const chartConfig = {
   burkina: { label: "Burkina", color: "#71717a" },
 } satisfies ChartConfig;
 
-export function SovereignChart() {
+// Changement ici : Export default pour éviter l'erreur de module React
+export default function SovereignChart() {
   const id = React.useId();
 
   return (
-    <Card className="border-none shadow-none bg-transparent font-sans">
+    <Card className="border-none shadow-none bg-transparent font-sans w-full overflow-hidden">
       <CardHeader className="px-0 pb-10">
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
           <div className="space-y-2">
@@ -107,7 +106,7 @@ export function SovereignChart() {
               Top 5 ECOWAS • Mining Attractiveness Audit 2021-2026
             </CardDescription>
           </div>
-          <div className="flex items-center gap-2 px-3 py-1 bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-full">
+          <div className="flex items-center gap-2 px-3 py-1 bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-full w-fit">
             <ShieldCheck className="h-3 w-3 text-[#10b981]" />
             <span className="text-[9px] font-black uppercase text-zinc-500">
               Tier 1 Sovereign Data
@@ -145,14 +144,12 @@ export function SovereignChart() {
                   <stop offset="95%" stopColor="#f59e0b" stopOpacity={0} />
                 </linearGradient>
               </defs>
-
               <CartesianGrid
                 vertical={false}
                 stroke="#333333"
                 strokeDasharray="3 3"
                 opacity={0.3}
               />
-
               <XAxis
                 dataKey="year"
                 tickLine={false}
@@ -160,15 +157,12 @@ export function SovereignChart() {
                 tickMargin={20}
                 tick={{ fontSize: 11, fontWeight: 800, fill: "#71717a" }}
               />
-
               <YAxis hide domain={[30, 75]} />
-
               <ChartTooltip
                 cursor={{ stroke: "#333333", strokeWidth: 1 }}
                 content={<ChartTooltipContent hideLabel />}
               />
 
-              {/* Benchmarks Regionaux (Nuances de Gris) */}
               {["mali", "burkina", "guinea"].map((key) => (
                 <Area
                   key={key}
@@ -181,7 +175,6 @@ export function SovereignChart() {
                 />
               ))}
 
-              {/* Ghana (Challenger) */}
               <Area
                 dataKey="ghana"
                 type="natural"
@@ -192,7 +185,6 @@ export function SovereignChart() {
                 opacity={0.6}
               />
 
-              {/* Côte d'Ivoire (Leader - Emerald) */}
               <Area
                 dataKey="civ"
                 type="natural"
@@ -200,7 +192,6 @@ export function SovereignChart() {
                 strokeWidth={3}
                 fill={`url(#fillCiv-${id})`}
                 stackId="none"
-                animationDuration={2000}
               />
             </AreaChart>
           </ResponsiveContainer>
@@ -214,16 +205,19 @@ export function SovereignChart() {
               Regional Leadership <TrendingUp className="h-5 w-5" />
             </div>
             <p className="text-[10px] font-medium text-zinc-500 max-w-[300px] leading-relaxed">
-              Analyse comparative basée sur le rapport Fraser 2026. La CIV
-              maintient une croissance de souveraineté de{" "}
-              <span className="text-white font-bold">18.2%</span> sur 5 ans.
+              Basé sur l'audit Fraser 2026. La CIV maintient une croissance de
+              souveraineté de{" "}
+              <span className="text-zinc-900 dark:text-white font-bold">
+                18.2%
+              </span>
+              .
             </p>
           </div>
-          <div className="text-right">
+          <div className="text-right hidden sm:block">
             <p className="text-[9px] font-black text-zinc-600 uppercase tracking-widest">
               Status
             </p>
-            <p className="text-xs font-mono font-bold text-white">
+            <p className="text-xs font-mono font-bold text-zinc-900 dark:text-white">
               ACTIVE_DOMINANCE
             </p>
           </div>
