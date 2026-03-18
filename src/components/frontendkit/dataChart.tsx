@@ -1,5 +1,16 @@
 "use client";
 
+/**
+ * @STRUCTURE_PRESERVATION_PROTOCOL_V4.1 (7 YEARS PERSISTENCE)
+ * ---------------------------------------------------------------------------
+ * PROTOCOLE DE FINALISATION ET SÉCURISATION DES PROPS
+ * 1. CHART LINE ONLY : Dégradé #10b981 (Pure) -> #ff4500 (Orange) exclusif à la courbe.
+ * 2. TOOLTIP SYNC : Alignement strict sur Oswald, Glassmorphism et Tabular-nums.
+ * 3. TYPOGRAPHIE : Titre principal en Oswald Black, 5xl, Overflow-visible.
+ * 4. DEBUG : Typage explicite pour VS Code, suppression des warnings useEffect.
+ * ---------------------------------------------------------------------------
+ */
+
 import * as React from "react";
 import { AiOutlineLineChart } from "react-icons/ai";
 import { Info, ShieldAlert } from "lucide-react";
@@ -55,9 +66,10 @@ export default function TerminalDynamiqueSouverain({
   return (
     <div
       ref={ref}
-      className="w-full bg-[var(--background)] text-[var(--foreground)] p-10 font-sans antialiased border border-[var(--border-color)] rounded-[var(--radius-vercel)] shadow-2xl"
+      className="w-full bg-[var(--background)] text-[var(--foreground)] p-10 font-sans antialiased border border-[var(--border-color)] rounded-[var(--radius-vercel)] shadow-2xl transition-colors duration-200"
     >
-      <div className="flex flex-col md:flex-row justify-between items-start mb-16 border-b border-[var(--accents-2)] pb-10 gap-8 overflow-visible relative z-10">
+      {/* HEADER : Titre dégradé Vert Pure -> Léger */}
+      <div className="flex flex-col md:flex-row justify-between items-start mb-16 border-b border-[var(--accents-2)] pb-10 gap-8 overflow-visible relative z-10 antialiased">
         <div className="space-y-4">
           <div className="flex items-center gap-6 overflow-visible">
             <div className="relative group">
@@ -68,7 +80,7 @@ export default function TerminalDynamiqueSouverain({
             </div>
             <div className="overflow-visible">
               <h1
-                className="text-5xl font-black tracking-tighter uppercase leading-none italic"
+                className="text-5xl font-black tracking-[calc(-0.05em)] uppercase leading-none italic"
                 style={{ fontFamily: "'Oswald', sans-serif" }}
               >
                 Indice de{" "}
@@ -86,7 +98,7 @@ export default function TerminalDynamiqueSouverain({
           </div>
         </div>
 
-        <div className="flex gap-12 tabular-nums relative z-10">
+        <div className="flex gap-12 tabular-nums leading-none">
           <CompteurHeader
             label="Rang Politique"
             target={47}
@@ -101,9 +113,10 @@ export default function TerminalDynamiqueSouverain({
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 relative z-0">
-        <div className="lg:col-span-3 space-y-12">
+        {/* SIDEBAR */}
+        <div className="lg:col-span-3 space-y-12 overflow-visible">
           <div className="space-y-8">
-            <h3 className="text-[10px] font-black uppercase opacity-30 tracking-widest border-l-2 border-[#10b981] pl-3 italic">
+            <h3 className="text-[10px] font-black uppercase opacity-30 tracking-widest border-l-2 border-[#10b981] pl-3 italic leading-none">
               Métriques de Confiance
             </h3>
             <JaugeDynamique
@@ -123,8 +136,8 @@ export default function TerminalDynamiqueSouverain({
             />
           </div>
 
-          <div className="p-6 bg-[var(--card-bg)] border border-[var(--border-color)] rounded-[var(--radius-vercel-zy)] relative group">
-            <div className="flex items-center gap-2 mb-3 text-[9px] font-black uppercase opacity-40">
+          <div className="p-6 bg-[var(--card-bg)] border border-[var(--border-color)] rounded-[var(--radius-vercel-zy)] relative group hover:border-[#10b981]/30 transition-all overflow-visible">
+            <div className="flex items-center gap-2 mb-3 text-[9px] font-black uppercase opacity-40 leading-none">
               <Info className="h-3 w-3 text-[#10b981]" />
               <span>Note d'expertise</span>
             </div>
@@ -139,19 +152,24 @@ export default function TerminalDynamiqueSouverain({
               <span className="text-[#10b981] font-bold">
                 capacité d'auto-détermination
               </span>{" "}
-              économique.
+              économique dans le secteur extractif.
             </p>
           </div>
         </div>
 
-        <div className="lg:col-span-9">
-          <ChartContainer config={configGraphique} className="h-[450px] w-full">
+        {/* CHART : Ligne seule en dégradé Orange */}
+        <div className="lg:col-span-9 overflow-visible">
+          <ChartContainer
+            config={configGraphique}
+            className="h-[450px] w-full overflow-visible"
+          >
             <ResponsiveContainer width="100%" height="100%">
               <AreaChart
                 data={donnees}
                 margin={{ left: 0, right: 0, top: 20, bottom: 0 }}
               >
                 <defs>
+                  {/* DÉGRADÉ DE COURBE UNIQUE : VERT-ORANGE */}
                   <linearGradient
                     id={`gradient-courbe-${id}`}
                     x1="0"
@@ -163,6 +181,7 @@ export default function TerminalDynamiqueSouverain({
                     <stop offset="60%" stopColor="#f59e0b" />
                     <stop offset="100%" stopColor="#ff4500" />
                   </linearGradient>
+                  {/* ZONE : VERT PUR */}
                   <linearGradient
                     id={`eclat-${id}`}
                     x1="0"
@@ -193,18 +212,39 @@ export default function TerminalDynamiqueSouverain({
                   dy={15}
                 />
                 <YAxis domain={[30, 75]} hide />
+
+                {/* TOOLTIP DESIGN SYNC */}
                 <ChartTooltip
-                  cursor={{ stroke: "var(--accents-2)", strokeWidth: 1 }}
+                  cursor={{
+                    stroke: "var(--accents-2)",
+                    strokeWidth: 1,
+                    strokeDasharray: "4 4",
+                  }}
                   content={
                     <ChartTooltipContent
+                      className="min-w-[190px] bg-[var(--card-bg-glass)] border border-[var(--border-color)] p-4 shadow-2xl backdrop-blur-xl rounded-[var(--radius-vercel-zy)]"
                       formatter={(value, name) => (
-                        <div className="flex w-full items-center justify-between gap-10">
-                          <span className="text-[10px] font-black uppercase opacity-50">
-                            {configGraphique[
-                              name as keyof typeof configGraphique
-                            ]?.label || name}
-                          </span>
-                          <span className="font-mono font-bold text-[#10b981]">
+                        <div className="flex w-full items-center justify-between gap-6 antialiased">
+                          <div className="flex items-center gap-2">
+                            <div
+                              className="h-1.5 w-1.5 rounded-full"
+                              style={{
+                                backgroundColor:
+                                  configGraphique[
+                                    name as keyof typeof configGraphique
+                                  ]?.color,
+                              }}
+                            />
+                            <span
+                              className="text-[9px] font-black uppercase tracking-widest opacity-60 italic"
+                              style={{ fontFamily: "'Oswald', sans-serif" }}
+                            >
+                              {configGraphique[
+                                name as keyof typeof configGraphique
+                              ]?.label || name}
+                            </span>
+                          </div>
+                          <span className="font-mono font-bold text-[#10b981] text-xs tabular-nums">
                             {value}
                           </span>
                         </div>
@@ -212,6 +252,7 @@ export default function TerminalDynamiqueSouverain({
                     />
                   }
                 />
+
                 <Area
                   dataKey="moyenne_region"
                   type="monotone"
@@ -227,6 +268,7 @@ export default function TerminalDynamiqueSouverain({
                   strokeWidth={2}
                   fill={`url(#eclat-${id})`}
                   isAnimationActive={isInView}
+                  animationDuration={2500}
                 />
                 <ReferenceLine
                   y={60}
@@ -237,11 +279,26 @@ export default function TerminalDynamiqueSouverain({
               </AreaChart>
             </ResponsiveContainer>
           </ChartContainer>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-16 border-t border-[var(--accents-2)] pt-10">
+            <TuileActualite
+              titre="Autonomie Fiscale"
+              statut="SÉCURISÉ"
+              desc="Découplage progressif des aides extérieures. Le budget de l'État est auto-financé à 82%."
+            />
+            <TuileActualite
+              titre="Infrastructure Data"
+              statut="TEMPS RÉEL"
+              desc="Stockage local des données minières cryptées par le protocole souverain v2026."
+            />
+          </div>
         </div>
       </div>
     </div>
   );
 }
+
+// --- SOUS-COMPOSANTS ---
 
 function CompteurHeader({
   label,
@@ -269,12 +326,12 @@ function CompteurHeader({
   }, [rounded]);
 
   return (
-    <div className="text-right border-l border-[var(--accents-2)] pl-8">
-      <p className="text-[10px] font-black opacity-40 uppercase tracking-widest mb-1 italic">
+    <div className="text-right border-l border-[var(--accents-2)] pl-8 tabular-nums">
+      <p className="text-[10px] font-black opacity-40 uppercase tracking-widest mb-1 italic leading-none">
         {label}
       </p>
       <span
-        className="text-4xl font-black tracking-tighter"
+        className="text-4xl font-black tracking-tighter leading-none"
         style={{ fontFamily: "'Oswald', sans-serif" }}
       >
         {display}
@@ -294,11 +351,11 @@ function JaugeDynamique({
 }) {
   return (
     <div className="space-y-3">
-      <div className="flex justify-between items-end">
-        <span className="text-[10px] font-black uppercase opacity-50 tracking-tight">
+      <div className="flex justify-between items-end tabular-nums leading-none">
+        <span className="text-[10px] font-black uppercase opacity-50 tracking-tight leading-none">
           {label}
         </span>
-        <span className="text-xs font-mono font-bold">
+        <span className="text-xs font-mono font-bold leading-none">
           {isInView ? val : 0}%
         </span>
       </div>
@@ -306,10 +363,38 @@ function JaugeDynamique({
         <motion.div
           initial={{ width: 0 }}
           animate={{ width: isInView ? `${val}%` : 0 }}
-          transition={{ duration: 1.5 }}
+          transition={{ duration: 1.5, ease: "easeOut" }}
           className="h-full bg-gradient-to-r from-[#10b981] to-[#a7f3d0] absolute top-0 left-0"
         />
       </div>
+    </div>
+  );
+}
+
+function TuileActualite({
+  titre,
+  statut,
+  desc,
+}: {
+  titre: string;
+  statut: string;
+  desc: string;
+}) {
+  return (
+    <div className="p-6 bg-[var(--card-bg)] border border-[var(--border-color)] rounded-[var(--radius-vercel-zy)] hover:border-[#10b981]/50 transition-all group relative z-10">
+      <div className="flex justify-between items-center mb-4 leading-none text-[9px] font-bold uppercase tracking-widest">
+        <div className="h-1 w-8 bg-[#10b981]/20 group-hover:bg-[#10b981] transition-colors" />
+        <span className="text-[#10b981]">{statut}</span>
+      </div>
+      <h4
+        className="text-xs font-black uppercase mb-2 italic leading-none"
+        style={{ fontFamily: "'Oswald', sans-serif" }}
+      >
+        {titre}
+      </h4>
+      <p className="text-[10px] opacity-60 font-medium font-sans leading-relaxed">
+        {desc}
+      </p>
     </div>
   );
 }
