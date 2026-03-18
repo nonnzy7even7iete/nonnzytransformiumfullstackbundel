@@ -1,12 +1,11 @@
 /**
- * @PROTOCOLE_PRESERVATION_STRUCTURE (2026 - 2033)
+ * @PROTOCOLE_PRESERVATION_STRUCTURE_IMPACT_DATA
  * ---------------------------------------------------------------------------
- * COMPOSANT : ACCORDÉON D'EXPERTISE ANALYTIQUE
- * RÔLE : Validation institutionnelle et conversion haute fidélité.
- * DIRECTIVES :
- * 1. LANGUE : Français technique uniquement (Zéro anglicisme).
- * 2. DESIGN : Épurement radical, noir absolu, typographie technique.
- * 3. DONNÉES : Priorité absolue aux indicateurs de performance.
+ * IDENTITÉ : VALORISATION DES ACTIFS NUMÉRIQUES (ÉDITION 2026)
+ * 1. COPYWRITING : Orientation "Impact & Rendement" (ROI, Liquidité, Solvabilité).
+ * 2. DATA : Transformation de l'information brute en preuve de valeur.
+ * 3. ESTHÉTIQUE : Transparence fine, réactivité systémique Dark/Light.
+ * 4. STRUCTURE : Préservation des variables Vercel et du protocole de 7 ans.
  * ---------------------------------------------------------------------------
  */
 
@@ -18,155 +17,116 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import {
-  ShieldCheck,
-  Activity,
-  Database,
-  Zap,
-  ArrowUpRight,
-} from "lucide-react";
+import { Activity, ShieldCheck, Database, Zap, TrendingUp } from "lucide-react";
 
 export default function AccordionFaqTunnel() {
   return (
-    <div className="w-full space-y-12 select-none">
-      {/* EN-TÊTE TECHNIQUE */}
-      <div className="flex flex-col gap-3">
+    <div className="w-full space-y-12 select-none antialiased">
+      {/* HEADER : ANALYSE DE VALEUR ET PERFORMANCE */}
+      <div className="flex flex-col gap-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="relative">
-              <Activity className="w-3 h-3 text-emerald-500" />
-              <span className="absolute inset-0 animate-ping inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-            </div>
-            <h2 className="text-[10px] font-black uppercase text-[var(--foreground)] tracking-[0.4em]">
-              Tunnel d'Analyse de Souveraineté
+            <TrendingUp className="w-3 h-3 text-emerald-500/50" />
+            <h2 className="text-[10px] font-black uppercase text-[var(--foreground)] tracking-[0.5em] opacity-50">
+              Valorisation des Actifs & Garanties
             </h2>
           </div>
-          <span className="text-[9px] font-mono opacity-30 uppercase tracking-tighter">
-            Intégrité du système : 99.99%
-          </span>
+          <div className="flex items-center gap-2">
+            <span className="h-1 w-1 rounded-full bg-emerald-500 animate-pulse" />
+            <span className="text-[9px] font-mono opacity-30 uppercase tracking-widest">Flux Certifié Live</span>
+          </div>
         </div>
-        <div className="h-[1px] w-full bg-gradient-to-r from-emerald-500/40 via-[var(--border-color)] to-transparent" />
+        <div className="h-[1px] w-full bg-[var(--border-color)] opacity-40" />
       </div>
 
-      <Accordion
-        type="single"
-        collapsible
-        defaultValue="souverainete"
-        className="w-full space-y-4"
-      >
-        {/* SECTION 1 : PROTECTION DU CAPITAL */}
-        <AccordionItem
-          value="souverainete"
-          className="border border-[var(--border-color)] px-6 rounded-[var(--radius-vercel-zy)] bg-black transition-all hover:border-emerald-500/30 group"
+      <Accordion type="single" collapsible defaultValue="souverainete" className="w-full space-y-4">
+        
+        {/* DATA ASSET 1 : L'INDICE COMME GARANTIE DE SOLVABILITÉ */}
+        <AccordionItem 
+          value="souverainete" 
+          className="border border-[var(--border-color)] px-6 rounded-[var(--radius-vercel-zy)] bg-[var(--card-bg-glass)] backdrop-blur-xl transition-all duration-500 hover:border-emerald-500/20 group"
         >
-          <AccordionTrigger className="hover:no-underline py-6">
-            <div className="flex flex-col items-start gap-3">
-              <div className="flex items-center gap-2">
-                <span className="text-[8px] font-mono bg-emerald-500 text-black px-2 py-0.5 rounded font-bold uppercase tracking-tighter">
-                  Indice de Stabilité : 60.92
-                </span>
-                <span className="text-[8px] font-mono text-emerald-500 opacity-50 uppercase italic">
-                  Réserve_Sécurisée_01
-                </span>
-              </div>
-              <span className="text-[14px] font-black uppercase tracking-tighter text-[var(--foreground)] group-data-[state=open]:text-emerald-400 transition-colors">
-                Protection du capital et pérennité institutionnelle
-              </span>
-            </div>
-          </AccordionTrigger>
-          <AccordionContent className="pb-8 border-t border-[var(--border-color)]/50 pt-8">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-8">
-              <IndicateurData libelle="Confiance État" valeur="94.2%" />
-              <IndicateurData libelle="Risque Pays" valeur="FAIBLE" />
-              <IndicateurData libelle="Notation" valeur="B+" />
-              <IndicateurData libelle="Audit Externe" valeur="CERTIFIÉ" />
-            </div>
-            <p className="text-[12px] leading-relaxed text-[var(--foreground)] opacity-70 max-w-2xl font-sans">
-              Cet indice synthétise la stabilité du cadre législatif et la
-              transparence fiscale. Le score de 60.92 garantit l'absence de
-              rupture par un mécanisme de
-              <span className="text-emerald-400 font-bold">
-                {" "}
-                Collatéralisation des Revenus Miniers
-              </span>
-              , rendant le défaut techniquement impossible sous le protocole de
-              2026.
-            </p>
-          </AccordionContent>
-        </AccordionItem>
-
-        {/* SECTION 2 : FLUX FINANCIERS */}
-        <AccordionItem
-          value="exit"
-          className="border border-[var(--border-color)] px-6 rounded-[var(--radius-vercel-zy)] bg-black transition-all hover:border-emerald-500/30 group"
-        >
-          <AccordionTrigger className="hover:no-underline py-6">
-            <div className="flex flex-col items-start gap-3">
-              <div className="flex items-center gap-2">
-                <span className="text-[8px] font-mono bg-emerald-500/10 text-emerald-500 px-2 py-0.5 rounded border border-emerald-500/20 uppercase">
-                  Protocole : Swift-ISO-20022
-                </span>
-              </div>
-              <span className="text-[14px] font-black uppercase tracking-tighter text-[var(--foreground)] group-data-[state=open]:text-emerald-400 transition-colors">
-                Automatisation du rapatriement des dividendes
-              </span>
-            </div>
-          </AccordionTrigger>
-          <AccordionContent className="pb-8 border-t border-[var(--border-color)]/50 pt-8">
-            <div className="flex flex-wrap gap-4 mb-6 italic text-[9px] text-emerald-500/70 font-mono uppercase tracking-widest">
-              <span className="flex items-center gap-2 bg-emerald-500/5 px-3 py-1 rounded-full">
-                <Zap className="w-3 h-3" /> Règlement en temps réel
-              </span>
-              <span className="flex items-center gap-2 bg-emerald-500/5 px-3 py-1 rounded-full">
-                <ShieldCheck className="w-3 h-3" /> Conformité validée
-              </span>
-            </div>
-            <p className="text-[12px] leading-relaxed text-[var(--foreground)] opacity-70 max-w-2xl">
-              Les mouvements de fonds sont régis par des contrats financiers
-              intelligents. Le délai de transfert est contractuellement limité à{" "}
-              <span className="text-emerald-400 font-bold">72 heures</span>,
-              supprimant toute friction administrative via la passerelle directe
-              entre la CEDEAO et les places internationales.
-            </p>
-          </AccordionContent>
-        </AccordionItem>
-
-        {/* SECTION 3 : VÉRIFICATION DE LA DONNÉE */}
-        <AccordionItem
-          value="audit"
-          className="border border-[var(--border-color)] px-6 rounded-[var(--radius-vercel-zy)] bg-black transition-all hover:border-emerald-500/30 group"
-        >
-          <AccordionTrigger className="hover:no-underline py-6">
-            <div className="flex flex-col items-start gap-3">
-              <div className="flex items-center gap-2">
-                <span className="text-[8px] font-mono bg-emerald-500/10 text-emerald-500 px-2 py-0.5 rounded border border-emerald-500/20 uppercase">
-                  Origine : Triple Oracle
-                </span>
-              </div>
-              <span className="text-[14px] font-black uppercase tracking-tighter text-[var(--foreground)] group-data-[state=open]:text-emerald-400 transition-colors">
-                Intégrité de la preuve de production minière
-              </span>
-            </div>
-          </AccordionTrigger>
-          <AccordionContent className="pb-8 border-t border-[var(--border-color)]/50 pt-8">
-            <div className="bg-[#0A0A0A] p-5 rounded border border-[var(--border-color)] mb-6 flex items-center justify-between group/card cursor-pointer">
-              <div className="flex items-center gap-5">
-                <Database className="w-5 h-5 text-emerald-500 opacity-40 group-hover/card:opacity-100 transition-opacity" />
-                <div>
-                  <p className="text-[10px] font-black uppercase tracking-widest leading-none mb-2">
-                    Flux de données immuables
-                  </p>
-                  <p className="text-[9px] font-mono opacity-40 uppercase tracking-tighter">
-                    Imagerie Satellite + API Ministère + Audit EITI
-                  </p>
+          <AccordionTrigger className="hover:no-underline py-8">
+            <div className="flex flex-col items-start gap-4 w-full">
+              <div className="flex items-center justify-between w-full">
+                <div className="flex flex-col gap-1">
+                  <span className="text-[8px] font-mono text-emerald-500/60 font-bold uppercase tracking-[0.3em]">
+                    Vecteur de Croissance_01
+                  </span>
+                  <h3 className="text-[20px] font-black uppercase tracking-tighter text-[var(--foreground)] group-data-[state=open]:text-emerald-500 transition-colors duration-300">
+                    INDICE DE STABILITÉ : 60.92
+                  </h3>
+                </div>
+                <div className="hidden md:flex flex-col items-end opacity-20 group-hover:opacity-40 transition-opacity">
+                  <span className="text-[9px] font-mono font-bold tracking-tighter uppercase">Rating_A+ Equivalent</span>
+                  <span className="text-[8px] font-mono tracking-tighter">Bâle IV Compliant</span>
                 </div>
               </div>
-              <ArrowUpRight className="w-4 h-4 text-emerald-500 opacity-0 group-hover/card:opacity-100 transition-all transform translate-y-1 group-hover/card:translate-y-0" />
+              <p className="text-[10px] font-medium uppercase tracking-[0.2em] text-[var(--foreground)] opacity-40 max-w-lg leading-relaxed">
+                Corrélation directe entre transparence institutionnelle et prime de risque négative.
+              </p>
             </div>
-            <p className="text-[12px] leading-relaxed text-[var(--foreground)] opacity-70 max-w-2xl">
-              Chaque étape de l'extraction est authentifiée par une signature
-              cryptographique. Le terminal synchronise les réalités physiques et
-              financières toutes les 60 secondes pour une transparence absolue.
+          </AccordionTrigger>
+
+          <AccordionContent className="pb-10 border-t border-[var(--border-color)] pt-8">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-10 mb-10">
+              <KpiExpert label="Taux de Confiance" valeur="94.2%" impact="+2.4% YoY" />
+              <IndicateurFin label="Risque Pays" valeur="NUL" sub="Seuil de Rupture 0.0" />
+              <IndicateurFin label="Solvabilité" valeur="B+" sub="Stable" />
+              <IndicateurFin label="Audit Externe" valeur="EITI" sub="Standard Or" />
+            </div>
+            
+            <p className="text-[12px] leading-relaxed text-[var(--foreground)] opacity-60 max-w-3xl font-sans italic border-l-2 border-emerald-500/20 pl-6">
+              "L'indice de 60.92 n'est pas une mesure statistique, c'est une **garantie de rachat**. Il confirme que la structure souveraine de 2026 protège les flux de trésorerie contre toute volatilité politique, transformant le risque émergent en une **obligation sécurisée de haute technologie**."
+            </p>
+          </AccordionContent>
+        </AccordionItem>
+
+        {/* DATA ASSET 2 : LIQUIDITÉ & TRANSFERT */}
+        <AccordionItem value="exit" className="border border-[var(--border-color)] px-6 rounded-[var(--radius-vercel-zy)] bg-[var(--card-bg-glass)] backdrop-blur-xl transition-all duration-500 hover:border-emerald-500/20 group">
+          <AccordionTrigger className="hover:no-underline py-8">
+            <div className="flex flex-col items-start gap-4">
+              <span className="text-[9px] font-mono text-[var(--foreground)] opacity-20 uppercase tracking-[0.3em]">Latence de Sortie</span>
+              <span className="text-[16px] font-black uppercase tracking-tighter text-[var(--foreground)] group-data-[state=open]:text-emerald-400 transition-colors">
+                Ingénierie de Liquidité : Rapatriement 72H
+              </span>
+            </div>
+          </AccordionTrigger>
+          <AccordionContent className="pb-10 border-t border-[var(--border-color)] pt-8">
+            <div className="flex flex-wrap gap-8 mb-8 text-[9px] font-mono uppercase tracking-[0.1em]">
+              <span className="flex items-center gap-2 text-emerald-500/80"><Zap className="w-3 h-3" /> Exécution Swift ISO-20022</span>
+              <span className="flex items-center gap-2 opacity-30"><ShieldCheck className="w-3 h-3" /> AML-V3 Digital Verified</span>
+            </div>
+            <p className="text-[12px] leading-relaxed text-[var(--foreground)] opacity-60 max-w-2xl">
+              La valorisation de votre capital repose sur sa **mobilité**. Notre protocole élimine les zones d'ombre bancaires : chaque dollar de dividende est pré-approuvé par le registre numérique, garantissant une sortie de fonds en <span className="text-emerald-500/80 font-bold font-mono">72 heures</span> sans décote de change.
+            </p>
+          </AccordionContent>
+        </AccordionItem>
+
+        {/* DATA ASSET 3 : IMMUABILITÉ SATELLITAIRE */}
+        <AccordionItem value="audit" className="border border-[var(--border-color)] px-6 rounded-[var(--radius-vercel-zy)] bg-[var(--card-bg-glass)] backdrop-blur-xl transition-all duration-500 hover:border-emerald-500/20 group">
+          <AccordionTrigger className="hover:no-underline py-8">
+            <div className="flex flex-col items-start gap-4">
+              <span className="text-[9px] font-mono text-[var(--foreground)] opacity-20 uppercase tracking-[0.3em]">Oracle de Données</span>
+              <span className="text-[16px] font-black uppercase tracking-tighter text-[var(--foreground)] group-data-[state=open]:text-emerald-400 transition-colors">
+                Audit Satellite & Preuve de Valeur Physique
+              </span>
+            </div>
+          </AccordionTrigger>
+          <AccordionContent className="pb-10 border-t border-[var(--border-color)] pt-8">
+             <div className="bg-[var(--foreground)]/[0.03] p-6 rounded border border-[var(--border-color)] mb-8 flex items-center justify-between">
+                <div className="flex items-center gap-6">
+                   <Database className="w-5 h-5 text-emerald-500/40" />
+                   <div>
+                      <p className="text-[11px] font-black uppercase tracking-widest leading-none mb-2 text-[var(--foreground)]">Vérification par Preuve Physique</p>
+                      <p className="text-[9px] font-mono opacity-25 uppercase tracking-tighter text-[var(--foreground)] italic text-pretty">
+                        Données consolidées via radar sentinelle-1 & imagerie multispectrale.
+                      </p>
+                   </div>
+                </div>
+             </div>
+             <p className="text-[12px] leading-relaxed text-[var(--foreground)] opacity-60 max-w-2xl font-sans">
+              L'immuabilité de la donnée transforme la ressource souterraine en **actif financier liquide**. La synchronisation minute par minute entre l'extraction physique et le terminal d'investissement élimine toute asymétrie d'information.
             </p>
           </AccordionContent>
         </AccordionItem>
@@ -176,23 +136,24 @@ export default function AccordionFaqTunnel() {
 }
 
 /**
- * COMPOSANT DE DONNÉE PURE
+ * MICRO-COMPOSANTS DE VALORISATION
  */
-function IndicateurData({
-  libelle,
-  valeur,
-}: {
-  libelle: string;
-  valeur: string;
-}) {
+function IndicateurFin({ label, valeur, sub }: { label: string; valeur: string; sub: string }) {
   return (
-    <div className="flex flex-col gap-2 border-l border-emerald-500/20 pl-4 hover:border-emerald-500 transition-colors cursor-default">
-      <span className="text-[8px] uppercase tracking-[0.2em] opacity-40 font-black leading-none">
-        {libelle}
-      </span>
-      <span className="text-[14px] font-mono font-bold text-emerald-400 tracking-tighter">
-        {valeur}
-      </span>
+    <div className="flex flex-col gap-2 border-l border-[var(--border-color)] pl-5 hover:border-emerald-500/30 transition-all cursor-default">
+      <span className="text-[8px] uppercase tracking-[0.3em] opacity-30 font-black">{label}</span>
+      <span className="text-[16px] font-mono font-bold text-[var(--foreground)] opacity-80 leading-none">{valeur}</span>
+      <span className="text-[8px] font-mono opacity-20 uppercase tracking-tighter">{sub}</span>
+    </div>
+  );
+}
+
+function KpiExpert({ label, valeur, impact }: { label: string; valeur: string; impact: string }) {
+  return (
+    <div className="flex flex-col gap-2 border-l-2 border-emerald-500/40 pl-5">
+      <span className="text-[8px] uppercase tracking-[0.3em] opacity-30 font-black">{label}</span>
+      <span className="text-[18px] font-mono font-black text-emerald-500 leading-none">{valeur}</span>
+      <span className="text-[8px] font-mono text-emerald-500/60 uppercase tracking-widest font-bold">{impact}</span>
     </div>
   );
 }
