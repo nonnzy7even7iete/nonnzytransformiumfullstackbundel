@@ -1,16 +1,5 @@
 "use client";
 
-/**
- * @STRUCTURE_PRESERVATION_PROTOCOL_V3.3
- * ---------------------------------------------------------------------------
- * PROTOCOLE DE RECTIFICATION VISUELLE ET CHROMATIQUE
- * 1. TITRE : Suppression de tout risque d'overlay hidden sur le header.
- * 2. GRADIENT CHART : Affinement extrême de la courbe (#10b981 Vert Pure -> #f59e0b Orange Progressif -> #ff4500 Pure Orange).
- * 3. STRUCTURE : Maintien strict Sidebar(3/12) / Chart(9/12) et animation.
- * 4. CONTENU : Restauration du texte et des jauges d'origine.
- * ---------------------------------------------------------------------------
- */
-
 import * as React from "react";
 import { AiOutlineLineChart } from "react-icons/ai";
 import { Info, ShieldAlert } from "lucide-react";
@@ -32,7 +21,6 @@ import {
   type ChartConfig,
 } from "@/components/ui/chart";
 
-// --- DONNÉES SOURCES (Maintenues dans le fichier) ---
 const DONNEES_SOUVERAINETE = [
   { annee: "2021", indice: 41.0, moyenne_region: 54.0 },
   { annee: "2022", indice: 48.2, moyenne_region: 56.5 },
@@ -44,7 +32,7 @@ const DONNEES_SOUVERAINETE = [
 
 interface TerminalProps {
   titre?: string;
-  donnees?: any[];
+  donnees?: Array<{ annee: string; indice: number; moyenne_region: number }>;
   labels?: { primary: string; secondary: string };
   secteur?: string;
 }
@@ -56,10 +44,9 @@ export default function TerminalDynamiqueSouverain({
   secteur = "Industrie Minière & Ressources",
 }: TerminalProps) {
   const id = React.useId();
-  const ref = React.useRef(null);
+  const ref = React.useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { amount: 0.2 });
 
-  // Config dynamique basée sur les labels passés ou par défaut
   const configGraphique = {
     indice: { label: labels.primary, color: "#10b981" },
     moyenne_region: { label: labels.secondary, color: "var(--accents-2)" },
@@ -68,34 +55,30 @@ export default function TerminalDynamiqueSouverain({
   return (
     <div
       ref={ref}
-      className="w-full bg-[var(--background)] text-[var(--foreground)] p-10 font-sans antialiased border border-[var(--border-color)] rounded-[var(--radius-vercel)] shadow-2xl transition-colors duration-200"
+      className="w-full bg-[var(--background)] text-[var(--foreground)] p-10 font-sans antialiased border border-[var(--border-color)] rounded-[var(--radius-vercel)] shadow-2xl"
     >
-      {/* HEADER_LOCKED : Titre affiné et sans overlay hidden */}
-      <div className="flex flex-col md:flex-row justify-between items-start mb-16 border-b border-[var(--accents-2)] pb-10 gap-8 overflow-visible">
+      <div className="flex flex-col md:flex-row justify-between items-start mb-16 border-b border-[var(--accents-2)] pb-10 gap-8 overflow-visible relative z-10">
         <div className="space-y-4">
           <div className="flex items-center gap-6 overflow-visible">
             <div className="relative group">
-              {/* Glow affiné avec le nouveau dégradé vert */}
-              <div className="absolute -inset-1 bg-gradient-to-r from-[#10b981] via-[#f59e0b] to-[#ff4500] rounded-lg blur opacity-15 group-hover:opacity-30 transition duration-1000"></div>
+              <div className="absolute -inset-1 bg-gradient-to-r from-[#10b981] to-[#a7f3d0] rounded-lg blur opacity-15 group-hover:opacity-30 transition duration-1000"></div>
               <div className="relative p-3 bg-[var(--card-bg-glass)] border border-[var(--accents-2)] backdrop-blur-md rounded-[var(--radius-vercel-zy)]">
                 <AiOutlineLineChart className="h-6 w-6 text-[#10b981]" />
               </div>
             </div>
-
             <div className="overflow-visible">
-              {/* Titre Oswald : Pas de overflow hidden, pas d'overlay */}
               <h1
-                className="text-5xl font-black tracking-[calc(-0.05em)] uppercase leading-none italic"
+                className="text-5xl font-black tracking-tighter uppercase leading-none italic"
                 style={{ fontFamily: "'Oswald', sans-serif" }}
               >
                 Indice de{" "}
-                <span className="bg-gradient-to-r from-[#10b981] via-[#f59e0b] to-[#ff4500] bg-clip-text text-transparent">
-                  Souveraineté
+                <span className="bg-gradient-to-r from-[#10b981] via-[#34d399] to-[#a7f3d0] bg-clip-text text-transparent">
+                  {titre}
                 </span>
               </h1>
               <div className="flex items-center gap-2 mt-3 overflow-visible">
                 <ShieldAlert className="h-3 w-3 text-[#10b981] opacity-60" />
-                <p className="text-[10px] font-bold text-[var(--foreground)] opacity-40 uppercase tracking-[0.6em] italic leading-none">
+                <p className="text-[10px] font-bold opacity-40 uppercase tracking-[0.6em] italic leading-none">
                   Audit Intégré : {secteur}
                 </p>
               </div>
@@ -103,7 +86,7 @@ export default function TerminalDynamiqueSouverain({
           </div>
         </div>
 
-        <div className="flex gap-12 tabular-nums">
+        <div className="flex gap-12 tabular-nums relative z-10">
           <CompteurHeader
             label="Rang Politique"
             target={47}
@@ -117,11 +100,10 @@ export default function TerminalDynamiqueSouverain({
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-16">
-        {/* SIDEBAR_LOCKED */}
-        <div className="lg:col-span-3 space-y-12 overflow-visible">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 relative z-0">
+        <div className="lg:col-span-3 space-y-12">
           <div className="space-y-8">
-            <h3 className="text-[10px] font-black uppercase text-[var(--foreground)] opacity-30 tracking-widest border-l-2 border-[#10b981] pl-3 italic">
+            <h3 className="text-[10px] font-black uppercase opacity-30 tracking-widest border-l-2 border-[#10b981] pl-3 italic">
               Métriques de Confiance
             </h3>
             <JaugeDynamique
@@ -141,43 +123,35 @@ export default function TerminalDynamiqueSouverain({
             />
           </div>
 
-          <div className="p-6 bg-[var(--card-bg)] border border-[var(--border-color)] rounded-[var(--radius-vercel-zy)] shadow-sm relative overflow-visible group hover:border-[#10b981]/30 transition-colors">
-            <div className="flex items-center gap-2 mb-3 text-[9px] font-black uppercase text-[var(--foreground)] opacity-40">
+          <div className="p-6 bg-[var(--card-bg)] border border-[var(--border-color)] rounded-[var(--radius-vercel-zy)] relative group">
+            <div className="flex items-center gap-2 mb-3 text-[9px] font-black uppercase opacity-40">
               <Info className="h-3 w-3 text-[#10b981]" />
               <span>Note d'expertise</span>
             </div>
             <div
-              className="text-xl font-black italic text-[var(--foreground)] leading-tight uppercase tracking-tighter mb-4"
+              className="text-xl font-black italic leading-tight uppercase tracking-tighter mb-4"
               style={{ fontFamily: "'Oswald', sans-serif" }}
             >
               Nature de <br /> l'Indice
             </div>
-            <p className="text-[11px] text-[var(--foreground)] opacity-70 leading-relaxed font-medium font-sans relative z-10">
+            <p className="text-[11px] opacity-70 leading-relaxed font-medium">
               Cet indice quantifie la{" "}
               <span className="text-[#10b981] font-bold">
                 capacité d'auto-détermination
               </span>{" "}
-              économique dans le secteur extractif. Un score de 60.92 valide la
-              protection des actifs.
+              économique.
             </p>
           </div>
         </div>
 
-        {/* CHART_LOCKED - structure inchangée, courbe ultra-fine */}
-        <div className="lg:col-span-9 overflow-visible">
-          <ChartContainer
-            config={configGraphique}
-            className="h-[450px] w-full overflow-visible"
-          >
-            <ResponsiveContainer width="100%" height="100%" overflow-visible>
+        <div className="lg:col-span-9">
+          <ChartContainer config={configGraphique} className="h-[450px] w-full">
+            <ResponsiveContainer width="100%" height="100%">
               <AreaChart
-                key={isInView ? "visible" : "hidden"}
                 data={donnees}
                 margin={{ left: 0, right: 0, top: 20, bottom: 0 }}
-                overflow-visible
               >
                 <defs>
-                  {/* Dégradé de courbe Vert pur -> Orange Progressif -> Pure Orange */}
                   <linearGradient
                     id={`gradient-courbe-${id}`}
                     x1="0"
@@ -189,8 +163,6 @@ export default function TerminalDynamiqueSouverain({
                     <stop offset="60%" stopColor="#f59e0b" />
                     <stop offset="100%" stopColor="#ff4500" />
                   </linearGradient>
-
-                  {/* Dégradé de zone affiné pour plus de légèreté */}
                   <linearGradient
                     id={`eclat-${id}`}
                     x1="0"
@@ -221,15 +193,13 @@ export default function TerminalDynamiqueSouverain({
                   dy={15}
                 />
                 <YAxis domain={[30, 75]} hide />
-
                 <ChartTooltip
                   cursor={{ stroke: "var(--accents-2)", strokeWidth: 1 }}
                   content={
                     <ChartTooltipContent
-                      className="min-w-[220px] bg-[var(--card-bg)] border-[var(--border-color)] p-4 shadow-2xl backdrop-blur-xl overflow-visible"
                       formatter={(value, name) => (
-                        <div className="flex w-full items-center justify-between gap-10tabular-nums">
-                          <span className="text-[10px] font-black uppercase tracking-widest opacity-50">
+                        <div className="flex w-full items-center justify-between gap-10">
+                          <span className="text-[10px] font-black uppercase opacity-50">
                             {configGraphique[
                               name as keyof typeof configGraphique
                             ]?.label || name}
@@ -242,7 +212,6 @@ export default function TerminalDynamiqueSouverain({
                     />
                   }
                 />
-
                 <Area
                   dataKey="moyenne_region"
                   type="monotone"
@@ -254,11 +223,10 @@ export default function TerminalDynamiqueSouverain({
                 <Area
                   dataKey="indice"
                   type="monotone"
-                  stroke={`url(#gradient-courbe-${id})`} // Nouveau dégradé de courbe
-                  strokeWidth={2} // Courbe ultra-fine (passée de 4 à 2)
+                  stroke={`url(#gradient-courbe-${id})`}
+                  strokeWidth={2}
                   fill={`url(#eclat-${id})`}
                   isAnimationActive={isInView}
-                  animationDuration={2500}
                 />
                 <ReferenceLine
                   y={60}
@@ -269,26 +237,11 @@ export default function TerminalDynamiqueSouverain({
               </AreaChart>
             </ResponsiveContainer>
           </ChartContainer>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-16 border-t border-[var(--accents-2)] pt-10 antialiased overflow-visible relative">
-            <TuileActualite
-              titre="Autonomie Fiscale"
-              statut="SÉCURISÉ"
-              desc="Découplage progressif des aides extérieures. Le budget de l'État est auto-financé à 82%."
-            />
-            <TuileActualite
-              titre="Infrastructure Data"
-              statut="TEMPS RÉEL"
-              desc="Stockage local des données minières cryptées par le protocole souverain v2026."
-            />
-          </div>
         </div>
       </div>
     </div>
   );
 }
-
-// --- SOUS-COMPOSANTS (Logique et structure inchangées) ---
 
 function CompteurHeader({
   label,
@@ -302,21 +255,26 @@ function CompteurHeader({
   const count = useMotionValue(0);
   const rounded = useSpring(count, { stiffness: 40, damping: 20 });
   const [display, setDisplay] = React.useState(0);
+
   React.useEffect(() => {
     if (isInView) count.set(target);
     else count.set(0);
   }, [isInView, target, count]);
+
   React.useEffect(() => {
-    return rounded.on("change", (latest) => setDisplay(Math.round(latest)));
+    const unsubscribe = rounded.on("change", (latest: number) =>
+      setDisplay(Math.round(latest))
+    );
+    return () => unsubscribe();
   }, [rounded]);
+
   return (
-    <div className="text-right border-l border-[var(--accents-2)] pl-8 hover:border-[#10b981]/40 transition-colors tabular-nums">
-      <p className="text-[10px] font-black text-[var(--foreground)] opacity-40 uppercase tracking-widest mb-1 italic leading-none">
+    <div className="text-right border-l border-[var(--accents-2)] pl-8">
+      <p className="text-[10px] font-black opacity-40 uppercase tracking-widest mb-1 italic">
         {label}
       </p>
-      {/* Compteur affiné à font-black */}
       <span
-        className="text-4xl font-black tracking-tighter tabular-nums leading-none"
+        className="text-4xl font-black tracking-tighter"
         style={{ fontFamily: "'Oswald', sans-serif" }}
       >
         {display}
@@ -334,71 +292,24 @@ function JaugeDynamique({
   val: number;
   isInView: boolean;
 }) {
-  const idJauge = React.useId();
   return (
     <div className="space-y-3">
-      <div className="flex justify-between items-end tabular-nums relative z-10">
-        <span className="text-[10px] font-black uppercase opacity-50 tracking-tight leading-none">
+      <div className="flex justify-between items-end">
+        <span className="text-[10px] font-black uppercase opacity-50 tracking-tight">
           {label}
         </span>
-        <span className="text-xs font-mono font-bold leading-none">
+        <span className="text-xs font-mono font-bold">
           {isInView ? val : 0}%
         </span>
       </div>
-      <div className="h-[1.5px] w-full bg-[var(--accents-2)] rounded-full overflow-hidden relative z-0">
-        <svg width="100%" height="1.5" className="absolute top-0 left-0">
-          <defs>
-            <linearGradient
-              id={`gradient-jauge-${idJauge}`}
-              x1="0"
-              y1="0"
-              x2="1"
-              y2="0"
-            >
-              <stop offset="0%" stopColor="#10b981" />
-              <stop offset="60%" stopColor="#f59e0b" />
-              <stop offset="100%" stopColor="#ff4500" />
-            </linearGradient>
-          </defs>
-          <motion.rect
-            width={`${isInView ? val : 0}%`}
-            height="1.5"
-            fill={`url(#gradient-jauge-${idJauge})`}
-            initial={{ width: 0 }}
-            animate={{ width: isInView ? `${val}%` : 0 }}
-            transition={{ duration: 1.5, ease: "easeOut" }}
-          />
-        </svg>
+      <div className="h-[1.5px] w-full bg-[var(--accents-2)] rounded-full overflow-hidden relative">
+        <motion.div
+          initial={{ width: 0 }}
+          animate={{ width: isInView ? `${val}%` : 0 }}
+          transition={{ duration: 1.5 }}
+          className="h-full bg-gradient-to-r from-[#10b981] to-[#a7f3d0] absolute top-0 left-0"
+        />
       </div>
-    </div>
-  );
-}
-
-function TuileActualite({
-  titre,
-  statut,
-  desc,
-}: {
-  titre: string;
-  statut: string;
-  desc: string;
-}) {
-  return (
-    <div className="p-6 bg-[var(--card-bg)] border border-[var(--border-color)] rounded-[var(--radius-vercel-zy)] hover:border-[#10b981]/50 transition-all group overflow-visible relative">
-      <div className="flex justify-between items-center mb-4 text-[9px] font-bold uppercase tracking-widest antialiased relative z-10 leading-none">
-        <div className="h-1 w-8 bg-[#10b981]/20 group-hover:bg-[#10b981] transition-colors" />
-        <span className="text-[#10b981]">{statut}</span>
-      </div>
-      {/* Titre de tuile affiné à font-black */}
-      <h4
-        className="text-xs font-black uppercase mb-2 italic relative z-10 leading-none"
-        style={{ fontFamily: "'Oswald', sans-serif" }}
-      >
-        {titre}
-      </h4>
-      <p className="text-[10px] opacity-60 font-medium font-sans relative z-10">
-        {desc}
-      </p>
     </div>
   );
 }
