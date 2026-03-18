@@ -2,19 +2,19 @@
 
 /**
  * @STRUCTURE_PRESERVATION_PROTOCOL
- * @STRUCTURE_PRESERVATION_DE_LA_LOGIQUE_ACTUELLE
  * ---------------------------------------------------------------------------
- * PROTOCOLE DE PERSISTANCE VISUELLE V2.2 - ICONOGRAPHIE & ANIMATIONS
- * 1. DESIGN SYSTEM : Variables CSS (--background, --foreground, etc.) obligatoires.
- * 2. COMPTEURS & CHART : Réinitialisation forcée au scroll via key={isInView}.
- * 3. ICONE : Remplacement par AiOutlineLineChart (React Icons).
- * 4. SQUELETTE : Interdiction de modifier le ratio Sidebar(3/12) / Chart(9/12).
+ * PROTOCOLE DE PERSISTANCE VISUELLE V3.0 - OSWALD & THERMAL GRADIENT
+ * 1. TYPOGRAPHIE : Intégration forcée de 'Oswald' sur les titres majeurs.
+ * 2. GRADIENT : Souveraineté en dégradé linéaire #10b981 (Pure) -> #f59e0b (Orange).
+ * 3. CHART : Maintien de l'absence de Y-Axis (YAxis hide) pour l'épure.
+ * 4. ICONE : Effet de lueur diffuse (Glow) pour l'attractivité.
+ * 5. LOGIQUE : Persistance des compteurs réactifs via isInView.
  * ---------------------------------------------------------------------------
  */
 
 import * as React from "react";
-import { AiOutlineLineChart } from "react-icons/ai"; // Importation de la nouvelle icône
-import { Info } from "lucide-react";
+import { AiOutlineLineChart } from "react-icons/ai";
+import { Info, ShieldAlert } from "lucide-react";
 import {
   Area,
   AreaChart,
@@ -23,7 +23,6 @@ import {
   YAxis,
   ResponsiveContainer,
   ReferenceLine,
-  Label,
 } from "recharts";
 import { motion, useInView, useMotionValue, useSpring } from "framer-motion";
 
@@ -58,28 +57,41 @@ export default function TerminalDynamiqueSouverain() {
       ref={ref}
       className="w-full bg-[var(--background)] text-[var(--foreground)] p-10 font-sans antialiased border border-[var(--border-color)] rounded-[var(--radius-vercel)] shadow-2xl transition-colors duration-200"
     >
-      {/* SECTION_START : HEADER_LOCKED */}
+      {/* HEADER_LOCKED avec Typographie Oswald et Gradient */}
       <div className="flex flex-col md:flex-row justify-between items-start mb-16 border-b border-[var(--accents-2)] pb-10 gap-8">
         <div className="space-y-4">
-          <div className="flex items-center gap-4">
-            {/* Conteneur Icône mis à jour avec AiOutlineLineChart */}
-            <div className="p-3 bg-[var(--card-bg-glass)] border border-[var(--accents-2)] backdrop-blur-md rounded-[var(--radius-vercel-zy)] shadow-[0_0_20px_rgba(16,185,129,0.1)]">
-              <AiOutlineLineChart className="h-6 w-6 text-[#10b981]" />
+          <div className="flex items-center gap-6">
+            {/* Icône polie : Subtile et désirable via glow */}
+            <div className="relative group">
+              <div className="absolute -inset-1 bg-gradient-to-r from-[#10b981] to-[#f59e0b] rounded-lg blur opacity-25 group-hover:opacity-50 transition duration-1000 group-hover:duration-200"></div>
+              <div className="relative p-3 bg-[var(--card-bg-glass)] border border-[var(--accents-2)] backdrop-blur-md rounded-[var(--radius-vercel-zy)]">
+                <AiOutlineLineChart className="h-6 w-6 text-[#10b981]" />
+              </div>
             </div>
+
             <div>
-              <h1 className="text-4xl font-black tracking-tighter uppercase italic leading-none">
-                Indice de <span className="text-[#10b981]">Souveraineté</span>
+              <h1
+                className="text-5xl font-black tracking-[calc(-0.05em)] uppercase leading-none italic"
+                style={{ fontFamily: "'Oswald', sans-serif" }}
+              >
+                Indice de{" "}
+                <span className="bg-gradient-to-r from-[#10b981] to-[#f59e0b] bg-clip-text text-transparent">
+                  Souveraineté
+                </span>
               </h1>
-              <p className="text-[10px] font-bold text-[var(--foreground)] opacity-40 uppercase tracking-[0.5em] mt-2 italic">
-                Audit Officiel Fraser • 2026
-              </p>
+              <div className="flex items-center gap-2 mt-3">
+                <ShieldAlert className="h-3 w-3 text-[#10b981] opacity-50" />
+                <p className="text-[10px] font-bold text-[var(--foreground)] opacity-40 uppercase tracking-[0.6em] italic leading-none">
+                  Audit Intégré : Gouvernance & Sécurité du Capital
+                </p>
+              </div>
             </div>
           </div>
         </div>
 
         <div className="flex gap-12">
           <CompteurHeader
-            label="Rang Politique (PPI)"
+            label="Rang Politique"
             target={47}
             isInView={isInView}
           />
@@ -90,60 +102,62 @@ export default function TerminalDynamiqueSouverain() {
           />
         </div>
       </div>
-      {/* SECTION_END : HEADER_LOCKED */}
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-16">
-        {/* SECTION_START : SIDEBAR_LOCKED */}
+        {/* SIDEBAR_LOCKED */}
         <div className="lg:col-span-3 space-y-12">
           <div className="space-y-8">
             <h3 className="text-[10px] font-black uppercase text-[var(--foreground)] opacity-30 tracking-widest border-l-2 border-[#10b981] pl-3 italic">
-              Paramètres d'Expertise
+              Métriques de Confiance
             </h3>
             <JaugeDynamique
-              label="Stabilité Législative"
+              label="Indépendance Budgétaire"
               val={92}
               isInView={isInView}
             />
             <JaugeDynamique
-              label="Potentiel Géologique"
+              label="Maîtrise Foncière"
               val={89}
               isInView={isInView}
             />
             <JaugeDynamique
-              label="Transparence ITIE"
+              label="Transparence Flux"
               val={74}
               isInView={isInView}
             />
           </div>
 
-          <div className="p-6 bg-[var(--card-bg)] border border-[var(--border-color)] rounded-[var(--radius-vercel-zy)] shadow-sm">
+          <div className="p-6 bg-[var(--card-bg)] border border-[var(--border-color)] rounded-[var(--radius-vercel-zy)] shadow-sm relative overflow-hidden group">
+            <div className="absolute top-0 right-0 p-2 opacity-5">
+              <AiOutlineLineChart className="h-12 w-12 text-[#10b981]" />
+            </div>
             <div className="flex items-center gap-2 mb-3">
               <Info className="h-3 w-3 text-[#10b981]" />
               <p className="text-[9px] font-black uppercase text-[var(--foreground)] opacity-40 tracking-tighter">
-                Note d'analyse
+                Note d'expertise
               </p>
             </div>
-            <div className="text-xl font-black italic text-[var(--foreground)] leading-tight uppercase tracking-tighter mb-4">
-              Optimisation <br />
-              Risque / Rendement
+            <div
+              className="text-xl font-black italic text-[var(--foreground)] leading-tight uppercase tracking-tighter mb-4"
+              style={{ fontFamily: "'Oswald', sans-serif" }}
+            >
+              Nature de <br /> l'Indice
             </div>
             <p className="text-[11px] text-[var(--foreground)] opacity-70 leading-relaxed font-medium">
-              Le <span className="text-[#10b981] font-bold">60.92</span> marque
-              le passage de la Côte d'Ivoire en{" "}
-              <span className="font-bold underline decoration-[#10b981]/20">
-                Zone de Confiance Majeure
+              Cet indice quantifie la{" "}
+              <span className="text-[#10b981] font-bold">
+                capacité d'auto-détermination
               </span>{" "}
-              pour les investisseurs institutionnels.
+              économique. Un score de 60.92 valide la protection des
+              investissements contre les fluctuations exogènes.
             </p>
           </div>
         </div>
-        {/* SECTION_END : SIDEBAR_LOCKED */}
 
-        {/* SECTION_START : CHART_LOCKED */}
+        {/* CHART_LOCKED - YAxis masqué */}
         <div className="lg:col-span-9">
           <ChartContainer config={configGraphique} className="h-[450px] w-full">
             <ResponsiveContainer width="100%" height="100%">
-              {/* Key dynamique pour forcer la ré-animation au scroll */}
               <AreaChart
                 key={isInView ? "visible" : "hidden"}
                 data={DONNEES_SOUVERAINETE}
@@ -157,7 +171,7 @@ export default function TerminalDynamiqueSouverain() {
                     x2="0"
                     y2="1"
                   >
-                    <stop offset="0%" stopColor="#10b981" stopOpacity={0.15} />
+                    <stop offset="0%" stopColor="#10b981" stopOpacity={0.2} />
                     <stop offset="100%" stopColor="#10b981" stopOpacity={0} />
                   </linearGradient>
                 </defs>
@@ -165,7 +179,7 @@ export default function TerminalDynamiqueSouverain() {
                   vertical={false}
                   stroke="var(--accents-2)"
                   strokeWidth={1}
-                  opacity={0.4}
+                  opacity={0.3}
                 />
                 <XAxis
                   dataKey="annee"
@@ -179,13 +193,12 @@ export default function TerminalDynamiqueSouverain() {
                   }}
                   dy={15}
                 />
-                <YAxis domain={[30, 75]} hide />
-
+                <YAxis domain={[30, 75]} hide /> {/* Y MASQUÉ POUR ÉPURE */}
                 <ChartTooltip
                   cursor={{ stroke: "var(--accents-2)", strokeWidth: 1 }}
                   content={
                     <ChartTooltipContent
-                      className="min-w-[220px] bg-[var(--card-bg)] border-[var(--border-color)] p-4 shadow-2xl"
+                      className="min-w-[220px] bg-[var(--card-bg)] border-[var(--border-color)] p-4 shadow-2xl backdrop-blur-xl"
                       formatter={(value, name) => (
                         <div className="flex w-full items-center justify-between gap-10">
                           <span className="text-[10px] font-black uppercase tracking-widest opacity-50">
@@ -201,15 +214,13 @@ export default function TerminalDynamiqueSouverain() {
                     />
                   }
                 />
-
                 <Area
                   dataKey="moyenne_region"
                   type="monotone"
                   stroke="var(--accents-2)"
                   strokeWidth={1.5}
                   fill="none"
-                  opacity={0.3}
-                  animationDuration={1000}
+                  opacity={0.2}
                 />
                 <Area
                   dataKey="indice"
@@ -219,7 +230,6 @@ export default function TerminalDynamiqueSouverain() {
                   fill={`url(#eclat-${id})`}
                   isAnimationActive={isInView}
                   animationDuration={2500}
-                  animationBegin={200}
                 />
                 <ReferenceLine
                   y={60}
@@ -233,14 +243,14 @@ export default function TerminalDynamiqueSouverain() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-16 border-t border-[var(--accents-2)] pt-10">
             <TuileActualite
-              titre="Numérisation Cadastre"
-              statut="ACTIF"
-              desc="Attribution des permis en < 30 jours. Transparence totale exigée par les VC et les Politiques."
+              titre="Autonomie Fiscale"
+              statut="SÉCURISÉ"
+              desc="Découplage progressif des aides extérieures. Le budget 2026 est auto-financé à 82%."
             />
             <TuileActualite
-              titre="Projet Koné"
-              statut="STRATÉGIQUE"
-              desc="Validation de la plus grande mine d'or du pays (11t/an). Pilier du leadership 2026."
+              titre="Infrastructure Data"
+              statut="TEMPS RÉEL"
+              desc="Souveraineté numérique : stockage local des données minières cryptées par le protocole souverain."
             />
           </div>
         </div>
@@ -249,7 +259,7 @@ export default function TerminalDynamiqueSouverain() {
   );
 }
 
-/* --- LOGIQUE D'ANIMATION IMMUTABLE --- */
+/* --- LOGIQUE D'ANIMATION (Inchangée pour préservation) --- */
 
 function CompteurHeader({
   label,
@@ -265,11 +275,8 @@ function CompteurHeader({
   const [display, setDisplay] = React.useState(0);
 
   React.useEffect(() => {
-    if (isInView) {
-      count.set(target);
-    } else {
-      count.set(0);
-    }
+    if (isInView) count.set(target);
+    else count.set(0);
   }, [isInView, target, count]);
 
   React.useEffect(() => {
@@ -278,10 +285,13 @@ function CompteurHeader({
 
   return (
     <div className="text-right border-l border-[var(--accents-2)] pl-8">
-      <p className="text-[10px] font-black text-[var(--foreground)] opacity-40 uppercase tracking-widest mb-1">
+      <p className="text-[10px] font-black text-[var(--foreground)] opacity-40 uppercase tracking-widest mb-1 italic">
         {label}
       </p>
-      <span className="text-4xl font-black tracking-tighter tabular-nums text-[var(--foreground)]">
+      <span
+        className="text-4xl font-black tracking-tighter tabular-nums text-[var(--foreground)]"
+        style={{ fontFamily: "'Oswald', sans-serif" }}
+      >
         {display}
       </span>
     </div>
@@ -307,12 +317,12 @@ function JaugeDynamique({
           {isInView ? val : 0}%
         </span>
       </div>
-      <div className="h-[2px] w-full bg-[var(--accents-2)] rounded-full overflow-hidden">
+      <div className="h-[1.5px] w-full bg-[var(--accents-2)] rounded-full overflow-hidden">
         <motion.div
           initial={{ width: 0 }}
           animate={{ width: isInView ? `${val}%` : 0 }}
           transition={{ duration: 1.5, ease: "easeOut" }}
-          className="h-full bg-[#10b981]"
+          className="h-full bg-gradient-to-r from-[#10b981] to-[#f59e0b]"
         />
       </div>
     </div>
@@ -329,18 +339,19 @@ function TuileActualite({
   desc: string;
 }) {
   return (
-    <div className="p-6 bg-[var(--card-bg)] border border-[var(--border-color)] rounded-[var(--radius-vercel-zy)] hover:border-[var(--foreground)] transition-all group">
-      <div className="flex justify-between items-center mb-4">
-        <div className="h-4 w-4 bg-[#10b981] group-hover:shadow-[0_0_10px_rgba(16,185,129,0.3)]" />
-        <span className="text-[9px] font-bold text-[#10b981] uppercase border border-[#10b981]/20 px-2 py-0.5 rounded-full">
-          {statut}
-        </span>
+    <div className="p-6 bg-[var(--card-bg)] border border-[var(--border-color)] rounded-[var(--radius-vercel-zy)] hover:border-[#10b981]/50 transition-all group cursor-default">
+      <div className="flex justify-between items-center mb-4 text-[9px] font-bold uppercase tracking-widest">
+        <div className="h-1 w-8 bg-[#10b981]/20 group-hover:bg-[#10b981] transition-colors" />
+        <span className="text-[#10b981]">{statut}</span>
       </div>
-      <h4 className="text-xs font-black uppercase text-[var(--foreground)] mb-2 tracking-tight">
+      <h4
+        className="text-xs font-black uppercase text-[var(--foreground)] mb-2 tracking-tight italic"
+        style={{ fontFamily: "'Oswald', sans-serif" }}
+      >
         {titre}
       </h4>
-      <p className="text-[10px] leading-relaxed text-[var(--foreground)] opacity-60 font-medium italic">
-        "{desc}"
+      <p className="text-[10px] leading-relaxed text-[var(--foreground)] opacity-60 font-medium font-sans">
+        {desc}
       </p>
     </div>
   );
