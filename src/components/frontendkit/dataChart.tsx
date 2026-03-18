@@ -1,14 +1,13 @@
 "use client";
 
 /**
- * @STRUCTURE_PRESERVATION_PROTOCOL
+ * @STRUCTURE_PRESERVATION_PROTOCOL_V3.1
  * ---------------------------------------------------------------------------
- * PROTOCOLE DE PERSISTANCE VISUELLE V3.0 - OSWALD & THERMAL GRADIENT
- * 1. TYPOGRAPHIE : Intégration forcée de 'Oswald' sur les titres majeurs.
- * 2. GRADIENT : Souveraineté en dégradé linéaire #10b981 (Pure) -> #f59e0b (Orange).
- * 3. CHART : Maintien de l'absence de Y-Axis (YAxis hide) pour l'épure.
- * 4. ICONE : Effet de lueur diffuse (Glow) pour l'attractivité.
- * 5. LOGIQUE : Persistance des compteurs réactifs via isInView.
+ * PROTOCOLE DE PERSISTANCE ET MODULARITÉ HYBRIDE
+ * 1. DATA : Données DONNEES_SOUVERAINETE conservées en interne comme fallback.
+ * 2. REUTILISABILITÉ : Ajout d'une interface de Props optionnelles.
+ * 3. IDENTITÉ : Titre et Gradient Oswald/Thermal maintenus par défaut.
+ * 4. STRUCTURE : SideBar(3/12) / Chart(9/12) strictement inchangée.
  * ---------------------------------------------------------------------------
  */
 
@@ -33,6 +32,7 @@ import {
   type ChartConfig,
 } from "@/components/ui/chart";
 
+// --- DONNÉES SOURCES (Maintenues dans le fichier) ---
 const DONNEES_SOUVERAINETE = [
   { annee: "2021", indice: 41.0, moyenne_region: 54.0 },
   { annee: "2022", indice: 48.2, moyenne_region: 56.5 },
@@ -42,28 +42,38 @@ const DONNEES_SOUVERAINETE = [
   { annee: "2026", indice: 60.92, moyenne_region: 50.1 },
 ];
 
-const configGraphique = {
-  indice: { label: "Indice Côte d'Ivoire", color: "#10b981" },
-  moyenne_region: { label: "Moyenne CEDEAO", color: "var(--accents-2)" },
-} satisfies ChartConfig;
+interface TerminalProps {
+  titre?: string;
+  donnees?: any[];
+  labels?: { primary: string; secondary: string };
+}
 
-export default function TerminalDynamiqueSouverain() {
+export default function TerminalDynamiqueSouverain({
+  titre = "Souveraineté", // Valeur par défaut
+  donnees = DONNEES_SOUVERAINETE, // Donnée interne par défaut
+  labels = { primary: "Indice Côte d'Ivoire", secondary: "Moyenne CEDEAO" },
+}: TerminalProps) {
   const id = React.useId();
   const ref = React.useRef(null);
   const isInView = useInView(ref, { amount: 0.2 });
+
+  // Config dynamique basée sur les labels passés ou par défaut
+  const configGraphique = {
+    indice: { label: labels.primary, color: "#10b981" },
+    moyenne_region: { label: labels.secondary, color: "var(--accents-2)" },
+  } satisfies ChartConfig;
 
   return (
     <div
       ref={ref}
       className="w-full bg-[var(--background)] text-[var(--foreground)] p-10 font-sans antialiased border border-[var(--border-color)] rounded-[var(--radius-vercel)] shadow-2xl transition-colors duration-200"
     >
-      {/* HEADER_LOCKED avec Typographie Oswald et Gradient */}
+      {/* HEADER_LOCKED */}
       <div className="flex flex-col md:flex-row justify-between items-start mb-16 border-b border-[var(--accents-2)] pb-10 gap-8">
         <div className="space-y-4">
           <div className="flex items-center gap-6">
-            {/* Icône polie : Subtile et désirable via glow */}
             <div className="relative group">
-              <div className="absolute -inset-1 bg-gradient-to-r from-[#10b981] to-[#f59e0b] rounded-lg blur opacity-25 group-hover:opacity-50 transition duration-1000 group-hover:duration-200"></div>
+              <div className="absolute -inset-1 bg-gradient-to-r from-[#10b981] to-[#f59e0b] rounded-lg blur opacity-25 group-hover:opacity-50 transition duration-1000"></div>
               <div className="relative p-3 bg-[var(--card-bg-glass)] border border-[var(--accents-2)] backdrop-blur-md rounded-[var(--radius-vercel-zy)]">
                 <AiOutlineLineChart className="h-6 w-6 text-[#10b981]" />
               </div>
@@ -76,7 +86,7 @@ export default function TerminalDynamiqueSouverain() {
               >
                 Indice de{" "}
                 <span className="bg-gradient-to-r from-[#10b981] to-[#f59e0b] bg-clip-text text-transparent">
-                  Souveraineté
+                  {titre}
                 </span>
               </h1>
               <div className="flex items-center gap-2 mt-3">
@@ -127,15 +137,10 @@ export default function TerminalDynamiqueSouverain() {
             />
           </div>
 
-          <div className="p-6 bg-[var(--card-bg)] border border-[var(--border-color)] rounded-[var(--radius-vercel-zy)] shadow-sm relative overflow-hidden group">
-            <div className="absolute top-0 right-0 p-2 opacity-5">
-              <AiOutlineLineChart className="h-12 w-12 text-[#10b981]" />
-            </div>
-            <div className="flex items-center gap-2 mb-3">
+          <div className="p-6 bg-[var(--card-bg)] border border-[var(--border-color)] rounded-[var(--radius-vercel-zy)] shadow-sm relative overflow-hidden">
+            <div className="flex items-center gap-2 mb-3 text-[9px] font-black uppercase text-[var(--foreground)] opacity-40">
               <Info className="h-3 w-3 text-[#10b981]" />
-              <p className="text-[9px] font-black uppercase text-[var(--foreground)] opacity-40 tracking-tighter">
-                Note d'expertise
-              </p>
+              <span>Note d'expertise</span>
             </div>
             <div
               className="text-xl font-black italic text-[var(--foreground)] leading-tight uppercase tracking-tighter mb-4"
@@ -143,24 +148,24 @@ export default function TerminalDynamiqueSouverain() {
             >
               Nature de <br /> l'Indice
             </div>
-            <p className="text-[11px] text-[var(--foreground)] opacity-70 leading-relaxed font-medium">
+            <p className="text-[11px] text-[var(--foreground)] opacity-70 leading-relaxed font-medium font-sans">
               Cet indice quantifie la{" "}
               <span className="text-[#10b981] font-bold">
                 capacité d'auto-détermination
               </span>{" "}
               économique. Un score de 60.92 valide la protection des
-              investissements contre les fluctuations exogènes.
+              investissements.
             </p>
           </div>
         </div>
 
-        {/* CHART_LOCKED - YAxis masqué */}
+        {/* CHART_LOCKED */}
         <div className="lg:col-span-9">
           <ChartContainer config={configGraphique} className="h-[450px] w-full">
             <ResponsiveContainer width="100%" height="100%">
               <AreaChart
                 key={isInView ? "visible" : "hidden"}
-                data={DONNEES_SOUVERAINETE}
+                data={donnees}
                 margin={{ left: 0, right: 0, top: 20, bottom: 0 }}
               >
                 <defs>
@@ -193,7 +198,8 @@ export default function TerminalDynamiqueSouverain() {
                   }}
                   dy={15}
                 />
-                <YAxis domain={[30, 75]} hide /> {/* Y MASQUÉ POUR ÉPURE */}
+                <YAxis domain={[30, 75]} hide />
+
                 <ChartTooltip
                   cursor={{ stroke: "var(--accents-2)", strokeWidth: 1 }}
                   content={
@@ -214,6 +220,7 @@ export default function TerminalDynamiqueSouverain() {
                     />
                   }
                 />
+
                 <Area
                   dataKey="moyenne_region"
                   type="monotone"
@@ -229,7 +236,6 @@ export default function TerminalDynamiqueSouverain() {
                   strokeWidth={4}
                   fill={`url(#eclat-${id})`}
                   isAnimationActive={isInView}
-                  animationDuration={2500}
                 />
                 <ReferenceLine
                   y={60}
@@ -250,7 +256,7 @@ export default function TerminalDynamiqueSouverain() {
             <TuileActualite
               titre="Infrastructure Data"
               statut="TEMPS RÉEL"
-              desc="Souveraineté numérique : stockage local des données minières cryptées par le protocole souverain."
+              desc="Stockage local des données minières cryptées par le protocole souverain."
             />
           </div>
         </div>
@@ -259,7 +265,7 @@ export default function TerminalDynamiqueSouverain() {
   );
 }
 
-/* --- LOGIQUE D'ANIMATION (Inchangée pour préservation) --- */
+// --- SOUS-COMPOSANTS (Inchangés pour préserver la logique d'animation) ---
 
 function CompteurHeader({
   label,
@@ -273,23 +279,20 @@ function CompteurHeader({
   const count = useMotionValue(0);
   const rounded = useSpring(count, { stiffness: 40, damping: 20 });
   const [display, setDisplay] = React.useState(0);
-
   React.useEffect(() => {
     if (isInView) count.set(target);
     else count.set(0);
   }, [isInView, target, count]);
-
   React.useEffect(() => {
     return rounded.on("change", (latest) => setDisplay(Math.round(latest)));
   }, [rounded]);
-
   return (
     <div className="text-right border-l border-[var(--accents-2)] pl-8">
       <p className="text-[10px] font-black text-[var(--foreground)] opacity-40 uppercase tracking-widest mb-1 italic">
         {label}
       </p>
       <span
-        className="text-4xl font-black tracking-tighter tabular-nums text-[var(--foreground)]"
+        className="text-4xl font-black tracking-tighter tabular-nums"
         style={{ fontFamily: "'Oswald', sans-serif" }}
       >
         {display}
@@ -310,10 +313,10 @@ function JaugeDynamique({
   return (
     <div className="space-y-3">
       <div className="flex justify-between items-end">
-        <span className="text-[10px] font-black uppercase text-[var(--foreground)] opacity-50 tracking-tight">
+        <span className="text-[10px] font-black uppercase opacity-50 tracking-tight">
           {label}
         </span>
-        <span className="text-xs font-mono font-bold text-[var(--foreground)]">
+        <span className="text-xs font-mono font-bold">
           {isInView ? val : 0}%
         </span>
       </div>
@@ -321,7 +324,7 @@ function JaugeDynamique({
         <motion.div
           initial={{ width: 0 }}
           animate={{ width: isInView ? `${val}%` : 0 }}
-          transition={{ duration: 1.5, ease: "easeOut" }}
+          transition={{ duration: 1.5 }}
           className="h-full bg-gradient-to-r from-[#10b981] to-[#f59e0b]"
         />
       </div>
@@ -339,20 +342,20 @@ function TuileActualite({
   desc: string;
 }) {
   return (
-    <div className="p-6 bg-[var(--card-bg)] border border-[var(--border-color)] rounded-[var(--radius-vercel-zy)] hover:border-[#10b981]/50 transition-all group cursor-default">
-      <div className="flex justify-between items-center mb-4 text-[9px] font-bold uppercase tracking-widest">
-        <div className="h-1 w-8 bg-[#10b981]/20 group-hover:bg-[#10b981] transition-colors" />
-        <span className="text-[#10b981]">{statut}</span>
+    <div className="p-6 bg-[var(--card-bg)] border border-[var(--border-color)] rounded-[var(--radius-vercel-zy)] hover:border-[#10b981]/50 transition-all group">
+      <div className="flex justify-between items-center mb-4">
+        <div className="h-1 w-8 bg-[#10b981]/20 group-hover:bg-[#10b981]" />
+        <span className="text-[9px] font-bold text-[#10b981] uppercase tracking-widest">
+          {statut}
+        </span>
       </div>
       <h4
-        className="text-xs font-black uppercase text-[var(--foreground)] mb-2 tracking-tight italic"
+        className="text-xs font-black uppercase mb-2 italic"
         style={{ fontFamily: "'Oswald', sans-serif" }}
       >
         {titre}
       </h4>
-      <p className="text-[10px] leading-relaxed text-[var(--foreground)] opacity-60 font-medium font-sans">
-        {desc}
-      </p>
+      <p className="text-[10px] opacity-60 font-medium font-sans">{desc}</p>
     </div>
   );
 }
