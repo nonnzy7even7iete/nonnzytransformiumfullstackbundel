@@ -3,7 +3,15 @@
 import React, { useEffect, useMemo } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { Info, Home, Github, Linkedin } from "lucide-react";
+import {
+  Info,
+  Home,
+  Github,
+  Linkedin,
+  Target,
+  Zap,
+  Activity,
+} from "lucide-react";
 
 import Loader from "@/components/frontendkit/Loader";
 import { MasterAuroraBackground } from "@/components/ui/MasterAuroraBackground";
@@ -12,6 +20,8 @@ import DataCard from "@/components/frontendkit/DataCard";
 import Navbar from "@/components/frontendkit/NavbarFront";
 import LoginCard from "@/components/frontendkit/LoginCard";
 import { Dock, type DockItem } from "@/components/ui/dock";
+import { TextGenerateEffect } from "@/components/ui/text-generate-effect"; // Assure-toi du chemin
+import TerminalDynamiqueSouverain from "@/components/TerminalDynamiqueSouverain";
 import { cn } from "@/lib/utils";
 
 export default function HomePage() {
@@ -42,9 +52,8 @@ export default function HomePage() {
         <MasterAuroraBackground />
       </div>
 
-      {/* MAIN LAYOUT : Optimisé pour écran 1250px */}
-      <main className="relative z-10 flex-1 flex flex-col lg:flex-row items-center lg:justify-center px-4 lg:px-2 gap-6 pt-32 pb-44 w-full max-w-[1280px] mx-auto">
-        {/* BLOC GAUCHE - DATA CARD */}
+      {/* MAIN HERO LAYOUT */}
+      <main className="relative z-10 flex-1 flex flex-col lg:flex-row items-center lg:justify-center px-4 lg:px-2 gap-6 pt-32 pb-20 w-full max-w-[1280px] mx-auto">
         <div className="order-2 lg:order-1 w-full max-w-[360px] h-[450px] shrink-0">
           <DataCard
             height={450}
@@ -63,26 +72,7 @@ export default function HomePage() {
                   <div className="flex flex-col gap-4 text-[var(--foreground)] text-[14px] leading-relaxed">
                     <p>
                       Les métriques d'attractivité et les flux d'investissement
-                      convergent vers une réalité : le vrai potentiel se mesure
-                      dans ce qui reste à révéler. Anyama dispose d'un avantage
-                      stratégique encore invisible à la majorité des acteurs. La
-                      data ne ment pas — la question, c'est qui l'exploitera en
-                      premier :{" "}
-                      <span className="text-emerald-500 font-bold">
-                        Vision partagée
-                      </span>
-                    </p>
-                    <p>
-                      Les chiffres sont là. Les investisseurs arrivent. La
-                      question, c'est : serez-vous prêts ?
-                    </p>
-                    <p>
-                      Votre commune entre dans une zone d'attractivité
-                      stratégique :{" "}
-                      <span className="text-emerald-500 font-bold italic">
-                        Sans insights, chaque décision est un pari perdu
-                        d'avance.
-                      </span>
+                      convergent...
                     </p>
                   </div>
                 </div>
@@ -93,43 +83,148 @@ export default function HomePage() {
                 </div>
               </div>
             }
-            modalContent={
-              <div className="space-y-4">
-                <p className="font-bold text-blue-400 uppercase tracking-widest text-[10px]">
-                  Argumentaire Financement
-                </p>
-                <p>
-                  Potentiel latent détecté : chaque flux, chaque indicateur
-                  montre que votre territoire est sous-évalué.
-                </p>
-                <p>
-                  La donnée est le premier moteur de croissance du XXIᵉ siècle.
-                  Investir dans la donnée n'est pas une dépense : c'est un
-                  amortisseur de dépenses futures.
-                </p>
-              </div>
-            }
           />
         </div>
 
-        {/* BLOC CENTRAL - LOGIN CARD */}
         <div className="order-1 lg:order-2 w-full max-w-[440px] h-[450px] shrink-0">
           <LoginCard className="!w-full !max-w-none !min-w-0 h-full" />
         </div>
 
-        {/* BLOC DROIT - SIDE CARD */}
         <div className="order-3 w-full max-w-[360px] h-[450px] shrink-0">
           <SideCard
             className="!w-full !max-w-none !min-w-0 h-full"
             imageSrc="/IMG-20260228-WA0000.jpg"
-            title="Zy recherche un financement orienté workspace & Workflow"
-            description="Exécution de la logique métier et serveur en burn out."
-            location="Anyama, Abidjan, Côte d'Ivoire"
+            title="Zy recherche un financement"
+            description="Exécution de la logique métier."
+            location="Anyama, Abidjan"
           />
         </div>
       </main>
 
-      {/* FOOTER FIXED : Logique Scrim gérée par le composant Dock lui-même */}
+      {/* SECTION NOUVELLE : ANALYSE STRATÉGIQUE ANYAMA */}
+      <section className="relative z-10 w-full max-w-[1250px] mx-auto px-6 pb-44 space-y-24">
+        {/* 1. EFFET DE GÉNÉRATION DE TEXTE (INTRO) */}
+        <div className="max-w-4xl">
+          <TextGenerateEffect
+            words="Anyama : Hub industriel et logistique stratégique – opportunité unique. Anyama est prête à devenir un centre économique majeur en Côte d’Ivoire."
+            className="text-[#10b981] font-black uppercase tracking-tighter"
+          />
+          <p className="mt-6 text-[var(--foreground)] opacity-70 text-lg leading-relaxed max-w-2xl font-medium">
+            Les infrastructures et atouts existants en font un site où chaque
+            investissement se transforme en valeur mesurable et scalable.
+          </p>
+        </div>
+
+        {/* 2. LE GRAPHIQUE DE SOUVERAINETÉ (RECHARTS) */}
+        <div className="w-full">
+          <TerminalDynamiqueSouverain
+            titre="Anyama Hub"
+            secteur="Développement Urbain & Logistique"
+          />
+        </div>
+
+        {/* 3. GRILLE D'ANALYSE DÉTAILLÉE */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 text-[var(--foreground)]">
+          {/* Bloc 1 : Le Stade */}
+          <div className="p-8 border border-[var(--border-color)] bg-[var(--card-bg-glass)] rounded-[var(--radius-vercel-zy)] backdrop-blur-sm">
+            <div className="flex items-center gap-3 mb-6 text-[#10b981]">
+              <Target className="w-6 h-6" />
+              <h2
+                className="text-xl font-black uppercase italic tracking-tighter"
+                style={{ fontFamily: "'Oswald', sans-serif" }}
+              >
+                1️⃣ Le Stade : Vecteur de Renommée
+              </h2>
+            </div>
+            <p className="text-sm opacity-80 leading-relaxed italic mb-4">
+              "Le stade transcende son usage sportif et agit comme un levier
+              d’attractivité stratégique permanent."
+            </p>
+            <ul className="space-y-3 text-[13px] font-medium opacity-60">
+              <li>• Visibilité continue pour partenaires et investisseurs.</li>
+              <li>• Crédibilité immédiate pour tout projet premium.</li>
+              <li>
+                • Effet multiplicateur sur les flux indirects (emplois,
+                services).
+              </li>
+            </ul>
+          </div>
+
+          {/* Bloc 2 : Industries */}
+          <div className="p-8 border border-[var(--border-color)] bg-[var(--card-bg-glass)] rounded-[var(--radius-vercel-zy)] backdrop-blur-sm">
+            <div className="flex items-center gap-3 mb-6 text-orange-500">
+              <Zap className="w-6 h-6" />
+              <h2
+                className="text-xl font-black uppercase italic tracking-tighter"
+                style={{ fontFamily: "'Oswald', sans-serif" }}
+              >
+                2️⃣ Industries : Scalabilité & Valeur
+              </h2>
+            </div>
+            <p className="text-sm opacity-80 leading-relaxed mb-4">
+              Ciment, Métallurgie et Zone Industrielle mutualisée pour réduire
+              les coûts RH et énergie.
+            </p>
+            <div className="grid grid-cols-2 gap-4 text-[11px] font-black uppercase tracking-widest">
+              <div className="p-3 border border-orange-500/20 rounded">
+                Ciment : Infrastructure
+              </div>
+              <div className="p-3 border border-orange-500/20 rounded">
+                Métallurgie : Équipements
+              </div>
+            </div>
+          </div>
+
+          {/* Bloc 3 : Y4 & Logistique */}
+          <div className="md:col-span-2 p-10 border border-[var(--border-color)] bg-gradient-to-br from-[var(--card-bg)] to-transparent rounded-[var(--radius-vercel-zy)]">
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-8">
+              <div className="max-w-md">
+                <div className="flex items-center gap-3 mb-4 text-blue-400">
+                  <Activity className="w-6 h-6" />
+                  <h2
+                    className="text-2xl font-black uppercase italic tracking-tighter"
+                    style={{ fontFamily: "'Oswald', sans-serif" }}
+                  >
+                    3️⃣ Y4 : Levier Logistique
+                  </h2>
+                </div>
+                <p className="text-sm opacity-70 leading-relaxed">
+                  L'autoroute Y4 transforme Anyama en hub régional, optimisant
+                  le transport des matières premières et sécurisant les
+                  débouchés industriels.
+                </p>
+              </div>
+              <div className="p-6 bg-blue-500/10 border border-blue-500/20 rounded-xl">
+                <span className="text-[10px] font-bold uppercase tracking-[0.4em] block mb-2 opacity-50">
+                  Status Réseau
+                </span>
+                <span className="text-2xl font-black text-blue-400 tabular-nums">
+                  FLUX SÉCURISÉS 100%
+                </span>
+              </div>
+            </div>
+          </div>
+
+          {/* Conclusion IT */}
+          <div className="md:col-span-2 text-center py-20 border-t border-[var(--border-color)]">
+            <h2
+              className="text-3xl font-black uppercase tracking-tighter mb-8 italic"
+              style={{ fontFamily: "'Oswald', sans-serif" }}
+            >
+              4️⃣ Conclusion Stratégique :{" "}
+              <span className="text-[#10b981]">Agir Maintenant</span>
+            </h2>
+            <p className="max-w-3xl mx-auto text-lg opacity-80 font-medium leading-relaxed">
+              Investir à Anyama, c’est saisir une opportunité rare où chaque
+              projet s’intègre dans un écosystème générant des retours tangibles
+              et exponentiels. Le tunnel IT transforme chaque donnée en décision
+              stratégique.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* FOOTER FIXED */}
       <footer className="fixed bottom-0 left-0 right-0 z-[100] h-32 flex items-center justify-center pointer-events-none">
         <div className="relative pointer-events-auto">
           <Dock
