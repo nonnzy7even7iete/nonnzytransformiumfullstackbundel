@@ -1,16 +1,5 @@
 "use client";
 
-/**
- * @STRUCTURE_PRESERVATION_PROTOCOL_V4.2 (7 YEARS PERSISTENCE)
- * ---------------------------------------------------------------------------
- * PROTOCOLE DE FINALISATION CHROMATIQUE
- * 1. LINE GRADIENT : Dégradé #10b981 (Pure) -> #ff4500 (Orange) exclusif à la ligne.
- * 2. ACTIVE DOTS : Verrouillage strict en Vert Pure (#10b981) au survol.
- * 3. TOOLTIP : Alignement Oswald + Glassmorphism + Tabular-nums.
- * 4. DEBUG : Typage explicite et suppression des warnings VS Code.
- * ---------------------------------------------------------------------------
- */
-
 import * as React from "react";
 import { AiOutlineLineChart } from "react-icons/ai";
 import { Info, ShieldAlert } from "lucide-react";
@@ -32,7 +21,21 @@ import {
   type ChartConfig,
 } from "@/components/ui/chart";
 
-const DONNEES_SOUVERAINETE = [
+// TYPES ET INTERFACES
+interface DonneeIndice {
+  annee: string;
+  indice: number;
+  moyenne_region: number;
+}
+
+interface TerminalProps {
+  titre?: string;
+  donnees?: DonneeIndice[];
+  labels?: { primary: string; secondary: string };
+  secteur?: string;
+}
+
+const DONNEES_DEFAUT: DonneeIndice[] = [
   { annee: "2021", indice: 41.0, moyenne_region: 54.0 },
   { annee: "2022", indice: 48.2, moyenne_region: 56.5 },
   { annee: "2023", indice: 52.7, moyenne_region: 58.0 },
@@ -41,46 +44,40 @@ const DONNEES_SOUVERAINETE = [
   { annee: "2026", indice: 60.92, moyenne_region: 50.1 },
 ];
 
-interface TerminalProps {
-  titre?: string;
-  donnees?: Array<{ annee: string; indice: number; moyenne_region: number }>;
-  labels?: { primary: string; secondary: string };
-  secteur?: string;
-}
-
 export default function TerminalDynamiqueSouverain({
   titre = "Souveraineté",
-  donnees = DONNEES_SOUVERAINETE,
+  donnees = DONNEES_DEFAUT,
   labels = { primary: "Indice Côte d'Ivoire", secondary: "Moyenne CEDEAO" },
   secteur = "Industrie Minière & Ressources",
 }: TerminalProps) {
-  const id = React.useId();
+  const id = React.useId().replace(/:/g, ""); // Nettoyage de l'ID pour les gradients SVG
   const ref = React.useRef<HTMLDivElement>(null);
-  const isInView = useInView(ref, { amount: 0.2 });
+  const isInView = useInView(ref, { amount: 0.2, once: true });
 
   const configGraphique = {
     indice: { label: labels.primary, color: "#10b981" },
-    moyenne_region: { label: labels.secondary, color: "var(--accents-2)" },
+    moyenne_region: { label: labels.secondary, color: "#64748b" },
   } satisfies ChartConfig;
 
   return (
     <div
       ref={ref}
-      className="w-full bg-[var(--background)] text-[var(--foreground)] p-10 font-sans antialiased border border-[var(--border-color)] rounded-[var(--radius-vercel)] shadow-2xl transition-colors duration-200"
+      className="w-full bg-background text-foreground p-10 font-sans antialiased border border-border rounded-xl shadow-2xl transition-colors duration-200"
     >
-      {/* HEADER : Titre dégradé Vert Pure -> Léger */}
-      <div className="flex flex-col md:flex-row justify-between items-start mb-16 border-b border-[var(--accents-2)] pb-10 gap-8 overflow-visible relative z-10">
+      {/* HEADER : VERT PURE -> LEGER */}
+      <div className="flex flex-col md:flex-row justify-between items-start mb-16 border-b border-muted pb-10 gap-8 overflow-visible relative z-10">
         <div className="space-y-4">
           <div className="flex items-center gap-6 overflow-visible">
             <div className="relative group">
               <div className="absolute -inset-1 bg-gradient-to-r from-[#10b981] to-[#a7f3d0] rounded-lg blur opacity-15 group-hover:opacity-30 transition duration-1000"></div>
-              <div className="relative p-3 bg-[var(--card-bg-glass)] border border-[var(--accents-2)] backdrop-blur-md rounded-[var(--radius-vercel-zy)]">
+              <div className="relative p-3 bg-card/50 border border-border backdrop-blur-md rounded-lg">
                 <AiOutlineLineChart className="h-6 w-6 text-[#10b981]" />
               </div>
             </div>
+
             <div className="overflow-visible">
               <h1
-                className="text-5xl font-black tracking-[calc(-0.05em)] uppercase leading-none italic"
+                className="text-5xl font-black tracking-tighter uppercase leading-none italic"
                 style={{ fontFamily: "'Oswald', sans-serif" }}
               >
                 Indice de{" "}
@@ -88,7 +85,7 @@ export default function TerminalDynamiqueSouverain({
                   {titre}
                 </span>
               </h1>
-              <div className="flex items-center gap-2 mt-3 overflow-visible">
+              <div className="flex items-center gap-2 mt-3 overflow-visible antialiased leading-none">
                 <ShieldAlert className="h-3 w-3 text-[#10b981] opacity-60" />
                 <p className="text-[10px] font-bold opacity-40 uppercase tracking-[0.6em] italic leading-none">
                   Audit Intégré : {secteur}
@@ -98,7 +95,7 @@ export default function TerminalDynamiqueSouverain({
           </div>
         </div>
 
-        <div className="flex gap-12 tabular-nums leading-none">
+        <div className="flex gap-12 tabular-nums relative z-10">
           <CompteurHeader
             label="Rang Politique"
             target={47}
@@ -112,11 +109,11 @@ export default function TerminalDynamiqueSouverain({
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 relative z-0">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 relative z-0 antialiased">
         {/* SIDEBAR */}
         <div className="lg:col-span-3 space-y-12 overflow-visible">
-          <div className="space-y-8">
-            <h3 className="text-[10px] font-black uppercase opacity-30 tracking-widest border-l-2 border-[#10b981] pl-3 italic leading-none">
+          <div className="space-y-8 relative z-10">
+            <h3 className="text-[10px] font-black uppercase opacity-30 tracking-widest border-l-2 border-[#10b981] pl-3 italic">
               Métriques de Confiance
             </h3>
             <JaugeDynamique
@@ -136,13 +133,13 @@ export default function TerminalDynamiqueSouverain({
             />
           </div>
 
-          <div className="p-6 bg-[var(--card-bg)] border border-[var(--border-color)] rounded-[var(--radius-vercel-zy)] relative group hover:border-[#10b981]/30 transition-all">
-            <div className="flex items-center gap-2 mb-3 text-[9px] font-black uppercase opacity-40 leading-none">
+          <div className="p-6 bg-card border border-border rounded-lg relative group">
+            <div className="flex items-center gap-2 mb-3 text-[9px] font-black uppercase opacity-40">
               <Info className="h-3 w-3 text-[#10b981]" />
               <span>Note d'expertise</span>
             </div>
             <div
-              className="text-xl font-black italic leading-tight uppercase tracking-tighter mb-4"
+              className="text-xl font-black italic uppercase tracking-tighter mb-4"
               style={{ fontFamily: "'Oswald', sans-serif" }}
             >
               Nature de <br /> l'Indice
@@ -157,12 +154,9 @@ export default function TerminalDynamiqueSouverain({
           </div>
         </div>
 
-        {/* CHART : Ligne dégradée, Points Verts */}
-        <div className="lg:col-span-9 overflow-visible">
-          <ChartContainer
-            config={configGraphique}
-            className="h-[450px] w-full overflow-visible"
-          >
+        {/* CHART - ANIMATION 7s ISOLÉE */}
+        <div className="lg:col-span-9 overflow-visible z-0">
+          <ChartContainer config={configGraphique} className="h-[450px] w-full">
             <ResponsiveContainer width="100%" height="100%">
               <AreaChart
                 data={donnees}
@@ -170,7 +164,7 @@ export default function TerminalDynamiqueSouverain({
               >
                 <defs>
                   <linearGradient
-                    id={`gradient-courbe-${id}`}
+                    id={`line-grad-${id}`}
                     x1="0"
                     y1="0"
                     x2="1"
@@ -181,7 +175,7 @@ export default function TerminalDynamiqueSouverain({
                     <stop offset="100%" stopColor="#ff4500" />
                   </linearGradient>
                   <linearGradient
-                    id={`eclat-${id}`}
+                    id={`area-grad-${id}`}
                     x1="0"
                     y1="0"
                     x2="0"
@@ -193,33 +187,26 @@ export default function TerminalDynamiqueSouverain({
                 </defs>
                 <CartesianGrid
                   vertical={false}
-                  stroke="var(--accents-2)"
-                  strokeWidth={1}
-                  opacity={0.3}
+                  strokeDasharray="3 3"
+                  strokeOpacity={0.1}
                 />
                 <XAxis
                   dataKey="annee"
                   axisLine={false}
                   tickLine={false}
-                  tick={{
-                    fill: "var(--foreground)",
-                    fontSize: 11,
-                    fontWeight: 900,
-                    opacity: 0.5,
-                  }}
+                  tick={{ fill: "currentColor", fontSize: 11, opacity: 0.5 }}
                   dy={15}
                 />
-                <YAxis domain={[30, 75]} hide />
-
+                <YAxis hide domain={[30, 75]} />
                 <ChartTooltip
                   cursor={{
-                    stroke: "var(--accents-2)",
+                    stroke: "#10b981",
                     strokeWidth: 1,
                     strokeDasharray: "4 4",
                   }}
                   content={
                     <ChartTooltipContent
-                      className="min-w-[190px] bg-[var(--card-bg-glass)] border border-[var(--border-color)] p-4 shadow-2xl backdrop-blur-xl rounded-[var(--radius-vercel-zy)]"
+                      className="backdrop-blur-xl bg-background/80 border-border rounded-lg p-4 shadow-2xl"
                       formatter={(value, name) => (
                         <div className="flex w-full items-center justify-between gap-6 antialiased tabular-nums">
                           <div className="flex items-center gap-2">
@@ -244,28 +231,27 @@ export default function TerminalDynamiqueSouverain({
                     />
                   }
                 />
-
                 <Area
                   dataKey="moyenne_region"
                   type="monotone"
-                  stroke="var(--accents-2)"
+                  stroke="#64748b"
                   strokeWidth={1}
-                  fill="none"
-                  opacity={0.2}
+                  fill="transparent"
+                  strokeOpacity={0.2}
+                  animationDuration={1000}
                 />
                 <Area
                   dataKey="indice"
                   type="monotone"
-                  stroke={`url(#gradient-courbe-${id})`}
+                  stroke={`url(#line-grad-${id})`}
                   strokeWidth={2}
-                  fill={`url(#eclat-${id})`}
-                  isAnimationActive={isInView}
-                  animationDuration={2500}
-                  // ACTIVE DOTS : VERROUILLAGE VERT PURE
+                  fill={`url(#area-grad-${id})`}
+                  isAnimationActive={true}
+                  animationDuration={7000} // ANIMATION 7 SECONDES ISOLÉE
                   activeDot={{
-                    stroke: "#10b981",
+                    stroke: "#10b981", // VERT FULL
                     strokeWidth: 2,
-                    fill: "var(--background)",
+                    fill: "white",
                     r: 5,
                   }}
                 />
@@ -279,16 +265,16 @@ export default function TerminalDynamiqueSouverain({
             </ResponsiveContainer>
           </ChartContainer>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-16 border-t border-[var(--accents-2)] pt-10">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-16 border-t border-muted pt-10 relative z-10">
             <TuileActualite
               titre="Autonomie Fiscale"
               statut="SÉCURISÉ"
-              desc="Découplage progressif des aides extérieures. Le budget de l'État est auto-financé à 82%."
+              desc="Découplage progressif des aides extérieures. Le budget est auto-financé à 82%."
             />
             <TuileActualite
               titre="Infrastructure Data"
               statut="TEMPS RÉEL"
-              desc="Stockage local des données minières cryptées par le protocole souverain v2026."
+              desc="Stockage local des données minières cryptées par le protocole v2026."
             />
           </div>
         </div>
@@ -297,8 +283,7 @@ export default function TerminalDynamiqueSouverain({
   );
 }
 
-// --- SOUS-COMPOSANTS ---
-
+// SOUS-COMPOSANTS DÉBUGGÉS
 function CompteurHeader({
   label,
   target,
@@ -318,14 +303,11 @@ function CompteurHeader({
   }, [isInView, target, count]);
 
   React.useEffect(() => {
-    const unsubscribe = rounded.on("change", (latest: number) =>
-      setDisplay(Math.round(latest))
-    );
-    return () => unsubscribe();
+    return rounded.on("change", (latest) => setDisplay(Math.round(latest)));
   }, [rounded]);
 
   return (
-    <div className="text-right border-l border-[var(--accents-2)] pl-8 tabular-nums">
+    <div className="text-right border-l border-muted pl-8 tabular-nums">
       <p className="text-[10px] font-black opacity-40 uppercase tracking-widest mb-1 italic leading-none">
         {label}
       </p>
@@ -358,11 +340,11 @@ function JaugeDynamique({
           {isInView ? val : 0}%
         </span>
       </div>
-      <div className="h-[1.5px] w-full bg-[var(--accents-2)] rounded-full overflow-hidden relative">
+      <div className="h-[1.5px] w-full bg-muted rounded-full overflow-hidden relative">
         <motion.div
           initial={{ width: 0 }}
           animate={{ width: isInView ? `${val}%` : 0 }}
-          transition={{ duration: 1.5, ease: "easeOut" }}
+          transition={{ duration: 1.5 }}
           className="h-full bg-gradient-to-r from-[#10b981] to-[#a7f3d0] absolute top-0 left-0"
         />
       </div>
@@ -380,7 +362,7 @@ function TuileActualite({
   desc: string;
 }) {
   return (
-    <div className="p-6 bg-[var(--card-bg)] border border-[var(--border-color)] rounded-[var(--radius-vercel-zy)] hover:border-[#10b981]/50 transition-all group relative z-10">
+    <div className="p-6 bg-card border border-border rounded-lg hover:border-[#10b981]/50 transition-all group relative z-10">
       <div className="flex justify-between items-center mb-4 leading-none text-[9px] font-bold uppercase tracking-widest">
         <div className="h-1 w-8 bg-[#10b981]/20 group-hover:bg-[#10b981] transition-colors" />
         <span className="text-[#10b981]">{statut}</span>
@@ -391,7 +373,7 @@ function TuileActualite({
       >
         {titre}
       </h4>
-      <p className="text-[10px] opacity-60 font-medium font-sans leading-relaxed">
+      <p className="text-[10px] opacity-60 font-medium leading-relaxed">
         {desc}
       </p>
     </div>
