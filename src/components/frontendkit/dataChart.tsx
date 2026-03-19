@@ -1,7 +1,6 @@
 "use client";
 
 import * as React from "react";
-import { AiOutlineLineChart } from "react-icons/ai";
 import { Info, ShieldAlert } from "lucide-react";
 import {
   Area,
@@ -29,6 +28,7 @@ const Beacon = () => (
   </span>
 );
 
+// --- INTERFACES STRICTES ---
 interface DonneeIndice {
   annee: string;
   indice: number;
@@ -59,9 +59,16 @@ export default function TerminalDynamiqueSouverain({
 }: TerminalProps) {
   const id = React.useId().replace(/:/g, "");
   const ref = React.useRef<HTMLDivElement>(null);
-
-  // PRÉSERVATION : once: false pour ré-animer à chaque retour du scroll
   const isInView = useInView(ref, { amount: 0.2, once: false });
+
+  // RECTIFICATION : État local pour forcer l'animation Recharts
+  const [animationKey, setAnimationKey] = React.useState(0);
+
+  React.useEffect(() => {
+    if (isInView) {
+      setAnimationKey((prev) => prev + 1);
+    }
+  }, [isInView]);
 
   const configGraphique = {
     indice: { label: labels.primary, color: "#10b981" },
@@ -73,30 +80,23 @@ export default function TerminalDynamiqueSouverain({
       ref={ref}
       className="w-full bg-[var(--background)] text-[var(--foreground)] p-10 antialiased border border-[var(--border-color)] rounded-[var(--radius-vercel)] shadow-sm transition-colors duration-200"
     >
-      {/* HEADER : TITRE REDRESSÉ ET RÉDUIT DE 3PX (TEXT-4XL) */}
-      <div className="flex flex-col md:flex-row justify-between items-start mb-16 border-b border-[var(--accents-2)] pb-10 gap-8 overflow-visible relative z-10 antialiased">
+      {/* HEADER : TITRE REDRESSÉ, RÉDUIT ET ICÔNE SUBTILISÉE */}
+      <div className="flex flex-col md:flex-row justify-between items-start mb-16 border-b border-[var(--accents-2)] pb-10 gap-8 overflow-visible relative z-10">
         <div className="space-y-4 overflow-visible">
           <div className="flex items-center gap-6 overflow-visible">
-            <div className="relative group">
-              <div className="absolute -inset-1 bg-[#10b981] rounded-lg blur opacity-10 group-hover:opacity-20 transition duration-1000"></div>
-              <div className="relative p-3 bg-[var(--card-bg-glass)] border border-[var(--border-color)] backdrop-blur-md rounded-[var(--radius-vercel-zy)]">
-                <AiOutlineLineChart className="h-6 w-6 text-[#10b981]" />
-              </div>
-            </div>
-
             <div className="overflow-visible">
               <h1
                 className="text-4xl font-black tracking-tighter uppercase leading-none overflow-visible antialiased"
                 style={{ fontFamily: "'Oswald', sans-serif" }}
               >
                 Indice de{" "}
-                <span className="bg-gradient-to-r from-[#10b981] via-[#34d399] to-[#a7f3d0] bg-clip-text text-transparent overflow-visible antialiased">
+                <span className="bg-gradient-to-r from-[#10b981] via-[#34d399] to-[#a7f3d0] bg-clip-text text-transparent overflow-visible">
                   {titre}
                 </span>
               </h1>
-              <div className="flex items-center gap-2 mt-3 opacity-40 overflow-visible antialiased leading-none">
+              <div className="flex items-center gap-2 mt-3 opacity-40 overflow-visible leading-none">
                 <ShieldAlert className="h-3 w-3 text-[#10b981]" />
-                <p className="text-[10px] font-bold uppercase tracking-[0.6em] italic leading-none overflow-visible antialiased">
+                <p className="text-[10px] font-bold uppercase tracking-[0.6em] italic leading-none">
                   Audit Intégré : {secteur}
                 </p>
               </div>
@@ -118,11 +118,11 @@ export default function TerminalDynamiqueSouverain({
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 relative z-0 antialiased">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 relative z-0">
         {/* SIDEBAR */}
-        <div className="lg:col-span-3 space-y-12 overflow-visible antialiased">
-          <div className="space-y-8 antialiased relative z-10">
-            <h3 className="text-[10px] font-black uppercase opacity-30 tracking-widest border-l-2 border-[#10b981] pl-3 italic antialiased leading-none">
+        <div className="lg:col-span-3 space-y-12 overflow-visible">
+          <div className="space-y-8 relative z-10">
+            <h3 className="text-[10px] font-black uppercase opacity-30 tracking-widest border-l-2 border-[#10b981] pl-3 italic leading-none">
               Métriques de Confiance
             </h3>
             <JaugeDynamique
@@ -142,35 +142,30 @@ export default function TerminalDynamiqueSouverain({
             />
           </div>
 
-          <div className="p-6 bg-[var(--card-bg)] border border-[var(--border-color)] rounded-[var(--radius-vercel-zy)] group antialiased z-0 hover:border-emerald-500 transition-all">
-            <div className="flex items-center gap-2 mb-3 text-[9px] font-black uppercase opacity-40 antialiased leading-none">
+          <div className="p-6 bg-[var(--card-bg)] border border-[var(--border-color)] rounded-[var(--radius-vercel-zy)] group hover:border-emerald-500 transition-all leading-none">
+            <div className="flex items-center gap-2 mb-3 text-[9px] font-black uppercase opacity-40 leading-none">
               <Info className="h-3 w-3 text-[#10b981]" />
-              <span className="antialiased">Note d'expertise</span>
+              <span className="leading-none">Note d'expertise</span>
             </div>
             <div
-              className="text-xl font-black italic uppercase tracking-tighter mb-4 antialiased leading-none"
+              className="text-xl font-black italic uppercase tracking-tighter mb-4 leading-none"
               style={{ fontFamily: "'Oswald', sans-serif" }}
             >
               Nature de <br /> l'Indice
             </div>
-            <p className="text-[11px] opacity-70 leading-relaxed font-medium font-sans relative z-10 antialiased">
+            <p className="text-[11px] opacity-70 leading-relaxed font-medium font-sans relative z-10">
               Analyse structurelle de l'autonomie extractive.
             </p>
           </div>
         </div>
 
         {/* CHART AREA */}
-        <div className="lg:col-span-9 overflow-visible antialiased z-0">
+        <div className="lg:col-span-9 overflow-visible z-0">
           <ChartContainer
             config={configGraphique}
-            className="h-[450px] w-full overflow-visible antialiased"
+            className="h-[450px] w-full overflow-visible"
           >
-            <ResponsiveContainer
-              width="100%"
-              height="100%"
-              overflow-visible
-              antialiased
-            >
+            <ResponsiveContainer width="100%" height="100%">
               <AreaChart
                 data={donnees}
                 margin={{ left: 0, right: 0, top: 20, bottom: 0 }}
@@ -202,7 +197,6 @@ export default function TerminalDynamiqueSouverain({
                   vertical={false}
                   stroke="var(--accents-2)"
                   strokeOpacity={0.5}
-                  antialiased
                 />
                 <XAxis
                   dataKey="annee"
@@ -214,30 +208,28 @@ export default function TerminalDynamiqueSouverain({
                     opacity: 0.5,
                   }}
                   dy={15}
-                  antialiased
                 />
-                <YAxis hide domain={[30, 75]} antialiased />
+                <YAxis hide domain={["dataMin - 5", "dataMax + 5"]} />
 
                 <ChartTooltip
                   cursor={{ stroke: "var(--accents-2)", strokeWidth: 1 }}
                   content={
                     <ChartTooltipContent
-                      className="bg-[var(--card-bg-glass)] border-[var(--border-color)] backdrop-blur-xl rounded-[var(--radius-vercel-zy)] shadow-xl antialiased"
-                      formatter={(value, name) => (
-                        <div className="flex items-center justify-between gap-6 antialiased tabular-nums leading-none">
+                      className="bg-[var(--card-bg-glass)] border-[var(--border-color)] backdrop-blur-xl rounded-[var(--radius-vercel-zy)] shadow-xl"
+                      formatter={(value: any, name: any) => (
+                        <div className="flex items-center justify-between gap-6 tabular-nums leading-none">
                           <div className="flex items-center">
                             <span
-                              className="text-[9px] font-black uppercase tracking-widest opacity-60 italic antialiased leading-none"
+                              className="text-[9px] font-black uppercase tracking-widest opacity-60 italic leading-none"
                               style={{ fontFamily: "'Oswald', sans-serif" }}
                             >
                               {configGraphique[
                                 name as keyof typeof configGraphique
                               ]?.label || name}
                             </span>
-                            {/* INDICATEUR CLIGNOTANT CI DANS LE TOOLTIP */}
                             {name === "indice" && <Beacon />}
                           </div>
-                          <span className="font-mono font-bold text-[#10b981] text-xs antialiased leading-none tabular-nums">
+                          <span className="font-mono font-bold text-[#10b981] text-xs leading-none">
                             {value}
                           </span>
                         </div>
@@ -251,18 +243,17 @@ export default function TerminalDynamiqueSouverain({
                   stroke="var(--accents-2)"
                   strokeWidth={1}
                   fill="transparent"
-                  antialiased
+                  isAnimationActive={false}
                 />
                 <Area
-                  key={isInView ? "active" : "inactive"} // KEY DYNAMIQUE POUR RÉ-ANIMATION PROPRE
+                  key={`area-indice-${animationKey}`}
                   dataKey="indice"
                   type="monotone"
                   stroke={`url(#l-grad-${id})`}
                   strokeWidth={2}
                   fill={`url(#a-grad-${id})`}
                   isAnimationActive={true}
-                  animationDuration={7000} // PRÉSERVÉ : 7 SECONDES
-                  antialiased
+                  animationDuration={7000}
                   activeDot={{
                     stroke: "#10b981",
                     fill: "#10b981",
@@ -275,14 +266,13 @@ export default function TerminalDynamiqueSouverain({
                   stroke="#10b981"
                   strokeDasharray="4 4"
                   opacity={0.2}
-                  antialiased
                 />
               </AreaChart>
             </ResponsiveContainer>
           </ChartContainer>
 
-          {/* TUILES AVEC HOVER EMERALD-500 */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-16 border-t border-[var(--accents-2)] pt-10 overflow-visible relative z-10 antialiased">
+          {/* TUILES */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-16 border-t border-[var(--accents-2)] pt-10 relative z-10">
             <TuileActualite
               titre="Autonomie Fiscale"
               statut="SÉCURISÉ"
@@ -321,16 +311,19 @@ function CompteurHeader({
   }, [isInView, target, count]);
 
   React.useEffect(() => {
-    return rounded.on("change", (latest) => setDisplay(Math.round(latest)));
+    const unsubscribe = rounded.on("change", (latest) =>
+      setDisplay(Math.round(latest))
+    );
+    return () => unsubscribe();
   }, [rounded]);
 
   return (
-    <div className="text-right border-l border-[var(--accents-2)] pl-8 antialiased">
-      <p className="text-[10px] font-black opacity-30 uppercase tracking-widest mb-1 italic antialiased leading-none">
+    <div className="text-right border-l border-[var(--accents-2)] pl-8">
+      <p className="text-[10px] font-black opacity-30 uppercase tracking-widest mb-1 italic leading-none">
         {label}
       </p>
       <span
-        className="text-4xl font-black tracking-tighter antialiased leading-none"
+        className="text-4xl font-black tracking-tighter leading-none"
         style={{ fontFamily: "'Oswald', sans-serif" }}
       >
         {display}
@@ -349,21 +342,21 @@ function JaugeDynamique({
   isInView: boolean;
 }) {
   return (
-    <div className="space-y-3 antialiased">
-      <div className="flex justify-between items-end tabular-nums antialiased leading-none">
-        <span className="text-[10px] font-black uppercase opacity-40 tracking-tight antialiased leading-none">
+    <div className="space-y-3">
+      <div className="flex justify-between items-end tabular-nums leading-none">
+        <span className="text-[10px] font-black uppercase opacity-40 tracking-tight leading-none">
           {label}
         </span>
-        <span className="text-xs font-mono font-bold antialiased leading-none">
+        <span className="text-xs font-mono font-bold leading-none">
           {isInView ? val : 0}%
         </span>
       </div>
-      <div className="h-[1px] w-full bg-[var(--accents-2)] rounded-full overflow-hidden relative antialiased">
+      <div className="h-[1px] w-full bg-[var(--accents-2)] rounded-full overflow-hidden relative">
         <motion.div
           initial={{ width: 0 }}
           animate={{ width: isInView ? `${val}%` : 0 }}
           transition={{ duration: 1.5 }}
-          className="h-full bg-gradient-to-r from-[#10b981] to-[#a7f3d0] absolute top-0 left-0 antialiased"
+          className="h-full bg-gradient-to-r from-[#10b981] to-[#a7f3d0] absolute top-0 left-0"
         />
       </div>
     </div>
@@ -380,20 +373,18 @@ function TuileActualite({
   desc: string;
 }) {
   return (
-    <div className="p-6 bg-[var(--card-bg)] border border-[var(--border-color)] rounded-[var(--radius-vercel-zy)] group hover:border-emerald-500 transition-all antialiased relative z-10">
-      <div className="flex justify-between items-center mb-4 text-[9px] font-bold uppercase tracking-widest antialiased leading-none">
-        <div className="h-[2px] w-6 bg-[#10b981] antialiased" />
-        <span className="text-[#10b981] antialiased leading-none">
-          {statut}
-        </span>
+    <div className="p-6 bg-[var(--card-bg)] border border-[var(--border-color)] rounded-[var(--radius-vercel-zy)] group hover:border-emerald-500 transition-all relative z-10">
+      <div className="flex justify-between items-center mb-4 text-[9px] font-bold uppercase tracking-widest leading-none">
+        <div className="h-[2px] w-6 bg-[#10b981]" />
+        <span className="text-[#10b981] leading-none">{statut}</span>
       </div>
       <h4
-        className="text-xs font-black uppercase mb-2 italic antialiased leading-none"
+        className="text-xs font-black uppercase mb-2 italic leading-none"
         style={{ fontFamily: "'Oswald', sans-serif" }}
       >
         {titre}
       </h4>
-      <p className="text-[10px] opacity-60 leading-relaxed font-sans font-medium antialiased">
+      <p className="text-[10px] opacity-60 leading-relaxed font-sans font-medium">
         {desc}
       </p>
     </div>
