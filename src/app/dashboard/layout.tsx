@@ -3,8 +3,8 @@
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
-import Loader from "@/components/frontendkit/Loader"; // ✅ import du composant Loader
-import Navbar from "@/components/Navbar";
+import Loader from "@/components/frontendkit/ui/Loader"; // ✅ import du composant Loader
+import Navbar from "@/components/frontendkit/ui/Navbar";
 import Sidebar from "@/components/frontendkit/Sidebar";
 
 export default function DashboardLayout({

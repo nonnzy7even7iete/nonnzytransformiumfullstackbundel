@@ -4,13 +4,13 @@ import React, { useState, useEffect, useMemo } from "react";
 import dynamic from "next/dynamic";
 import { motion, AnimatePresence } from "framer-motion";
 
-import NavbarFront from "@/components/frontendkit/NavbarFront";
-import { CardStack } from "@/components/frontendkit/CardStack";
+import NavbarFront from "@/components/frontendkit/ui/NavbarFront";
+import { CardStack } from "@/components/frontendkit/ui/CardStack";
 import { ScrollToTop } from "@/components/frontendkit/ScrollToTop";
-import { LogicBadge } from "@/components/frontendkit/LogicBadge";
+import { LogicBadge } from "@/components/frontendkit/ui/LogicBadge";
 import { WordRotate } from "@/components/frontendkit/word-rotate";
 import { cn } from "@/lib/utils";
-import { LampContainer } from "@/components/ui/lamp";
+import { LampContainer } from "@/components/frontendkit/ui/lamp";
 
 // COMPOSANT DE REVELATION (Flou réactif au scroll)
 const BlurReveal = ({
@@ -42,7 +42,7 @@ const UI_THEME = {
 };
 
 const World = dynamic(
-  () => import("@/components/ui/globe").then((m) => m.World),
+  () => import("@/components/frontendkit/ui/globe").then((m) => m.World),
   { ssr: false }
 );
 

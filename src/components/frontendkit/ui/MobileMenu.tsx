@@ -8,8 +8,8 @@ import {
   SheetClose,
   SheetOverlay,
   SheetPortal,
-} from "@/components/ui/sheet";
-import { NoiseBackground } from "@/components/frontendkit/NoiseBackground";
+} from "@/components/frontendkit/shadcnUi/sheet";
+import { NoiseBackground } from "@/components/frontendkit/ui/NoiseBackground";
 
 interface NavLink {
   href: string;

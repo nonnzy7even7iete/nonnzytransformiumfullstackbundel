@@ -2,7 +2,7 @@
 
 import { signOut } from "next-auth/react";
 import { useState } from "react";
-import ProfileHeader from "@/components/ProfileHeader";
+import ProfileHeader from "@/components/frontendkit/ui/ProfileHeader";
 import ProfileContent from "@/components/ProfileContent";
 
 export default function ProfileClient({ session }: { session: any }) {

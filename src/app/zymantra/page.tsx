@@ -3,9 +3,9 @@
 import React from "react";
 // Importation de ta Navbar qui gère le switch de thèmes
 // .NavbarFront : Composant exporté du répertoire frontendkit via un alias de chemin (@).
-import NavbarFront from "@/components/frontendkit/NavbarFront";
-import Zymantra from "@/components/frontendkit/ZymantraBeam";
-import { TextGenerateEffect } from "@/components/ui/text-generate-effect";
+import NavbarFront from "@/components/frontendkit/ui/NavbarFront";
+import Zymantra from "@/components/frontendkit/ui/ZymantraBeam";
+import { TextGenerateEffect } from "@/components/frontendkit/ui/text-generate-effect";
 
 /**
  * PAGE PRINCIPALE : Nonnzytransformium v.2026

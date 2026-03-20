@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Oswald, JetBrains_Mono } from "next/font/google";
 import "./tailwind.css";
-import { Providers } from "@/components/Providers";
+import { Providers } from "@/components/frontendkit/ui/Providers";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 
 // Polices standards

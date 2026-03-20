@@ -3,8 +3,8 @@
 import { useState, useEffect, useMemo } from "react";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
-import { TextHoverEffect } from "../ui/TextHoverEffect";
-import { AnimatedThemeToggler } from "@/components/frontendkit/AnimatedThemeToggler";
+import { TextHoverEffect } from "./TextHoverEffect";
+import { AnimatedThemeToggler } from "@/components/frontendkit/ui/AnimatedThemeToggler";
 import MobileMenu from "@/components/frontendkit/MobileMenu";
 import { DesktopMenu } from "./DesktopMenu";
 

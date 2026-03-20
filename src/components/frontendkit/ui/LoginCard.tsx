@@ -2,7 +2,7 @@
 
 import { signIn } from "next-auth/react";
 import { FcGoogle } from "react-icons/fc";
-import { TextHoverEffect } from "@/components/ui/TextHoverEffect";
+import { TextHoverEffect } from "@/components/frontendkit/ui/TextHoverEffect";
 import { cn } from "@/lib/utils";
 
 export default function LoginCard({ className }: { className?: string }) {

@@ -16,8 +16,8 @@ import {
 } from "framer-motion";
 import { cn } from "@/lib/utils";
 
-import { MultiStepLoader } from "@/components/ui/multi-step-loader";
-import { TextGenerateEffect } from "@/components/ui/text-generate-effect";
+import { MultiStepLoader } from "@/components/frontendkit/ui/multi-step-loader";
+import { TextGenerateEffect } from "@/components/frontendkit/ui/text-generate-effect";
 
 const MouseEnterContext = createContext<
   [boolean, React.Dispatch<React.SetStateAction<boolean>>] | undefined

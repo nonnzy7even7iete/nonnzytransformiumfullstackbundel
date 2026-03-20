@@ -1,7 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import { Menubar, MenubarMenu, MenubarTrigger } from "@/components/ui/menubar";
+import {
+  Menubar,
+  MenubarMenu,
+  MenubarTrigger,
+} from "@/components/frontendkit/ui/menubar";
 
 interface NavLink {
   href: string;
