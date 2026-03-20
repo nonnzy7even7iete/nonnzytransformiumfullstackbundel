@@ -6,9 +6,9 @@ import { motion, AnimatePresence } from "framer-motion";
 
 import NavbarFront from "@/components/frontendkit/ui/NavbarFront";
 import { CardStack } from "@/components/frontendkit/ui/CardStack";
-import { ScrollToTop } from "@/components/frontendkit/ScrollToTop";
+import { ScrollToTop } from "@/components/frontendkit/ui/ScrollToTop";
 import { LogicBadge } from "@/components/frontendkit/ui/LogicBadge";
-import { WordRotate } from "@/components/frontendkit/word-rotate";
+import { WordRotate } from "@/components/frontendkit/ui/word-rotate";
 import { cn } from "@/lib/utils";
 import { LampContainer } from "@/components/frontendkit/ui/lamp";
 
