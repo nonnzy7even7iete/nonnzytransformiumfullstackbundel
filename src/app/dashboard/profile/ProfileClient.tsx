@@ -3,8 +3,7 @@
 import { signOut } from "next-auth/react";
 import { useState } from "react";
 import ProfileHeader from "@/components/frontendkit/ui/ProfileHeader";
-import ProfileContent from "@/components/ProfileContent";
-
+// import ProfileContent from '@/components/ProfileContent'; // À SUPPRIMER+
 export default function ProfileClient({ session }: { session: any }) {
   const [avatarUrl, setAvatarUrl] = useState(session.user.image || "");
   const [coverUrl, setCoverUrl] = useState(session.user.cover || "");
@@ -31,7 +30,6 @@ export default function ProfileClient({ session }: { session: any }) {
         onUpload={handleUpload}
         onSignOut={() => signOut({ callbackUrl: "/" })}
       />
-      <ProfileContent />
     </main>
   );
 }
