@@ -1,5 +1,5 @@
 "use client";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { motion, stagger, useAnimate, useInView } from "framer-motion";
 import { cn } from "@/lib/utils";
 
@@ -8,7 +8,7 @@ export const TextGenerateEffect = ({
   children,
   className,
   filter = true,
-  duration = 0.5,
+  duration = 0.4,
 }: {
   words?: string;
   children?: React.ReactNode;
@@ -17,33 +17,38 @@ export const TextGenerateEffect = ({
   duration?: number;
 }) => {
   const [scope, animate] = useAnimate();
-  const isInView = useInView(scope, { once: true, amount: 0.1 });
+
+  // amount: 0.1 pour déclencher tôt, once: false pour que ça reset au scroll
+  const isInView = useInView(scope, { once: false, amount: 0.1 });
 
   useEffect(() => {
     if (isInView) {
-      // On anime les span (pour le mode words) ET les balises (pour le mode children)
+      // Animation d'entrée : Révélation progressive
       animate(
         "span, h1, h2, p, li",
-        { opacity: 1, filter: filter ? "blur(0px)" : "none" },
+        { opacity: 1, filter: filter ? "blur(0px)" : "none", y: 0 },
         { duration: duration, delay: stagger(0.1) }
+      );
+    } else {
+      // Reset : On remet tout à zéro quand on sort du champ de vision
+      animate(
+        "span, h1, h2, p, li",
+        { opacity: 0, filter: filter ? "blur(10px)" : "none", y: 10 },
+        { duration: 0.1 }
       );
     }
   }, [isInView, animate, filter, duration]);
 
   const renderContent = () => {
-    // CAS 1 : ANCIENNE LOGIQUE (WORDS) - Préserve le comportement exact
+    // LOGIQUE "WORDS" (Génératif mot par mot)
     if (words) {
-      let wordsArray = words.split(" ");
       return (
         <motion.div ref={scope} className="inline">
-          {wordsArray.map((word, idx) => (
+          {words.split(" ").map((word, idx) => (
             <motion.span
               key={word + idx}
               className="opacity-0 inline-block mr-1.5"
-              style={{
-                filter: filter ? "blur(10px)" : "none",
-                color: "var(--foreground)",
-              }}
+              style={{ filter: filter ? "blur(10px)" : "none" }}
             >
               {word}
             </motion.span>
@@ -52,12 +57,11 @@ export const TextGenerateEffect = ({
       );
     }
 
-    // CAS 2 : NOUVELLE LOGIQUE (CHILDREN)
-    // On force l'opacité 0 SEULEMENT ICI sur les balises de haut niveau
+    // LOGIQUE "CHILDREN" (Génératif phrase par phrase)
     return (
       <div
         ref={scope}
-        className="[&_h1]:opacity-0 [&_h2]:opacity-0 [&_p]:opacity-0 [&_li]:opacity-0"
+        className="[&_h1]:opacity-0 [&_h2]:opacity-0 [&_p]:opacity-0 [&_li]:opacity-0 [&_h1]:translate-y-4 [&_h2]:translate-y-4 [&_p]:translate-y-4"
       >
         {children}
       </div>
@@ -67,12 +71,7 @@ export const TextGenerateEffect = ({
   return (
     <div className={cn("font-sans", className)}>
       <div className="mt-4">
-        <div
-          className="text-2xl leading-snug tracking-wide"
-          style={{ color: "var(--foreground)" }}
-        >
-          {renderContent()}
-        </div>
+        <div className="leading-snug tracking-wide">{renderContent()}</div>
       </div>
     </div>
   );
