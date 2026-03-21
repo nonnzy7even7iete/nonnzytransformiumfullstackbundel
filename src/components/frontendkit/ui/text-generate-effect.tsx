@@ -4,8 +4,8 @@ import { motion, stagger, useAnimate, useInView } from "framer-motion";
 import { cn } from "@/lib/utils";
 
 export const TextGenerateEffect = ({
-  words, // Ancien format (optionnel maintenant)
-  children, // Nouveau format (optionnel maintenant)
+  words,
+  children,
   className,
   filter = true,
   duration = 0.5,
@@ -21,7 +21,7 @@ export const TextGenerateEffect = ({
 
   useEffect(() => {
     if (isInView) {
-      // On cible les spans (mots isolés) ET les balises sémantiques
+      // On anime les span (pour le mode words) ET les balises (pour le mode children)
       animate(
         "span, h1, h2, p, li",
         { opacity: 1, filter: filter ? "blur(0px)" : "none" },
@@ -31,15 +31,19 @@ export const TextGenerateEffect = ({
   }, [isInView, animate, filter, duration]);
 
   const renderContent = () => {
-    // Si on utilise l'ancien format "words"
+    // CAS 1 : ANCIENNE LOGIQUE (WORDS) - Préserve le comportement exact
     if (words) {
+      let wordsArray = words.split(" ");
       return (
         <motion.div ref={scope} className="inline">
-          {words.split(" ").map((word, idx) => (
+          {wordsArray.map((word, idx) => (
             <motion.span
               key={word + idx}
               className="opacity-0 inline-block mr-1.5"
-              style={{ filter: filter ? "blur(10px)" : "none" }}
+              style={{
+                filter: filter ? "blur(10px)" : "none",
+                color: "var(--foreground)",
+              }}
             >
               {word}
             </motion.span>
@@ -47,14 +51,28 @@ export const TextGenerateEffect = ({
         </motion.div>
       );
     }
-    // Si on utilise le nouveau format "children" (Shadcn Style)
-    return <div ref={scope}>{children}</div>;
+
+    // CAS 2 : NOUVELLE LOGIQUE (CHILDREN)
+    // On force l'opacité 0 SEULEMENT ICI sur les balises de haut niveau
+    return (
+      <div
+        ref={scope}
+        className="[&_h1]:opacity-0 [&_h2]:opacity-0 [&_p]:opacity-0 [&_li]:opacity-0"
+      >
+        {children}
+      </div>
+    );
   };
 
   return (
-    <div className={cn("prose prose-invert max-w-none", className)}>
+    <div className={cn("font-sans", className)}>
       <div className="mt-4">
-        <div className="leading-snug tracking-wide">{renderContent()}</div>
+        <div
+          className="text-2xl leading-snug tracking-wide"
+          style={{ color: "var(--foreground)" }}
+        >
+          {renderContent()}
+        </div>
       </div>
     </div>
   );
