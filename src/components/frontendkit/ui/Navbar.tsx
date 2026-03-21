@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
-import UserMenu from "../UserMenu";
+import UserMenu from "./UserMenu";
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);

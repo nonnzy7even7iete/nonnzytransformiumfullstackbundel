@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import Loader from "@/components/frontendkit/ui/Loader"; // ✅ import du composant Loader
 import Navbar from "@/components/frontendkit/ui/Navbar";
-import Sidebar from "@/components/frontendkit/Sidebar";
+import Sidebar from "@/components/frontendkit/ui/Sidebar";
 
 export default function DashboardLayout({
   children,

@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { TextHoverEffect } from "./TextHoverEffect";
 import { AnimatedThemeToggler } from "@/components/frontendkit/ui/AnimatedThemeToggler";
-import MobileMenu from "@/components/frontendkit/MobileMenu";
+import MobileMenu from "@/components/frontendkit/ui/MobileMenu";
 import { DesktopMenu } from "./DesktopMenu";
 
 export default function NavbarFront() {

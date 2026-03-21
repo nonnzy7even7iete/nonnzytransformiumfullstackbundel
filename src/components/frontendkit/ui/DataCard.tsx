@@ -1,8 +1,8 @@
 "use client";
 
 import React, { useState, ReactNode } from "react";
-import { Card } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { Card } from "@/components/frontendkit/shadcnUi/card";
+import { Button } from "@/components/frontendkit/shadcnUi/button";
 import { ChevronRight, XCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
 

@@ -18,7 +18,7 @@ import {
   ChartTooltip,
   ChartTooltipContent,
   type ChartConfig,
-} from "@/components/ui/chart";
+} from "@/components/frontendkit/shadcnUi/chart";
 
 // --- COMPOSANT INDICATEUR CLIGNOTANT (BEACON) ---
 const Beacon = () => (
