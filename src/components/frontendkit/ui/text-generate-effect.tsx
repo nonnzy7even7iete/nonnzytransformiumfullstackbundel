@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import { motion, stagger, useAnimate, useInView } from "framer-motion";
 import { cn } from "@/lib/utils";
 
@@ -16,31 +16,46 @@ export const TextGenerateEffect = ({
   filter?: boolean;
   duration?: number;
 }) => {
+  // useAnimate() : Hook pour piloter les animations sur le 'scope'.
   const [scope, animate] = useAnimate();
 
-  // amount: 0.1 pour déclencher tôt, once: false pour que ça reset au scroll
-  const isInView = useInView(scope, { once: false, amount: 0.1 });
+  // isInView : Détecte la visibilité. once: false permet de rejouer l'effet au scroll.
+  const isInView = useInView(scope, { once: false, amount: 0.05 });
 
   useEffect(() => {
     if (isInView) {
-      // Animation d'entrée : Révélation progressive
+      // Animation CHIRURGICALE :
+      // On cible spécifiquement les éléments ayant la classe 'animate-target'
+      // que tu as déjà placée avec prévoyance dans ton HomePage.
       animate(
-        "span, h1, h2, p, li",
-        { opacity: 1, filter: filter ? "blur(0px)" : "none", y: 0 },
-        { duration: duration, delay: stagger(0.1) }
+        ".animate-target, h1, h2, h3, p, li",
+        {
+          opacity: 1,
+          filter: filter ? "blur(0px)" : "none",
+          y: 0,
+        },
+        {
+          duration: duration,
+          // delay: stagger(0.15) : Augmentation légère pour un effet "cascade" plus pro.
+          delay: stagger(0.15),
+        }
       );
     } else {
-      // Reset : On remet tout à zéro quand on sort du champ de vision
+      // RESET : On remet l'état initial (invisible + décalage vers le bas).
       animate(
-        "span, h1, h2, p, li",
-        { opacity: 0, filter: filter ? "blur(10px)" : "none", y: 10 },
+        ".animate-target, h1, h2, h3, p, li",
+        {
+          opacity: 0,
+          filter: filter ? "blur(10px)" : "none",
+          y: 20,
+        },
         { duration: 0.1 }
       );
     }
   }, [isInView, animate, filter, duration]);
 
   const renderContent = () => {
-    // LOGIQUE "WORDS" (Génératif mot par mot)
+    // LOGIQUE 1 : Si passage par la prop 'words' (String)
     if (words) {
       return (
         <motion.div ref={scope} className="inline">
@@ -57,12 +72,10 @@ export const TextGenerateEffect = ({
       );
     }
 
-    // LOGIQUE "CHILDREN" (Génératif phrase par phrase)
+    // LOGIQUE 2 : Si passage par 'children' (JSX complexe de Anyama)
+    // On garde ton JSX intact sans modifier une seule virgule de tes textes.
     return (
-      <div
-        ref={scope}
-        className="[&_h1]:opacity-0 [&_h2]:opacity-0 [&_p]:opacity-0 [&_li]:opacity-0 [&_h1]:translate-y-4 [&_h2]:translate-y-4 [&_p]:translate-y-4"
-      >
+      <div ref={scope} className="w-full">
         {children}
       </div>
     );
