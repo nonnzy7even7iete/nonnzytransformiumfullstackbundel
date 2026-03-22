@@ -1,4 +1,8 @@
 "use client";
+/**
+ * @file text-generate-effect.tsx
+ * @description Moteur d'animation polyvalent : gère le mot par mot ET le bloc par bloc.
+ */
 import { useEffect } from "react";
 import { motion, stagger, useAnimate, useInView } from "framer-motion";
 import { cn } from "@/lib/utils";
@@ -16,19 +20,20 @@ export const TextGenerateEffect = ({
   filter?: boolean;
   duration?: number;
 }) => {
-  // useAnimate() : Hook pour piloter les animations sur le 'scope'.
   const [scope, animate] = useAnimate();
-
-  // isInView : Détecte la visibilité. once: false permet de rejouer l'effet au scroll.
   const isInView = useInView(scope, { once: false, amount: 0.05 });
 
   useEffect(() => {
     if (isInView) {
-      // Animation CHIRURGICALE :
-      // On cible spécifiquement les éléments ayant la classe 'animate-target'
-      // que tu as déjà placée avec prévoyance dans ton HomePage.
+      /**
+       * SELECTION DYNAMIQUE :
+       * Si 'words' existe, on cible les 'span' (les mots).
+       * Sinon, on cible les balises de structure (les blocs de ton expertise).
+       */
+      const selector = words ? "span" : ".animate-target, h1, h2, h3, p, li";
+
       animate(
-        ".animate-target, h1, h2, h3, p, li",
+        selector,
         {
           opacity: 1,
           filter: filter ? "blur(0px)" : "none",
@@ -36,32 +41,34 @@ export const TextGenerateEffect = ({
         },
         {
           duration: duration,
-          // delay: stagger(0.15) : Augmentation légère pour un effet "cascade" plus pro.
-          delay: stagger(0.15),
+          // stagger(0.1) : Crée l'effet de cascade entre chaque unité (mot ou bloc).
+          delay: stagger(words ? 0.1 : 0.15),
         }
       );
     } else {
-      // RESET : On remet l'état initial (invisible + décalage vers le bas).
+      const selector = words ? "span" : ".animate-target, h1, h2, h3, p, li";
       animate(
-        ".animate-target, h1, h2, h3, p, li",
+        selector,
         {
           opacity: 0,
           filter: filter ? "blur(10px)" : "none",
-          y: 20,
+          y: 10,
         },
         { duration: 0.1 }
       );
     }
-  }, [isInView, animate, filter, duration]);
+  }, [isInView, animate, filter, duration, words]);
 
   const renderContent = () => {
-    // LOGIQUE 1 : Si passage par la prop 'words' (String)
+    // LOGIQUE "WORDS" : Découpage chirurgical par mot.
+    // Notation par point : words.split(" ") crée un tableau de chaînes.
     if (words) {
       return (
         <motion.div ref={scope} className="inline">
           {words.split(" ").map((word, idx) => (
             <motion.span
               key={word + idx}
+              // opacity-0 est crucial pour éviter le flash avant animation.
               className="opacity-0 inline-block mr-1.5"
               style={{ filter: filter ? "blur(10px)" : "none" }}
             >
@@ -72,8 +79,7 @@ export const TextGenerateEffect = ({
       );
     }
 
-    // LOGIQUE 2 : Si passage par 'children' (JSX complexe de Anyama)
-    // On garde ton JSX intact sans modifier une seule virgule de tes textes.
+    // LOGIQUE "CHILDREN" : Affichage par blocs de catégories (Anyama).
     return (
       <div ref={scope} className="w-full">
         {children}
