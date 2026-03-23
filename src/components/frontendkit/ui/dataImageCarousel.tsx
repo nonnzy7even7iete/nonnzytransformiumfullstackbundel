@@ -2,14 +2,8 @@
 
 /**
  * @file dataImageCarousel.tsx
- * @version 1.0.1 (VISION_ANYAMA_2026)
- * @status SOUVERAIN - INTERDICTION DE MODIFICATION DE STRUCTURE
- * -----------------------------------------------------------------------
- * PROTOCOLE :
- * - ZERO ICONE : Fermeture déléguée au clic sur l'overlay (onClose).
- * - SEMANTIQUE : Focus sur l'évolutivité de la commune d'Anyama.
- * - DESIGN : Typographie asymétrique, titre à droite, soulignement émeraude.
- * -----------------------------------------------------------------------
+ * @description Carousel 3D.
+ * FIX : Fermeture par clic sur le vide (Background) fonctionnelle.
  */
 
 import React, { useState, useEffect } from "react";
@@ -55,9 +49,11 @@ export default function DataImageCarousel({ onClose }: DataImageCarouselProps) {
 
   useEffect(() => setMounted(true), []);
 
+  /**
+   * handleDragEnd : Logique de navigation gestuelle via .info.offset.x
+   */
   const handleDragEnd = (_: any, info: any) => {
     const threshold = 30;
-    // .info.offset.x : Accès par point (dot notation) au vecteur de mouvement horizontal.
     if (info.offset.x < -threshold && index < DATA_IMAGES.length - 1)
       setIndex(index + 1);
     else if (info.offset.x > threshold && index > 0) setIndex(index - 1);
@@ -67,22 +63,26 @@ export default function DataImageCarousel({ onClose }: DataImageCarouselProps) {
 
   return (
     <div
-      // POUVOIR DU VIDE : Le clic sur le fond ferme le composant.
-      onClick={onClose}
+      // LE POUVOIR DU VIDE : Seul le clic direct sur ce div déclenche onClose.
+      onClick={(e) => {
+        if (e.target === e.currentTarget) onClose?.();
+      }}
       className="relative h-screen w-full bg-black/98 backdrop-blur-xl overflow-hidden flex items-center justify-center font-sans cursor-zoom-out"
     >
+      {/* COUCHE DE DRAG : pointer-events-none pour laisser passer le clic au fond, 
+          mais motion.div capte toujours le drag. */}
       <motion.div
         drag="x"
         dragConstraints={{ left: 0, right: 0 }}
         onDragEnd={handleDragEnd}
-        onClick={(e) => e.stopPropagation()}
-        className="absolute w-full h-[75vh] z-[100] cursor-grab active:cursor-grabbing"
+        className="absolute w-full h-full z-[10] cursor-grab active:cursor-grabbing"
+        style={{ touchAction: "none" }}
       />
 
+      {/* SCÈNE 3D (Z-INDEX SUPÉRIEUR POUR LES CARTES) */}
       <div
-        className="relative w-full h-full flex items-center justify-center"
+        className="relative w-full h-full flex items-center justify-center z-[20] pointer-events-none"
         style={{ perspective: "1200px" }}
-        onClick={(e) => e.stopPropagation()}
       >
         <motion.div
           className="relative flex items-center justify-center w-full max-w-[500px]"
@@ -94,8 +94,9 @@ export default function DataImageCarousel({ onClose }: DataImageCarouselProps) {
         </motion.div>
       </div>
 
+      {/* INDICATEURS (Z-INDEX 30 POUR INTERACTION) */}
       <div
-        className="absolute bottom-16 flex gap-4 z-[110]"
+        className="absolute bottom-16 flex gap-4 z-[30]"
         onClick={(e) => e.stopPropagation()}
       >
         {DATA_IMAGES.map((_, i) => (
@@ -124,17 +125,18 @@ function ImageCard({ item, position }: { item: any; position: number }) {
       initial={false}
       animate={{
         x: position * xOffset,
-        rotateY: position * -25, // Effet cylindre 3D.
-        z: isActive ? 0 : -500, // Profondeur Frazier.
+        rotateY: position * -25,
+        z: isActive ? 0 : -500,
         opacity: isActive ? 1 : 0.2,
         scale: isActive ? 1 : 0.8,
       }}
       transition={{ type: "spring", stiffness: 90, damping: 20 }}
-      onClick={(e) => e.stopPropagation()}
+      // pointer-events-auto : Réactive le clic sur la carte pour éviter de fermer par erreur.
       className={cn(
-        "absolute w-[88vw] md:w-[500px] h-[480px] md:h-[580px] overflow-hidden border cursor-default",
+        "absolute w-[88vw] md:w-[500px] h-[480px] md:h-[580px] overflow-hidden border cursor-default pointer-events-auto",
         isActive ? "border-emerald-500/30 shadow-2xl" : "border-white/5"
       )}
+      onClick={(e) => e.stopPropagation()}
       style={{ borderRadius: "14px" }}
     >
       <div className="absolute inset-0 z-0">
