@@ -2,8 +2,8 @@
 
 /**
  * @file dataImageCarousel.tsx
- * @description Carousel 3D avec fermeture par clic sur l'arrière-plan.
- * @status POOLISH SOUVERAIN : Structure verrouillée.
+ * @description Carousel 3D sans icône de fermeture.
+ * @logic Le vide (background) hérite du pouvoir de fermeture via la prop onClose.
  */
 
 import React, { useState, useEffect } from "react";
@@ -11,6 +11,10 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import { TextGenerateEffect } from "@/components/frontendkit/ui/text-generate-effect";
 import { cn } from "@/lib/utils";
+
+interface DataImageCarouselProps {
+  onClose?: () => void;
+}
 
 const DATA_IMAGES = [
   {
@@ -39,11 +43,6 @@ const DATA_IMAGES = [
   },
 ];
 
-// Ajout de la prop onClose pour la communication avec le parent
-interface DataImageCarouselProps {
-  onClose?: () => void;
-}
-
 export default function DataImageCarousel({ onClose }: DataImageCarouselProps) {
   const [index, setIndex] = useState(0);
   const [mounted, setMounted] = useState(false);
@@ -52,7 +51,7 @@ export default function DataImageCarousel({ onClose }: DataImageCarouselProps) {
 
   const handleDragEnd = (_: any, info: any) => {
     const threshold = 30;
-    // .info.offset.x : Accès vecteur pour swipe
+    // .info.offset.x : Accès par point au vecteur de mouvement.
     if (info.offset.x < -threshold && index < DATA_IMAGES.length - 1)
       setIndex(index + 1);
     else if (info.offset.x > threshold && index > 0) setIndex(index - 1);
@@ -62,24 +61,25 @@ export default function DataImageCarousel({ onClose }: DataImageCarouselProps) {
 
   return (
     <div
-      // onClick : Ferme si on clique sur l'arrière-plan (le conteneur plein écran)
+      // LE POUVOIR DU VIDE : Le clic ici déclenche la fermeture.
       onClick={onClose}
-      className="relative h-screen w-full bg-black/95 backdrop-blur-sm overflow-hidden flex items-center justify-center font-sans cursor-zoom-out"
+      className="relative h-screen w-full bg-black/95 backdrop-blur-md overflow-hidden flex items-center justify-center font-sans cursor-zoom-out"
     >
-      {/* COUCHE INTERACTIVE : Bloque le drag mais laisse passer le clic si c'est nécessaire */}
+      {/* ZONE INTERACTIVE DE DRAG */}
       <motion.div
         drag="x"
         dragConstraints={{ left: 0, right: 0 }}
         onDragEnd={handleDragEnd}
-        onClick={(e) => e.stopPropagation()} // Empêche la fermeture lors du swipe/drag
-        className="absolute w-full h-[70vh] z-[100] cursor-grab active:cursor-grabbing"
+        // e.stopPropagation : Empêche le clic de fermeture lors du drag.
+        onClick={(e) => e.stopPropagation()}
+        className="absolute w-full h-[75vh] z-[100] cursor-grab active:cursor-grabbing"
       />
 
-      {/* MOTEUR 3D */}
+      {/* SCÈNE 3D */}
       <div
         className="relative w-full h-full flex items-center justify-center"
         style={{ perspective: "1200px" }}
-        onClick={(e) => e.stopPropagation()} // Sécurité : clic dans la zone 3D ne ferme pas
+        onClick={(e) => e.stopPropagation()}
       >
         <motion.div
           className="relative flex items-center justify-center w-full max-w-[500px]"
@@ -91,19 +91,19 @@ export default function DataImageCarousel({ onClose }: DataImageCarouselProps) {
         </motion.div>
       </div>
 
-      {/* INDICATEURS */}
+      {/* INDICATEURS DE PROGRESSION */}
       <div
-        className="absolute bottom-12 flex gap-3 z-[110]"
+        className="absolute bottom-16 flex gap-4 z-[110]"
         onClick={(e) => e.stopPropagation()}
       >
         {DATA_IMAGES.map((_, i) => (
           <div
             key={i}
             className={cn(
-              "h-[1px] transition-all duration-1000",
+              "h-[2px] transition-all duration-700",
               index === i
-                ? "w-12 bg-emerald-500 shadow-[0_0_15px_#10b981]"
-                : "w-3 bg-white opacity-20"
+                ? "w-16 bg-emerald-500 shadow-[0_0_20px_#10b981]"
+                : "w-4 bg-white/20"
             )}
           />
         ))}
@@ -115,7 +115,7 @@ export default function DataImageCarousel({ onClose }: DataImageCarouselProps) {
 function ImageCard({ item, position }: { item: any; position: number }) {
   const isActive = position === 0;
   const xOffset =
-    typeof window !== "undefined" && window.innerWidth < 768 ? 320 : 520;
+    typeof window !== "undefined" && window.innerWidth < 768 ? 340 : 540;
 
   return (
     <motion.div
@@ -123,21 +123,22 @@ function ImageCard({ item, position }: { item: any; position: number }) {
       animate={{
         x: position * xOffset,
         rotateY: position * -25,
-        z: isActive ? 0 : -450,
-        opacity: isActive ? 1 : 0.3,
-        scale: isActive ? 1 : 0.85,
+        z: isActive ? 0 : -500,
+        opacity: isActive ? 1 : 0.2,
+        scale: isActive ? 1 : 0.8,
       }}
-      transition={{ type: "spring", stiffness: 100, damping: 20 }}
-      // e.stopPropagation : Crucial pour que le clic sur une carte ne ferme pas le composant
+      transition={{ type: "spring", stiffness: 90, damping: 20 }}
+      // Protection contre la fermeture lors du clic sur la carte.
       onClick={(e) => e.stopPropagation()}
       className={cn(
-        "absolute w-[85vw] md:w-[500px] h-[450px] md:h-[550px] overflow-hidden border cursor-default",
+        "absolute w-[88vw] md:w-[500px] h-[480px] md:h-[580px] overflow-hidden border cursor-default",
         isActive
-          ? "border-emerald-500/40 shadow-2xl"
-          : "border-[var(--border-color)]"
+          ? "border-emerald-500/30 shadow-[0_0_50px_rgba(0,0,0,0.5)]"
+          : "border-white/5"
       )}
       style={{ borderRadius: "14px" }}
     >
+      {/* MEDIA LAYER */}
       <div className="absolute inset-0 z-0">
         <Image
           src={item.src}
@@ -146,18 +147,19 @@ function ImageCard({ item, position }: { item: any; position: number }) {
           className="object-cover"
           priority={isActive}
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-transparent" />
       </div>
 
+      {/* CONTENT LAYER */}
       <div className="relative z-10 h-full flex flex-col justify-end p-10 md:p-14">
-        <div className="flex justify-end mb-6">
-          <div className="relative group">
+        <div className="flex justify-end mb-8">
+          <div className="relative">
             <h1
               className={cn(
-                "text-xl md:text-2xl font-black tracking-[0.2em] uppercase leading-none transition-all duration-1000",
+                "text-xl md:text-2xl font-black tracking-[0.25em] uppercase leading-none transition-all duration-1000",
                 isActive
                   ? "opacity-100 translate-x-0"
-                  : "opacity-0 translate-x-8"
+                  : "opacity-0 translate-x-10"
               )}
             >
               {item.title}
@@ -165,19 +167,19 @@ function ImageCard({ item, position }: { item: any; position: number }) {
             <motion.div
               initial={{ width: 0 }}
               animate={{ width: isActive ? "100%" : 0 }}
-              transition={{ duration: 1.2, ease: "circOut", delay: 0.5 }}
-              className="h-[1px] bg-emerald-500 mt-2 shadow-[0_0_8px_#10b981]"
+              transition={{ duration: 1.5, ease: "circOut", delay: 0.6 }}
+              className="h-[1px] bg-emerald-500 mt-3 shadow-[0_0_10px_#10b981]"
             />
           </div>
         </div>
 
-        <div className="w-full min-h-[50px] flex justify-start border-l border-emerald-500/20 pl-4">
+        <div className="w-full min-h-[60px] flex justify-start border-l border-emerald-500/30 pl-6">
           {isActive && (
-            <div className="text-[10px] md:text-xs font-mono font-bold uppercase tracking-widest opacity-70 max-w-[320px]">
+            <div className="text-[10px] md:text-[11px] font-mono font-bold uppercase tracking-[0.15em] opacity-60 max-w-[340px] leading-relaxed">
               <TextGenerateEffect
                 words={item.content}
                 filter={false}
-                duration={0.3}
+                duration={0.4}
               />
             </div>
           )}
