@@ -2,8 +2,8 @@
 
 /**
  * @file dataImageCarousel.tsx
- * @description Carousel 3D immersif.
- * AJUSTEMENT : Titre abaissé et renforcement du Scrim pour une lisibilité maximale.
+ * @description Carousel 3D.
+ * STYLE : Typographie asymétrique, titre à droite, soulignement chirurgical.
  */
 
 import React, { useState, useEffect } from "react";
@@ -111,49 +111,53 @@ function ImageCard({ item, position }: { item: any; position: number }) {
       }}
       transition={{ type: "spring", stiffness: 100, damping: 20 }}
       className={cn(
-        "absolute w-[85vw] md:w-[500px] h-[400px] md:h-[500px] overflow-hidden border",
+        "absolute w-[85vw] md:w-[500px] h-[450px] md:h-[550px] overflow-hidden border",
         isActive
           ? "border-emerald-500/40 shadow-2xl"
           : "border-[var(--border-color)]"
       )}
       style={{ borderRadius: "var(--radius-vercel, 14px)" }}
     >
-      {/* LAYER 0 : IMAGE */}
       <div className="absolute inset-0 z-0">
         <Image
           src={item.src}
           alt={item.alt}
           fill
-          className="object-cover transition-transform duration-700"
+          className="object-cover"
           priority={isActive}
         />
-
-        {/* LAYER 1 : SCRIM RENFORCÉ (Overlay) 
-            bg-black/40 : Assombrit l'image globale pour faire ressortir le blanc.
-            bg-gradient-to-t : Crée une zone de noir profond en bas pour le texte.
-        */}
-        <div className="absolute inset-0 bg-black/40" />
-        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent" />
+        {/* SCRIM : Noir profond en bas pour supporter le texte excentré */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent" />
       </div>
 
-      {/* LAYER 2 : CONTENU (Ajusté vers le bas) */}
-      <div className="relative z-10 h-full flex flex-col justify-end p-8 md:p-12 text-center">
-        {/* TITRE H1 : Désormais positionné juste au-dessus du texte généré */}
-        <div className="mb-4">
-          <h1
-            className={cn(
-              "text-3xl md:text-5xl font-black tracking-tighter uppercase leading-[0.85] transition-all duration-700",
-              isActive ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
-            )}
-          >
-            {item.title}
-          </h1>
+      <div className="relative z-10 h-full flex flex-col justify-end p-10 md:p-14">
+        {/* TITRE : Alignement Droite (Right), plus petit, souligné avec subtilité */}
+        <div className="flex justify-end mb-6">
+          <div className="relative group">
+            <h1
+              className={cn(
+                "text-xl md:text-2xl font-black tracking-[0.2em] uppercase leading-none transition-all duration-1000",
+                isActive
+                  ? "opacity-100 translate-x-0"
+                  : "opacity-0 translate-x-8"
+              )}
+            >
+              {item.title}
+            </h1>
+            {/* SOULIGNEMENT SUBTIL : S'anime seulement si la carte est active */}
+            <motion.div
+              initial={{ width: 0 }}
+              animate={{ width: isActive ? "100%" : 0 }}
+              transition={{ duration: 1.2, ease: "circOut", delay: 0.5 }}
+              className="h-[1px] bg-emerald-500 mt-2 shadow-[0_0_8px_#10b981]"
+            />
+          </div>
         </div>
 
-        {/* TEXT-GENERATE-EFFECT : Zone de texte en bas */}
-        <div className="w-full min-h-[60px] flex items-center justify-center">
+        {/* TEXT-GENERATE-EFFECT : Reste centré ou légèrement décalé pour l'équilibre */}
+        <div className="w-full min-h-[50px] flex justify-start border-l border-emerald-500/20 pl-4">
           {isActive && (
-            <div className="text-xs md:text-sm font-medium leading-relaxed opacity-90 max-w-[400px]">
+            <div className="text-[10px] md:text-xs font-mono font-bold uppercase tracking-widest opacity-70 max-w-[320px]">
               <TextGenerateEffect
                 words={item.content}
                 filter={false}
