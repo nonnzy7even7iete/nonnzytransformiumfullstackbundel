@@ -2,21 +2,16 @@
 
 /**
  * @file dataImageCarousel.tsx
- * @description Carousel 3D immersif pour actifs visuels stratégiques.
- * Utilise la profondeur Frazier (Z-axis) et l'effet de texte progressif.
+ * @description Carousel 3D immersif.
+ * AJUSTEMENT : Titre abaissé et renforcement du Scrim pour une lisibilité maximale.
  */
 
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
-// Importation du moteur d'effet que nous avons stabilisé ensemble.
 import { TextGenerateEffect } from "@/components/frontendkit/ui/text-generate-effect";
 import { cn } from "@/lib/utils";
 
-/**
- * DATA_CORE : Structure souveraine des données.
- * Ne pas modifier les strings pour préserver le "feeling" de travail.
- */
 const DATA_IMAGES = [
   {
     id: "01",
@@ -48,15 +43,10 @@ export default function DataImageCarousel() {
   const [index, setIndex] = useState(0);
   const [mounted, setMounted] = useState(false);
 
-  // Montage sécurisé pour éviter les erreurs d'hydratation (SSR).
   useEffect(() => setMounted(true), []);
 
-  /**
-   * handleDragEnd : Logique de navigation gestuelle.
-   * .info.offset.x : Accès par point au vecteur de déplacement horizontal.
-   */
   const handleDragEnd = (_: any, info: any) => {
-    const threshold = 30; // Seuil de déclenchement en pixels.
+    const threshold = 30;
     if (info.offset.x < -threshold && index < DATA_IMAGES.length - 1)
       setIndex(index + 1);
     else if (info.offset.x > threshold && index > 0) setIndex(index - 1);
@@ -66,7 +56,6 @@ export default function DataImageCarousel() {
 
   return (
     <div className="relative h-screen w-full bg-[var(--background)] overflow-hidden flex items-center justify-center font-sans">
-      {/* COUCHE INTERACTIVE (Invisible, capte le Drag sur toute la zone) */}
       <motion.div
         drag="x"
         dragConstraints={{ left: 0, right: 0 }}
@@ -74,14 +63,13 @@ export default function DataImageCarousel() {
         className="absolute w-full h-[70vh] z-[100] cursor-grab active:cursor-grabbing"
       />
 
-      {/* MOTEUR DE RENDU 3D */}
       <div
         className="relative w-full h-full flex items-center justify-center"
-        style={{ perspective: "1200px" }} // Définit la profondeur de la scène.
+        style={{ perspective: "1200px" }}
       >
         <motion.div
           className="relative flex items-center justify-center w-full max-w-[500px]"
-          style={{ transformStyle: "preserve-3d" }} // Autorise les enfants à vivre dans l'espace 3D.
+          style={{ transformStyle: "preserve-3d" }}
         >
           {DATA_IMAGES.map((item, i) => (
             <ImageCard key={item.id} item={item} position={i - index} />
@@ -89,7 +77,6 @@ export default function DataImageCarousel() {
         </motion.div>
       </div>
 
-      {/* BARRE DE PROGRESSION (INDICATEURS) */}
       <div className="absolute bottom-12 flex gap-3 z-[110]">
         {DATA_IMAGES.map((_, i) => (
           <div
@@ -107,13 +94,8 @@ export default function DataImageCarousel() {
   );
 }
 
-/**
- * COMPOSANT ImageCard : La cellule de base du carousel.
- */
 function ImageCard({ item, position }: { item: any; position: number }) {
   const isActive = position === 0;
-
-  // xOffset : Calcul du décalage latéral. 500px est la largeur de base de la carte.
   const xOffset =
     typeof window !== "undefined" && window.innerWidth < 768 ? 320 : 520;
 
@@ -122,51 +104,56 @@ function ImageCard({ item, position }: { item: any; position: number }) {
       initial={false}
       animate={{
         x: position * xOffset,
-        rotateY: position * -25, // Rotation pour l'effet de cylindre.
-        z: isActive ? 0 : -450, // Projection vers l'arrière pour les cartes inactives.
+        rotateY: position * -25,
+        z: isActive ? 0 : -450,
         opacity: isActive ? 1 : 0.3,
         scale: isActive ? 1 : 0.85,
       }}
       transition={{ type: "spring", stiffness: 100, damping: 20 }}
       className={cn(
-        "absolute w-[85vw] md:w-[500px] h-[400px] md:h-[450px] overflow-hidden border",
+        "absolute w-[85vw] md:w-[500px] h-[400px] md:h-[500px] overflow-hidden border",
         isActive
           ? "border-emerald-500/40 shadow-2xl"
           : "border-[var(--border-color)]"
       )}
-      style={{ borderRadius: "var(--radius-vercel, 14px)" }} // Respect de tes 14px.
+      style={{ borderRadius: "var(--radius-vercel, 14px)" }}
     >
-      {/* IMAGE DE FOND (Layer 0) */}
+      {/* LAYER 0 : IMAGE */}
       <div className="absolute inset-0 z-0">
         <Image
           src={item.src}
           alt={item.alt}
           fill
-          className="object-cover transition-transform duration-700 hover:scale-105"
+          className="object-cover transition-transform duration-700"
           priority={isActive}
         />
-        {/* SCRIM NOIR : Overlay dégradé pour la lisibilité (Layer 1) */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/40 to-black/90" />
+
+        {/* LAYER 1 : SCRIM RENFORCÉ (Overlay) 
+            bg-black/40 : Assombrit l'image globale pour faire ressortir le blanc.
+            bg-gradient-to-t : Crée une zone de noir profond en bas pour le texte.
+        */}
+        <div className="absolute inset-0 bg-black/40" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent" />
       </div>
 
-      {/* CONTENU TEXTUEL (Layer 2) */}
-      <div className="relative z-10 h-full flex flex-col items-center justify-between p-10 text-center">
-        {/* TITRE H1 : Centré verticalement et horizontalement */}
-        <div className="flex-1 flex items-center justify-center">
+      {/* LAYER 2 : CONTENU (Ajusté vers le bas) */}
+      <div className="relative z-10 h-full flex flex-col justify-end p-8 md:p-12 text-center">
+        {/* TITRE H1 : Désormais positionné juste au-dessus du texte généré */}
+        <div className="mb-4">
           <h1
             className={cn(
-              "text-3xl md:text-5xl font-black tracking-tighter uppercase leading-none transition-all duration-700",
-              isActive ? "opacity-100 scale-100" : "opacity-0 scale-90"
+              "text-3xl md:text-5xl font-black tracking-tighter uppercase leading-[0.85] transition-all duration-700",
+              isActive ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             )}
           >
             {item.title}
           </h1>
         </div>
 
-        {/* TEXT-GENERATE-EFFECT : En bas du composant */}
-        <div className="w-full min-h-[80px] flex items-end justify-center">
+        {/* TEXT-GENERATE-EFFECT : Zone de texte en bas */}
+        <div className="w-full min-h-[60px] flex items-center justify-center">
           {isActive && (
-            <div className="text-xs md:text-sm font-medium leading-relaxed opacity-90 max-w-[380px]">
+            <div className="text-xs md:text-sm font-medium leading-relaxed opacity-90 max-w-[400px]">
               <TextGenerateEffect
                 words={item.content}
                 filter={false}
