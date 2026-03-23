@@ -30,7 +30,7 @@ const DATA_IMAGES = [
     title: "ÉCOSYSTÈME D'INNOVATION",
     content:
       "L'industrialisation ici est un moteur de scalabilité. Nous bâtissons un terrain fertile où chaque projet devient un pilier de l'évolution commune.",
-    src: "/IMG-20260323-WA0001.jpg",
+    src: "/IMG-20260323-WA0004.jpg",
     alt: "Vision Industrielle",
   },
   {
