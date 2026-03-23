@@ -23,7 +23,7 @@ const DATA_IMAGES = [
     title: "ANYAMA LOGISTIQUE",
     content:
       "Le hub logistique Y4 transforme la commune en un point de passage critique pour l'Afrique de l'Ouest.",
-    src: "/api/placeholder/800/600",
+    src: "/IMG-20260323-WA0003.jpg",
     alt: "Infrastructure Y4",
   },
   {
@@ -31,7 +31,7 @@ const DATA_IMAGES = [
     title: "ZONE INDUSTRIELLE CORE",
     content:
       "Ciment et métallurgie : les moteurs internes garantissant une scalabilité sans friction.",
-    src: "/api/placeholder/800/600",
+    src: "/IMG-20260323-WA0001.jpg",
     alt: "Zone Industrielle",
   },
   {
@@ -39,7 +39,7 @@ const DATA_IMAGES = [
     title: "STADE VECTEUR DE ROI",
     content:
       "Le stade n'est pas qu'un équipement sportif. C'est un signal de renommée permanent qui crédibilise chaque investissement.",
-    src: "/api/placeholder/800/600",
+    src: "/IMG-20260323-WA0002.jpg",
     alt: "Stade Olympique",
   },
 ];
