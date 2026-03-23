@@ -2,11 +2,11 @@
 
 /**
  * @file dataImageCarousel.tsx
- * @description Carousel 3D Anyama.
- * FIX : Navigation par scroll (molette) + Clic de fermeture sur le vide fonctionnel.
+ * @description Carousel 3D Anyama - Optimisation Fluide.
+ * FIX : Conflit Scroll/Click résolu par isolation des couches.
  */
 
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { TextGenerateEffect } from "@/components/frontendkit/ui/text-generate-effect";
@@ -46,15 +46,12 @@ const DATA_IMAGES = [
 export default function DataImageCarousel({ onClose }: DataImageCarouselProps) {
   const [index, setIndex] = useState(0);
   const [mounted, setMounted] = useState(false);
+  const isScrolling = useRef(false); // .useRef : Pour bloquer le scroll fou (debounce).
 
   useEffect(() => {
     setMounted(true);
   }, []);
 
-  /**
-   * handleNext / handlePrev : Logique de changement d'index.
-   * Utilisation de useCallback pour stabiliser les références.
-   */
   const handleNext = useCallback(() => {
     if (index < DATA_IMAGES.length - 1) setIndex((prev) => prev + 1);
   }, [index]);
@@ -63,79 +60,68 @@ export default function DataImageCarousel({ onClose }: DataImageCarouselProps) {
     if (index > 0) setIndex((prev) => prev - 1);
   }, [index]);
 
-  /**
-   * handleScroll : Capte le scroll de la souris ou du trackpad.
-   */
+  // GESTION DU SCROLL FLUIDE
   useEffect(() => {
     const handleWheel = (e: WheelEvent) => {
-      // .deltaY : Valeur verticale du scroll.
-      // Si > 0 : vers le bas (suivant), si < 0 : vers le haut (précédent).
-      if (e.deltaY > 50) handleNext();
-      else if (e.deltaY < -50) handlePrev();
+      if (isScrolling.current) return; // Bloque si une animation est en cours.
+
+      if (Math.abs(e.deltaY) > 10) {
+        // Seuil de sensibilité.
+        isScrolling.current = true;
+        if (e.deltaY > 0) handleNext();
+        else handlePrev();
+
+        // Timeout pour libérer le scroll et éviter le défilement brusque.
+        setTimeout(() => {
+          isScrolling.current = false;
+        }, 600);
+      }
     };
 
-    window.addEventListener("wheel", handleWheel);
+    window.addEventListener("wheel", handleWheel, { passive: true });
     return () => window.removeEventListener("wheel", handleWheel);
   }, [handleNext, handlePrev]);
-
-  /**
-   * handleDragEnd : Navigation par swipe (écran tactile ou souris).
-   */
-  const handleDragEnd = (_: any, info: any) => {
-    const threshold = 50;
-    // .info.offset.x : Décalage horizontal capturé par Framer Motion.
-    if (info.offset.x < -threshold) handleNext();
-    else if (info.offset.x > threshold) handlePrev();
-  };
 
   if (!mounted) return null;
 
   return (
-    <div
-      // CLIC SUR LE VIDE : Vérifie que l'utilisateur n'a pas cliqué sur une carte.
-      onClick={(e) => {
-        if (e.target === e.currentTarget) onClose?.();
-      }}
-      className="relative h-screen w-full bg-black/98 backdrop-blur-xl overflow-hidden flex items-center justify-center font-sans cursor-zoom-out"
-    >
-      {/* ZONE DE CAPTURE (DRAG) : Réduite pour ne pas masquer tout le fond noir. */}
-      <motion.div
-        drag="x"
-        dragConstraints={{ left: 0, right: 0 }}
-        onDragEnd={handleDragEnd}
-        // pointer-events-auto ici, mais on laisse le fond (parent) accessible.
-        className="absolute inset-0 z-[10] cursor-grab active:cursor-grabbing"
-        style={{ touchAction: "none" }}
+    <div className="relative h-screen w-full bg-black/95 backdrop-blur-xl overflow-hidden flex items-center justify-center">
+      {/* COUCHE 1 : LE VIDE (Fermeture) */}
+      <div
+        onClick={onClose}
+        className="absolute inset-0 z-0 cursor-zoom-out"
+        aria-hidden="true"
       />
 
-      {/* CONTENEUR DES CARTES 3D */}
+      {/* COUCHE 2 : SCÈNE 3D (Interaction Cartes) */}
       <div
-        className="relative w-full h-full flex items-center justify-center z-[20] pointer-events-none"
+        className="relative z-10 w-full h-full flex items-center justify-center pointer-events-none"
         style={{ perspective: "1200px" }}
       >
         <motion.div
-          className="relative flex items-center justify-center w-full max-w-[500px]"
+          className="relative flex items-center justify-center w-full max-w-[500px] pointer-events-auto"
           style={{ transformStyle: "preserve-3d" }}
         >
           {DATA_IMAGES.map((item, i) => (
-            <ImageCard key={item.id} item={item} position={i - index} />
+            <ImageCard
+              key={item.id}
+              item={item}
+              position={i - index}
+              onNext={handleNext}
+              onPrev={handlePrev}
+            />
           ))}
         </motion.div>
       </div>
 
-      {/* INDICATEURS DE PROGRESSION */}
-      <div
-        className="absolute bottom-16 flex gap-4 z-[30]"
-        onClick={(e) => e.stopPropagation()}
-      >
+      {/* COUCHE 3 : INDICATEURS */}
+      <div className="absolute bottom-16 flex gap-4 z-20 pointer-events-auto">
         {DATA_IMAGES.map((_, i) => (
           <div
             key={i}
             className={cn(
               "h-[2px] transition-all duration-700",
-              index === i
-                ? "w-16 bg-emerald-500 shadow-[0_0_20px_#10b981]"
-                : "w-4 bg-white/10"
+              index === i ? "w-16 bg-emerald-500" : "w-4 bg-white/10"
             )}
           />
         ))}
@@ -144,77 +130,57 @@ export default function DataImageCarousel({ onClose }: DataImageCarouselProps) {
   );
 }
 
-function ImageCard({ item, position }: { item: any; position: number }) {
+function ImageCard({ item, position, onNext, onPrev }: any) {
   const isActive = position === 0;
-  const xOffset =
-    typeof window !== "undefined" && window.innerWidth < 768 ? 340 : 540;
 
   return (
     <motion.div
-      initial={false}
-      animate={{
-        x: position * xOffset,
-        rotateY: position * -25, // Dot notation : rotation sur l'axe Y.
-        z: isActive ? 0 : -500, // Dot notation : profondeur Z.
-        opacity: isActive ? 1 : 0.2,
-        scale: isActive ? 1 : 0.8,
+      drag="x" // .drag : Le drag est maintenant limité à la carte elle-même.
+      dragConstraints={{ left: 0, right: 0 }}
+      onDragEnd={(_, info) => {
+        if (info.offset.x < -50) onNext();
+        if (info.offset.x > 50) onPrev();
       }}
-      transition={{ type: "spring", stiffness: 90, damping: 20 }}
-      // pointer-events-auto : Indispensable pour que la carte soit cliquable/protégée.
+      animate={{
+        x:
+          position *
+          (typeof window !== "undefined" && window.innerWidth < 768
+            ? 320
+            : 520),
+        rotateY: position * -25,
+        z: isActive ? 0 : -400,
+        opacity: isActive ? 1 : 0.3,
+        scale: isActive ? 1 : 0.85,
+      }}
+      transition={{ type: "spring", stiffness: 100, damping: 20 }}
+      onClick={(e) => e.stopPropagation()} // Protège la carte du clic de fermeture.
       className={cn(
-        "absolute w-[88vw] md:w-[500px] h-[480px] md:h-[580px] overflow-hidden border cursor-default pointer-events-auto",
-        isActive ? "border-emerald-500/30 shadow-2xl" : "border-white/5"
+        "absolute w-[85vw] md:w-[500px] h-[500px] md:h-[600px] overflow-hidden border cursor-grab active:cursor-grabbing",
+        isActive
+          ? "border-emerald-500/40 shadow-[0_0_50px_rgba(0,0,0,0.8)]"
+          : "border-white/5"
       )}
-      // e.stopPropagation() : Empêche la fermeture du carrousel si on clique sur la carte.
-      onClick={(e) => e.stopPropagation()}
-      style={{ borderRadius: "14px" }}
+      style={{ borderRadius: "16px", transformStyle: "preserve-3d" }}
     >
-      {/* COUCHE IMAGE */}
-      <div className="absolute inset-0 z-0">
-        <Image
-          src={item.src}
-          alt={item.alt}
-          fill
-          className="object-cover"
-          priority={isActive}
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent" />
-      </div>
+      <Image
+        src={item.src}
+        alt={item.alt}
+        fill
+        className="object-cover select-none"
+        priority={isActive}
+      />
+      <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent" />
 
-      {/* COUCHE TEXTE (DESIGN SYSTÈME NONNZY) */}
-      <div className="relative z-10 h-full flex flex-col justify-end p-10 md:p-14">
-        <div className="flex justify-end mb-8">
-          <div className="relative">
-            <h1
-              className={cn(
-                "text-xl md:text-2xl font-black tracking-[0.25em] uppercase leading-none transition-all duration-1000",
-                isActive
-                  ? "opacity-100 translate-x-0"
-                  : "opacity-0 translate-x-10"
-              )}
-            >
-              {item.title}
-            </h1>
-            <motion.div
-              initial={{ width: 0 }}
-              animate={{ width: isActive ? "100%" : 0 }}
-              transition={{ duration: 1.5, ease: "circOut", delay: 0.6 }}
-              className="h-[1px] bg-emerald-500 mt-3 shadow-[0_0_10px_#10b981]"
-            />
+      <div className="relative z-10 h-full flex flex-col justify-end p-10 md:p-14 pointer-events-none">
+        <h1 className="text-xl md:text-2xl font-black tracking-widest uppercase mb-4">
+          {item.title}
+        </h1>
+        <div className="h-[1px] w-full bg-emerald-500/50 mb-6" />
+        {isActive && (
+          <div className="text-[11px] font-mono opacity-60 leading-relaxed uppercase tracking-wider">
+            <TextGenerateEffect words={item.content} />
           </div>
-        </div>
-
-        <div className="w-full min-h-[60px] flex justify-start border-l border-emerald-500/30 pl-6 text-junior">
-          {isActive && (
-            <div className="text-[10px] md:text-[11px] font-mono font-bold uppercase tracking-[0.15em] opacity-60 max-w-[340px] leading-relaxed">
-              <TextGenerateEffect
-                words={item.content}
-                filter={false}
-                duration={0.4}
-              />
-            </div>
-          )}
-        </div>
+        )}
       </div>
     </motion.div>
   );
