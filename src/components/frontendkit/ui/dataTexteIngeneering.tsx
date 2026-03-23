@@ -241,12 +241,7 @@ export const DataTexteIngeneering = () => {
             exit={{ opacity: 0 }}
             className="fixed inset-0 z-[200] bg-[var(--background)] flex items-center justify-center"
           >
-            <button
-              onClick={() => setShowCarousel(false)}
-              className="absolute top-10 right-10 z-[210] p-4 text-[var(--foreground)] hover:rotate-90 transition-transform duration-500"
-            >
-              <X size={32} strokeWidth={3} />
-            </button>
+            <button className="absolute top-10 right-10 z-[210] p-4 text-[var(--foreground)] hover:rotate-90 transition-transform duration-500"></button>
             <div className="w-full h-full">
               <DataImageCarousel />
             </div>
