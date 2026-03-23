@@ -2,8 +2,14 @@
 
 /**
  * @file dataImageCarousel.tsx
- * @description Carousel 3D sans icône de fermeture.
- * @logic Le vide (background) hérite du pouvoir de fermeture via la prop onClose.
+ * @version 1.0.1 (VISION_ANYAMA_2026)
+ * @status SOUVERAIN - INTERDICTION DE MODIFICATION DE STRUCTURE
+ * -----------------------------------------------------------------------
+ * PROTOCOLE :
+ * - ZERO ICONE : Fermeture déléguée au clic sur l'overlay (onClose).
+ * - SEMANTIQUE : Focus sur l'évolutivité de la commune d'Anyama.
+ * - DESIGN : Typographie asymétrique, titre à droite, soulignement émeraude.
+ * -----------------------------------------------------------------------
  */
 
 import React, { useState, useEffect } from "react";
@@ -19,27 +25,27 @@ interface DataImageCarouselProps {
 const DATA_IMAGES = [
   {
     id: "01",
-    title: "ANYAMA LOGISTIQUE",
+    title: "ANYAMA : PLATEFORME LOGISTIQUE",
     content:
-      "Le hub logistique Y4 transforme la commune en un point de passage critique pour l'Afrique de l'Ouest.",
+      "Une infrastructure pensée pour l'évolutivité, transformant chaque flux en donnée de croissance pour le futur de la région.",
     src: "/IMG-20260323-WA0003.jpg",
-    alt: "Infrastructure Y4",
+    alt: "Vision Logistique",
   },
   {
     id: "02",
-    title: "ZONE INDUSTRIELLE CORE",
+    title: "ÉCOSYSTÈME D'INNOVATION",
     content:
-      "Ciment et métallurgie : les moteurs internes garantissant une scalabilité sans friction.",
+      "L'industrialisation ici est un moteur de scalabilité. Nous bâtissons un terrain fertile où chaque projet devient un pilier de l'évolution commune.",
     src: "/IMG-20260323-WA0001.jpg",
-    alt: "Zone Industrielle",
+    alt: "Vision Industrielle",
   },
   {
     id: "03",
-    title: "STADE VECTEUR DE ROI",
+    title: "SIGNAL DE MODERNITÉ",
     content:
-      "Le stade n'est pas qu'un équipement sportif. C'est un signal de renommée permanent qui crédibilise chaque investissement.",
+      "Nos infrastructures majeures sont des actifs de confiance, garantissant aux investisseurs un environnement stable, ambitieux et tourné vers demain.",
     src: "/IMG-20260323-WA0002.jpg",
-    alt: "Stade Olympique",
+    alt: "Vision Rayonnement",
   },
 ];
 
@@ -51,7 +57,7 @@ export default function DataImageCarousel({ onClose }: DataImageCarouselProps) {
 
   const handleDragEnd = (_: any, info: any) => {
     const threshold = 30;
-    // .info.offset.x : Accès par point au vecteur de mouvement.
+    // .info.offset.x : Accès par point (dot notation) au vecteur de mouvement horizontal.
     if (info.offset.x < -threshold && index < DATA_IMAGES.length - 1)
       setIndex(index + 1);
     else if (info.offset.x > threshold && index > 0) setIndex(index - 1);
@@ -61,21 +67,18 @@ export default function DataImageCarousel({ onClose }: DataImageCarouselProps) {
 
   return (
     <div
-      // LE POUVOIR DU VIDE : Le clic ici déclenche la fermeture.
+      // POUVOIR DU VIDE : Le clic sur le fond ferme le composant.
       onClick={onClose}
-      className="relative h-screen w-full bg-black/95 backdrop-blur-md overflow-hidden flex items-center justify-center font-sans cursor-zoom-out"
+      className="relative h-screen w-full bg-black/98 backdrop-blur-xl overflow-hidden flex items-center justify-center font-sans cursor-zoom-out"
     >
-      {/* ZONE INTERACTIVE DE DRAG */}
       <motion.div
         drag="x"
         dragConstraints={{ left: 0, right: 0 }}
         onDragEnd={handleDragEnd}
-        // e.stopPropagation : Empêche le clic de fermeture lors du drag.
         onClick={(e) => e.stopPropagation()}
         className="absolute w-full h-[75vh] z-[100] cursor-grab active:cursor-grabbing"
       />
 
-      {/* SCÈNE 3D */}
       <div
         className="relative w-full h-full flex items-center justify-center"
         style={{ perspective: "1200px" }}
@@ -91,7 +94,6 @@ export default function DataImageCarousel({ onClose }: DataImageCarouselProps) {
         </motion.div>
       </div>
 
-      {/* INDICATEURS DE PROGRESSION */}
       <div
         className="absolute bottom-16 flex gap-4 z-[110]"
         onClick={(e) => e.stopPropagation()}
@@ -103,7 +105,7 @@ export default function DataImageCarousel({ onClose }: DataImageCarouselProps) {
               "h-[2px] transition-all duration-700",
               index === i
                 ? "w-16 bg-emerald-500 shadow-[0_0_20px_#10b981]"
-                : "w-4 bg-white/20"
+                : "w-4 bg-white/10"
             )}
           />
         ))}
@@ -122,23 +124,19 @@ function ImageCard({ item, position }: { item: any; position: number }) {
       initial={false}
       animate={{
         x: position * xOffset,
-        rotateY: position * -25,
-        z: isActive ? 0 : -500,
+        rotateY: position * -25, // Effet cylindre 3D.
+        z: isActive ? 0 : -500, // Profondeur Frazier.
         opacity: isActive ? 1 : 0.2,
         scale: isActive ? 1 : 0.8,
       }}
       transition={{ type: "spring", stiffness: 90, damping: 20 }}
-      // Protection contre la fermeture lors du clic sur la carte.
       onClick={(e) => e.stopPropagation()}
       className={cn(
         "absolute w-[88vw] md:w-[500px] h-[480px] md:h-[580px] overflow-hidden border cursor-default",
-        isActive
-          ? "border-emerald-500/30 shadow-[0_0_50px_rgba(0,0,0,0.5)]"
-          : "border-white/5"
+        isActive ? "border-emerald-500/30 shadow-2xl" : "border-white/5"
       )}
       style={{ borderRadius: "14px" }}
     >
-      {/* MEDIA LAYER */}
       <div className="absolute inset-0 z-0">
         <Image
           src={item.src}
@@ -147,10 +145,9 @@ function ImageCard({ item, position }: { item: any; position: number }) {
           className="object-cover"
           priority={isActive}
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent" />
       </div>
 
-      {/* CONTENT LAYER */}
       <div className="relative z-10 h-full flex flex-col justify-end p-10 md:p-14">
         <div className="flex justify-end mb-8">
           <div className="relative">
