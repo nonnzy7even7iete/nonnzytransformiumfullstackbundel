@@ -111,7 +111,7 @@ export default function HomePage() {
           <SideCard
             className="!w-full !max-w-none !min-w-0 h-full"
             imageSrc="/IMG-20260228-WA0000.jpg"
-            title="Zy recherche un financement oriente workspace & Workflow "
+            title="Zy recherche une subvention oriente workspace & Workflow "
             description="Exécution de la logique métier en latence..."
             location="Anyama, Abidjan , Côte d'Ivoire"
           />
