@@ -28,7 +28,7 @@ const DATA_IMAGES = [
     title: "ANYAMA : HUB LOGISTIQUE SOUVERAIN",
     content:
       "Plus qu'une plateforme, une architecture de flux interconnectés. Nous optimisons chaque point de passage pour garantir une scalabilité industrielle sans précédent dans la région.",
-    src: "/IMG-20260329-WA0002.jpg3-WA0003.jpg",
+    src: "/IMG-20260329-WA0002.jpg",
     alt: "Vision Logistique",
   },
   {
