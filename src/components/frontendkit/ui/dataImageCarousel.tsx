@@ -41,9 +41,9 @@ const DATA_IMAGES = [
   },
   {
     id: "03",
-    title: "SIGNAL D INTELLIGENCE ECONOMIQUE & MATURITE DATA",
+    title: "SIGNAL D INDEXATION A L INTELLIGENCE ECONOMIQUE & MATURITE DATA",
     content:
-      "Nos actifs stratégiques sont des vecteurs de transparence.synchrone sur des axes de probabilite une frequences un mantra , la croissance  n'est pas une option, c'est le socle d'une  preuve de valeurs  stable , oriente intelligence economique & maturite data.",
+      "Nos actifs stratégiques sont des vecteurs de transparence.synchrone sur des axes de probabilite de type valeurs sure , la croissance  n'est pas une option, Il sagit d un imparatif categorique  d'une preuve de valeurs  stable , oriente intelligence economique & maturite data.",
     src: "/IMG-20260329-WA0001.jpg",
     alt: "Vision Rayonnement",
   },
