@@ -20,7 +20,7 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Nonnzy App | Protocol 2026",
+  title: "Nonnzytransformium | Algortihme d intelligence economique on-chain ",
   description: "Decision Resilience Architecture",
 };
 
