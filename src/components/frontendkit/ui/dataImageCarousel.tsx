@@ -51,7 +51,7 @@ const DATA_IMAGES: DataItem[] = [
     title: "SIGNAL DE MODERNITÉ & ROI",
     content:
       "Nos actifs stratégiques agissent comme des vecteurs de confiance. À Anyama, la modernité n'est pas une option, c'est le socle d'un rendement économique stable et ambitieux.",
-    src: "/IMG-20260323-WA0002.jpg",
+    src: "/IMG-20260329-WA0001.jpg",
     alt: "Vision Rayonnement",
   },
 ];
