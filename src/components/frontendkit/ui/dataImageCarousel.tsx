@@ -6,9 +6,8 @@
  * @version 1.2.0
  * -----------------------------------------------------------------------
  * CHANGELOG :
- * - TEXTES : Réécriture pour un éclairage stratégique (Souveraineté, ROI, Hub).
- * - UI : Ajout de la bordure d'accentuation émeraude sur le texte de la carte.
- * - PERF : Maintien du scroll fluide et de la fermeture chirurgicale.
+ * - AUDIO : Insertion chirurgicale du composant AudioEngine.
+ * - STRUCTURE : Préservation radicale de l'existant.
  * -----------------------------------------------------------------------
  */
 
@@ -17,6 +16,8 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import { TextGenerateEffect } from "@/components/frontendkit/ui/text-generate-effect";
 import { cn } from "@/lib/utils";
+// .import : Importation du moteur audio universel.
+import { AudioEngine } from "@/components/frontendkit/ui/AudioEngine";
 
 interface DataImageCarouselProps {
   onClose?: () => void;
@@ -28,7 +29,7 @@ const DATA_IMAGES = [
     title: "ANYAMA : HUB LOGISTIQUE SOUVERAIN",
     content:
       "Plus qu'une plateforme, une architecture de flux interconnectés. Nous optimisons chaque point de passage pour garantir une scalabilité industrielle sans précédent dans la région.",
-    src: "/IMG-20260329-WA0002.jpg",
+    src: "/IMG-20260323-WA0003.jpg",
     alt: "Vision Logistique",
   },
   {
@@ -41,10 +42,10 @@ const DATA_IMAGES = [
   },
   {
     id: "03",
-    title: "SIGNAL D INDEXATION A L INTELLIGENCE ECONOMIQUE & MATURITE DATA",
+    title: "SIGNAL DE MODERNITÉ & ROI",
     content:
-      "Nos actifs stratégiques sont des vecteurs de transparence.synchrone sur des axes de probabilite de type valeurs sure , la croissance  n'est pas une option, Il sagit d un imparatif categorique  d'une preuve de valeurs  stable , oriente intelligence economique & maturite data.",
-    src: "/IMG-20260329-WA0001.jpg",
+      "Nos actifs stratégiques agissent comme des vecteurs de confiance. À Anyama, la modernité n'est pas une option, c'est le socle d'un rendement économique stable et ambitieux.",
+    src: "/IMG-20260323-WA0002.jpg",
     alt: "Vision Rayonnement",
   },
 ];
@@ -66,7 +67,6 @@ export default function DataImageCarousel({ onClose }: DataImageCarouselProps) {
     if (index > 0) setIndex((prev) => prev - 1);
   }, [index]);
 
-  // SCROLL FLUIDE AVEC DEBOUNCE
   useEffect(() => {
     const handleWheel = (e: WheelEvent) => {
       if (isScrolling.current) return;
@@ -87,7 +87,14 @@ export default function DataImageCarousel({ onClose }: DataImageCarouselProps) {
 
   return (
     <div className="relative h-screen w-full bg-black/95 backdrop-blur-xl overflow-hidden flex items-center justify-center">
-      {/* COUCHE CLIC EXTÉRIEUR */}
+      {/* INSERTION CHIRURGICALE : MOTEUR AUDIO PILOTÉ PAR PROPS */}
+      <AudioEngine
+        src="/Extrait du discours de Félix Houphouët-Boigny découragement n_est pas ivoirien(480P)(mp3).mp3"
+        isPlaying={true}
+        volume={0.7}
+        loop={false}
+      />
+
       <div
         onClick={onClose}
         className="absolute inset-0 z-0 cursor-zoom-out"
@@ -177,7 +184,6 @@ function ImageCard({ item, position, onNext, onPrev }: any) {
           {item.title}
         </h1>
 
-        {/* ACCENT BORDER : Le trait vertical émeraude ajouté ici */}
         <div className="flex gap-6 items-stretch">
           <div className="w-[2px] bg-emerald-500 shadow-[0_0_10px_#10b981] shrink-0" />
           <div className="min-h-[60px]">
