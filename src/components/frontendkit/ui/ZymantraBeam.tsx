@@ -3,7 +3,7 @@
 /**
  * @file ZymantraBeam.tsx
  * @description Architecture de focus 3D avec optimisation du ratio d'image.
- * @version 1.0.1
+ * @version 1.0.2
  */
 
 import React, {
@@ -208,7 +208,7 @@ export default function ZymantraBeam() {
     >
       <MultiStepLoader
         loadingStates={[
-          { text: "Bientôt" },
+          { text: "Bientôt..." },
           { text: "Interconnexion stratégique des nœuds sectoriels" },
           { text: "Modélisation des matrices de souveraineté" },
           { text: "Agrégation des flux d'actifs territoriaux" },
@@ -216,10 +216,11 @@ export default function ZymantraBeam() {
           { text: "Indexation haute fréquence du ROI communal" },
           { text: "Génération des vecteurs de prédictibilité" },
           { text: "Cartographie décisionnelle de croissance" },
-          { text: "Calculateur l'équilibre structurel validé" },
+          { text: "Calculateur d'équilibre structurel validé" },
         ]}
         loading={loading}
-        duration={1000}
+        // LE TIMEOUT REFACTO : augmentation de 1000ms à 3000ms pour ralentir l'affichage et fluidifier le rythme
+        duration={3000}
         onClose={() => setLoading(false)}
       />
 
