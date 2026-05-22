@@ -159,7 +159,7 @@ export default function ZymantraBeam() {
       title: "DATA DRIVEN ARCHITECT",
       description:
         "CHAKA JUNIOR DIANÉ. SOFTWARE ENGINEER & DATA ANALYST. CONCEPTION DE SYSTÈMES ALGORITHMIQUES ORIENTÉS DATA-DRIVEN. MODÉLISATION ET STRUCTURATION DES DYNAMIQUES DE DONNÉES.",
-      image: "/IMG-20260311-WA0001.jpg",
+      image: "/IMG-20260522-WA0000.jpg",
       isUppercase: true,
     },
     {

@@ -2,21 +2,21 @@
 
 /**
  * @file dataImageCarousel.tsx
- * @description Carousel 3D Anyama - Expérience Multisensorielle.
+ * @description Carousel 3D Anyama - Experience Multisensorielle.
  * @version 1.5.1
  */
 
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import Image from "next/image";
-import { motion, PanInfo } from "framer-motion"; // Import de PanInfo pour le typage précis du drag
+import { motion, PanInfo } from "framer-motion"; // Import de PanInfo pour le typage precis du drag
 import { TextGenerateEffect } from "@/components/frontendkit/ui/text-generate-effect";
 import { cn } from "@/lib/utils";
 
 import { AudioEngine } from "@/components/frontendkit/ui/AudioEngine";
 import { MasterAuroraBackground } from "@/components/frontendkit/ui/MasterAuroraBackground";
 
-// Définition de l'interface pour les données d'image
-// Cela permet à VS Code de comprendre la structure de chaque objet dans DATA_IMAGES
+// Definition de l'interface pour les donnees d'image
+// Cela permet a VS Code de comprendre la structure de chaque objet dans DATA_IMAGES
 interface DataItem {
   id: string;
   title: string;
@@ -35,7 +35,7 @@ const DATA_IMAGES: DataItem[] = [
     title: "ANYAMA : HUB LOGISTIQUE SOUVERAIN",
     content:
       "Plus qu'une plateforme, une architecture de flux interconnectés. Nous optimisons chaque point de passage pour garantir une scalabilité industrielle sans précédent dans la région.",
-    src: "/IMG-20260323-WA0003.jpg",
+    src: "/IMG-20260329-WA0002(1).jpg",
     alt: "Vision Logistique",
   },
   {
@@ -43,7 +43,7 @@ const DATA_IMAGES: DataItem[] = [
     title: "ÉCOSYSTÈME D'INNOVATION DATA-DRIVEN",
     content:
       "L'industrialisation est pilotée par la donnée. Nous bâtissons un environnement où chaque infrastructure génère de la valeur mesurable, sécurisant ainsi l'avenir des investissements.",
-    src: "/IMG-20260323-WA0004.jpg",
+    src: "/IMG-20260522-WA0002.jpg",
     alt: "Vision Industrielle",
   },
   {
@@ -51,25 +51,28 @@ const DATA_IMAGES: DataItem[] = [
     title: "SIGNAL DE MODERNITÉ & ROI",
     content:
       "Nos actifs stratégiques agissent comme des vecteurs de confiance. À Anyama, la modernité n'est pas une option, c'est le socle d'un rendement économique stable et ambitieux.",
-    src: "/IMG-20260329-WA0001.jpg",
+    src: "/IMG-20260522-WA0001.jpg",
     alt: "Vision Rayonnement",
   },
 ];
 
 export default function DataImageCarousel({ onClose }: DataImageCarouselProps) {
+  // useState declare la variable d'etat index et sa fonction de modification setIndex
   const [index, setIndex] = useState(0);
+  // useState declare la variable d'etat mounted pour controler le rendu cote client
   const [mounted, setMounted] = useState(false);
 
-  // useRef permet de stocker une valeur qui persiste sans déclencher de re-rendu
+  // useRef permet de stocker une valeur qui persiste sans declencher de re-rendu
   // Ici, on l'utilise pour bloquer le scroll pendant l'animation
   const isScrolling = useRef(false);
 
+  // useEffect s'execute apres l'affichage du composant pour valider le montage
   useEffect(() => {
     setMounted(true);
   }, []);
 
-  // useCallback mémorise la fonction pour éviter de la recréer à chaque rendu
-  // .length accède à la propriété "longueur" du tableau (notation par point)
+  // useCallback memorise la fonction pour eviter de la recreer a chaque rendu
+  // .length accede a la propriete "longueur" du tableau (notation par point)
   const handleNext = useCallback(() => {
     if (index < DATA_IMAGES.length - 1) setIndex((prev) => prev + 1);
   }, [index]);
@@ -78,30 +81,46 @@ export default function DataImageCarousel({ onClose }: DataImageCarouselProps) {
     if (index > 0) setIndex((prev) => prev - 1);
   }, [index]);
 
+  // CORRECTION DES ERREURS DE PORTÉE : Creation de references placees APRES handleNext et handlePrev
+  // L'objet renvoye par useRef possede la propriete unique .current (notation par point)
+  const handleNextRef = useRef(handleNext);
+  const handlePrevRef = useRef(handlePrev);
+
+  // Ce useEffect synchronise chirurgicalement les references des que handleNext ou handlePrev changent d'etat
+  // La notation par point (.current) permet d'assigner la nouvelle logique sans declencher de re-rendu
+  useEffect(() => {
+    handleNextRef.current = handleNext;
+    handlePrevRef.current = handlePrev;
+  }, [handleNext, handlePrev]);
+
   useEffect(() => {
     const handleWheel = (e: WheelEvent) => {
+      // .current accede au booleen stocke dans la reference isScrolling (notation par point)
       if (isScrolling.current) return;
 
-      // Math.abs() retourne la valeur absolue (transforme -10 en 10)
-      // e.deltaY représente la force du défilement vertical sur la souris
+      // Math.abs() est une methode statique de l'objet global Math qui retourne la valeur absolue
+      // e.deltaY represente la distance de defilement vertical de la molette (notation par point)
       if (Math.abs(e.deltaY) > 10) {
         isScrolling.current = true;
-        if (e.deltaY > 0) handleNext();
-        else handlePrev();
 
-        // setTimeout retarde l'exécution de la fonction fléchée de 600ms
+        // Execution securisee des fonctions stockees dans la propriete .current (notation par point)
+        if (e.deltaY > 0) handleNextRef.current();
+        else handlePrevRef.current();
+
+        // setTimeout retarde l'execution de la fonction flechee de 600ms pour temporiser le scroll
         setTimeout(() => {
           isScrolling.current = false;
         }, 600);
       }
     };
 
-    // window.addEventListener attache l'événement "wheel" (molette) au navigateur
+    // window.addEventListener attache l'evenement "wheel" (molette) au navigateur
+    // Le tableau de dependances vide [] garantit que l'ecouteur est lie une seule fois au montage
     window.addEventListener("wheel", handleWheel, { passive: true });
 
-    // Nettoyage de l'événement quand le composant est détruit
+    // Nettoyage de l'evenement quand le composant est detruit
     return () => window.removeEventListener("wheel", handleWheel);
-  }, [handleNext, handlePrev]);
+  }, []);
 
   if (!mounted) return null;
 
@@ -159,7 +178,7 @@ export default function DataImageCarousel({ onClose }: DataImageCarouselProps) {
   );
 }
 
-// Typage des arguments pour éviter que VS Code ne "râle" sur le 'any'
+// Typage des arguments pour eviter que VS Code ne renvoie une erreur sur le type 'any'
 interface ImageCardProps {
   item: DataItem;
   position: number;
@@ -174,7 +193,7 @@ function ImageCard({ item, position, onNext, onPrev }: ImageCardProps) {
     <motion.div
       drag="x"
       dragConstraints={{ left: 0, right: 0 }}
-      // info.offset.x accède à la distance parcourue par le doigt/souris (notation par point)
+      // info.offset.x accede a la distance parcourue par le doigt/souris (notation par point)
       onDragEnd={(_e, info: PanInfo) => {
         if (info.offset.x < -50) onNext();
         if (info.offset.x > 50) onPrev();
@@ -191,7 +210,7 @@ function ImageCard({ item, position, onNext, onPrev }: ImageCardProps) {
         scale: isActive ? 1 : 0.85,
       }}
       transition={{ type: "spring", stiffness: 100, damping: 20 }}
-      onClick={(e) => e.stopPropagation()} // e.stopPropagation() empêche le clic de fermer le carousel
+      onClick={(e) => e.stopPropagation()} // e.stopPropagation() empeche le clic de fermer le carousel
       className={cn(
         "absolute w-[85vw] md:w-[500px] h-[500px] md:h-[600px] overflow-hidden border cursor-grab active:cursor-grabbing",
         isActive
