@@ -35,7 +35,7 @@ const DATA_IMAGES: DataItem[] = [
     id: "01",
     title: "ANYAMA : HUB LOGISTIQUE SOUVERAIN",
     content:
-      "Plus qu'une plateforme, une architecture de flux interconnectés. Nous optimisons chaque point de passage pour garantir une scalabilité industrielle sans précédent dans la région.",
+      "Une infrastructure prédictive neutralisant les risques opérationnels par la modélisation de données. Nous sécurisons chaque flux transactionnel pour garantir la stabilité des actifs et un retour sur investissement à performance structurelle mesurable.",
     src: "/IMG-20260329-WA0002(1).jpg",
     alt: "Vision Logistique",
   },
@@ -43,7 +43,7 @@ const DATA_IMAGES: DataItem[] = [
     id: "02",
     title: "ÉCOSYSTEME D'INNOVATION DATA-DRIVEN",
     content:
-      "L'industrialisation est pilotée par la donnée. Nous bâtissons un environnement où chaque infrastructure génère de la valeur mesurable, sécurisant ainsi l'avenir des investissements.",
+      "Une matrice industrielle convertie en actifs dérisqués par l'analyse prédictive. Nous garantissons une traçabilité absolue des flux financiers et opérationnels pour verrouiller la rentabilité et immuniser le capital contre les chocs de marché.",
     src: "/IMG-20260522-WA0002.jpg",
     alt: "Vision Industrielle",
   },
@@ -51,7 +51,7 @@ const DATA_IMAGES: DataItem[] = [
     id: "03",
     title: "SIGNAL DE MODERNITÉ & ROI",
     content:
-      "Nos actifs stratégiques agissent comme des vecteurs de confiance. À Anyama, la modernité n'est pas une option, c'est le socle d'un rendement économique stable et ambitieux.",
+      "Nos actifs de type : levier influence stratégique opèrent comme des nœuds d'indexation multidimensionnelle sur les pipelines régionaux. Notre partitionnement topologique convertit la centralité d'Anyama en un graphe de dépendances asymétrique, verrouillant le linéage des flux pour extraire des rentes de données à persistance immuable.",
     src: "/IMG-20260522-WA0001.jpg",
     alt: "Vision Rayonnement",
   },
