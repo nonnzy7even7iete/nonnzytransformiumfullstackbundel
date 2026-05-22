@@ -193,7 +193,7 @@ export default function ZymantraBeam() {
     },
     {
       badge: "P-R-S",
-      title: "Algo Zy Radar",
+      title: "Algorithme Matrix Engine Zy ",
       description:
         "Anyama : cluster d'ingestion haute fréquence indexant la Côte d'Ivoire au sommet des chaînes de valeur globales, opérant le data-scaling des flux territoriaux en pipelines d'actifs distribués à haut rendement et à performance systémique exponentielle.",
       image: "/IMG-20260116-WA0000.jpg",
