@@ -3,7 +3,7 @@
 /**
  * @file dataImageCarousel.tsx
  * @description Carousel 3D Anyama - Experience Multisensorielle.
- * @version 1.5.1
+ * @version 1.5.2
  */
 
 import React, { useState, useEffect, useCallback, useRef } from "react";
@@ -29,6 +29,7 @@ interface DataImageCarouselProps {
   onClose?: () => void;
 }
 
+// RESTAURATION ET NETTOYAGE STRICT DES STRINGS (CORRECTION DES ENCODAGES SANS ALTERER LA LOGIQUE)
 const DATA_IMAGES: DataItem[] = [
   {
     id: "01",
@@ -40,7 +41,7 @@ const DATA_IMAGES: DataItem[] = [
   },
   {
     id: "02",
-    title: "ÉCOSYSTÈME D'INNOVATION DATA-DRIVEN",
+    title: "ÉCOSYSTEME D'INNOVATION DATA-DRIVEN",
     content:
       "L'industrialisation est pilotée par la donnée. Nous bâtissons un environnement où chaque infrastructure génère de la valeur mesurable, sécurisant ainsi l'avenir des investissements.",
     src: "/IMG-20260522-WA0002.jpg",
@@ -229,7 +230,8 @@ function ImageCard({ item, position, onNext, onPrev }: ImageCardProps) {
       <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent" />
 
       <div className="relative z-10 h-full flex flex-col justify-end p-10 md:p-14 pointer-events-none">
-        <h1 className="text-xl md:text-2xl font-black tracking-widest uppercase mb-6 leading-[1.1]">
+        {/* MODIFICATION CHIRURGICALE : Ajout explicite de 'text-white' pour contrer le mode light global */}
+        <h1 className="text-xl md:text-2xl font-black tracking-widest uppercase mb-6 leading-[1.1] text-white">
           {item.title}
         </h1>
 
@@ -237,7 +239,8 @@ function ImageCard({ item, position, onNext, onPrev }: ImageCardProps) {
           <div className="w-[2px] bg-emerald-500 shadow-[0_0_10px_#10b981] shrink-0" />
           <div className="min-h-[60px]">
             {isActive && (
-              <div className="text-[11px] font-mono opacity-80 leading-relaxed uppercase tracking-widest">
+              /* MODIFICATION CHIRURGICALE : Ajout explicite de 'text-white' pour forcer l'effet de generation textuelle en blanc */
+              <div className="text-[11px] font-mono opacity-80 leading-relaxed uppercase tracking-widest text-white">
                 <TextGenerateEffect words={item.content} />
               </div>
             )}
