@@ -208,9 +208,15 @@ export default function ZymantraBeam() {
     >
       <MultiStepLoader
         loadingStates={[
-          { text: "Synchronisation..." },
-          { text: "Analyse Flux..." },
-          { text: "Calcul Zy..." },
+          { text: "Bientôt" },
+          { text: "Interconnexion stratégique des nœuds sectoriels" },
+          { text: "Modélisation des matrices de souveraineté" },
+          { text: "Agrégation des flux d'actifs territoriaux" },
+          { text: "Algorithme Zy : Calcul d'élasticité fiscale" },
+          { text: "Indexation haute fréquence du ROI communal" },
+          { text: "Génération des vecteurs de prédictibilité" },
+          { text: "Cartographie décisionnelle de croissance" },
+          { text: "Calculateur l'équilibre structurel validé" },
         ]}
         loading={loading}
         duration={1000}
