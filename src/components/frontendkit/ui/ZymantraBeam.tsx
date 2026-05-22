@@ -1,4 +1,11 @@
 "use client";
+
+/**
+ * @file ZymantraBeam.tsx
+ * @description Architecture de focus 3D avec optimisation du ratio d'image.
+ * @version 1.0.1
+ */
+
 import React, {
   useEffect,
   useRef,
@@ -19,6 +26,8 @@ import { cn } from "@/lib/utils";
 import { MultiStepLoader } from "@/components/frontendkit/ui/multi-step-loader";
 import { TextGenerateEffect } from "@/components/frontendkit/ui/text-generate-effect";
 
+// Initialisation du contexte React pour gerer l'etat de survol (Hover) en 3D
+// createContext cree un espace de stockage partage entre composants parents et enfants
 const MouseEnterContext = createContext<
   [boolean, React.Dispatch<React.SetStateAction<boolean>>] | undefined
 >(undefined);
@@ -35,9 +44,14 @@ const SectionWrapper = ({
   activeIdx: number | null;
   setActiveIdx: (idx: number | null) => void;
 }) => {
+  // useRef initialise une reference directe a un element du DOM sans declencher de re-rendu
   const ref = useRef(null);
+
+  // useInView est un hook de Framer Motion qui detecte si l'element est visible a l'ecran
+  // amount: 0.4 signifie que le declenchement se fait des que 40% de la section est visible
   const isInView = useInView(ref, { amount: 0.4 });
 
+  // Determination logique de l'effet de flou (Blur)
   const isBlurred =
     (activeIdx !== null && activeIdx !== index) ||
     (activeIdx === null && !isInView);
@@ -45,6 +59,7 @@ const SectionWrapper = ({
   return (
     <motion.div
       ref={ref}
+      // On associe les ecouteurs d'evenements pour modifier l'index actif au survol
       onMouseEnter={() => setActiveIdx(index)}
       onMouseLeave={() => setActiveIdx(null)}
       animate={{
@@ -68,11 +83,16 @@ const CardContainer = ({
   children: React.ReactNode;
   className?: string;
 }) => {
+  // Specification du type HTMLDivElement pour securiser le typage de la reference du conteneur
   const containerRef = useRef<HTMLDivElement>(null);
   const [isMouseEnter, setIsMouseEnter] = useState(false);
+
+  // useMotionValue cree des valeurs de mouvement fluides qui ne re-rendent pas le composant
   const x = useMotionValue(0);
   const y = useMotionValue(0);
 
+  // useTransform mappe une plage de valeurs d'entree vers une plage de valeurs de sortie
+  // useSpring applique un amortissement (damping) et une raideur (stiffness) pour un effet organique
   const rotateX = useSpring(useTransform(y, [-0.5, 0.5], [5, -5]), {
     stiffness: 100,
     damping: 30,
@@ -83,14 +103,20 @@ const CardContainer = ({
   });
 
   return (
+    // .Provider injecte le tableau d'etat dans l'arbre des composants enfants (notation par point)
     <MouseEnterContext.Provider value={[isMouseEnter, setIsMouseEnter]}>
       <div
         className={cn("flex items-center justify-center", className)}
         style={{ perspective: "1000px" }}
         onMouseMove={(e) => {
+          // Verification chirurgicale : si la reference n'est pas liee, on stoppe l'execution
           if (!containerRef.current) return;
+
+          // .getBoundingClientRect() renvoie la taille et la position exacte de la carte (notation par point)
           const { left, top, width, height } =
             containerRef.current.getBoundingClientRect();
+
+          // .set() met a jour la valeur motion directement pour les calculs de rotation (notation par point)
           x.set((e.clientX - left) / width - 0.5);
           y.set((e.clientY - top) / height - 0.5);
         }}
@@ -139,12 +165,14 @@ export default function ZymantraBeam() {
   const [activeIdx, setActiveIdx] = useState<number | null>(null);
   const [svgHeight, setSvgHeight] = useState(0);
 
+  // useScroll capture la progression du scroll sur le conteneur cible (target)
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start center", "end end"],
   });
 
   useEffect(() => {
+    // .offsetHeight lit la hauteur totale en pixels de l'element reel du DOM (notation par point)
     if (containerRef.current) setSvgHeight(containerRef.current.offsetHeight);
   }, []);
 
@@ -153,6 +181,7 @@ export default function ZymantraBeam() {
     { stiffness: 80, damping: 25 }
   );
 
+  // RESTAURATION ET NETTOYAGE STRICT DES STRINGS (AUCUNE ALTERATION DU CONTENU TEXTUEL)
   const ZYMANTRA_CONTENT = [
     {
       badge: "PROFIL",
@@ -215,23 +244,32 @@ export default function ZymantraBeam() {
                 )}
                 style={{
                   borderRadius: "var(--radius-vercel-zy)",
-                  border: "1px solid var(--border-color)", // HARMONISÉ NAVBAR
+                  border: "1px solid var(--border-color)",
                   boxShadow: "0 4px 12px rgba(0, 0, 0, 0.02)",
                 }}
               >
-                {/* IMAGE - PADDING NÉGATIF VISUEL (-4px environ via m-1) */}
+                {/* 
+                  CONTENEUR IMAGE DU CARDITEM OPTIMISÉ 
+                  Changement des ratios fixes pour laisser respirer l'image : aspect-auto au lieu de aspect-square.
+                  max-h-[500px] garantit que l'image ne devienne pas trop grande verticalement.
+                */}
                 <CardItem
                   translateZ={40}
-                  className="w-full lg:w-1/2 aspect-square md:aspect-[4/5] overflow-hidden bg-muted m-1"
+                  className="w-full lg:w-1/2 aspect-auto md:aspect-auto max-h-[500px] overflow-hidden bg-muted m-1 flex items-center justify-center"
                   style={{
                     borderRadius: "calc(var(--radius-vercel-zy) - 1px)",
                     border: "1px solid var(--border-color)",
                   }}
                 >
+                  {/* 
+                    BALISE IMAGE OPTIMISÉE POUR LE RATIO ENTIER
+                    Remplacement de 'object-cover' par 'object-contain' : Rend l'image 100% visible sans aucune coupure.
+                    'w-full h-auto' conserve parfaitement les dimensions d'origine de ta prise de vue.
+                  */}
                   <img
                     src={item.image}
                     alt={item.title}
-                    className="w-full h-full object-cover object-top grayscale hover:grayscale-0 transition-all duration-1000"
+                    className="w-full h-auto object-contain object-top grayscale hover:grayscale-0 transition-all duration-1000"
                   />
                 </CardItem>
 
@@ -293,7 +331,7 @@ export default function ZymantraBeam() {
   );
 }
 
-// Noms pour React DevTools
+// Noms pour React DevTools permettant d'identifier precisement les composants dans l'arbre d'analyse
 SectionWrapper.displayName = "SectionWrapper";
 CardContainer.displayName = "CardContainer";
 CardItem.displayName = "CardItem";
